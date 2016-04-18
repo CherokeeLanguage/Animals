@@ -1,0 +1,16 @@
+alarm.ogg
+bark.ogg
+buzzer2.ogg
+cash_out.ogg
+dialogerror.ogg
+ding-ding-ding.ogg
+ding.ogg
+howa.ogg
+menu-click.ogg
+osda.ogg
+startup.ogg
+tla.ogg
+uyoi.ogg
+vv.ogg
+whip_pop.ogg
+box_moved.ogg
