@@ -1,0 +1,30 @@
+!#/bin/bash
+
+for x in *; do
+    y="$(echo $x|sed 's/ma0/ma-0/')";
+    if [ "$x" != "$y" ]; then
+        mv -v "$x" "$y";
+    fi;
+done
+
+exit 0
+
+#rename all instances of an animal
+
+for x in *; do
+    y="$(echo $x|sed 's/utlav/u-tla-v/')";
+    if [ "$x" != "$y" ]; then
+        mv -v "$x" "$y";
+    fi;
+done
+
+#move numbers to END of name as _#
+for iy in 0 1 2 3 4 5 6 7 8 9; do
+    for x in "$iy"*; do
+        y="$(echo $x|sed s/$iy-//|sed s/\\./_$iy./)";
+        if [ "$x" != "$y" ]; then
+            mv -v "$x" "$y";
+        fi;
+    done;
+done
+

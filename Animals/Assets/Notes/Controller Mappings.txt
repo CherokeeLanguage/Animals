@@ -1,0 +1,36 @@
+LINUX:
+
+== Ouya:
+L: N(1,-), S(1,+), E(0,+), W(0,-)
+L3:9
+DPAD: L(13), R(14), N(11), S(12)
+L2: btn(15), axis(2)
+L1:7
+TOUCHPAD:(MOUSE)
+R2: btn(16), axis(5)
+R1:8
+O:3
+U:4
+Y:5
+A:6
+R: N(4,-), S(4,+), E(3,+), W(3,-)
+R3:10
+[U]:17, 18
+
+== Xbox 360:
+L: N(1,-), S(1,+), E(0,+), W(0,-)
+L3:9
+DPAD: pov(8 compass points + center)
+L2: axis(2)
+L1:4
+R2: axis(5)
+R1:5
+A:0
+X:2
+Y:3
+B:1
+R: N(4,-), S(4,+), E(3,+), W(3,-)
+R3:10
+[back]: 6
+[X]: 8
+[start]: 7

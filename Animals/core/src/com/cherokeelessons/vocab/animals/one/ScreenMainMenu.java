@@ -39,7 +39,7 @@ public class ScreenMainMenu extends ScreenGameCore {
 		}
 	}
 
-	private static final String CHEROKEE_ANIMALS = "Cherokee Animals OUYA";
+	private static final String CHEROKEE_ANIMALS = "Cherokee Animals";
 	private static final String HIGH_SCORE_000000000 = "HIGH SCORE: 000000000";
 	private static final String NEW_GAME = "New Game";
 	private static final String INSTRUCTIONS = "Instructions";
@@ -329,7 +329,7 @@ public class ScreenMainMenu extends ScreenGameCore {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.cherokeelessons.OUYA.animals.ScreenGameCore#show()
+	 * @see com.cherokeelessons.vocab.animals.one.ScreenGameCore#show()
 	 */
 	@Override
 	public void show() {

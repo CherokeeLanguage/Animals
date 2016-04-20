@@ -1,0 +1,17 @@
+#!/bin/bash
+
+PIX="$(dirname "$0")"
+if [ ${PIX}x = x ]; then PIX="."; fi
+if [ ! -d fini ]; then mkdir fini; fi
+for x in "$PIX"/*[Tt][Ii][Ff] "$PIX"/*[Ss][Vv][Gg] "$PIX"/*[Jj][Pp][Gg] "$PIX"/*[Gg][Ii][Ff] "$PIX"/*[Jj][Pp][Ee][Gg] "$PIX"/*[Pp][Nn][Gg]; do
+    if [ ! -f "$x" ]; then continue; fi
+    
+    NewFile="$(basename "$x" | sed 's/\....$//')".png
+    
+    echo "$x -> $NewFile"
+    
+    convert -background none -scale 600x600 \
+            -gravity center -extent 600x600 \
+            "$x" \
+            "fini/$NewFile"
+done

@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 public class Attributions extends Group {
 	private Rectangle bbox;
 	private String[] credits = {
-			"Cherokee Language Animals OUYA",
+			"Cherokee Language Animals",
 			"",
 			"- Game Creator -",
 			"Michael Joyner / ᎹᎦᎵ ᏗᏁᏍᎨᏍᎩ",

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+rm -rfv fini
+mkdir fini
+
+for x in source/*; do
+    z="$(basename "$x")"
+    cp "$x" fini/"$z"
+    normalize-ogg --ogg fini/"$z"
+    if [ $? != 0 ]; then
+        printf "ERROR! : ";
+        read a;
+    fi
+done
