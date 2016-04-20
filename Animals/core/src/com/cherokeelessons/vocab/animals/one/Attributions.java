@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.cherokeelessons.vocab.animals.one.CherokeeAnimals.FontStyle;
 
 public class Attributions extends Group {
 	private Rectangle bbox;
@@ -28,9 +27,9 @@ public class Attributions extends Group {
 			"Cherokee-English Dictionary (Durbin-Feeling)", "", "- Pictures -",
 			"OpenClipart.Org", "Commons.Wikimedia.Org",
 			"All pictures are cc-zero or public domain.", "",
-			"http://www.CherokeeLessons.com/", "", "Game Version 4.01 (2013)" };
+			"http://www.CherokeeLessons.com/", "", "Game Version 5.00 (2016)" };
 
-	private Color fontColor = Color.BLACK;
+	private Color fontColor = new Color(Color.BLACK);
 	private int fontSize;
 	private float maxLineHeight;
 

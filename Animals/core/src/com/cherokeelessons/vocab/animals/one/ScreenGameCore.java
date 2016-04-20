@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.cherokeelessons.vocab.animals.one.CherokeeAnimals.FontStyle;
 import com.cherokeelessons.vocab.animals.one.GameEvent.EventList;
 import com.cherokeelessons.vocab.animals.one.StageBase.OnBackHandler;
 import com.cherokeelessons.vocab.animals.one.StageBase.onMenuHandler;

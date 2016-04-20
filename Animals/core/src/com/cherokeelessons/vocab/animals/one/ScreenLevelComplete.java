@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Array;
-import com.cherokeelessons.vocab.animals.one.CherokeeAnimals.FontStyle;
 
 public class ScreenLevelComplete extends ScreenGameCore {
 

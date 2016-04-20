@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.cherokeelessons.vocab.animals.one.CherokeeAnimals.FontStyle;
 import com.cherokeelessons.vocab.animals.one.ScreenGameCore.GameColor;
 
 public class View3x3Selector extends Group {

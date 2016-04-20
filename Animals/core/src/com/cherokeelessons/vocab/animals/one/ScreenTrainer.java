@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.cherokeelessons.vocab.animals.one.CherokeeAnimals.FontStyle;
 import com.cherokeelessons.vocab.animals.one.CherokeeAnimals.TrainingScreenMode;
 import com.cherokeelessons.vocab.animals.one.GameEvent.EventList;
 

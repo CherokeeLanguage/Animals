@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.Array;
-import com.cherokeelessons.vocab.animals.one.CherokeeAnimals.FontStyle;
 
 public class ScreenInstructions extends ScreenGameCore {
 

@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.cherokeelessons.vocab.animals.one.CherokeeAnimals.FontStyle;
 
 public class ScreenPaused extends ScreenGameCore {
 
