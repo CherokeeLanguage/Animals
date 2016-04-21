@@ -12,9 +12,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.vocab.animals.one.GameEvent.EventList;
 
@@ -39,21 +43,19 @@ public class ScreenMainMenu extends ScreenGameCore {
 		}
 	}
 
-	private static final String CHEROKEE_ANIMALS = "Cherokee Animals";
-	private static final String HIGH_SCORE_000000000 = "HIGH SCORE: 000000000";
+	private static final String GAME_TITLE = "Cherokee Animals";
 	private static final String NEW_GAME = "New Game";
+	private static final String LEADERS = "High Scores";
 	private static final String INSTRUCTIONS = "Instructions";
 	private static final String OPTIONS = "Options";
-
+	private static final String CREDITS = "About";
 	private static final String QUIT = "Quit";
 
 	private Array<MenuLabel> btns = new Array<MenuLabel>();
 
-	private MenuLabel highScore = null;
-
 	private Texture indicator;
 
-	private Sprite left_indicator = new Sprite();
+	private Image left_indicator = new Image();
 	private Runnable newGame = new Runnable() {
 		@Override
 		public void run() {
@@ -74,7 +76,7 @@ public class ScreenMainMenu extends ScreenGameCore {
 
 	final public int quitButton;
 
-	private Sprite right_indicator = new Sprite();
+	private Image right_indicator = new Image();
 
 	private int selected_btn = 0;
 
@@ -97,23 +99,53 @@ public class ScreenMainMenu extends ScreenGameCore {
 			game.event(EventList.ShowInstructions);			
 		}
 	};
+	
+	private Runnable showCredits=new Runnable() {
+		@Override
+		public void run() {
+			game.event(EventList.ShowCredits);
+		}
+	};
+	private Runnable showLeaderBoard=new Runnable() {
+		@Override
+		public void run() {
+			game.event(EventList.ShowLeaderBoard);
+		}
+	};
+	
+	private void highlight_button(int button, boolean quiet) {
+		selected_btn=button;
+		highlight_button(quiet);
+	}
+	
+	private void highlight_button(boolean quiet) {
+		if (!quiet) {
+			game.getSoundManager().playEffect("box_moved");
+		}
+		MenuLabel label = btns.get(selected_btn);
+		float left = label.getX();
+		float bottom = label.getY();
+		float right = label.getX() + label.getWidth();
+		left_indicator.setPosition(left - left_indicator.getWidth() + 20 ,
+				bottom);
+		right_indicator.setPosition(right - 20, bottom);
+	}
 
 	public ScreenMainMenu(CherokeeAnimals game) {
 		super(game);
 		float currentY;
-		float linesOfText = 4;
+		float linesOfText = 6;
 		float skipAmount = overscan.height / (linesOfText);
-		int fontSize = 128;
 		float graphicsHeight = 0;
 		float emptyHeight = 0;
 
 		BitmapFont bmFont;
 		System.out.println("bmFont create");
-		bmFont = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.Script,fontSize);
+		bmFont = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.Script,96);
 
 		BitmapFont hsFont;
 		System.out.println("hsFont create");
-		hsFont = CherokeeAnimals.getFixedFont(CherokeeAnimals.FontStyle.Script,fontSize / 2);
+		hsFont = CherokeeAnimals.getFixedFont(CherokeeAnimals.FontStyle.Script,64);
 
 		Color textColor = GameColor.GREEN;
 
@@ -123,7 +155,9 @@ public class ScreenMainMenu extends ScreenGameCore {
 
 		MenuLabel btn_NewGame = null;
 		MenuLabel btn_Instructions = null;
+		MenuLabel btn_Leaders = null;
 		MenuLabel btn_Options = null;
+		MenuLabel btn_Credits = null;
 		MenuLabel btn_Quit = null;
 		LabelStyle buttonStyle = null;
 
@@ -135,12 +169,13 @@ public class ScreenMainMenu extends ScreenGameCore {
 		buttonStyle.font = bmFont;
 		buttonStyle.fontColor = textColor;
 
-		titleText = new MenuLabel(CHEROKEE_ANIMALS, titleStyle);
-		highScore = new MenuLabel(HIGH_SCORE_000000000, hsStyle);
+		titleText = new MenuLabel(GAME_TITLE, titleStyle);
 
 		btn_NewGame = new MenuLabel(NEW_GAME, buttonStyle);
 		btn_Instructions = new MenuLabel(INSTRUCTIONS, buttonStyle);
+		btn_Leaders = new MenuLabel(LEADERS, buttonStyle);
 		btn_Options = new MenuLabel(OPTIONS, buttonStyle);
+		btn_Credits = new MenuLabel(CREDITS, buttonStyle);
 		btn_Quit = new MenuLabel(QUIT, buttonStyle);
 
 		/*
@@ -157,19 +192,22 @@ public class ScreenMainMenu extends ScreenGameCore {
 		 * center each line
 		 */
 		titleText
-				.setX((overscan.x + (overscan.width - titleText.getWidth()) / 2));
-		btn_NewGame.setX(overscan.x + (overscan.width - btn_NewGame.getWidth())
+				.setX(((overscan.width - titleText.getWidth()) / 2));
+		btn_NewGame.setX((overscan.width - btn_NewGame.getWidth())
 				/ 2);
-		btn_Instructions.setX(overscan.x+(overscan.width - btn_Instructions.getWidth())/2);
-		btn_Options.setX(overscan.x + (overscan.width - btn_Options.getWidth())
+		btn_Leaders.setX((overscan.width-btn_Leaders.getWidth())/2);
+		btn_Instructions.setX((overscan.width - btn_Instructions.getWidth())/2);
+		btn_Options.setX((overscan.width - btn_Options.getWidth())
 				/ 2);
-		btn_Quit.setX(overscan.x + (overscan.width - btn_Quit.getWidth()) / 2);
+		btn_Credits.setX((overscan.width - btn_Credits.getWidth())
+				/ 2);
+		btn_Quit.setX((overscan.width - btn_Quit.getWidth()) / 2);
 
 		/*
 		 * position each one equal distant based on screen height
 		 */
 		// start at top of screen
-		currentY = overscan.height + overscan.y;
+		currentY = overscan.height;
 		// subtract empty gap + line height before placement
 		currentY -= (titleText.getHeight() + skipAmount);
 		titleText.setY(currentY);
@@ -177,11 +215,17 @@ public class ScreenMainMenu extends ScreenGameCore {
 		currentY -= (btn_NewGame.getHeight() + skipAmount);
 		btn_NewGame.setY(currentY);
 		
+		currentY -= (btn_Leaders.getHeight() + skipAmount);
+		btn_Leaders.setY(currentY);
+		
 		currentY -= (btn_Instructions.getHeight() + skipAmount);
 		btn_Instructions.setY(currentY);
 
 		currentY -= (btn_Options.getHeight() + skipAmount);
 		btn_Options.setY(currentY);
+		
+		currentY -= (btn_Options.getHeight() + skipAmount);
+		btn_Credits.setY(currentY);
 
 		currentY -= (btn_Quit.getHeight() + skipAmount);
 		btn_Quit.setY(currentY);
@@ -190,29 +234,55 @@ public class ScreenMainMenu extends ScreenGameCore {
 		 * add buttons to buttons menu array
 		 */
 		btns.add(btn_NewGame);
+		btns.add(btn_Leaders);
 		btns.add(btn_Instructions);
 		optionsButton = btns.size;
 		btns.add(btn_Options);
+		btns.add(btn_Credits);
 		quitButton = btns.size;
 		btns.add(btn_Quit);
+		
+		/*
+		 * connect touch handlers
+		 */
+		for (int ix=0; ix<btns.size; ix++) {
+			final int button = ix;
+			btns.get(ix).setTouchable(Touchable.enabled);
+			btns.get(ix).addListener(new ClickListener(){
+				private int btn = button;				
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y,
+						int pointer, int button) {
+					highlight_button(btn, true);
+					doMenuItem();
+					return true;
+				}
+			});
+		}
 
 		/*
 		 * register click handlers
 		 */
 		btn_NewGame.setRun(newGame);
+		btn_Leaders.setRun(showLeaderBoard);
 		btn_Quit.setRun(performQuit);
 		btn_Options.setRun(showOptions);
+		btn_Credits.setRun(showCredits);
 		btn_Instructions.setRun(showInstructions);
 
 		/*
 		 * add to "stage" for display
 		 */
-		gameStage.addActor(highScore);
 		gameStage.addActor(titleText);
 		gameStage.addActor(btn_NewGame);
+		gameStage.addActor(btn_Leaders);
 		gameStage.addActor(btn_Instructions);
 		gameStage.addActor(btn_Options);
+		gameStage.addActor(btn_Credits);
 		gameStage.addActor(btn_Quit);
+		
+		gameStage.addActor(left_indicator);
+		gameStage.addActor(right_indicator);
 
 		game.getSoundManager().loadEffect("howa");
 
@@ -308,6 +378,7 @@ public class ScreenMainMenu extends ScreenGameCore {
 
 	@Override
 	public void render(float delta) {
+		gameStage.act(delta);
 		clearScreen();
 		if (showOverScan) {
 			drawOverscan();
@@ -318,12 +389,7 @@ public class ScreenMainMenu extends ScreenGameCore {
 		}
 		batch.enableBlending();
 		batch.end();
-		gameStage.act();
 		gameStage.draw();
-		batch.begin();
-		left_indicator.draw(batch);
-		right_indicator.draw(batch);
-		batch.end();
 	}
 
 	/*
@@ -336,39 +402,30 @@ public class ScreenMainMenu extends ScreenGameCore {
 		super.show();
 		String text;
 		game.getSoundManager().playEffect("howa");
-		text = String.format("HIGH SCORE: %09d", game.getHighScore());
-		highScore.setText(text);
-		highScore.pack();
-		highScore
-				.setY(overscan.y + overscan.height - highScore.getHeight() - 5);
-		highScore
-				.setX(overscan.x + (overscan.width - highScore.getWidth()) / 2);
 
-		TextureRegion temp;
+		TextureRegionDrawable temp;
 		indicator = new Texture("buttons/da-gi-si_2.png");
 		indicator.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		System.out.println("texture size: "
-				+ new Vector2(indicator.getWidth(), indicator.getHeight()));
+		
+		temp = new TextureRegionDrawable(new TextureRegion(indicator));
 
-		temp = new TextureRegion(indicator);
-		System.out.println("temp size: "
-				+ new Vector2(temp.getRegionWidth(), temp.getRegionHeight()));
-
-		left_indicator.setRegion(temp);
-		left_indicator.setBounds(0, 0, temp.getRegionWidth(),
-				temp.getRegionHeight());
-
-		System.out.println("indicator size: "
-				+ new Vector2(left_indicator.getWidth(), left_indicator
-						.getHeight()));
-
-		right_indicator.setRegion(temp);
-		right_indicator.setBounds(0, 0, temp.getRegionWidth(),
-				temp.getRegionHeight());
-		right_indicator.flip(true, false);
+		left_indicator.setDrawable(temp);
+		left_indicator.pack();
+		
+		right_indicator.setDrawable(temp);
+		right_indicator.pack();
+		
+		left_indicator.setOrigin(0, 0);
+		left_indicator.setOrigin(left_indicator.getWidth()/2, 0);
+		left_indicator.setScaleX(INDI_SCALE);
+		left_indicator.setScaleY(INDI_SCALE);
+		
+		right_indicator.setOrigin(right_indicator.getWidth()/2, 0);
+		right_indicator.setScaleX(-INDI_SCALE);
+		right_indicator.setScaleY(INDI_SCALE);
 
 		highlight_button();
-
 	}
+	public static final float INDI_SCALE=.45f;
 
 }

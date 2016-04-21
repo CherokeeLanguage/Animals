@@ -3,7 +3,7 @@ package com.cherokeelessons.vocab.animals.one;
 public class GameEvent {
 
 	public enum EventList {
-		DoScroller, FirstRun, GoBack, GoMenu, InitDone, LevelComplete, LevelSelect, libGdx, NoEvent, Pause, QuitGame, ShowGameBoard, ShowMainMenu, ShowOptions, Training, ShowInstructions
+		DoScroller, FirstRun, GoBack, GoMenu, InitDone, LevelComplete, LevelSelect, libGdx, NoEvent, Pause, QuitGame, ShowGameBoard, ShowMainMenu, ShowOptions, Training, ShowInstructions, ShowCredits, ShowLeaderBoard
 	}
 
 	private EventList message = EventList.NoEvent;

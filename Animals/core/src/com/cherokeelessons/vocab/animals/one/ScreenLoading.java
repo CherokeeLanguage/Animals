@@ -11,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
@@ -70,6 +73,15 @@ public class ScreenLoading extends ScreenGameCore {
 
 		creditScroller = new Attributions(overscan);
 		creditScroller.setFontColor(GameColor.GREEN);
+		
+		creditScroller.setTouchable(Touchable.enabled);
+		creditScroller.addListener(new EventListener() {
+			@Override
+			public boolean handle(Event event) {
+				game.startupMusic.stop();
+				return true;
+			}
+		});
 
 		initBackdrop();
 

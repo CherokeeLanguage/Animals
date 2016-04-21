@@ -56,21 +56,10 @@ public class ScreenInstructions extends ScreenGameCore {
 	private TextButton[] scrollingCredits;
 	private Color fontColor = GameColor.DARKGREEN;
 	public void init() {
-
 		scrollingCredits = new TextButton[credits.length];
-
-		calculateFontSize();
-		
 		populateCreditDisplay();
-		if (instructions.getHeight()>overscan.height) {
-			float fontScale = overscan.height/instructions.getHeight();
-			fontSize=(int)((float)fontSize*fontScale);
-			instructions.clear();
-			populateCreditDisplay();
-		}	
-
 	}
-	private int fontSize;
+	private int fontSize=48;
 	private void populateCreditDisplay() {
 		int ix = 0;
 		BitmapFont font;
@@ -111,38 +100,6 @@ public class ScreenInstructions extends ScreenGameCore {
 		instructions.setOrigin(overscan.width/2, instructions.getHeight()/2);		
 	}
 	private float maxLineHeight;
-	private void calculateFontSize() {
-		// starting size
-		TextButton testLabel = null;
-		TextButtonStyle testStyle;
-		int size;
-		int ix;
-		BitmapFont font;
-		float scale = 0;
-		float maxWidth = 0;
-
-		size = 72;
-		font = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.Script,size);
-		testStyle = new TextButtonStyle();
-		testStyle.font = font;
-		testStyle.fontColor = new Color(fontColor);
-		testLabel = new TextButton("", testStyle);
-		font = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.Script,size);
-		for (ix = 0; ix < credits.length; ix++) {
-			if (credits[ix].length() < 1)
-				continue;
-			testLabel.setText(credits[ix]);
-			testLabel.setStyle(testStyle);
-			testLabel.pack();
-			if (maxWidth < testLabel.getWidth()) {
-				maxWidth = testLabel.getWidth();
-			}
-
-		}
-		scale = 0.95f * overscan.width / maxWidth;
-		size = (int) (scale * (float) size);
-		fontSize = size;
-	}
 
 	@Override
 	public void dispose() {		

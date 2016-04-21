@@ -30,7 +30,7 @@ public class Attributions extends Group {
 			"http://www.CherokeeLessons.com/", "", "Game Version 5.00 (2016)" };
 
 	private Color fontColor = new Color(Color.BLACK);
-	private int fontSize;
+	private final int fontSize=72;
 	private float maxLineHeight;
 
 	private TextButton[] scrollingCredits;
@@ -46,39 +46,6 @@ public class Attributions extends Group {
 		this.setY(bbox.y);
 	}
 
-	private void calculateFontSize() {
-		// starting size
-		TextButton testLabel = null;
-		TextButtonStyle testStyle;
-		int size;
-		int ix;
-		BitmapFont font;
-		float scale = 0;
-		float maxWidth = 0;
-
-		size = 72;
-		font =  CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.FreeSans, 72);
-		testStyle = new TextButtonStyle();
-		testStyle.font = font;
-		testStyle.fontColor = new Color(fontColor);
-		testLabel = new TextButton("", testStyle);
-		font = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.FreeSans, size);
-		for (ix = 0; ix < credits.length; ix++) {
-			if (credits[ix].length() < 1)
-				continue;
-			testLabel.setText(credits[ix]);
-			testLabel.setStyle(testStyle);
-			testLabel.pack();
-			if (maxWidth < testLabel.getWidth()) {
-				maxWidth = testLabel.getWidth();
-			}
-
-		}
-		scale = 0.95f * bbox.width / maxWidth;
-		size = (int) (scale * (float) size);
-		fontSize = size;
-	}
-
 	public float getxOffset() {
 		return xOffset;
 	}
@@ -91,12 +58,8 @@ public class Attributions extends Group {
 	}
 
 	public void init() {
-
 		scrollingCredits = new TextButton[credits.length];
-
-		calculateFontSize();
 		populateCreditDisplay();
-
 	}
 
 	private void populateCreditDisplay() {

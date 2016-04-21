@@ -73,7 +73,7 @@ public class ScreenOptionsMenu extends ScreenGameCore {
 
 	private float lineHeight = 0;
 	private float offset = 0;
-	private Integer optionItemSize = 76;
+	private Integer optionItemSize = 74;
 
 	public int optionsButton;
 
@@ -95,8 +95,8 @@ public class ScreenOptionsMenu extends ScreenGameCore {
 
 		int displayLine;
 
-		font = CherokeeAnimals.getFixedFont(CherokeeAnimals.FontStyle.Script,optionItemSize);
-		BitmapFont ifont = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.Script,(optionItemSize * 2) / 3);
+		font = CherokeeAnimals.getFixedFont(CherokeeAnimals.FontStyle.Script,48);
+		BitmapFont ifont = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.Script,48);
 
 		textColor = GameColor.GREEN;
 

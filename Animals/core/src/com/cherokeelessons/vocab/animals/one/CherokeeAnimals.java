@@ -257,7 +257,7 @@ public class CherokeeAnimals extends Game {
 
 	private SoundManager soundManager;
 
-	Music startupMusic = null;
+	public Music startupMusic = null;
 
 	private HashMap<String, String> syllabaryMap = null;
 
