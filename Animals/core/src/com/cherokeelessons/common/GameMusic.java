@@ -74,4 +74,9 @@ public class GameMusic implements Music {
 
 	}
 
+	@Override
+	public void setPosition(float position) {
+		music.setPosition(position);
+	}
+
 }

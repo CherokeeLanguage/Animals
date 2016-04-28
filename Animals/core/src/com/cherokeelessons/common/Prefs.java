@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.cherokeelessons.vocab.animals.one.enums.ChallengeWordMode;
 import com.cherokeelessons.vocab.animals.one.enums.SoundEffectVolume;
 import com.cherokeelessons.vocab.animals.one.enums.TrainingMode;
@@ -227,33 +228,33 @@ public class Prefs implements com.badlogic.gdx.Preferences {
 	}
 
 	@Override
-	public void put(Map<String, ?> vals) {
-		prefs.put(vals);		
+	public Preferences put(Map<String, ?> vals) {
+		return prefs.put(vals);		
 	}
 
 	@Override
-	public void putBoolean(String key, boolean val) {
-		prefs.putBoolean(key, val);		
+	public Preferences putBoolean(String key, boolean val) {
+		return prefs.putBoolean(key, val);		
 	}
 
 	@Override
-	public void putFloat(String key, float val) {
-		prefs.putFloat(key, val);		
+	public Preferences putFloat(String key, float val) {
+		return prefs.putFloat(key, val);		
 	}
 
 	@Override
-	public void putInteger(String key, int val) {
-		prefs.putInteger(key, val);		
+	public Preferences putInteger(String key, int val) {
+		return prefs.putInteger(key, val);		
 	}
 
 	@Override
-	public void putLong(String key, long val) {
-		prefs.putLong(key, val);		
+	public Preferences putLong(String key, long val) {
+		return prefs.putLong(key, val);		
 	}
 
 	@Override
-	public void putString(String key, String val) {
-		prefs.putString(key, val);		
+	public Preferences putString(String key, String val) {
+		return prefs.putString(key, val);		
 	}
 
 	@Override
