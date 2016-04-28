@@ -1,4 +1,4 @@
-package com.cherokeelessons.vocab.animals.one;
+package com.cherokeelessons.vocab.animals.one.views;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
@@ -6,7 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.cherokeelessons.vocab.animals.one.ScreenGameCore.GameColor;
+import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.GameColor;
+import com.cherokeelessons.common.SoundManager;
 
 /*
  * displays running score, level percent accuracy
@@ -78,14 +80,15 @@ public class ViewScoreBoard extends Group {
 
 	// public Group viewGroup = null;
 
-	protected ViewScoreBoard(Rectangle overscan, SoundManager sm) {
+	public ViewScoreBoard(Rectangle overscan, SoundManager sm) {
 		super();
 		// String glyphs="0123456789";
 		// String glyphs2=" +%-";
 		bbox.set(overscan);
 		this.sm = sm;
 
-		bitmapFont = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.Script,fontSize);// ;fg.genFixedNumbers(fontSize);
+		FontGenerator fg = new FontGenerator();
+		bitmapFont = fg.gen(fontSize);// ;fg.genFixedNumbers(fontSize);
 		boxStyle = new LabelStyle(bitmapFont, GameColor.GREEN);
 		scoreBox = new Label("", boxStyle);
 		setScore(0);

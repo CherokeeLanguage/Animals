@@ -1,4 +1,4 @@
-package com.cherokeelessons.vocab.animals.one;
+package com.cherokeelessons.common;
 
 import java.lang.reflect.Field;
 
@@ -11,7 +11,6 @@ public class OS {
 	final public static Platform platform;
 	static {
 		name = System.getProperty("os.name").toLowerCase();
-		System.out.println("os.name: " + name);
 		do {
 			if (System.getProperty("java.vm.name").equalsIgnoreCase("Dalvik")) {
 				/*
@@ -24,7 +23,6 @@ public class OS {
 					Object o = deviceField.get(null);
 					if (o != null) {
 						device = o.toString().toLowerCase();
-						System.out.println("Device: " + device);
 					}
 				} catch (Exception e) {
 				}

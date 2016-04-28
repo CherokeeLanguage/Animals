@@ -1,29 +1,37 @@
 package com.cherokeelessons.vocab.animals.one;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.cherokeelessons.vocab.animals.one.GameEvent.EventList;
+import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.GameColor;
+import com.cherokeelessons.common.Gamepads;
+import com.cherokeelessons.common.OS;
+import com.cherokeelessons.common.Utils;
+import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
-public class ScreenMainMenu extends ScreenGameCore {
+public class ScreenMainMenu extends GameScreen {
 
+	public static final String INDICATOR = "images/indicators/abelo_6.png";
+	public static final float INDI_SCALE=.45f; 
 	private static class MenuLabel extends Label {
 
 		private Runnable menu_action = null;
@@ -43,13 +51,13 @@ public class ScreenMainMenu extends ScreenGameCore {
 		}
 	}
 
-	private static final String GAME_TITLE = "Cherokee Animals";
-	private static final String NEW_GAME = "New Game";
-	private static final String LEADERS = "High Scores";
-	private static final String INSTRUCTIONS = "Instructions";
-	private static final String OPTIONS = "Options";
-	private static final String CREDITS = "About";
-	private static final String QUIT = "Quit";
+	private static final String GAME_TITLE = "Esperanta Animaloj!";
+	private static final String NEW_GAME = "Nova Ludo / New Game";
+	private static final String LEADERS = "Altaj Poentaroj  / High Scores";
+	private static final String INSTRUCTIONS = "Instruoj / Instructions";
+	private static final String OPTIONS = "Agordoj / Options";
+	private static final String CREDITS = "Pri / About";
+	private static final String QUIT = "Halti / Quit";
 
 	private Array<MenuLabel> btns = new Array<MenuLabel>();
 
@@ -59,18 +67,17 @@ public class ScreenMainMenu extends ScreenGameCore {
 	private Runnable newGame = new Runnable() {
 		@Override
 		public void run() {
-			game.getSoundManager().playEffect("menu-click");
-			game.event(EventList.LevelSelect);
+			game.sm.playEffect("menu-click");
+			game.gameEvent(GameEvent.NewGame);
 		}
 	};
 	public int optionsButton;
 	private Runnable performQuit = new Runnable() {
 		@Override
 		public void run() {
-			game.event(EventList.QuitGame);
-			game.getSoundManager().playEffect("menu-click");
-			Gdx.app.exit();
-			System.exit(0);
+			game.gameEvent(GameEvent.QuitGame);
+			game.sm.playEffect("menu-click");
+			Gdx.app.exit();			
 		}
 	};
 
@@ -83,8 +90,8 @@ public class ScreenMainMenu extends ScreenGameCore {
 	private Runnable showOptions = new Runnable() {
 		@Override
 		public void run() {
-			game.getSoundManager().playEffect("menu-click");
-			game.event(EventList.ShowOptions);
+			game.sm.playEffect("menu-click");
+			game.gameEvent(GameEvent.ShowOptions);
 		}
 	};
 
@@ -92,60 +99,45 @@ public class ScreenMainMenu extends ScreenGameCore {
 
 	private TextureAtlas wall_atlas;
 
+	final private ControllerMainMenu_Watch watcher = new ControllerMainMenu_Watch(
+			this);
 	private Runnable showInstructions=new Runnable() {
 		@Override
 		public void run() {
-			game.getSoundManager().playEffect("menu-click");
-			game.event(EventList.ShowInstructions);			
+			game.sm.playEffect("menu-click");
+			game.gameEvent(GameEvent.ShowInstructions);			
 		}
 	};
-	
 	private Runnable showCredits=new Runnable() {
 		@Override
 		public void run() {
-			game.event(EventList.ShowCredits);
+			game.gameEvent(GameEvent.ShowCredits);
 		}
 	};
 	private Runnable showLeaderBoard=new Runnable() {
 		@Override
 		public void run() {
-			game.event(EventList.ShowLeaderBoard);
+			game.gameEvent(GameEvent.ShowLeaderBoard);
 		}
 	};
 	
-	private void highlight_button(int button, boolean quiet) {
-		selected_btn=button;
-		highlight_button(quiet);
-	}
-	
-	private void highlight_button(boolean quiet) {
-		if (!quiet) {
-			game.getSoundManager().playEffect("box_moved");
-		}
-		MenuLabel label = btns.get(selected_btn);
-		float left = label.getX();
-		float bottom = label.getY();
-		float right = label.getX() + label.getWidth();
-		left_indicator.setPosition(left - left_indicator.getWidth() + 20 ,
-				bottom);
-		right_indicator.setPosition(right - 20, bottom);
-	}
 
 	public ScreenMainMenu(CherokeeAnimals game) {
 		super(game);
+		
 		float currentY;
 		float linesOfText = 6;
-		float skipAmount = overscan.height / (linesOfText);
+		float skipAmount = screenSize.height / (linesOfText);
+		int fontSize = 96;
 		float graphicsHeight = 0;
 		float emptyHeight = 0;
+		FontGenerator fg = new FontGenerator();
 
 		BitmapFont bmFont;
-		System.out.println("bmFont create");
-		bmFont = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.Script,96);
+		bmFont = fg.gen(fontSize);
 
 		BitmapFont hsFont;
-		System.out.println("hsFont create");
-		hsFont = CherokeeAnimals.getFixedFont(CherokeeAnimals.FontStyle.Script,64);
+		hsFont = fg.genFixedNumbers(fontSize / 2);
 
 		Color textColor = GameColor.GREEN;
 
@@ -184,30 +176,31 @@ public class ScreenMainMenu extends ScreenGameCore {
 		 */
 
 		graphicsHeight = titleText.getHeight() + btn_NewGame.getHeight()
-				+ btn_Options.getHeight() + btn_Quit.getHeight() + btn_Instructions.getHeight();
-		emptyHeight = overscan.height - graphicsHeight;
+				+ btn_Options.getHeight() + btn_Quit.getHeight() + btn_Instructions.getHeight()
+				+ btn_Credits.getHeight() + btn_Leaders.getHeight();
+		emptyHeight = screenSize.height - graphicsHeight;
 		skipAmount = emptyHeight / (linesOfText + 1);
 
 		/*
 		 * center each line
 		 */
 		titleText
-				.setX(((overscan.width - titleText.getWidth()) / 2));
-		btn_NewGame.setX((overscan.width - btn_NewGame.getWidth())
+				.setX(((screenSize.width - titleText.getWidth()) / 2));
+		btn_NewGame.setX((screenSize.width - btn_NewGame.getWidth())
 				/ 2);
-		btn_Leaders.setX((overscan.width-btn_Leaders.getWidth())/2);
-		btn_Instructions.setX((overscan.width - btn_Instructions.getWidth())/2);
-		btn_Options.setX((overscan.width - btn_Options.getWidth())
+		btn_Leaders.setX((screenSize.width-btn_Leaders.getWidth())/2);
+		btn_Instructions.setX((screenSize.width - btn_Instructions.getWidth())/2);
+		btn_Options.setX((screenSize.width - btn_Options.getWidth())
 				/ 2);
-		btn_Credits.setX((overscan.width - btn_Credits.getWidth())
+		btn_Credits.setX((screenSize.width - btn_Credits.getWidth())
 				/ 2);
-		btn_Quit.setX((overscan.width - btn_Quit.getWidth()) / 2);
+		btn_Quit.setX((screenSize.width - btn_Quit.getWidth()) / 2);
 
 		/*
 		 * position each one equal distant based on screen height
 		 */
 		// start at top of screen
-		currentY = overscan.height;
+		currentY = screenSize.height;
 		// subtract empty gap + line height before placement
 		currentY -= (titleText.getHeight() + skipAmount);
 		titleText.setY(currentY);
@@ -284,9 +277,7 @@ public class ScreenMainMenu extends ScreenGameCore {
 		gameStage.addActor(left_indicator);
 		gameStage.addActor(right_indicator);
 
-		game.getSoundManager().loadEffect("howa");
-
-		initBackdrop();
+		wall_atlas=Utils.initBackdrop(wall);
 
 	}
 
@@ -306,58 +297,35 @@ public class ScreenMainMenu extends ScreenGameCore {
 
 	@Override
 	public void hide() {
-		super.hide();
+		for (Controller controller : Gamepads.getControllers()) {
+			watcher.disconnected(controller);
+		}
+		Gamepads.clearListeners();
 		indicator.dispose();
 		indicator = null;
+		super.hide();
 	}
 
+	private void highlight_button(int button, boolean quiet) {
+		selected_btn=button;
+		highlight_button(quiet);
+	}
+	
 	private void highlight_button() {
-		game.getSoundManager().playEffect("box_moved");
-
+		highlight_button(false);
+	}
+	
+	private void highlight_button(boolean quiet) {
+		if (!quiet) {
+			game.sm.playEffect("box_moved");
+		}
 		MenuLabel label = btns.get(selected_btn);
 		float left = label.getX();
 		float bottom = label.getY();
 		float right = label.getX() + label.getWidth();
-
-		left_indicator.setPosition(left - left_indicator.getWidth() - 20,
+		left_indicator.setPosition(left - left_indicator.getWidth() + 20 ,
 				bottom);
-		right_indicator.setPosition(right + 20, bottom);
-	}
-
-	private void initBackdrop() {
-		wall.clear();
-		PixmapPacker pack = new PixmapPacker(1024, 1024, Format.RGBA8888, 2,
-				true);
-		for (int i = 0; i < 32; i++) {
-			pack.pack(
-					i + "",
-					new Pixmap(Gdx.files.internal("images/backdrops/p_" + i
-							+ "_dsci2549.png")));
-		}
-		wall_atlas = pack.generateTextureAtlas(TextureFilter.Linear,
-				TextureFilter.Linear, false);
-
-		int px = 0;
-		int py = 0;
-		final int perRow = 8;
-		final int columns = 4;
-		for (int x = 0; x < perRow; x++) {
-			py = 0;
-			Sprite i = null;
-			for (int y = 0; y < columns; y++) {
-				int z = columns - (y + 1);
-				int p = z * perRow + x;
-				final AtlasRegion piece = wall_atlas.findRegion(p + "");
-				i = new Sprite(piece, 0, 0, piece.getRegionWidth(),
-						piece.getRegionHeight());
-				i.setX(px);
-				i.setY(py);
-				i.setColor(1f, 1f, 1f, 0.35f);
-				py += i.getHeight();
-				wall.add(i);
-			}
-			px += i.getWidth();
-		}
+		right_indicator.setPosition(right - 20, bottom);
 	}
 
 	public void nextMenuItem() {
@@ -376,37 +344,79 @@ public class ScreenMainMenu extends ScreenGameCore {
 		highlight_button();
 	}
 
+	private float nagtick=0f;
 	@Override
 	public void render(float delta) {
-		gameStage.act(delta);
-		clearScreen();
-		if (showOverScan) {
-			drawOverscan();
-		}
+		super.render(delta);
+		gameStage.act(delta);		
 		batch.begin();
 		for (Sprite s : wall) {
 			s.draw(batch);
 		}
-		batch.enableBlending();
 		batch.end();
 		gameStage.draw();
+		if (game.isNag()) {
+			nagtick+=delta;
+			if (nagtick>45f) {
+				nagtick=0f;
+				showNextNag();				
+			}
+		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.cherokeelessons.vocab.animals.one.ScreenGameCore#show()
-	 */
+	private Array<String> nags=new Array<String>();
+	private Label naglbl=null;
+	private void showNextNag() {
+		if (naglbl == null) {
+			BitmapFont f = new FontGenerator().gen(48);
+			LabelStyle ls = new LabelStyle();
+			ls.font = f;
+			ls.fontColor = GameColor.FIREBRICK;
+			naglbl = new Label("", ls);
+			naglbl.setTouchable(Touchable.disabled);
+			gameStage.addActor(naglbl);
+		}
+		if (nags.size==0) {
+			String tmp[] = Gdx.files.internal("data/desktop-nags.txt").readString("UTF-8").split("\n");
+			for (String msg: tmp) {
+				if (msg!=null && msg.length()>0) {
+					nags.add(msg);
+				}
+				nags.shuffle();
+			}			
+		}
+		final String nag = nags.get(0);
+		System.out.println(nag);
+		final Vector2 newpos = new Vector2();
+		nags.removeIndex(0);
+		final SequenceAction seq = Actions.sequence();
+		seq.addAction(Actions.moveTo(0, -1024, 5f, Interpolation.bounceOut));
+		seq.addAction(Actions.run(new Runnable() {			
+			@Override
+			public void run() {
+				naglbl.setText(nag);
+				naglbl.pack();
+				newpos.y=-screenSize.y;
+				newpos.x=(screenSize.width-naglbl.getWidth())/2;
+				seq.addAction(Actions.moveTo(newpos.x, newpos.y, 5f, Interpolation.bounceIn));
+			}
+		}));
+		naglbl.addAction(seq);
+	}
+
 	@Override
 	public void show() {
 		super.show();
-		String text;
-		game.getSoundManager().playEffect("howa");
+		game.sm.playEffect("ding");		
+		Gamepads.addListener(watcher);
+		for (Controller c : Gamepads.getControllers()) {
+			watcher.connected(c);
+		}
 
 		TextureRegionDrawable temp;
-		indicator = new Texture("buttons/da-gi-si_2.png");
+		indicator = new Texture(INDICATOR);
 		indicator.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		temp = new TextureRegionDrawable(new TextureRegion(indicator));
 
 		left_indicator.setDrawable(temp);
@@ -425,7 +435,12 @@ public class ScreenMainMenu extends ScreenGameCore {
 		right_indicator.setScaleY(INDI_SCALE);
 
 		highlight_button();
-	}
-	public static final float INDI_SCALE=.45f;
 
+		if (OS.Platform.Android.equals(OS.platform)) {
+			game.setNag(false);
+		}
+		if (OS.Platform.Ouya.equals(OS.platform)) {
+			game.setNag(false);
+		}
+	}
 }

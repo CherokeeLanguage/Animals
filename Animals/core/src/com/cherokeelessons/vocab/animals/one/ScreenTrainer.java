@@ -2,16 +2,30 @@ package com.cherokeelessons.vocab.animals.one;
 
 import java.util.HashSet;
 
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.cherokeelessons.vocab.animals.one.CherokeeAnimals.TrainingScreenMode;
-import com.cherokeelessons.vocab.animals.one.GameEvent.EventList;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
+import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.GameColor;
+import com.cherokeelessons.common.GamepadMap;
+import com.cherokeelessons.common.GamepadMap.Model;
+import com.cherokeelessons.common.Gamepads;
+import com.cherokeelessons.common.OS;
+import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
+import com.cherokeelessons.vocab.animals.one.enums.TrainingMode;
+import com.cherokeelessons.vocab.animals.one.views.View3x3Selector;
+import com.cherokeelessons.vocab.animals.one.views.ViewChallengeBoard;
 
-public class ScreenTrainer extends ScreenGameCore {
+public class ScreenTrainer extends GameScreen {
 
+	final private static Array<ControllerAdapter> listeners = new Array<ControllerAdapter>();
 	HashSet<FileHandle> alreadyShown;
 
 	private LabelStyle buttonStyle;
@@ -25,48 +39,101 @@ public class ScreenTrainer extends ScreenGameCore {
 	final private float interval = 2.5f;
 	private Label lbl_exitInfo;
 	private View3x3Selector pictureChallenge;
+	private ControllerAdapter skipTraining = new ControllerAdapter() {
+		final private GamepadMap map_ouya = new GamepadMap(Model.Ouya);
+		final private GamepadMap map_xbox = new GamepadMap(Model.Xbox);
 
-	private SoundManager sm;
+		@Override
+		public boolean buttonDown(Controller controller, int buttonCode) {
+			do {
+				if (controller.getName().toLowerCase().contains("ouya")) {
+					if (buttonCode == map_ouya.BUTTON_O) {
+						break;
+					}
+				}
+				if (controller.getName().toLowerCase().contains("xbox")) {
+					if (buttonCode == map_xbox.BUTTON_O) {
+						break;
+					}
+				}
+				if (controller.getName().toLowerCase().contains("360")) {
+					if (buttonCode == map_xbox.BUTTON_O) {
+						break;
+					}
+				}
+				return false;
+			} while (false);
+			doSkipTraining();
+			return true;
+		}
+	};
+
+	private ControllerAdapter watcher = new ControllerAdapter() {
+		@Override
+		public void connected(Controller controller) {
+			super.connected(controller);
+			ControllerAdapter listener;
+			listener = skipTraining;
+			controller.addListener(listener);
+			listeners.add(listener);
+		}
+
+		@Override
+		public void disconnected(Controller controller) {
+			super.disconnected(controller);
+			for (ControllerAdapter listener : listeners) {
+				controller.removeListener(listener);
+			}
+		}
+
+	};
 
 	private ViewChallengeBoard writtenChallenge;
 
-	public ScreenTrainer(CherokeeAnimals game) {
+	private boolean isOuya;
+	public ScreenTrainer(final CherokeeAnimals game) {
 		super(game);
-
+		isOuya=OS.Platform.Ouya.equals(OS.platform);
+		FontGenerator fg = new FontGenerator();
 		BitmapFont font;
 		Integer fontSize = 48;
 
-		font = CherokeeAnimals.getFixedFont(CherokeeAnimals.FontStyle.Script, fontSize);
+		font = fg.genFixedNumbers(fontSize);
 
 		buttonStyle = new LabelStyle();
 		buttonStyle.font = font;
 		buttonStyle.fontColor = GameColor.GREEN;
 
-		lbl_exitInfo = new Label("[O] Skip Training", buttonStyle);
+		lbl_exitInfo = new Label(isOuya?"[O] Skip Training":"Tap here to skip.", buttonStyle);
 		lbl_exitInfo.setTouchable(Touchable.enabled);
-		lbl_exitInfo.setX(overscan.width - lbl_exitInfo.getWidth());
-		lbl_exitInfo.setY(overscan.height - lbl_exitInfo.getHeight());
+		lbl_exitInfo.setX(screenSize.width - lbl_exitInfo.getWidth());
+		lbl_exitInfo.setY(screenSize.height - lbl_exitInfo.getHeight());
 		lbl_exitInfo.pack();
+		lbl_exitInfo.addListener(new ClickListener(){
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				game.gameEvent(GameEvent.Done);
+				return true;
+			}
+		});
 
-		pictureChallenge = new View3x3Selector(overscan);
+		pictureChallenge = new View3x3Selector(screenSize);
 		pictureChallenge.setBoxMargin(4);
 		pictureChallenge.setTitle("TRAINING");
 
-		writtenChallenge = new ViewChallengeBoard(overscan);
+		writtenChallenge = new ViewChallengeBoard(screenSize);
 		writtenChallenge.setDisplayText("New Challenge");
 
 		gameStage.addActor(writtenChallenge);
 		gameStage.addActor(pictureChallenge);
 		gameStage.addActor(lbl_exitInfo);
 
-		sm = game.getSoundManager();
-
 		alreadyShown = new HashSet<FileHandle>();
 	}
 
 	private void doSkipTraining() {
-		game.enforceSoundSettings();
-		game.getSoundManager().playEffect("menu-click");
+		game.sm.playEffect("menu-click");
 		while (currentIX < 9) {
 			loadNextPic();
 		}
@@ -75,26 +142,25 @@ public class ScreenTrainer extends ScreenGameCore {
 
 	@Override
 	public void hide() {
+		for (Controller controller : Gamepads.getControllers()) {
+			watcher.disconnected(controller);
+		}
+		Gamepads.clearListeners();
 		super.hide();
 	}
 
 	private void loadNextPic() {
 		FileHandle newPic;
-		newPic = game.randomAnimalImageByName(currentChallenge);
+		newPic = game.challenges.nextImage(currentChallenge);
 		alreadyShown.add(newPic);
 		pictureChallenge.setImage(currentIX, newPic);
 		currentIX++;
 	}
 
 	@Override
-	protected boolean onBack() {
-		doSkipTraining();
-		return false;
-	}
-
-	@Override
 	public void render(float delta) {
 		super.render(delta);
+		gameStage.draw();
 		if (doNextPic) {
 			loadNextPic();
 			pictureChallenge.focusOn(currentIX - 1);
@@ -106,17 +172,17 @@ public class ScreenTrainer extends ScreenGameCore {
 		if (elapsedTime < interval && currentIX > 0) {
 			return;
 		}
-		if (sm.isChallengePlaying(currentChallenge)) {
+		if (game.sm.isChallengePlaying(currentChallenge)) {
 			return;
 		}
 		if (currentIX == 3
-				&& game.getShowTrainingScreen()
-						.equals(TrainingScreenMode.Brief)) {
+				&& game.prefs.getTrainingMode()
+						.equals(TrainingMode.Brief)) {
 			doSkipTraining();
 		}
 		if (currentIX == 9) {
 			currentIX++;
-			sm.playEffect("ding-ding-ding");
+			game.sm.playEffect("ding-ding-ding");
 			elapsedTime = 0;
 			pictureChallenge.unFocusOn();
 			pictureChallenge.scatter();
@@ -126,10 +192,10 @@ public class ScreenTrainer extends ScreenGameCore {
 			return;
 		}
 		if (currentIX == 10) {
-			game.event(EventList.GoBack);
+			game.gameEvent(GameEvent.Done);
 			return;
 		}
-		sm.playChallenge(currentChallenge);
+		game.sm.playChallenge(currentChallenge);
 		doNextPic = true;
 	}
 
@@ -140,7 +206,7 @@ public class ScreenTrainer extends ScreenGameCore {
 		}
 		elapsedTime = 0;
 		currentIX = 0;
-		currentChallenge = game.getCurrentChallenge();
+		currentChallenge = game.activeChallenge;
 		alreadyShown.clear();
 		lbl_exitInfo.setVisible(true);
 		pictureChallenge.setTitle("NEW CHALLENGE");
@@ -150,22 +216,26 @@ public class ScreenTrainer extends ScreenGameCore {
 	@Override
 	public void show() {
 		super.show();
-		if (!currentChallenge.equals(game.getCurrentChallenge())) {
+		if (!currentChallenge.equals(game.activeChallenge)) {
 			reset();
 		}
 		updateChallengeBoard();
-		gameStage.getRoot().setX(overscan.x);
-		gameStage.getRoot().setY(overscan.y);
+		gameStage.getRoot().setX(screenSize.x);
+		gameStage.getRoot().setY(screenSize.y);
+		Gamepads.addListener(watcher);
+		for (Controller c : Gamepads.getControllers()) {
+			watcher.connected(c);
+		}
 	}
 
 	private void updateChallengeBoard() {
 		String challenge;
-		switch (game.getChallengeWord()) {
-		case Syllabary:
-			challenge = game.getAnimalsSyl().get(currentChallenge);
+		switch (game.prefs.getChallengeMode()) {
+		case Esperanto:
+			challenge = GraduatedIntervalQueue.esperanto_unescape(currentChallenge);
 			break;
-		case Latin:
-			challenge = game.getAnimalsLat().get(currentChallenge);
+		case EsperantoX:
+			challenge = currentChallenge;
 			break;
 		default:
 			challenge = "";

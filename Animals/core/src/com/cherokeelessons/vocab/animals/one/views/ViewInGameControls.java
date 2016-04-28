@@ -1,4 +1,4 @@
-package com.cherokeelessons.vocab.animals.one;
+package com.cherokeelessons.vocab.animals.one.views;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
@@ -7,12 +7,19 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.cherokeelessons.vocab.animals.one.ScreenGameCore.GameColor;
+import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.GameColor;
+import com.cherokeelessons.common.OS;
+import com.google.common.eventbus.EventBus;
 
 /*
  * In game controls (pause, exit, mute)
  */
 public class ViewInGameControls extends Group {
+	private static final String OUYA_INFO = "DPAD or left stick to move, [O] - Select answer, [Y] - Pause, [A] - Main Menu";
+
+	private static final String TABLET_INFO = "Tap picture matching challenge. Tap down here to pause.";
+
 	private BitmapFont bitmapFont = null;
 
 	Vector2 bottomCenter = null;
@@ -25,6 +32,8 @@ public class ViewInGameControls extends Group {
 
 	private Label btn_Options = null;
 
+	private EventBus eventBus = null;
+
 	private int fontSize = 48;
 	// private Label lbl_pause = null;
 	// private Label btn_Quit = null;
@@ -32,21 +41,22 @@ public class ViewInGameControls extends Group {
 
 	private float sideMargin = 20;
 
-	protected ViewInGameControls(Rectangle overscan) {
+	public ViewInGameControls(Rectangle overscan) {
 		super();
 
 		bottomRight = new Vector2(overscan.width, 0);
 		bottomLeft = new Vector2(0, 0);
 		bottomCenter = new Vector2(overscan.width / 2, 0);
 
-		bitmapFont = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.Script, fontSize);
+		FontGenerator fg = new FontGenerator();
+		bitmapFont = fg.gen(fontSize);
 
 		labelStyle = new LabelStyle();
 		labelStyle.font = bitmapFont;
 		labelStyle.fontColor = GameColor.GREEN;
 
 		btn_Options = new Label(
-				"DPAD or left stick to move, [O] - Select answer, [Y] - Pause, [A] - Main Menu",
+				OS.Platform.Ouya.equals(OS.platform) ? OUYA_INFO : TABLET_INFO,
 				labelStyle);
 		btn_Options.setTouchable(Touchable.enabled);
 
@@ -73,5 +83,13 @@ public class ViewInGameControls extends Group {
 		btn_Options.setX(x);
 		btn_Options.setY(y);
 
+	}
+
+	public EventBus getEventBus() {
+		return eventBus;
+	}
+
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
 	}
 }

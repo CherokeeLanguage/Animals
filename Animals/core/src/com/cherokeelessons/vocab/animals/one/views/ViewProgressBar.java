@@ -1,4 +1,4 @@
-package com.cherokeelessons.vocab.animals.one;
+package com.cherokeelessons.vocab.animals.one.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -48,15 +48,15 @@ public class ViewProgressBar extends Group {
 
 	private boolean visible;
 
-	protected ViewProgressBar(Rectangle overscan) {
+	public ViewProgressBar(Rectangle overscan) {
 		super();
 		float scaleBy;
 
 		bbox.set(overscan);
 
-		topLayerFH = Gdx.files.internal("buttons/progress_gold2.png");
-		midLayerFH = Gdx.files.internal("buttons/progress_gold3.png");
-		botLayerFH = Gdx.files.internal("buttons/progress_cornsilk4.png");
+		topLayerFH = Gdx.files.internal("buttons/002d_gold2.png");
+		midLayerFH = Gdx.files.internal("buttons/002d_gold3.png");
+		botLayerFH = Gdx.files.internal("buttons/002d_cornsilk4.png");
 
 		botLayerT = new Texture(botLayerFH);
 		midLayerT = new Texture(midLayerFH);

@@ -1,11 +1,13 @@
-package com.cherokeelessons.vocab.animals.one;
+package com.cherokeelessons.vocab.animals.one.views;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -27,7 +29,7 @@ public class ViewGameBoard extends Group {
 	final private Rectangle screenSize = new Rectangle();
 	private int topGap = 80;
 
-	protected ViewGameBoard(Rectangle overscan) {
+	public ViewGameBoard(Rectangle overscan) {
 		super();
 		screenSize.set(overscan);
 		setX(0);
@@ -176,7 +178,7 @@ public class ViewGameBoard extends Group {
 		}
 		image = new Texture(imageFile);
 		textureCache[buttonIX]=image;
-		image.setFilter(CherokeeAnimals.filter, CherokeeAnimals.filter);
+		image.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		imageRegion = new TextureRegion(image);
 		scaleX = bbox.width / image.getWidth();
 		scaleY = bbox.height / image.getHeight();
@@ -192,11 +194,6 @@ public class ViewGameBoard extends Group {
 
 		button.setDrawable(new TextureRegionDrawable(imageRegion));
 		positionButton(button, bbox);
-		System.out.println("Original Image Size: " + button.getImageWidth()
-				+ "x" + button.getImageHeight());
-		System.out.println("Scaled Image Size: " + button.getScaleX()
-				* button.getImageWidth() + "x" + button.getScaleY()
-				* button.getImageHeight());
 	}
 
 	public void spin(int button) {
@@ -214,5 +211,12 @@ public class ViewGameBoard extends Group {
 			return -1;
 		}
 		return ix;
+	}
+
+	public void clearListeners(int ix) {
+		board[ix].clearListeners();
+	}
+	public void addListener(int ix, EventListener listener) {
+		board[ix].addListener(listener);		
 	}
 }

@@ -1,4 +1,4 @@
-package com.cherokeelessons.vocab.animals.one;
+package com.cherokeelessons.common;
 
 import java.security.PublicKey;
 
@@ -15,4 +15,5 @@ public interface IAP {
 	public void loadItems(Callback callback);
 	public void loadUUID(Callback callback);
 	public void purchaseGame(Callback callback);
+	public boolean isDemo();
 }

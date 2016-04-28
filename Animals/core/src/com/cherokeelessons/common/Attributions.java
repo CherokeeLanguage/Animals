@@ -1,36 +1,22 @@
-package com.cherokeelessons.vocab.animals.one;
+package com.cherokeelessons.common;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
 public class Attributions extends Group {
-	private Rectangle bbox;
-	private String[] credits = {
-			"Cherokee Language Animals",
-			"",
-			"- Game Creator -",
-			"Michael Joyner / ᎹᎦᎵ ᏗᏁᏍᎨᏍᎩ",
-			"",
-			"- Audio -",
-			"Startup Sequence Flute - ᏣᎵ ᎡᎵᏂ ᎠᏍᎦᏳᏏᏩᏍᎩ",
-			"Audio Challenges - Michael Joyner",
-			"Audio Effects - freesound.org",
-			// "Audio Effects - http://sampleswap.org/", (not yet)
-			"All audio effects are cc-zero or public domain.", "", "- Fonts -",
-			"Johnny Mac Scrawl BRK", "Digohweli", "", "- Language Reference -",
-			"Language Assistance - ᏣᎵ ᎡᎵᏂ ᎠᏍᎦᏳᏏᏩᏍᎩ",
-			"Cherokee-English Dictionary (Durbin-Feeling)", "", "- Pictures -",
-			"OpenClipart.Org", "Commons.Wikimedia.Org",
-			"All pictures are cc-zero or public domain.", "",
-			"http://www.CherokeeLessons.com/", "", "Game Version 5.00 (2016)" };
+	final private Rectangle bbox=new Rectangle();
+	private String[] credits;
 
-	private Color fontColor = new Color(Color.BLACK);
-	private final int fontSize=72;
+	private FontGenerator fg;
+	private Color fontColor = Color.BLACK;
+	private int fontSize;
 	private float maxLineHeight;
 
 	private TextButton[] scrollingCredits;
@@ -39,11 +25,44 @@ public class Attributions extends Group {
 
 	private float yOffset = 0;
 
-	public Attributions(Rectangle _bbox) {
+	public Attributions(Rectangle screenSize) {
 		super();
-		this.bbox = _bbox;
-		this.setX(bbox.x);
-		this.setY(bbox.y);
+		this.bbox.set(screenSize);
+		String tmp = Gdx.files.internal("data/credits.txt").readString("UTF-8");
+		credits = tmp.split("\n");
+	}
+
+	private void calculateFontSize() {
+		// starting size
+		TextButton testLabel = null;
+		TextButtonStyle testStyle;
+		int size;
+		int ix;
+		BitmapFont font;
+		float scale = 0;
+		float maxWidth = 0;
+
+		size = 72;
+		font = fg.gen(size);
+		testStyle = new TextButtonStyle();
+		testStyle.font = font;
+		testStyle.fontColor = new Color(fontColor);
+		testLabel = new TextButton("", testStyle);
+		font = fg.gen(size);
+		for (ix = 0; ix < credits.length; ix++) {
+			if (credits[ix].length() < 1)
+				continue;
+			testLabel.setText(credits[ix]);
+			testLabel.setStyle(testStyle);
+			testLabel.pack();
+			if (maxWidth < testLabel.getWidth()) {
+				maxWidth = testLabel.getWidth();
+			}
+
+		}
+		scale = 0.95f * bbox.width / maxWidth;
+		size = (int) (scale * (float) size);
+		fontSize = size;
 	}
 
 	public float getxOffset() {
@@ -58,8 +77,11 @@ public class Attributions extends Group {
 	}
 
 	public void init() {
+		fg = new FontGenerator();
 		scrollingCredits = new TextButton[credits.length];
+		calculateFontSize();
 		populateCreditDisplay();
+
 	}
 
 	private void populateCreditDisplay() {
@@ -68,7 +90,7 @@ public class Attributions extends Group {
 		maxLineHeight = 0;
 		TextButton creditLine;
 		TextButtonStyle style;
-		font = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.Script, fontSize);
+		font = fg.gen(fontSize);
 		for (ix = 0; ix < credits.length; ix++) {
 			if (credits[ix].length() < 1) {
 				scrollingCredits[ix] = null;
@@ -106,10 +128,29 @@ public class Attributions extends Group {
 		setY(-getHeight());
 	}
 
+	private Runnable onDone;
+	
+	public Runnable getOnDone() {
+		return onDone;
+	}
+
+	public void setOnDone(Runnable onDone) {
+		this.onDone = onDone;
+	}
+
 	public void scroll(float time) {
 		reset();
-		addAction(Actions.moveTo(bbox.x, bbox.y + bbox.height + maxLineHeight
-				* 2, time));
+		SequenceAction seq = Actions.sequence();
+		seq.addAction(Actions.moveTo(0, bbox.height + maxLineHeight * 2, time));
+		seq.addAction(Actions.run(new Runnable() {
+			@Override
+			public void run() {
+				if (onDone!=null) {
+					Gdx.app.postRunnable(onDone);
+				}
+			}
+		}));
+		addAction(seq);
 	}
 
 	public void setFontColor(Color color) {

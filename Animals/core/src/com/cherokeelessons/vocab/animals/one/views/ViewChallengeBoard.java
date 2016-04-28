@@ -1,11 +1,12 @@
-package com.cherokeelessons.vocab.animals.one;
+package com.cherokeelessons.vocab.animals.one.views;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.cherokeelessons.vocab.animals.one.ScreenGameCore.GameColor;
+import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.GameColor;
 
 /*
  * Displays challenge word/phrase
@@ -17,6 +18,7 @@ public class ViewChallengeBoard extends Group {
 	private Label displayText = null;
 	private BitmapFont font;
 
+	private FontGenerator fontGen;
 	private int fontSize = 96;
 
 	final private Rectangle screenSize = new Rectangle();
@@ -25,10 +27,12 @@ public class ViewChallengeBoard extends Group {
 	private int topMargin = 18 + 7;
 
 	// private Group viewGroup=null;
-	protected ViewChallengeBoard(Rectangle screenSize) {
+	public ViewChallengeBoard(Rectangle screenSize) {
 		super();
+
 		this.screenSize.set(screenSize);
-		font = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.FreeSans,fontSize);
+		fontGen = new FontGenerator();
+		font = fontGen.gen(fontSize);
 		displayStyle = new LabelStyle(font, GameColor.GREEN);
 		displayText = new Label("", displayStyle);
 		clear();
@@ -41,6 +45,10 @@ public class ViewChallengeBoard extends Group {
 	public int getFontSize() {
 		return fontSize;
 	}
+
+	// public Group getViewGroup() {
+	// return viewGroup;
+	// }
 
 	public void setDisplayText(String text) {
 		displayText.setText(text);
@@ -55,8 +63,9 @@ public class ViewChallengeBoard extends Group {
 	 *            the fontSize to set
 	 */
 	public void setFontSize(int fontSize) {
+		FontGenerator fg = new FontGenerator();
 		this.fontSize = fontSize;
-		font = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.FreeSans,fontSize);
+		font = fg.gen(fontSize);
 		displayStyle.font = font;
 		displayText.setStyle(displayStyle);
 	}

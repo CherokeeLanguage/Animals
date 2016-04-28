@@ -1,329 +1,151 @@
 package com.cherokeelessons.vocab.animals.one;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 public class GraduatedIntervalQueue {
 
-	private HashMap<String, String> animalsSyl = null;
+	public boolean isDebug() {
+		return debug;
+	}
 
-	private HashMap<String, Integer> bounderiesByName;
-
-	private HashMap<Integer, String> bounderiesByPosition;
-
-	private ArrayList<String> bounderiesNameList;
+	public void setDebug(boolean debug) {
+		this.debug = debug;
+	}
 
 	private boolean debug = true;
-	private ArrayList<String> intervalQueue;
 
-	private ArrayList<Vector2> levelMarks;
+	private boolean doubleMode = false;
 
-	private ArrayList<String> startingEntries;
-
-	protected GraduatedIntervalQueue() {
-		super();
+	public boolean isDoubleMode() {
+		return doubleMode;
 	}
 
-	public void calculateLevelStarts(int levels) {
-		int startingPoint;
-		String item;
-		int listSize = 0;
-		int ix, index;
-
-		levelMarks = new ArrayList<Vector2>();
-		Vector2 thisLevelMarks = null;
-		Vector2 prevLevelMarks = null;
-
-		listSize = bounderiesNameList.size();
-		for (ix = 0; ix < levels; ix++) {
-			index = (int) Math.ceil((float) listSize
-					* ((float) ix / (float) levels));
-			item = bounderiesNameList.get(index);
-			startingPoint = bounderiesByName.get(item);
-			thisLevelMarks = new Vector2(startingPoint,
-					intervalQueue.size() - 1);
-			if (prevLevelMarks != null) {
-				prevLevelMarks.y = startingPoint - 1;
-			}
-			prevLevelMarks = thisLevelMarks;
-			levelMarks.add(thisLevelMarks);
-		}
+	public void setDoubleMode(boolean doubleMode) {
+		this.doubleMode = doubleMode;
 	}
 
-	private ArrayList<String> dedupeAndSort(ArrayList<String> list) {
-		ArrayList<String> newList;
-		newList = new ArrayList<String>();
-		newList = new ArrayList<String>(new HashSet<String>(list));
-		Collections.sort(newList);
-		return newList;
-	}
+	private Array<String> startingEntries;
+	private Array<String> intervalQueue;
 
-	@SuppressWarnings("unused")
-	private void dumpList(ArrayList<String> listToDump) {
-		int ix, len;
-		if (!debug) {
-			return;
-		}
-		System.out.println("===================================");
-		for (ix = 0, len = listToDump.size(); ix < len; ix++) {
-			System.out.println(ix + ": " + listToDump.get(ix));
-		}
-		System.out.println("===================================");
-		System.out.println();
-	}
-
-	public HashMap<String, String> getAnimalsSyl() {
-		return animalsSyl;
+	public Array<String> getIntervalQueue() {
+		return intervalQueue;
 	}
 
 	public String getEntry(int ix) {
-		if (intervalQueue.size() > ix && ix >= 0) {
+		if (intervalQueue.size > ix && ix >= 0) {
 			return intervalQueue.get(ix);
 		}
-		return "";
+		return null;
 	}
+
+	public GraduatedIntervalQueue() {
+		super();
+	}
+
+	public void load(Array<String> _startingEntries) {
+		startingEntries = new Array<String>();
+//		bounderiesNameList = new Array<String>();
+//		bounderiesByName = new HashMap<String, Integer>();
+//		bounderiesByPosition = new HashMap<Integer, String>();
+		startingEntries.addAll(_startingEntries);
+		intervalQueue = getQueue(startingEntries);
+//		locateBounderies();
+//		calculateLevelStarts(18);
+	}
+
+//	private Array<String> bounderiesNameList;
+//	private HashMap<Integer, String> bounderiesByPosition;
+//	private HashMap<String, Integer> bounderiesByName;
+
+//	private void locateBounderies() {
+//		int ix, len;
+//		String item;
+//
+//		for (ix = 0, len = intervalQueue.size; ix < len; ix++) {
+//			item = intervalQueue.get(ix);
+//			if (bounderiesNameList.contains(item, false)) {
+//				continue;
+//			}
+//			bounderiesNameList.add(item);
+//			bounderiesByName.put(item, ix);
+//			bounderiesByPosition.put(ix, item);
+//		}
+//	}
+
+	private ArrayList<Point> levelMarks;
+
+//	public void calculateLevelStarts(int levels) {
+//		int startingPoint;
+//		String item;
+//		int listSize = 0;
+//		int ix, index;
+//
+//		levelMarks = new ArrayList<Point>();
+//		Point thisLevelMarks = null;
+//		Point prevLevelMarks = null;
+//
+//		listSize = bounderiesNameList.size;
+//		for (ix = 0; ix < levels; ix++) {
+//			index = (int) Math.ceil((float) listSize
+//					* ((float) ix / (float) levels));
+//			if (index >= bounderiesNameList.size)
+//				continue;
+//			item = bounderiesNameList.get(index);
+//			startingPoint = bounderiesByName.get(item);
+//			thisLevelMarks = new Point(startingPoint, intervalQueue.size - 1);
+//			if (prevLevelMarks != null) {
+//				prevLevelMarks.y = startingPoint - 1;
+//			}
+//			prevLevelMarks = thisLevelMarks;
+//			levelMarks.add(thisLevelMarks);
+//		}
+//	}
 
 	int getLevelCount() {
 		return levelMarks.size();
-	}
-
-	int getLevelEndPosition(int level) {
-		return (int) levelMarks.get(level).y;
-	}
-
-	String getLevelStartName(int level) {
-		int position;
-		position = getLevelStartPosition(level);
-		return bounderiesByPosition.get(position);
 	}
 
 	int getLevelStartPosition(int level) {
 		return (int) levelMarks.get(level).x;
 	}
 
-	/**
-	 * based on getOffsetsReal from 'translations.php'
-	 * 
-	 * @return ArrayList<Integer>
-	 */
-	private ArrayList<Integer> getOffsets() {
-		ArrayList<Integer> o1;
-		int ip, depth = 4, stagger = 2, ix;
-
-		o1 = new ArrayList<Integer>();
-
-		for (ix = 0; ix < stagger; ix++) {
-			for (ip = 0; ip <= depth; ip++) {
-				o1.add((int) Math.pow(2 + ix, ip));
-			}
-		}
-		return o1;
+	int getLevelEndPosition(int level) {
+		return (int) levelMarks.get(level).y;
 	}
 
-	private ArrayList<String> getQueue(ArrayList<String> samplesIn) {
-		int ix, iy, ia;
-		ArrayList<Integer> offsets;
-		ArrayList<String> newQueue = null;
-		ArrayList<String> samples;
+//	String getLevelStartName(int level) {
+//		int position;
+//		position = getLevelStartPosition(level);
+//		return bounderiesByPosition.get(position);
+//	}
 
-		newQueue = new ArrayList<String>();
-		samples = new ArrayList<String>();
-		offsets = getOffsets();
-
-		samples.addAll(samplesIn);
-		// mixUpSamples(samples);
-		// orderBySizeAsc(samples);
-		orderBySizeAscCustom(samples);
-		rearrangeForPlurals(samples);
-		for (String entry: samples) {
-			System.out.println(animalsSyl.get(entry));
-		}
-		/**
-		 * process samples creating non-random work queue
-		 */
-		for (ix = 0; ix < samples.size(); ix++) {
-			ia = 0;
-			for (iy = 0; iy < offsets.size(); iy++) {
-				while (newQueue.size() < ia + 1)
-					newQueue.add("");
-				while (newQueue.get(ia).compareTo("") != 0) {
-					ia++;
-					while (newQueue.size() < ia + 1)
-						newQueue.add("");
-				}
-				newQueue.set(ia, samples.get(ix));
-				ia += offsets.get(iy);
-			}
-		}
-		removeGaps(newQueue);
-
-		return newQueue;
-	}
-
-	private void rearrangeForPlurals(ArrayList<String> samples) {
-		ArrayList<String> tmp = new ArrayList<String>();
-		tmp.addAll(samples);
-		samples.clear();
-		for (int ix=0; ix<tmp.size(); ix++) {
-			String a1, a2, s1, s2;
-			a1 = tmp.get(ix);
-			samples.add(a1);
-			if (animalsSyl.containsKey(a1)){
-				s1 = animalsSyl.get(a1);
-			} else {
-				s1=a1;
-			}
-			if (s1.contains(" ")){
-				String[] x = s1.split(" ");
-				s1=x[x.length-1];
-			}
-			if (s1.length()<3) {
-				continue;
-			}
-			s1=s1.substring(1);
-			for (int iy=ix+1; iy<tmp.size(); iy++) {
-				a2 = tmp.get(iy);
-				if (animalsSyl.containsKey(a2)){
-					s2 = animalsSyl.get(a2);
-				} else {
-					s2=a2;
-				}
-				if (s2.contains(" ")){
-					String[] x = s2.split(" ");
-					s2=x[x.length-1];
-				}
-				if (s2.endsWith(s1)) {
-					samples.add(a2);
-					tmp.remove(iy);
-					break;
-				}
-			}
-		}
-		
-	}
-
-	public boolean isDebug() {
-		return debug;
-	}
-
-	public void load(ArrayList<String> _startingEntries) {
-		bounderiesNameList = new ArrayList<String>();
-		bounderiesByName = new HashMap<String, Integer>();
-		bounderiesByPosition = new HashMap<Integer, String>();
-		startingEntries = dedupeAndSort(_startingEntries);
-		intervalQueue = getQueue(startingEntries);
-		locateBounderies();
-		calculateLevelStarts(18);
-	}
-
-	private void locateBounderies() {
-		int ix, len;
-		String item;
-
-		for (ix = 0, len = intervalQueue.size(); ix < len; ix++) {
-			item = intervalQueue.get(ix);
-			if (bounderiesNameList.contains(item)) {
-				continue;
-			}
-			bounderiesNameList.add(item);
-			bounderiesByName.put(item, ix);
-			bounderiesByPosition.put(ix, item);
-		}
-	}
-
-	@SuppressWarnings("unused")
-	private void mixUpSamples(ArrayList<String> samples) {
-		ArrayList<String> mixedUp;
-		ArrayList<Integer> offsets;
-
-		mixedUp = new ArrayList<String>();
-		offsets = getOffsets();
-		/**
-		 * re-arrange samples into a non-random, non-alpha order
-		 */
-		for (int ix = 0; ix < 10; ix++) {
-			while (samples.size() > 0) {
-				for (int iy = 0; samples.size() > 0 && iy < offsets.size(); iy++) {
-					int ia = offsets.get(iy);
-					while (mixedUp.size() > ia && mixedUp.get(ia) != "")
-						ia++;
-					while (mixedUp.size() < ia + 1)
-						mixedUp.add("");
-					mixedUp.set(ia, samples.get(0));
-					samples.remove(0);
-				}
-			}
-			removeGaps(mixedUp); // removes "holes"
-			Collections.reverse(mixedUp);
-			samples.clear();
-			samples.addAll(mixedUp);
-			mixedUp.clear();
-		}
-	}
-
-	private void orderBySizeAsc(ArrayList<String> samples) {
-		Collections.sort(samples, new Comparator<String>() {
-			@Override
-			public int compare(String o1, String o2) {
-				if (o1.length() < o2.length())
-					return -1;
-				if (o1.length() > o2.length())
-					return 1;
-				return (o1.compareTo(o2));
-			}
-		});
-	}
-
-	private void orderBySizeAscCustom(ArrayList<String> samples) {
-		if (animalsSyl == null) {
-			orderBySizeAsc(samples);
-			return;
-		}
-		Collections.sort(samples, new Comparator<String>() {
-			@Override
-			public int compare(String o1, String o2) {
-				if (animalsSyl.containsKey(o1))
-					o1 = animalsSyl.get(o1);
-				if (animalsSyl.containsKey(o2))
-					o2 = animalsSyl.get(o2);
-				if (o1.length() < o2.length())
-					return -1;
-				if (o1.length() > o2.length())
-					return 1;
-				return (o1.compareTo(o2));
-			}
-		});
-	}
-
-	public void removeGaps(ArrayList<String> queue) {
+	public void removeGaps(Array<String> queue) {
 		int ix = 0, repeat;
-		ArrayList<String> vx1 = null;
-		ArrayList<String> vx2 = null;
+		Array<String> vx1 = null;
+		Array<String> vx2 = null;
 		boolean hasDupes = true;
-		String prev = "";
-		String current = "";
+		String prev = null;
+		String current = null;
 
-		vx1 = new ArrayList<String>();
-		vx2 = new ArrayList<String>();
+		vx1 = new Array<String>();
+		vx2 = new Array<String>();
 
 		/**
 		 * scan for and try and prevent "repeats"
 		 */
 		for (repeat = 0; hasDupes && repeat < 10; repeat++) {
-			prev = "";
+			prev = null;
 			vx1.clear();
 			vx2.clear();
 			hasDupes = false;
-			for (ix = 0; ix < queue.size(); ix++) {
-				if (queue.get(ix).compareTo("") == 0)
+			for (ix = 0; ix < queue.size; ix++) {
+				if (queue.get(ix) == null)
 					continue;
 				current = queue.get(ix);
-				if (current.compareTo(prev) != 0) {
+				if (!current.equals(prev)) {
 					vx1.add(current);
 					prev = current;
 				} else {
@@ -340,11 +162,181 @@ public class GraduatedIntervalQueue {
 		vx2.clear();
 	}
 
-	public void setAnimalsSyl(HashMap<String, String> animalsSyl) {
-		this.animalsSyl = animalsSyl;
+	private boolean briefList = false;
+
+	public boolean isBriefList() {
+		return briefList;
 	}
 
-	public void setDebug(boolean debug) {
-		this.debug = debug;
+	public void setBriefList(boolean briefList) {
+		this.briefList = briefList;
 	}
+
+	private boolean shortList = false;
+
+	public boolean isShortList() {
+		return shortList;
+	}
+
+	public void setShortList(boolean shortList) {
+		this.shortList = shortList;
+	}
+
+	/**
+	 * based on getOffsetsReal from 'translations.php'
+	 * 
+	 * @return ArrayList<Integer>
+	 */
+	private ArrayList<Integer> getOffsets() {
+		ArrayList<Integer> o1;
+		int ip, depth = 6, stagger = 2, ix, basePower = 2;
+		o1 = new ArrayList<Integer>();
+
+		if (isBriefList()) {
+			depth = 6;
+			stagger = 1;
+			basePower = 3;
+		}
+
+		if (isShortList()) {
+			depth = 2;
+			stagger = 1;
+			basePower = 2;
+		}
+
+		for (ix = 0; ix < stagger; ix++) {
+			for (ip = 0; ip <= depth; ip++) {
+				o1.add((int) Math.pow(basePower + ix, ip));
+			}
+		}
+		return o1;
+	}
+
+	/**
+	 * based on getOffsetsReal from 'translations.php'
+	 * 
+	 * @return ArrayList<Integer>
+	 */
+	private ArrayList<Integer> getOffsetsDoubled() {
+		ArrayList<Integer> o1;
+		int ip, depth = 6, stagger = 4, ix;
+
+		o1 = new ArrayList<Integer>();
+
+		for (ix = 0; ix < stagger; ix++) {
+			for (ip = 0; ip <= depth; ip++) {
+				o1.add((int) Math.pow(2 + ix, ip));
+			}
+		}
+		return o1;
+	}
+
+	private Array<String> getQueue(Array<String> startingEntries2) {
+		int ix, iy, ia;
+		ArrayList<Integer> offsets;
+		Array<String> newQueue = null;
+		Array<String> samples;
+
+		newQueue = new Array<String>();
+		samples = new Array<String>();
+		if (isDoubleMode()) {
+			offsets = getOffsetsDoubled();
+		} else {
+			offsets = getOffsets();
+		}
+
+		samples.addAll(startingEntries2);
+
+		/**
+		 * process samples creating non-random work queue
+		 */
+		for (ix = 0; ix < samples.size; ix++) {
+			ia = 0;
+			for (iy = 0; iy < offsets.size(); iy++) {
+				while (newQueue.size < ia + 1)
+					newQueue.add(null);
+				while (newQueue.get(ia) != null) {
+					ia++;
+					while (newQueue.size < ia + 1)
+						newQueue.add(null);
+				}
+				newQueue.set(ia, samples.get(ix));
+				ia += offsets.get(iy);
+			}
+		}
+		removeGaps(newQueue);
+
+		return newQueue;
+	}
+
+	public static String esperanto_unescape(String xencoded) {
+		if (xencoded==null) {
+			return null;
+		}
+		xencoded=xencoded.replace("CX", "Ĉ");
+		xencoded=xencoded.replace("cx", "ĉ");
+		xencoded=xencoded.replace("GX", "Ĝ");
+		
+		xencoded=xencoded.replace("gx", "ĝ");
+		xencoded=xencoded.replace("HX", "Ĥ");
+		xencoded=xencoded.replace("hx", "ĥ");
+		
+		xencoded=xencoded.replace("JX", "Ĵ");
+		xencoded=xencoded.replace("jx", "ĵ");
+		xencoded=xencoded.replace("SX", "Ŝ");
+		
+		xencoded=xencoded.replace("sx", "ŝ");
+		xencoded=xencoded.replace("UX", "Ŭ");
+		xencoded=xencoded.replace("ux", "ŭ");
+		
+		return xencoded;
+	}
+
+	public static final class SortSizeAscendingAlpha implements
+			Comparator<String> {
+		@Override
+		public int compare(String o1, String o2) {
+			o1 = esperanto_unescape(o1);
+			o2 = esperanto_unescape(o2);
+			if (o1.length() < o2.length())
+				return -1;
+			if (o1.length() > o2.length())
+				return 1;
+			return (o1.compareTo(o2));
+		}
+	}
+
+	public static class Point {
+
+		protected int x, y;
+
+		public Point() {
+
+			setPoint(0, 0);
+
+		}
+
+		public Point(int coordx, int coordy) {
+			setPoint(coordx, coordy);
+		}
+
+		public void setPoint(int coordx, int coordy) {
+			x = coordx;
+			y = coordy;
+		}
+
+		public int getX() {
+			return x;
+		}
+
+		public int getY() {
+			return y;
+		}
+
+		public String toPrint() {
+			return "[" + x + "," + y + "]";
+		}
+
+	}
+
 }

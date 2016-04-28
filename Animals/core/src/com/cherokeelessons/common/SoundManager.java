@@ -1,6 +1,5 @@
-package com.cherokeelessons.vocab.animals.one;
+package com.cherokeelessons.common;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -16,18 +15,37 @@ public class SoundManager {
 
 	final private HashMap<String, Music> challenges = new HashMap<String, Music>();
 
-	private float challengeVolume = 1f;
-
 	final private HashMap<String, Sound> effects = new HashMap<String, Sound>();
 
 	private boolean effectsEnabled = true;
 
-	private float effectVolume = 1f;
 	final private HashMap<String, FileHandle> validEffects = new HashMap<String, FileHandle>();
+	private Prefs prefs;
 
-	protected SoundManager() {
-		super();
-		preloadEffects();
+	public SoundManager(Prefs prefs) {
+		this.prefs = prefs;
+		loadEffectNames();
+		loadChallengeNames();
+	}
+
+	private void loadChallengeNames() {
+		FileHandle fh;
+		int ix;
+
+		String t1 = Gdx.files.internal("audio/challenges/00-plist.txt").readString("UTF-8");
+		String[] dirListing = t1.split("\n");
+		for (ix = 0; ix < dirListing.length; ix++) {
+			fh = Gdx.files.internal("audio/challenges/"+dirListing[ix]);
+			long length;
+			try {
+				length = fh.length();
+			} catch (Exception e) {
+				length=0;
+			}
+			if (length>0) {
+				audioFiles.put(fh.nameWithoutExtension(), fh);
+			}
+		}
 	}
 
 	public HashMap<String, FileHandle> getChallengeAudioList() {
@@ -35,17 +53,26 @@ public class SoundManager {
 	}
 
 	public float getChallengeVolume() {
-		return challengeVolume;
-	}
-
-	public ArrayList<String> getEffectsList() {
-		ArrayList<String> list = new ArrayList<String>();
-		list.addAll(validEffects.keySet());
-		return list;
+		if (prefs.getChallengeAudio()) {
+			return getMasterVolume();
+		}
+		return 0f;
 	}
 
 	public float getEffectVolume() {
-		return effectVolume;
+		switch (prefs.getEffectsVolume()) {
+		case Off:
+			return 0f;
+		case Low:
+			return 0.3f*getMasterVolume();
+		case High:
+			return getMasterVolume(); 
+		}		
+		return getMasterVolume();
+	}
+
+	private float getMasterVolume() {
+		return ((float)prefs.getMasterVolume())/100f;
 	}
 
 	public boolean isChallengeEnabled() {
@@ -94,10 +121,16 @@ public class SoundManager {
 
 	public void loadEffect(final String effect) {
 		Sound snd;
-		if (effects.containsKey(effect))
+		if (effects.containsKey(effect)){
 			return;
+		}
+		if (!validEffects.containsKey(effect)) {
+			return;
+		}
 		snd = Gdx.audio.newSound(validEffects.get(effect));
-		effects.put(effect, snd);
+		if (snd!=null) {
+			effects.put(effect, snd);
+		}
 	}
 
 	public void playChallenge(String challenge) {
@@ -111,8 +144,12 @@ public class SoundManager {
 		if (challenges.get(challenge).isPlaying()) {
 			return;
 		}
-		challenges.get(challenge).setVolume(challengeVolume);
-		challenges.get(challenge).play();
+		challenges.get(challenge).setVolume(getChallengeVolume());
+		try {
+			challenges.get(challenge).play();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void playEffect(final String effect) {
@@ -120,24 +157,44 @@ public class SoundManager {
 			return;
 		}
 		if (!validEffects.containsKey(effect)) {
+			System.out.println("Unknown: "+effect);
 			return;
 		}
 		loadEffect(effect);
-		effects.get(effect).play(effectVolume);
+		float effectVolume = getEffectVolume();
+		effects.get(effect).play(effectVolume);		
 	}
 
-	public void preloadEffects() {
-		String effectDir = "sounds/effects/";
+	public void loadEffectNames() {
 		FileHandle fh;
-		ArrayList<String> dirListing;
-		int ix, len;
+		int ix;
 
-		dirListing = CherokeeAnimals.readAssetDir(effectDir);
-
-		for (ix = 0, len = dirListing.size(); ix < len; ix++) {
-			fh = Gdx.files.internal(dirListing.get(ix));
-			validEffects.put(fh.nameWithoutExtension(), fh);
+		String t1 = Gdx.files.internal("audio/effects/00-plist.txt").readString("UTF-8");
+		String[] dirListing = t1.split("\n");
+		for (ix = 0; ix < dirListing.length; ix++) {
+			fh = Gdx.files.internal("audio/effects/"+dirListing[ix]);
+			long length;
+			try {
+				length = fh.length();
+			} catch (Exception e) {
+				length=0;
+			}
+			if (length>0) {
+				validEffects.put(fh.nameWithoutExtension(), fh);
+			}
 		}
+	}
+	
+	public boolean preloadDone(){
+		boolean done=true;		
+		for(final String effect: validEffects.keySet()) {
+			if (!effects.containsKey(effect)) {
+				loadEffect(effect);
+				done=false;
+				break;
+			}
+		}
+		return done;
 	}
 
 	public void reset() {
@@ -155,23 +212,14 @@ public class SoundManager {
 			challenges.get(key).dispose();
 			challenges.remove(key);
 		}
-		preloadEffects();
+		loadEffectNames();
 	}
 
 	public void setChallengeEnabled(boolean challengeEnabled) {
 		this.challengeEnabled = challengeEnabled;
 	}
 
-	public void setChallengeVolume(float challengeVolume) {
-		this.challengeVolume = challengeVolume;
-	}
-
 	public void setEffectsEnabled(boolean effectsEnabled) {
 		this.effectsEnabled = effectsEnabled;
 	}
-
-	public void setEffectVolume(float effectVolume) {
-		this.effectVolume = effectVolume;
-	}
-
 }

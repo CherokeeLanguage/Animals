@@ -1,38 +1,65 @@
 package com.cherokeelessons.vocab.animals.one;
 
+import java.nio.IntBuffer;
+
+import aurelienribon.tweenengine.BaseTween;
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.cherokeelessons.vocab.animals.one.GameEvent.EventList;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.BufferUtils;
+import com.cherokeelessons.common.GameMusic;
+import com.cherokeelessons.common.Gamepads;
+import com.cherokeelessons.common.MusicAccessor;
+import com.cherokeelessons.common.SpriteAccessor;
+import com.cherokeelessons.common.Utils;
+import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
-public class ScreenPoweredBy extends ScreenGameCore {
+public class ScreenPoweredBy extends GameScreen {
 
-	CherokeeAnimals app;
-
-	private AlphaAction fadeIn;
-
-	private AlphaAction fadeOut;
-
-	Group logo = new Group();
-	private Music music;
+	private final Array<Sprite> logo = new Array<Sprite>();
+	
 	private PixmapPacker pack;
+	private ControllerAdapter skipScreen = new ControllerAdapter() {
+		@Override
+		public boolean buttonDown(Controller controller, int buttonCode) {
+			game.gameEvent(GameEvent.Done);
+			return true;
+		}
+	};
 	// private boolean fadeoutStarted=false;
 	long start = 0;
 	private TextureAtlas ta;
 
+	private TweenCallback logoDone=new TweenCallback() {
+		@Override
+		public void onEvent(int type, BaseTween<?> source) {
+			if (type!=TweenCallback.COMPLETE) {
+				return;
+			}
+			game.gameEvent(GameEvent.Done);
+			audio.stop();
+		}
+	};
+
+	private GameMusic audio;
+
 	public ScreenPoweredBy(CherokeeAnimals game) {
 		super(game);
-		app = game;
 	}
 
 	@Override
@@ -43,15 +70,20 @@ public class ScreenPoweredBy extends ScreenGameCore {
 	@Override
 	public void hide() {
 		super.hide();
-		musicStop();
-		gameStage.clear();
-		hud.clear();
-		backDrop.clear();
+		Gamepads.clearListeners();
 		ta.dispose();
+		audio.stop();
+		audio.dispose();
 	}
 
 	private void init() {
-		pack = new PixmapPacker(512, 512, Format.RGBA8888, 2, true);
+		IntBuffer buf = BufferUtils.newIntBuffer(16);
+		Gdx.gl.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, buf);
+		int packSize=Utils.getPackSize();
+		audio = new GameMusic(Gdx.audio.newMusic(Gdx.files.internal("libgdx/atmoseerie03.ogg")));
+		audio.setVolume(0f);
+		o_pad=0;
+		pack = new PixmapPacker(packSize, packSize, Format.RGBA8888, 2, true);
 		for (int i = 0; i < 25; i++) {
 			pack.pack(
 					i + "",
@@ -60,101 +92,85 @@ public class ScreenPoweredBy extends ScreenGameCore {
 		ta = pack.generateTextureAtlas(TextureFilter.Linear,
 				TextureFilter.Linear, false);
 
-		int px = 0;
-		int py = 0;
+		int width = 0;
+		int height = 0;
 		for (int x = 0; x < 5; x++) {
-			py = 0;
-			Image i = null;
+			height = 0;
+			Sprite i = null;
 			for (int y = 0; y < 5; y++) {
 				int z = 4 - y;
 				int p = z * 5 + x;
-				i = new Image(ta.findRegion(p + ""));
-				i.setX(px);
-				i.setY(py);
-				py += i.getHeight();
-				logo.addActor(i);
+				i = new Sprite(ta.findRegion(p + ""));
+				i.setPosition(width, height);
+				height += i.getRegionHeight();				
+				i.setOrigin(0, 0);
+				logo.add(i);
 			}
-			px += i.getWidth();
+			width += i.getWidth();
 		}
-		logo.setSize(px, py);
-
-		this.backgroundColor = Color.BLACK;
+		
+		Rectangle logobox = new Rectangle(0, 0, width, height);		
+		logobox.fitInside(screenSize);
+		float scaleXY=logobox.height/height;
+		if (scaleXY>logobox.width/width) scaleXY=logobox.width/width;
+		
+		float offsetX = screenSize.x+(screenSize.width-logobox.width)/2;
+		float offsetY = screenSize.y+(screenSize.height-logobox.height)/2;
+		
+		clearColor.set(Color.BLACK);
 		start = System.currentTimeMillis();
 
-		logo.setOrigin(logo.getWidth() / 2, logo.getHeight() / 2);
-
-		float wscale = overscan.width / logo.getWidth();
-		float hscale = overscan.height / logo.getHeight();
-		if (wscale > hscale) {
-			logo.setScale(hscale);
-		} else {
-			logo.setScale(wscale);
-		}
-		logo.setX(overscan.x + (overscan.width - logo.getWidth()) / 2);
-		logo.setY(overscan.y + (overscan.height - logo.getHeight()) / 2);
-		hud.addActor(logo);
-		logo.setColor(1, 1, 1, 0);
-		SequenceAction sequence = new SequenceAction();
-		fadeIn = Actions.fadeIn(4);
-		fadeOut = Actions.fadeOut(2);
-		sequence.addAction(fadeIn);
-		sequence.addAction(Actions.delay(4));
-		sequence.addAction(fadeOut);
-		sequence.addAction(Actions.run(new Runnable() {
-			@Override
-			public void run() {
-				music.stop();
+		Vector2 center=new Vector2();
+		logobox.getCenter(center);
+		for(int ix=0; ix<logo.size; ix++) {
+			Sprite s=logo.get(ix);
+			Timeline tl = Timeline.createSequence();
+			s.setScale(scaleXY);
+			s.setX(s.getX()*scaleXY+offsetX);
+			s.setY(s.getY()*scaleXY+offsetY);
+			s.setColor(1f, 1f, 1f, 0f);
+			
+			tl.pushPause(1f);
+			tl.push(Tween.to(s, SpriteAccessor.Alpha, 4f).target(1f));
+			tl.pushPause(4f);
+			tl.push(Tween.to(s, SpriteAccessor.Alpha, 2f).target(0f));
+			tl.pushPause(1f);
+			tl.start(tmanager);
+			
+			if (ix==0) {				
+				Timeline al = Timeline.createSequence();
+				al.pushPause(1f);
+				al.push(Tween.to(audio, MusicAccessor.Volume, 4f).target(1f));
+				al.pushPause(4f);
+				al.push(Tween.to(audio, MusicAccessor.Volume, 2f).target(0f));
+				al.setCallback(logoDone);
+				al.pushPause(1f);
+				al.start(tmanager);
 			}
-		}));
-		sequence.addAction(Actions.delay(2));
-		sequence.addAction(Actions.run(new Runnable() {
-			@Override
-			public void run() {
-				game.event(EventList.FirstRun);
-			}
-		}));
-
-		logo.addAction(sequence);
-	}
-
-	private void musicStart() {
-		music = Gdx.audio.newMusic(Gdx.files
-				.internal("libgdx/atmoseerie03.ogg"));
-		music.setLooping(true);
-		music.setVolume(0f);
-		music.play();
-	}
-
-	private void musicStop() {
-		if (music != null) {
-			music.stop();
-			music.dispose();
-			music = null;
-		}
+		}	
+		
+		
+		audio.play();
 	}
 
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		if (fadeIn.getActor() != null
-				&& fadeIn.getTime() < fadeIn.getDuration()) {
-			float volume = fadeIn.getTime() / fadeIn.getDuration();
-			music.setVolume(volume);
-			return;
+		clearScreen();
+		drawOverscan();
+
+		batch.begin();
+		for (Sprite s: logo) {
+			s.draw(batch);
 		}
-		if (fadeOut.getActor() != null
-				&& fadeOut.getTime() < fadeOut.getDuration()) {
-			float volume = (fadeOut.getDuration() - fadeOut.getTime())
-					/ fadeOut.getDuration();
-			music.setVolume(volume);
-			return;
-		}
+		batch.end();
+		
 	}
 
 	@Override
 	public void show() {
 		super.show();
-		musicStart();
 		init();
+		Gamepads.addListener(skipScreen);
 	}
 }

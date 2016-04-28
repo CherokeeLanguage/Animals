@@ -1,6 +1,7 @@
 package com.cherokeelessons.vocab.animals.one;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -8,22 +9,45 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.cherokeelessons.vocab.animals.one.GameEvent.EventList;
-import com.cherokeelessons.vocab.animals.one.IAP.Callback;
-import com.cherokeelessons.vocab.animals.one.View3x3Selector.onClick;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.GameColor;
+import com.cherokeelessons.common.Gamepads;
+import com.cherokeelessons.common.IAP.Callback;
+import com.cherokeelessons.common.OS;
+import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
+import com.cherokeelessons.vocab.animals.one.views.View3x3Selector;
+import com.cherokeelessons.vocab.animals.one.views.View3x3Selector.onClick;
 
-public class ScreenLevelSelect extends ScreenGameCore {
+
+public class ScreenLevelSelect extends GameScreen {
+
+	private static final String OUYA_PANEL1_TEXT = "DPAD - Navigate," +
+			" [O] - Select," +
+			" [Y] - Show Levels 10-18," +
+			" [A] - Main Menu";
+	
+	private static final String TAB_PANEL1_TEXT = "[Tap Here to Show Levels 10-18]";
+	
+	private static final String OUYA_PANEL2_TEXT = "DPAD - Navigate," +
+			" [O] - Select," +
+			" [U] - Show Levels 1-9," +
+			" [A] - Main Menu";
+
+	private static final String TAB_PANEL2_TEXT = "[Tap Here to Show Levels 1-9]";
 
 	private int activeHud = 0;
 
-	private Label[][] btn_labels = new Label[game.levels / 9][9];
+	private Label[][] btn_labels = new Label[game.getLevels() / 9][9];
 	FileHandle button_highlight = Gdx.files
-			.internal("buttons/square_white.png");
+			.internal("buttons/2610_white.png");
 	private FileHandle didGood = Gdx.files
-			.internal("buttons/checkmarkfat_white.png");
+			.internal("buttons/2714_white.png");
 	private BitmapFont font;
 
 	private Color fontColor = GameColor.GREEN;
@@ -34,9 +58,9 @@ public class ScreenLevelSelect extends ScreenGameCore {
 	private Group masterGroup = new Group();
 	private int minPercentAdvance = 80;
 	private FileHandle levelLockedPic = Gdx.files
-			.internal("buttons/Padlock-red.png");
-	private FileHandle levelNotPurchasedPic = Gdx.files.internal("buttons/credit-card-front.png");
-	private Label[] panelSwitch = new Label[2];
+			.internal("images/indicators/Padlock-red.png");
+	private FileHandle levelNotPurchasedPic = Gdx.files.internal("images/indicators/credit-card-front.png");
+	private Label[] panelSwitch;
 
 	private View3x3Selector[] selectViewGraphic;
 
@@ -57,9 +81,17 @@ public class ScreenLevelSelect extends ScreenGameCore {
 			startGameLevel(level + 9);
 		}
 	};
-	private String title_unlocked = "This level is unlocked. Press [O] to play.";
-	private String title_locked = "This level is locked until you get at least "+minPercentAdvance+"%+ on the previous level.";
-	private String title_premium = "This is premium content. Press [O] to purchase the full game.";
+	
+	private String ouya_title_unlocked = "This level is unlocked. Press [O] to play.";
+	private String ouya_title_locked = "This level is locked until you get at least "+minPercentAdvance+"%+ on the previous level.";
+	private String ouya_title_premium = game.getIap().isDemo() ? "Not available in the demo version." : "This is premium content. Press [O] to purchase the full game.";
+	
+	private String tab_title_unlocked = "This level is unlocked. Tap to play.";
+	private String tab_title_locked = "This level is locked until you get at least "+minPercentAdvance+"%+ on the previous level.";
+	private String tab_title_premium = game.getIap().isDemo() ? "Not available in the demo version." : "This is premium content. Tap to purchase the full game.";
+	
+	final private ControllerLevelSelect_Watch watcher = new ControllerLevelSelect_Watch(
+			this);
 
 	private Callback update_select_display=new Callback() {		
 		@Override
@@ -68,15 +100,15 @@ public class ScreenLevelSelect extends ScreenGameCore {
 				@Override
 				public void run() {
 					showEnabledLevels();
-					game.getSoundManager().playEffect("osda");
+					game.sm.playEffect("cash_out");
 					hud_showIndicator();
-					Gdx.app.log(Gdx.app.getClass().getCanonicalName(), success!=null?success:"");
 				}
 			});
 		}
 		
 		@Override
 		public void onFailure(int errorCode, String errorMessage) {
+			game.sm.playEffect("growl_0");
 		}
 		
 		@Override
@@ -84,17 +116,25 @@ public class ScreenLevelSelect extends ScreenGameCore {
 		}
 	};
 
+	private int panelCount;
+
+	private boolean isOuya=false;
 	public ScreenLevelSelect(CherokeeAnimals game) {
-		super(game);		
+		super(game);
+		isOuya=OS.Platform.Ouya.equals(OS.platform);
+		panelCount=(int)Math.ceil(game.getLevels()/9);
 		int ix;
 		LabelStyle ls = new LabelStyle();
 		LabelStyle ps = new LabelStyle();
 		int panel;
 		float bottomMargin;
+		FontGenerator fg = new FontGenerator();
 
-		minPercentAdvance = game.getMinPercentAdvance();
+		panelSwitch = new Label[panelCount];
+		
+		minPercentAdvance = game.getMinPercent();
 
-		font = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.Script,fontSize);
+		font = fg.gen(fontSize);
 		ls.font = font;
 		ls.fontColor = new Color(fontColor);
 		ls.fontColor.a = 1f;
@@ -102,66 +142,72 @@ public class ScreenLevelSelect extends ScreenGameCore {
 		ps.font = font;
 		ps.fontColor = new Color(GameColor.GREEN);
 		ps.fontColor.a = 1f;
-		panelSwitch[0] = new Label(
-				"DPAD - Navigate, [O] - Select, [Y] - Show Levels 10-18, [A] - Main Menu", ps);
-		panelSwitch[1] = new Label("DPAD - Navigate, [O] - Select, [U] - Show Levels 1-9, [A] - Main Menu",
-				ps);
+		panelSwitch[0] = new Label(isOuya?OUYA_PANEL1_TEXT:TAB_PANEL1_TEXT, ps);
+		panelSwitch[1] = new Label(isOuya?OUYA_PANEL2_TEXT:TAB_PANEL2_TEXT,	ps);
 		panelSwitch[0].pack();
 		panelSwitch[1].pack();
-		panelSwitch[0].setX(overscan.x
-				+ (overscan.width - panelSwitch[0].getWidth()) / 2);
-		panelSwitch[0].setY(overscan.y);
-		panelSwitch[1].setX(overscan.x
-				+ (overscan.width - panelSwitch[0].getWidth()) / 2);
-		panelSwitch[1].setY(overscan.y);
+		panelSwitch[0].setX((screenSize.width - panelSwitch[0].getWidth()) / 2);
+		panelSwitch[0].setY(0);
+		panelSwitch[1].setX((screenSize.width - panelSwitch[0].getWidth()) / 2);
+		panelSwitch[1].setY(0);
+		panelSwitch[0].addListener(new ClickListener(){
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				moveTo10To18();
+				return true;
+			}
+		});
+		panelSwitch[1].addListener(new ClickListener(){
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				moveTo1To9();
+				return true;
+			}
+		});
 		bottomMargin = panelSwitch[0].getHeight();
 
-		selectViewLevelIndicator = new View3x3Selector[2];
-		selectViewLevelIndicator[0] = new View3x3Selector(overscan);
-		selectViewLevelIndicator[0].setPosition(overscan.x, overscan.y);
-//		selectViewLevelIndicator[0].setTitle(title);
+		selectViewLevelIndicator = new View3x3Selector[panelCount];
+		selectViewLevelIndicator[0] = new View3x3Selector(screenSize);
+		selectViewLevelIndicator[0].setTouchable(Touchable.enabled);
 		selectViewLevelIndicator[0].setBottomMargin(bottomMargin);
 
-		selectViewLevelIndicator[1] = new View3x3Selector(overscan);
-		selectViewLevelIndicator[1].setPosition(overscan.x, overscan.y);
-//		selectViewLevelIndicator[1].setTitle(title);
+		selectViewLevelIndicator[1] = new View3x3Selector(screenSize);
+		selectViewLevelIndicator[1].setTouchable(Touchable.enabled);
 		selectViewLevelIndicator[1].setBottomMargin(bottomMargin);
 
-		selectViewGraphic = new View3x3Selector[2];
-		selectViewGraphic[0] = new View3x3Selector(overscan);
-//		selectViewGraphic[0].setTitle(title);
+		selectViewGraphic = new View3x3Selector[panelCount];
+		selectViewGraphic[0] = new View3x3Selector(screenSize);
+		selectViewGraphic[0].setTouchable(Touchable.disabled);
 		selectViewGraphic[0].setBottomMargin(bottomMargin);
-		selectViewGraphic[0].setPosition(overscan.x, overscan.y);
 
-		selectViewGraphic[1] = new View3x3Selector(overscan);
-//		selectViewGraphic[1].setTitle(title);
+		selectViewGraphic[1] = new View3x3Selector(screenSize);
+		selectViewGraphic[1].setTouchable(Touchable.disabled);
 		selectViewGraphic[1].setBottomMargin(bottomMargin);
-		selectViewGraphic[1].setPosition(overscan.x, overscan.y);
 
-		selectViewOverlay = new View3x3Selector[2];
-		selectViewOverlay[0] = new View3x3Selector(overscan);
-//		selectViewOverlay[0].setTitle(title);
+		selectViewOverlay = new View3x3Selector[panelCount];
+		selectViewOverlay[0] = new View3x3Selector(screenSize);
+		selectViewOverlay[0].setTouchable(Touchable.disabled);
 		selectViewOverlay[0].setBottomMargin(bottomMargin);
-		selectViewOverlay[0].setPosition(overscan.x, overscan.y);
 		selectViewOverlay[0].setHandler(startAtLevel_1_to_9);
 
-		selectViewOverlay[1] = new View3x3Selector(overscan);
-//		selectViewOverlay[1].setTitle(title);
+		selectViewOverlay[1] = new View3x3Selector(screenSize);
+		selectViewOverlay[1].setTouchable(Touchable.disabled);
 		selectViewOverlay[1].setBottomMargin(bottomMargin);
-		selectViewOverlay[1].setPosition(overscan.x, overscan.y);
 		selectViewOverlay[1].setHandler(startAtLevel_10_to_18);
 
-		selectViewHUD = new View3x3Selector[2];
-		selectViewHUD[0] = new View3x3Selector(overscan);
-		selectViewHUD[0].setTitle(title_unlocked);
+		selectViewHUD = new View3x3Selector[panelCount];
+		selectViewHUD[0] = new View3x3Selector(screenSize);
+		selectViewHUD[0].setTouchable(Touchable.disabled);
+		selectViewHUD[0].setTitle(isOuya?ouya_title_unlocked:tab_title_unlocked);
 		selectViewHUD[0].setBottomMargin(bottomMargin);
-		selectViewHUD[0].setPosition(overscan.x, overscan.y);
 		selectViewHUD[0].setHandler(startAtLevel_1_to_9);
 
-		selectViewHUD[1] = new View3x3Selector(overscan);
-		selectViewHUD[1].setTitle(title_unlocked);
+		selectViewHUD[1] = new View3x3Selector(screenSize);
+		selectViewHUD[1].setTouchable(Touchable.disabled);
+		selectViewHUD[1].setTitle(isOuya?ouya_title_unlocked:tab_title_unlocked);
 		selectViewHUD[1].setBottomMargin(bottomMargin);
-		selectViewHUD[1].setPosition(overscan.x, overscan.y);
 		selectViewHUD[1].setHandler(startAtLevel_10_to_18);
 
 		selectViewLevelIndicator[0].setBoxMargin(4);
@@ -173,25 +219,25 @@ public class ScreenLevelSelect extends ScreenGameCore {
 		selectViewOverlay[0].setBoxMargin(24);
 		selectViewOverlay[1].setBoxMargin(24);
 
-		for (ix = 0; ix < game.levels; ix++) {
+		for (ix = 0; ix < game.getLevels(); ix++) {
 			panel = ix / 9;
 			btn_labels[panel][ix % 9] = new Label("", ls);
 			selectViewLevelIndicator[panel].addActor(btn_labels[panel][ix % 9]);
 		}
-
+		
 		/*
 		 * move the second set off screen to the right..
 		 */
 		final int extra_offset = 100;
-		selectViewLevelIndicator[1].setX(screenWidth
+		selectViewLevelIndicator[1].setX(fullscan.width
 				+ selectViewLevelIndicator[1].getX() + extra_offset);
-		selectViewGraphic[1].setX(screenWidth + selectViewGraphic[1].getX()
+		selectViewGraphic[1].setX(fullscan.width + selectViewGraphic[1].getX()
 				+ extra_offset);
-		selectViewOverlay[1].setX(screenWidth + selectViewOverlay[1].getX()
+		selectViewOverlay[1].setX(fullscan.width + selectViewOverlay[1].getX()
 				+ extra_offset);
-		selectViewHUD[1].setX(screenWidth + selectViewHUD[1].getX()
+		selectViewHUD[1].setX(fullscan.width + selectViewHUD[1].getX()
 				+ extra_offset);
-		panelSwitch[1].setX(screenWidth + panelSwitch[1].getX() + extra_offset);
+		panelSwitch[1].setX(fullscan.width + panelSwitch[1].getX() + extra_offset);
 
 		masterGroup.addActor(selectViewGraphic[0]);
 		masterGroup.addActor(selectViewGraphic[1]);
@@ -209,10 +255,44 @@ public class ScreenLevelSelect extends ScreenGameCore {
 		masterGroup.addActor(selectViewHUD[1]);
 
 		gameStage.addActor(masterGroup);
+		
+	}
+
+	private void disconnectClickers() {
+		for (int ia = 0; ia < 2; ia++) {
+			for (int ib = 0; ib < selectViewLevelIndicator[ia].button_count(); ib++) {
+				selectViewLevelIndicator[ia].clearListeners(ib);
+			}
+		}
+	}
+	
+	private void connectClickers() {
+		for (int ia = 0; ia < 2; ia++) {
+			final int pnl=ia;
+			for (int ib = 0; ib < selectViewLevelIndicator[ia].button_count(); ib++) {
+				final int btn=ib;
+				selectViewLevelIndicator[ia].addListener(btn, new ClickListener(){
+					@Override
+					public boolean touchDown(InputEvent event, float x,
+							float y, int pointer, int button) {
+						activeHud=pnl;
+						level_highlighted=btn;
+						hud_showIndicator(true);
+						hud_selectLevel();
+						return true;
+					}
+				});
+			}
+		}
 	}
 
 	@Override
 	public void hide() {
+		for (Controller controller : Gamepads.getControllers()) {
+			watcher.disconnected(controller);
+		}
+		Gamepads.clearListeners();
+		disconnectClickers();
 		super.hide();
 	}
 
@@ -300,7 +380,7 @@ public class ScreenLevelSelect extends ScreenGameCore {
 	/* [Y] */
 	public void moveTo10To18() {
 		masterGroup.clearActions();
-		masterGroup.addAction(Actions.moveTo(-screenWidth - 100, 0, .25f));
+		masterGroup.addAction(Actions.moveTo(-fullscan.width - 100, 0, .25f));
 		hud_clearIndicator();
 		activeHud = 1;
 		hud_showIndicator();
@@ -322,7 +402,12 @@ public class ScreenLevelSelect extends ScreenGameCore {
 		showEnabledLevels();
 		showLevelImages();
 		showLevelNumbers();
-		hud_showIndicator();		
+		Gamepads.addListener(watcher);
+		for (Controller c : Gamepads.getControllers()) {
+			watcher.connected(c);
+		}
+		hud_showIndicator();
+		connectClickers();
 	}
 
 	private void showEnabledLevels() {
@@ -332,10 +417,10 @@ public class ScreenLevelSelect extends ScreenGameCore {
 		int panel;
 		View3x3Selector viewPanel;
 
-		for (ix = 0; ix < game.levels; ix++) {
+		for (ix = 0; ix < game.getLevels(); ix++) {
 			panel = ix / 9;
 			viewPanel = selectViewOverlay[panel];
-			current = game.getLevelAccuracy(ix);
+			current = game.prefs.getLevelAccuracy(ix);
 			if (isLevelPurchased(ix)) {
 				if (isLevelUnlocked(ix)) {
 					alpha = ((float) current - (float) minPercentAdvance)
@@ -359,7 +444,12 @@ public class ScreenLevelSelect extends ScreenGameCore {
 	}
 
 	private void hud_showIndicator() {
-		game.getSoundManager().playEffect("box_moved");
+		hud_showIndicator(false);
+	}
+	private void hud_showIndicator(boolean quiet) {
+		if (!quiet) {
+			game.sm.playEffect("box_moved");
+		}
 		View3x3Selector activehud = selectViewHUD[activeHud];
 		hud_clearIndicator();
 		activehud.setImage(level_highlighted, button_highlight);
@@ -377,14 +467,14 @@ public class ScreenLevelSelect extends ScreenGameCore {
 		int level = activeHud*activehud.button_count()+level_highlighted;
 		do {
 			if (!isLevelPurchased(level)) {
-				selectViewHUD[activeHud].setTitle(title_premium);
+				selectViewHUD[activeHud].setTitle(isOuya?ouya_title_premium:tab_title_premium);
 				break;
 			}
 			if (!isLevelUnlocked(level)) {
-				selectViewHUD[activeHud].setTitle(title_locked);
+				selectViewHUD[activeHud].setTitle(isOuya?ouya_title_locked:tab_title_locked);
 				break;
 			}
-			selectViewHUD[activeHud].setTitle(title_unlocked);
+			selectViewHUD[activeHud].setTitle(isOuya?ouya_title_unlocked:tab_title_unlocked);
 			break;
 		} while(false);
 	}
@@ -396,11 +486,11 @@ public class ScreenLevelSelect extends ScreenGameCore {
 		int panel;
 		View3x3Selector viewPanel;
 
-		for (ix = 0; ix < game.animalQueue.getLevelCount(); ix++) {
+		for (ix = 0; ix < game.getLevels(); ix++) {
 			panel = ix / 9;
 			viewPanel = selectViewGraphic[panel];
-			imageName = game.animalQueue.getLevelStartName(ix);
-			imageFile = game.randomAnimalImageByName(imageName);
+			imageName = game.challenges.getLevelNameFor(ix);
+			imageFile = game.challenges.nextImage(imageName);
 			viewPanel.setImage(ix, imageFile);
 		}
 	}
@@ -411,13 +501,12 @@ public class ScreenLevelSelect extends ScreenGameCore {
 		int panel;
 		View3x3Selector viewPanel;
 
-		for (ix = 0; ix < game.animalQueue.getLevelCount(); ix++) {
+		for (ix = 0; ix < game.getLevels(); ix++) {
 			panel = ix / 9;
 			viewPanel = selectViewLevelIndicator[panel];
-			imageName = "images/backgrounds/bg_" + (ix + 1) + ".png";
-			if (Gdx.files.internal(imageName).exists()) {
-				viewPanel.setImage(ix, Gdx.files.internal(imageName));
-			}
+			imageName = "images/bgnumbers/bg_" + (ix + 1) + ".png";
+			viewPanel.setImage(ix, Gdx.files.internal(imageName));
+			viewPanel.setAlpha(ix, .7f);
 		}
 	}
 
@@ -429,11 +518,11 @@ public class ScreenLevelSelect extends ScreenGameCore {
 		int panel;
 		View3x3Selector viewPanel;
 
-		for (ix = 0; ix < game.levels; ix++) {
+		for (ix = 0; ix < game.getLevels(); ix++) {
 			panel = ix / 9;
 			viewPanel = selectViewLevelIndicator[panel];
 			bbox = viewPanel.getBoundingBox(ix);
-			percent = game.getLevelAccuracy(ix);
+			percent = game.prefs.getLevelAccuracy(ix);
 			label = btn_labels[panel][ix % 9];
 			label.setText("Correct: " + percent + "%");
 			label.pack();
@@ -448,11 +537,11 @@ public class ScreenLevelSelect extends ScreenGameCore {
 			return;
 		}
 		if (!isLevelUnlocked(level)) {
-			game.getSoundManager().playEffect("buzzer2");
+			game.sm.playEffect("buzzer2");
 			return;
 		}
-		game.setGameScreenLevel(level + 1);
-		game.event(EventList.ShowGameBoard);
+		game.setLevelOn(level);
+		game.gameEvent(GameEvent.ShowGameBoard);
 	}
 
 	private boolean isLevelPurchased(int level) {
@@ -460,7 +549,13 @@ public class ScreenLevelSelect extends ScreenGameCore {
 	}
 
 	private boolean isLevelUnlocked(int level) {
-		return !(level > 0 && game.getLevelAccuracy(level) == 0
-				&& game.getLevelAccuracy(level - 1) < minPercentAdvance);
+		return !(level > 0 && game.prefs.getLevelAccuracy(level) == 0
+				&& game.prefs.getLevelAccuracy(level - 1) < minPercentAdvance);
+	}
+	
+	@Override
+	public void render(float delta) {
+		super.render(delta);
+		gameStage.draw();
 	}
 }

@@ -4,15 +4,39 @@ import java.util.HashSet;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.cherokeelessons.vocab.animals.one.CherokeeAnimals.TrainingScreenMode;
-import com.cherokeelessons.vocab.animals.one.GameEvent.EventList;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
+import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.GameColor;
+import com.cherokeelessons.common.Gamepads;
+import com.cherokeelessons.common.Leader;
+import com.cherokeelessons.common.OS;
+import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
+import com.cherokeelessons.vocab.animals.one.enums.TrainingMode;
+import com.cherokeelessons.vocab.animals.one.views.ViewChallengeBoard;
+import com.cherokeelessons.vocab.animals.one.views.ViewGameBoard;
+import com.cherokeelessons.vocab.animals.one.views.ViewInGameControls;
+import com.cherokeelessons.vocab.animals.one.views.ViewProgressBar;
+import com.cherokeelessons.vocab.animals.one.views.ViewScoreBoard;
 
-public class ScreenGameplay extends ScreenGameCore {
+public class ScreenGameplay extends GameScreen {
+	
+	private float boardElapsed=0;
 
 	enum WritingMode {
 		Latin, None, Syllabary
@@ -23,19 +47,17 @@ public class ScreenGameplay extends ScreenGameCore {
 	private HashSet<String> alreadySeen = new HashSet<String>();
 
 	private int badPoints = 0;
-	FileHandle button_highlight = Gdx.files
-			.internal("buttons/square_white.png");
+	FileHandle button_highlight = Gdx.files.internal("buttons/2610_white.png");
 	private String[] buttonPicture = new String[6];
-	private String[] buttonPictureCopy = new String[6];
+	private String[] buttonPictureCopy = new String[buttonPicture.length];
 	private ViewChallengeBoard challengeBoard;
 	private String currentChallenge;
 	private float elapsedTime = 0;
 	private int end;
 
 	private float failsafeTimer = 0;
-	private FileHandle fat_check = Gdx.files
-			.internal("buttons/checkmarkfat_white.png");
-	private FileHandle fat_x = Gdx.files.internal("buttons/fat_x_white.png");
+	private FileHandle fat_check = Gdx.files.internal("buttons/2714_white.png");
+	private FileHandle fat_x = Gdx.files.internal("buttons/2716_white.png");
 	private ViewGameBoard gameBoard;
 
 	private ViewInGameControls gameControls;
@@ -54,33 +76,37 @@ public class ScreenGameplay extends ScreenGameCore {
 	private boolean noTick = false;
 
 	ViewProgressBar pbar;
-	private GraduatedIntervalQueue queue = null;
 
 	private boolean repeatAudio = true;
-	private FileHandle[] savedPictureFH = new FileHandle[6];
+	private FileHandle[] savedPictureFH = new FileHandle[buttonPicture.length];
 
 	private ViewScoreBoard scoreBoard;
 
-	private SoundManager sm;
 	private int start;
 
 	private float timeLimit = 5;
 
+	final private ControllerGamePlay_Watch watcher = new ControllerGamePlay_Watch(
+			this);
+
 	private WritingMode writingMode;
 
-	public ScreenGameplay(CherokeeAnimals game) {
+	private Array<String> queue;
+
+	private Texture pause_texture;
+
+	public ScreenGameplay(final CherokeeAnimals game) {
 		super(game);
 
-		queue = game.animalQueue;
+		pbar = new ViewProgressBar(screenSize);
+		scoreBoard = new ViewScoreBoard(screenSize, game.sm);
+		gameControls = new ViewInGameControls(screenSize);
+		gameBoard = new ViewGameBoard(screenSize);
+		challengeBoard = new ViewChallengeBoard(screenSize);
+		activehud = new ViewGameBoard(screenSize);
+		activehud.setTouchable(Touchable.disabled);
 
-		sm = game.getSoundManager();
-
-		pbar = new ViewProgressBar(overscan);
-		scoreBoard = new ViewScoreBoard(overscan, sm);
-		gameControls = new ViewInGameControls(overscan);
-		gameBoard = new ViewGameBoard(overscan);
-		challengeBoard = new ViewChallengeBoard(overscan);
-		activehud = new ViewGameBoard(overscan);
+		gameControls.setEventBus(game.ebus);
 
 		gameStage.addActor(pbar);
 		gameStage.addActor(scoreBoard);
@@ -88,10 +114,29 @@ public class ScreenGameplay extends ScreenGameCore {
 		gameStage.addActor(gameBoard);
 		gameStage.addActor(activehud);
 		gameStage.addActor(challengeBoard);
+		gameStage.addActor(pauseOverlay);
+		
+		pauseOverlay.setX(-screenSize.x);
+		pauseOverlay.setY(-screenSize.y);
+		
+		setPaused(false);
 
-		gameStage.getRoot().setX(overscan.x);
-		gameStage.getRoot().setY(overscan.y);
+	}
+	
+	private Pixmap pause_mask;
 
+	@Override
+	public void setPaused(boolean isPaused) {
+		super.setPaused(isPaused);
+		if (isPaused()) {
+			pauseOverlay.getColor().a = .1f;
+			pauseOverlay.setTouchable(Touchable.enabled);
+			game.musicPlayer.pause();
+		} else {
+			pauseOverlay.getColor().a = 0f;
+			pauseOverlay.setTouchable(Touchable.disabled);
+			game.musicPlayer.resume();
+		}
 	}
 
 	private void buttonAsCorrect(int button) {
@@ -109,7 +154,7 @@ public class ScreenGameplay extends ScreenGameCore {
 	}
 
 	private void checkButton(int button) {
-		if (buttonPicture[button].equals("")) {
+		if (buttonPicture[button] == null || buttonPicture[button].equals("")) {
 			return;
 		}
 		int bonus = 0;
@@ -119,7 +164,7 @@ public class ScreenGameplay extends ScreenGameCore {
 			scoreBoard.changeScoreBy(-badPoints - 1);
 			badPoints = (badPoints + 1) % 5;
 			goodPoints = 0;
-			sm.playEffect("buzzer2");
+			game.sm.playEffect("buzzer2");
 			return;
 		}
 		buttonAsCorrect(button);
@@ -128,11 +173,10 @@ public class ScreenGameplay extends ScreenGameCore {
 		badPoints = 0;
 		goodPoints = (goodPoints + 1) % 5;
 		if (getCorrectCount() < 1) {
-			for (button = 0; button < 6; button++) {
+			for (button = 0; button < buttonPicture.length; button++) {
 				if (!buttonPicture[button].equals("")) {
 					bonus++;
 					buttonPicture[button] = "";
-//					gameBoard.setClickHandler(button, null);
 					scoreBoard.changeScoreBy(bonus);
 					buttonPicture[button] = "";
 					gameBoard.flyaway(button);
@@ -159,7 +203,7 @@ public class ScreenGameplay extends ScreenGameCore {
 			return;
 		}
 		while (true) {
-			ix = r.nextInt(6);
+			ix = r.nextInt(buttonPicture.length);
 			if (buttonPicture[ix].equals(currentChallenge)) {
 				continue;
 			}
@@ -174,32 +218,28 @@ public class ScreenGameplay extends ScreenGameCore {
 		scoreBoard.changeScoreBy(-badPoints - 1);
 		switch (r.nextInt(3)) {
 		case 0:
-			sm.playEffect("alarm");
+			game.sm.playEffect("alarm");
 			break;
 		case 1:
-			sm.playEffect("bark");
+			game.sm.playEffect("bark");
 			break;
 		case 2:
-			sm.playEffect("dialogerror");
+			game.sm.playEffect("dialogerror");
 			break;
 		}
 	}
 
 	private int getCorrectCount() {
 		int ix = 0, count = 0;
-		for (ix = 0; ix < 6; ix++) {
+		for (ix = 0; ix < buttonPicture.length; ix++) {
+			if (buttonPicture[ix] == null) {
+				continue;
+			}
 			if (buttonPicture[ix].equals(currentChallenge)) {
 				count++;
 			}
 		}
 		return count;
-	}
-
-	/**
-	 * @return the currentChallenge
-	 */
-	public String getCurrentChallenge() {
-		return currentChallenge;
 	}
 
 	public WritingMode getWritingMode() {
@@ -208,7 +248,10 @@ public class ScreenGameplay extends ScreenGameCore {
 
 	private int getWrongCount() {
 		int ix = 0, count = 0;
-		for (ix = 0; ix < 6; ix++) {
+		for (ix = 0; ix < buttonPicture.length; ix++) {
+			if (buttonPicture[ix] == null) {
+				continue;
+			}
 			if (buttonPicture[ix].equals(currentChallenge)) {
 				continue;
 			}
@@ -223,7 +266,17 @@ public class ScreenGameplay extends ScreenGameCore {
 	@Override
 	public void hide() {
 		super.hide();
+		pauseOverlay.clear();
+		pause_texture.dispose();
+		pause_mask.dispose();
 		alreadySeen.add(currentChallenge);
+		for (Controller controller : Gamepads.getControllers()) {
+			watcher.disconnected(controller);
+		}
+		Gamepads.clearListeners();
+
+		gameControls.clearListeners();
+		disconnectClickhandlers();
 	}
 
 	private void hud_clearIndicator() {
@@ -294,8 +347,18 @@ public class ScreenGameplay extends ScreenGameCore {
 		checkButton(item_highlighted);
 	}
 
+	private void hud_setIndicator(int button) {
+		item_highlighted = button;
+	}
+
 	private void hud_showIndicator() {
-		game.getSoundManager().playEffect("box_moved");
+		hud_showIndicator(false);
+	}
+
+	private void hud_showIndicator(boolean quiet) {
+		if (!quiet) {
+			game.sm.playEffect("box_moved");
+		}
 
 		hud_clearIndicator();
 
@@ -314,31 +377,27 @@ public class ScreenGameplay extends ScreenGameCore {
 	}
 
 	public void initLevel(int level) {
-		System.out.println("init level: " + level);
-		int ix;
-		String previous;
-		level--;
-
-		start = queue.getLevelStartPosition(level);
-		end = queue.getLevelEndPosition(level);
-		ip = start;
-		updateProgress2();
-		alreadySeen.clear();
-		setChallenge();
 		/*
 		 * load up all entries from previous levels as "already seen"
 		 */
-		for (ix = 0; ix < start; ix++) {
-			previous = queue.getEntry(ix);
-			alreadySeen.add(previous);
-		}
+		alreadySeen.clear();
+		alreadySeen.addAll(game.challenges.getPreviousChallengesFor(level));
 
+		/*
+		 * get current challenge set
+		 */
+		this.queue = game.challenges.getChallengesFor(level);
+
+		start = 0;
+		end = queue.size;
+		ip = start;
+		setChallenge();
+		updateProgress2();
 		scoreBoard.reset();
-
 		elapsedTime = 0;
-
 		markedWrong = 0;
 		markedCorrect = 0;
+		boardElapsed=0f;
 	}
 
 	private void levelComplete() {
@@ -351,48 +410,74 @@ public class ScreenGameplay extends ScreenGameCore {
 			totalMarks = 1;
 		}
 		percent = (float) markedCorrect / (float) totalMarks;
-		game.setLevelAccuracy(game.getLevelOn() - 1, (int) (100f * percent));
-		/*
-		 * do we have a new high score?
-		 */
-		if (scoreBoard.getScore() > game.getHighScore()) {
-			game.setHighScore(scoreBoard.getScore());
-		}
-		/*
-		 * do event LAST, so LevelSelect is working with up-to-date info!
-		 */
-		sm.playEffect("cash_out");
-		game.event(EventList.LevelComplete);
+		game.prefs.setLevelAccuracy(game.getLevelOn(), (int) (100f * percent));
+		game.prefs.setLevelTime(game.getLevelOn(), boardElapsed);		
+		game.sm.playEffect("cash_out");
+		game.gameEvent(GameEvent.LevelComplete);
 	}
 
 	private void loadBoard() {
 		int ix;
 		Random r;
 		String name;
-		boolean keepLooping = true;
-
 		r = new Random();
+		int sz = alreadySeen.size() + 1;
+		String[] pickFrom = alreadySeen.toArray(new String[sz]);
+		pickFrom[sz - 1] = currentChallenge;
+		Array<String> deck = new Array<String>();
+		int correct = 0;
+		for (ix = 0; ix < buttonPicture.length; ix++) {
+			if (deck.size == 0) {
+				deck.addAll(pickFrom);
+			}
+			deck.shuffle();
+			name = deck.pop();
+			if (name.equals(currentChallenge)) {
+				correct++;
+			}
+			buttonPicture[ix] = name;
+		}
 
 		/*
-		 * keep picking random pictures until we have at least one correct
+		 * add a correct one if no correct one already there ... =OR= maybe add
+		 * additional copies of the correct answer 1% of the remaining times
 		 */
-		while (keepLooping) {
-			for (ix = 0; ix < 6; ix++) {
-				/*
-				 * only show pix from previous challenges to prevent confusion
-				 * issues with plurals and singulars
-				 */
-				name = queue.getEntry(r.nextInt(ip + 1));
-				if (name.equals(currentChallenge)) {
-					keepLooping = false;
+		for (int ix1 = 0; ix1 < buttonPicture.length; ix1++) {
+			if (correct == 0 || r.nextInt(100) == 1) {
+				int slot = r.nextInt(buttonPicture.length);
+				if (buttonPicture[slot].equals(currentChallenge)) {
+					continue;
 				}
-				buttonPicture[ix] = name;
+				buttonPicture[slot] = currentChallenge;
+				correct++;
 			}
 		}
-		for (ix = 0; ix < 6; ix++) {
+		boolean isPlural = (currentChallenge.endsWith("j") || currentChallenge
+				.endsWith("J"));
+		String altForm = isPlural ? currentChallenge.substring(0,
+				currentChallenge.length() - 1) : currentChallenge + "j";
+		while (alreadySeen.contains(altForm)) {
+			boolean already = false;
+			for (int iy = 0; iy < buttonPicture.length; iy++) {
+				if (buttonPicture[iy].equals(altForm)) {
+					already = true;
+					break;
+				}
+			}
+			if (!already) {
+				int slot = r.nextInt(buttonPicture.length);
+				if (correct == 1
+						&& buttonPicture[slot].equals(currentChallenge)) {
+					continue;
+				}
+				buttonPicture[slot] = altForm;
+			}
+			break;
+		}
+
+		for (ix = 0; ix < buttonPicture.length; ix++) {
 			buttonPictureCopy[ix] = buttonPicture[ix];
-			savedPictureFH[ix] = game
-					.randomAnimalImageByName(buttonPicture[ix]);
+			savedPictureFH[ix] = game.challenges.nextImage(buttonPicture[ix]);
 			gameBoard.setImage(ix, savedPictureFH[ix]);
 		}
 		pbar.setProgress1(0);
@@ -402,16 +487,26 @@ public class ScreenGameplay extends ScreenGameCore {
 
 	private void loadNewBoard() {
 		setChallenge();
-		updateChallengeBoard();
 		nextScreen = false;
 		elapsedTime = 0;
 	}
+
+	final protected Group pauseOverlay = new Group();
 
 	@Override
 	public void render(float delta) {
 		super.render(delta);
 
-		if (sm.isChallengePlaying(currentChallenge)) {
+		gameStage.draw();
+
+		if (isPaused()) {
+			pauseOverlay.getColor().a = 1f;
+			return;
+		}
+		//total time board elapsed includes challenge sounding times
+		boardElapsed += delta;
+
+		if (game.sm.isChallengePlaying(currentChallenge)) {
 			noTick = false;
 			return;
 		}
@@ -426,14 +521,14 @@ public class ScreenGameplay extends ScreenGameCore {
 
 		if (repeatAudio && pbar.getProgress1() > 0.5f) {
 			repeatAudio = false;
-			sm.playChallenge(currentChallenge);
+			game.sm.playChallenge(currentChallenge);
 		}
 
 		if (!repeatAudio && pbar.getProgress1() < .1f) {
 			repeatAudio = true;
 		}
 
-		elapsedTime += delta;
+		elapsedTime += delta;		
 
 		if (nextScreen) {
 			showNextBoardCheck();
@@ -455,17 +550,19 @@ public class ScreenGameplay extends ScreenGameCore {
 	}
 
 	private void setChallenge() {
-		currentChallenge = queue.getEntry(ip);
+		currentChallenge = queue.get(ip);
+		game.activeChallenge = currentChallenge;
 		loadBoard();
 		if (switchToTrainer()) {
-			game.event(EventList.Training);
+			game.gameEvent(GameEvent.Training);
 		} else {
-			if (sm.isChallengeEnabled()) {
-				sm.playChallenge(currentChallenge);
+			if (game.sm.isChallengeEnabled()) {
+				game.sm.playChallenge(currentChallenge);
 				noTick = true;
 				repeatAudio = true;
 			}
 		}
+		updateChallengeBoard();
 	}
 
 	public void setWritingMode(WritingMode writingMode) {
@@ -475,21 +572,88 @@ public class ScreenGameplay extends ScreenGameCore {
 	@Override
 	public void show() {
 		super.show();
-		updateChallengeBoard();
+		final boolean isOuya = OS.Platform.Ouya.equals(OS.platform);
+		
+		pause_mask=new Pixmap(1, 1, Format.RGBA8888);
+		pause_mask.setColor(1f, 1f, 1f, .7f);
+		pause_mask.fill();
+		pause_texture = new Texture(pause_mask);
+		Image pause_mask_image = new Image(pause_texture);
+		pause_mask_image.pack();
+		pause_mask_image.scale(fullscan.width, fullscan.height);
+		pauseOverlay.addActor(pause_mask_image);
+		LabelStyle continueStyle = new LabelStyle(new FontGenerator().gen(72), GameColor.GREEN);
+		String pauseMsg = isOuya?"Press [O] to continue.":"Tap to continue.";
+		Label toContinue = new Label(pauseMsg, continueStyle);
+		pauseOverlay.addActor(toContinue);
+		toContinue.pack();
+		toContinue.setX((fullscan.width-toContinue.getWidth())/2);
+		toContinue.setY((fullscan.height-toContinue.getHeight())/2);
+		toContinue.addListener(new ClickListener(){	
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				setPaused(false);
+				return true;
+			}
+		});
+		//make sure pause overlay is in correct state
+		setPaused(isPaused());
+		updateChallengeBoard();// in case of challenge display option change
 		if (getCorrectCount() > 0) {
 			/*
 			 * only replay challenge audio if there are still correct buttons
 			 */
 			if (!switchToTrainer()) {
-				sm.playChallenge(currentChallenge);
+				game.sm.playChallenge(currentChallenge);
 			}
 		}
+		Gamepads.addListener(watcher);
+		for (Controller c : Gamepads.getControllers()) {
+			watcher.connected(c);
+		}
 		hud_showIndicator();
+		connectClickhandlers();
+		gameControls.addListener(new ClickListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				setPaused(true);
+				return true;
+			}
+
+		});
+	}
+
+	private void connectClickhandlers() {
+		for (int ix = 0; ix < gameBoard.button_count(); ix++) {
+			final int button = ix;
+			gameBoard.clearListeners(button);
+			gameBoard.addListener(button, new ClickListener() {
+				private int btn = button;
+
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y,
+						int pointer, int button) {
+					hud_setIndicator(btn);
+					hud_showIndicator(true);
+					hud_select();
+					return true;
+				}
+			});
+		}
+	}
+
+	private void disconnectClickhandlers() {
+		for (int ix = 0; ix < gameBoard.button_count(); ix++) {
+			final int button = ix;
+			gameBoard.clearListeners(button);
+		}
 	}
 
 	private void showNextBoardCheck() {
 		if (elapsedTime > 2) {
-			if (ip > end) {
+			if (ip >= end) {
 				levelComplete();
 			} else {
 				loadNewBoard();
@@ -498,28 +662,26 @@ public class ScreenGameplay extends ScreenGameCore {
 	}
 
 	private boolean switchToTrainer() {
-		if (game.getShowTrainingScreen().equals(TrainingScreenMode.Off)) {
+		if (game.prefs.getTrainingMode().equals(TrainingMode.Off)) {
 			return false;
 		}
-		System.out.println("alreadySeen: "
-				+ alreadySeen.contains(currentChallenge) + ", "
-				+ currentChallenge);
 		return !alreadySeen.contains(currentChallenge);
 	}
 
 	private void tooMuchTimePassed() {
 		dropWrongAnswer();
-		sm.playChallenge(currentChallenge);
+		game.sm.playChallenge(currentChallenge);
 	}
 
 	private void updateChallengeBoard() {
 		String challenge;
-		switch (game.getChallengeWord()) {
-		case Syllabary:
-			challenge = game.getAnimalsSyl().get(currentChallenge);
+		switch (game.prefs.getChallengeMode()) {
+		case Esperanto:
+			challenge = GraduatedIntervalQueue
+					.esperanto_unescape(currentChallenge);
 			break;
-		case Latin:
-			challenge = game.getAnimalsLat().get(currentChallenge);
+		case EsperantoX:
+			challenge = currentChallenge;
 			break;
 		default:
 			challenge = "";

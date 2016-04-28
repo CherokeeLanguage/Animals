@@ -1,4 +1,4 @@
-package com.cherokeelessons.vocab.animals.one;
+package com.cherokeelessons.common;
 
 import java.security.KeyFactory;
 import java.security.PublicKey;
@@ -13,7 +13,7 @@ public class IapNOP implements IAP {
 
 	@Override
 	public boolean isPurchased() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -67,6 +67,12 @@ public class IapNOP implements IAP {
 		if (callback!=null) {
 			callback.onSuccess("");
 		}		
+	}
+
+	@Override
+	public boolean isDemo() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

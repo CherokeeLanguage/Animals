@@ -1,22 +1,25 @@
-package com.cherokeelessons.vocab.animals.one;
+package com.cherokeelessons.vocab.animals.one.views;
 
 import java.util.Random;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.cherokeelessons.vocab.animals.one.ScreenGameCore.GameColor;
+import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.GameColor;
 
 public class View3x3Selector extends Group {
 
@@ -32,6 +35,8 @@ public class View3x3Selector extends Group {
 
 	private Image[] buttons = new Image[9];
 
+	FontGenerator fg;
+
 	private BitmapFont font = null;
 
 	private onClick handler = null;
@@ -46,7 +51,8 @@ public class View3x3Selector extends Group {
 	public View3x3Selector(Rectangle overscan) {
 		super();
 		screenSize.set(overscan);
-		font = CherokeeAnimals.getFont(CherokeeAnimals.FontStyle.Script,baseFontSize);
+		fg = new FontGenerator();
+		font = fg.gen(baseFontSize);
 		titleStyle = new LabelStyle(font, GameColor.GREEN);
 		titleBox = new Label(" ", titleStyle);
 		this.addActor(titleBox);
@@ -317,7 +323,7 @@ public class View3x3Selector extends Group {
 		}
 		image = new Texture(imageFile);
 		textureCache[buttonIX] = image;
-		image.setFilter(CherokeeAnimals.filter, CherokeeAnimals.filter);
+		image.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		imageRegion = new TextureRegion(image);
 		TextureRegionDrawable trd = new TextureRegionDrawable(imageRegion);
 		button.setDrawable(trd);
@@ -351,6 +357,13 @@ public class View3x3Selector extends Group {
 			buttons[ix].setRotation(0);
 			positionButton(buttons[ix], getBoundingBox(ix));
 		}
+	}
+
+	public void clearListeners(int button) {
+		buttons[button].clearListeners();		
+	}
+	public void addListener(int button, EventListener clickListener) {
+		buttons[button].addListener(clickListener);		
 	}
 
 }
