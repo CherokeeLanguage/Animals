@@ -1,8 +1,9 @@
 buildscript {
     repositories {
+        jcenter()
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        jcenter()
+        maven { url "http://dl.bintray.com/mars3142/maven" }
     }
     dependencies {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
@@ -40,6 +41,10 @@ project(":desktop") {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+     
+     	//controllers
+     	compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
+		compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"   
     }
 }
 
@@ -56,6 +61,11 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
+        
+        //controllers
+        compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+		compile "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
+        
     }
 }
 
@@ -83,6 +93,11 @@ project(":html") {
         compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
         compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+        
+        //controllers
+        compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion:sources"
+		compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion"
+		compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion:sources"
     }
 }
 
@@ -92,6 +107,15 @@ project(":core") {
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        
+        //controllers
+        compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        
+        //ozmod
+        compile fileTree(dir: 'libs', include: '*.jar')
+        
+        //tweenengine
+        //compile "com.aurelienribon:tween-engine-api:+"
     }
 }
 

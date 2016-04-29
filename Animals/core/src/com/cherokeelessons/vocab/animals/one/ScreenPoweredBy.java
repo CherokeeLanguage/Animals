@@ -1,17 +1,9 @@
 package com.cherokeelessons.vocab.animals.one;
 
-import java.nio.IntBuffer;
-
-import aurelienribon.tweenengine.BaseTween;
-import aurelienribon.tweenengine.Timeline;
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -21,13 +13,17 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.BufferUtils;
 import com.cherokeelessons.common.GameMusic;
 import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.MusicAccessor;
 import com.cherokeelessons.common.SpriteAccessor;
 import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
+
+import aurelienribon.tweenengine.BaseTween;
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
 
 public class ScreenPoweredBy extends GameScreen {
 
@@ -77,8 +73,8 @@ public class ScreenPoweredBy extends GameScreen {
 	}
 
 	private void init() {
-		IntBuffer buf = BufferUtils.newIntBuffer(16);
-		Gdx.gl.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, buf);
+//		IntBuffer buf = BufferUtils.newIntBuffer(16);
+//		Gdx.gl.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, buf);
 		int packSize=Utils.getPackSize();
 		audio = new GameMusic(Gdx.audio.newMusic(Gdx.files.internal("libgdx/atmoseerie03.ogg")));
 		audio.setVolume(0f);

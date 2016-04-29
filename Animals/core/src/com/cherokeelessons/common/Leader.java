@@ -50,6 +50,9 @@ public class Leader {
 			@Override
 			public void failed(Throwable t) {
 			}
+			@Override
+			public void cancelled() {
+			}
 		};
 		Gdx.net.sendHttpRequest(request, cb_check_uuid);
 	}
@@ -76,6 +79,9 @@ public class Leader {
 			@Override
 			public void failed(Throwable t) {
 				t.printStackTrace();
+			}
+			@Override
+			public void cancelled() {
 			}
 		};
 		final Runnable postScore = new Runnable() {
@@ -148,6 +154,9 @@ public class Leader {
 			@Override
 			public void failed(Throwable t) {
 			}
+			@Override
+			public void cancelled() {
+			}
 		};
 		Gdx.net.sendHttpRequest(request, cb_scores);
 	}
@@ -177,6 +186,9 @@ public class Leader {
 			
 			@Override
 			public void failed(Throwable t) {
+			}
+			@Override
+			public void cancelled() {
 			}
 		};
 		Gdx.net.sendHttpRequest(request, cb_scores);

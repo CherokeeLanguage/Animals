@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.cherokeelessons.common.FontGenerator;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.OS;
-import com.google.common.eventbus.EventBus;
 
 /*
  * In game controls (pause, exit, mute)
@@ -31,8 +30,6 @@ public class ViewInGameControls extends Group {
 	Vector2 bottomRight = null;
 
 	private Label btn_Options = null;
-
-	private EventBus eventBus = null;
 
 	private int fontSize = 48;
 	// private Label lbl_pause = null;
@@ -83,13 +80,5 @@ public class ViewInGameControls extends Group {
 		btn_Options.setX(x);
 		btn_Options.setY(y);
 
-	}
-
-	public EventBus getEventBus() {
-		return eventBus;
-	}
-
-	public void setEventBus(EventBus eventBus) {
-		this.eventBus = eventBus;
 	}
 }

@@ -9,11 +9,13 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.cherokeelessons.common.DisplaySize;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
@@ -29,7 +31,7 @@ public abstract class GameScreen implements Screen {
 
 	final protected Rectangle screenSize;
 	final protected Color clearColor;
-	protected SpriteBatch batch;
+	protected Batch batch;
 
 	protected Stage gameStage;
 
@@ -58,8 +60,8 @@ public abstract class GameScreen implements Screen {
 		clearColor = new Color(Color.WHITE);
 
 		tmanager = new TweenManager();
-
-		gameStage = new Stage(screenSize.width, screenSize.height, true) {
+		
+		gameStage = new Stage(new FitViewport(screenSize.width, screenSize.height)) {
 			@Override
 			public boolean keyDown(int keyCode) {
 				if (keyCode == Input.Keys.ESCAPE) {
@@ -187,7 +189,7 @@ public abstract class GameScreen implements Screen {
 		newWidth = (float) Math.ceil(scale * width);
 		newHeight = (float) Math.ceil(scale * height);
 
-		gameStage.setViewport(newWidth, newHeight, true);
+		gameStage.setViewport(new FitViewport(newWidth, newHeight));
 		gameStage.getCamera().viewportHeight = newHeight;
 		gameStage.getCamera().viewportWidth = newWidth;
 		gameStage.getCamera().position.set(fullscan.width / 2,
@@ -218,6 +220,6 @@ public abstract class GameScreen implements Screen {
 	public void show() {
 		Gdx.input.setInputProcessor(gameStage);
 		tv_box = new ShapeRenderer();
-		batch = gameStage.getSpriteBatch();
+		batch = gameStage.getBatch();
 	}
 }

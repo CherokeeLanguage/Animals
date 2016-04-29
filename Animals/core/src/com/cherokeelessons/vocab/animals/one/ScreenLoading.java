@@ -1,11 +1,9 @@
 package com.cherokeelessons.vocab.animals.one;
 
-import java.nio.IntBuffer;
 import java.security.PublicKey;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -18,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.utils.BufferUtils;
 import com.cherokeelessons.common.FontGenerator;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.ModMusicPlayer;
@@ -62,8 +59,8 @@ public class ScreenLoading extends GameScreen {
 	}
 
 	protected TextureAtlas pack_9patches() {
-		IntBuffer buf = BufferUtils.newIntBuffer(16);
-		Gdx.gl.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, buf);
+//		IntBuffer buf = BufferUtils.newIntBuffer(16);
+//		Gdx.gl.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, buf);
 		int packSize=Utils.getPackSize();
 		PixmapPacker packer = new PixmapPacker(packSize, packSize, Format.RGBA8888, 2, true);
 		String t1 = Gdx.files.internal("9patch/00-plist.txt").readString("UTF-8");

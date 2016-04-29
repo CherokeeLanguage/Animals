@@ -24,7 +24,6 @@ import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.common.FontGenerator;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
-import com.cherokeelessons.common.Leader;
 import com.cherokeelessons.common.OS;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 import com.cherokeelessons.vocab.animals.one.enums.TrainingMode;
@@ -105,8 +104,6 @@ public class ScreenGameplay extends GameScreen {
 		challengeBoard = new ViewChallengeBoard(screenSize);
 		activehud = new ViewGameBoard(screenSize);
 		activehud.setTouchable(Touchable.disabled);
-
-		gameControls.setEventBus(game.ebus);
 
 		gameStage.addActor(pbar);
 		gameStage.addActor(scoreBoard);
@@ -580,7 +577,7 @@ public class ScreenGameplay extends GameScreen {
 		pause_texture = new Texture(pause_mask);
 		Image pause_mask_image = new Image(pause_texture);
 		pause_mask_image.pack();
-		pause_mask_image.scale(fullscan.width, fullscan.height);
+		pause_mask_image.scaleBy(fullscan.width, fullscan.height);
 		pauseOverlay.addActor(pause_mask_image);
 		LabelStyle continueStyle = new LabelStyle(new FontGenerator().gen(72), GameColor.GREEN);
 		String pauseMsg = isOuya?"Press [O] to continue.":"Tap to continue.";

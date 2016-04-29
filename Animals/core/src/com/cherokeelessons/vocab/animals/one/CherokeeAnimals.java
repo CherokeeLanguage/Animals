@@ -1,7 +1,5 @@
 package com.cherokeelessons.vocab.animals.one;
 
-import aurelienribon.tweenengine.Tween;
-
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -21,10 +19,9 @@ import com.cherokeelessons.common.Prefs;
 import com.cherokeelessons.common.SoundManager;
 import com.cherokeelessons.common.SpriteAccessor;
 import com.cherokeelessons.common.Toaster;
-import com.cherokeelessons.common.Toaster.Length;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+
+import aurelienribon.tweenengine.Tween;
 
 public class CherokeeAnimals implements ApplicationListener {
 
@@ -34,7 +31,6 @@ public class CherokeeAnimals implements ApplicationListener {
 
 	public Prefs prefs;
 	public TextureAtlas images_atlas;
-	protected EventBus ebus = new EventBus();
 	protected IAP iap = new IapNOP();
 
 	public void setIap(IAP iap) {
@@ -57,33 +53,31 @@ public class CherokeeAnimals implements ApplicationListener {
 	@Override
 	public void create() {
 		
-		if (!Gdx.graphics.isGL20Available()) {
-			if (toaster!=null) {
-				toaster.toast(BAD_GL_VERSION, Length.Long);
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-				}
-				toaster.toast("Upgrade your hardware!", Length.Long);
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-				}
-				Gdx.app.exit();
-				try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {
-				}
-				System.exit(0);
-			}
-		}
+//		if (!Gdx.graphics.isGL20Available()) {
+//			if (toaster!=null) {
+//				toaster.toast(BAD_GL_VERSION, Length.Long);
+//				try {
+//					Thread.sleep(5000);
+//				} catch (InterruptedException e) {
+//				}
+//				toaster.toast("Upgrade your hardware!", Length.Long);
+//				try {
+//					Thread.sleep(5000);
+//				} catch (InterruptedException e) {
+//				}
+//				Gdx.app.exit();
+//				try {
+//					Thread.sleep(250);
+//				} catch (InterruptedException e) {
+//				}
+//				System.exit(0);
+//			}
+//		}
 		
 		Gdx.app.log(this.getClass().getSimpleName(), "Initial Heap memory: "+Gdx.app.getJavaHeap());
 		Gdx.app.log(this.getClass().getSimpleName(), "Initial Native memory: "+Gdx.app.getNativeHeap());
 		Gdx.app.log(this.getClass().getSimpleName(), "Initial Free memory: "+Runtime.getRuntime().freeMemory());
 		
-		ebus.register(this);
-
 		Gdx.input.setCatchBackKey(true);
 		Gdx.input.setCatchMenuKey(true);
 
@@ -126,8 +120,20 @@ public class CherokeeAnimals implements ApplicationListener {
 
 	private ScreenCredits screenCredits;
 
-	@Subscribe
-	public void handleEvent(GameEventMessage event) {
+	public void gameEvent(final GameEvent gameEvent) {
+		gameEvent(new GameEventMessage(gameEvent));
+	}
+	
+	public void gameEvent(final GameEventMessage event) {
+		Gdx.app.postRunnable(new Runnable() {
+			@Override
+			public void run() {
+				_gameEvent(event);
+			}
+		});
+	}
+	//@Subscribe
+	private void _gameEvent(GameEventMessage event) {
 		switch (event.getEvent()) {
 		case libGdx:
 			setScreen(new ScreenPoweredBy(this));
@@ -211,15 +217,6 @@ public class CherokeeAnimals implements ApplicationListener {
 		default:
 			System.out.println("Event: " + event.getEvent().name());
 		}
-	}
-
-	public void gameEvent(final GameEvent gameEvent) {
-		Gdx.app.postRunnable(new Runnable() {
-			@Override
-			public void run() {
-				ebus.post(new GameEventMessage(gameEvent));
-			}
-		});
 	}
 
 	protected GameScreen screen;
