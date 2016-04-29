@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Leader;
@@ -67,9 +67,9 @@ public class ScreenLevelComplete extends GameScreen {
 	public ScreenLevelComplete(final CherokeeAnimals game) {
 		super(game);
 
-		FontGenerator fg = new FontGenerator();
+		FontLoader fg = new FontLoader();
 
-		font = fg.gen(fontSize);
+		font = fg.get(fontSize);
 
 		lStyle = new LabelStyle(font, GameColor.GREEN);
 		msg_accuracy = new Label(LEVEL + " " + (game.getLevelOn() + 1) + " "

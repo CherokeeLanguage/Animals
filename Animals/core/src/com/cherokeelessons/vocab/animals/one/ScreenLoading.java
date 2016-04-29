@@ -16,9 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.cherokeelessons.common.FontGenerator;
 import com.cherokeelessons.common.GameColor;
-import com.cherokeelessons.common.ModMusicPlayer;
 import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
@@ -26,7 +24,7 @@ import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 public class ScreenLoading extends GameScreen {
 
 	private static final int DesiredLevels = 18;
-	private String i_am_thinking = "Mi estas pensanta ...";
+	private String i_am_thinking = "ᎦᏓᏅᏖᎭ ...";
 	private TextureAtlas ta;
 	private Label loading; 
 	
@@ -42,7 +40,7 @@ public class ScreenLoading extends GameScreen {
 		AtlasRegion patch_texture = ta.findRegion("Blocks_01_64x64_Alt_04_003");
 		NinePatch patch = new NinePatch(patch_texture, 15, 15, 15, 15);
 		NinePatchDrawable patch_draw = new NinePatchDrawable(patch);
-		BitmapFont bf=game.fg.gen(144);		
+		BitmapFont bf=game.fg.get(128);		
 		LabelStyle style=new LabelStyle();
 		style.fontColor=GameColor.DARKGREEN;
 		style.font=bf;
@@ -98,7 +96,7 @@ public class ScreenLoading extends GameScreen {
 		batch.end();
 		if (!backgroundMusicStarted) {
 			backgroundMusicStarted=true;
-			game.musicPlayer = new ModMusicPlayer();
+			game.musicPlayer = new MusicPlayer();
 			game.musicPlayer.loadUsingPlist();
 			game.musicPlayer.play((float)game.prefs.getMasterVolume()*(float)game.prefs.getMusicVolume()/10000f);
 			return;
@@ -131,19 +129,6 @@ public class ScreenLoading extends GameScreen {
 			levelSet=true;
 			game.challenges.setLevelCount(DesiredLevels);
 			game.setLevels(game.challenges.levelcount());
-			return;
-		}
-		if (!fontsPrecalc) {
-			fontsPrecalc=true;
-			int[] fixed = {18,48};
-			int[] regular = {128,18,96,44,48,72,42,76,50};
-			FontGenerator fg = new FontGenerator();
-			for (int ix=0; ix<fixed.length; ix++) {
-				fg.genFixedNumbers(fixed[ix]);
-			}
-			for (int ix=0; ix<regular.length; ix++) {
-				fg.gen(regular[ix]);
-			}
 			return;
 		}
 		

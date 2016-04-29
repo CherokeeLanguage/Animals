@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.OS;
@@ -128,9 +128,9 @@ public class ScreenOptionsMenu extends GameScreen {
 
 		int displayLine;
 
-		FontGenerator fg = new FontGenerator();
-		font = fg.gen(optionItemSize);
-		BitmapFont ifont = fg.gen((optionItemSize * 2) / 3);
+		FontLoader fg = new FontLoader();
+		font = fg.get(optionItemSize);
+		BitmapFont ifont = fg.get((optionItemSize * 2) / 3);
 
 		textColor = GameColor.GREEN;
 

@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 
 /*
@@ -18,7 +18,7 @@ public class ViewChallengeBoard extends Group {
 	private Label displayText = null;
 	private BitmapFont font;
 
-	private FontGenerator fontGen;
+	private FontLoader fontGen;
 	private int fontSize = 96;
 
 	final private Rectangle screenSize = new Rectangle();
@@ -31,8 +31,8 @@ public class ViewChallengeBoard extends Group {
 		super();
 
 		this.screenSize.set(screenSize);
-		fontGen = new FontGenerator();
-		font = fontGen.gen(fontSize);
+		fontGen = new FontLoader();
+		font = fontGen.get(fontSize);
 		displayStyle = new LabelStyle(font, GameColor.GREEN);
 		displayText = new Label("", displayStyle);
 		clear();
@@ -63,9 +63,9 @@ public class ViewChallengeBoard extends Group {
 	 *            the fontSize to set
 	 */
 	public void setFontSize(int fontSize) {
-		FontGenerator fg = new FontGenerator();
+		FontLoader fg = new FontLoader();
 		this.fontSize = fontSize;
-		font = fg.gen(fontSize);
+		font = fg.get(fontSize);
 		displayStyle.font = font;
 		displayText.setStyle(displayStyle);
 	}

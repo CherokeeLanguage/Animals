@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.OS;
@@ -45,7 +45,7 @@ public class ScreenInstructions extends GameScreen {
 		init();
 	}
 
-	private FontGenerator fg;
+	private FontLoader fg;
 	private String[] instructionText = {
 			"-Instructions-",
 			"",
@@ -71,7 +71,7 @@ public class ScreenInstructions extends GameScreen {
 	private Color fontColor = GameColor.DARKGREEN;
 
 	public void init() {
-		fg = new FontGenerator();
+		fg = new FontLoader();
 
 		textLines = new TextButton[instructionText.length];
 
@@ -105,7 +105,7 @@ public class ScreenInstructions extends GameScreen {
 		maxLineHeight = 0;
 		TextButton creditLine;
 		TextButtonStyle style;
-		font = fg.gen(fontSize);
+		font = fg.get(fontSize);
 		for (ix = 0; ix < instructionText.length; ix++) {
 			if (instructionText[ix].length() < 1) {
 				textLines[ix] = null;
@@ -150,12 +150,12 @@ public class ScreenInstructions extends GameScreen {
 		float maxWidth = 0;
 
 		size = 72;
-		font = fg.gen(size);
+		font = fg.get(size);
 		testStyle = new TextButtonStyle();
 		testStyle.font = font;
 		testStyle.fontColor = new Color(fontColor);
 		testLabel = new TextButton("", testStyle);
-		font = fg.gen(size);
+		font = fg.get(size);
 		for (ix = 0; ix < instructionText.length; ix++) {
 			if (instructionText[ix].length() < 1)
 				continue;

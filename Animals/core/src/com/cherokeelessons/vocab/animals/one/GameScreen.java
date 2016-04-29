@@ -1,16 +1,13 @@
 package com.cherokeelessons.vocab.animals.one;
 
-import aurelienribon.tweenengine.TweenManager;
-
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
@@ -19,6 +16,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.cherokeelessons.common.DisplaySize;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
+
+import aurelienribon.tweenengine.TweenManager;
 
 public abstract class GameScreen implements Screen {
 

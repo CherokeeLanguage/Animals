@@ -18,23 +18,21 @@ public class Utils {
 
 	public Utils() {
 	}
-	
+
 	public static TextureAtlas initBackdrop(Array<Sprite> wall) {
 		TextureAtlas wall_atlas;
 		IntBuffer buf = BufferUtils.newIntBuffer(16);
 		Gdx.gl.glGetIntegerv(GL20.GL_MAX_TEXTURE_SIZE, buf);
 		int packSize = buf.get();
-		if (packSize>1024) packSize=1024;
+		if (packSize > 1024)
+			packSize = 1024;
 		wall.clear();
-		PixmapPacker pack = new PixmapPacker(packSize, packSize, Format.RGBA8888, 2,
-				true);
+		PixmapPacker pack = new PixmapPacker(packSize, packSize, Format.RGBA8888, 2, true);
 		for (int i = 0; i < 32; i++) {
-			pack.pack(
-					i + "",
-					new Pixmap(Gdx.files.internal("images/backgrounds/p_dsci2527_"+i+".png")));
+			Pixmap image = new Pixmap(Gdx.files.internal("images/backdrops/p_" + i + "_dsci2549.png"));
+			pack.pack(i + "", image);
 		}
-		wall_atlas = pack.generateTextureAtlas(TextureFilter.Linear,
-				TextureFilter.Linear, false);
+		wall_atlas = pack.generateTextureAtlas(TextureFilter.Linear, TextureFilter.Linear, false);
 
 		int px = 0;
 		int py = 0;
@@ -47,8 +45,7 @@ public class Utils {
 				int z = columns - (y + 1);
 				int p = z * perRow + x;
 				final AtlasRegion piece = wall_atlas.findRegion(p + "");
-				i = new Sprite(piece, 0, 0, piece.getRegionWidth(),
-						piece.getRegionHeight());
+				i = new Sprite(piece, 0, 0, piece.getRegionWidth(), piece.getRegionHeight());
 				i.setX(px);
 				i.setY(py);
 				i.setColor(1f, 1f, 1f, 0.35f);
@@ -64,9 +61,10 @@ public class Utils {
 		IntBuffer buf = BufferUtils.newIntBuffer(16);
 		Gdx.gl.glGetIntegerv(GL20.GL_MAX_TEXTURE_SIZE, buf);
 		int packSize = buf.get();
-		if (packSize>1024) packSize=1024;
-		if (packSize==0) {
-			packSize=512;
+		if (packSize > 1024)
+			packSize = 1024;
+		if (packSize == 0) {
+			packSize = 512;
 		}
 		return packSize;
 	}

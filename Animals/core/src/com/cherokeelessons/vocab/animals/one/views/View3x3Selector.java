@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 
 public class View3x3Selector extends Group {
@@ -35,7 +35,7 @@ public class View3x3Selector extends Group {
 
 	private Image[] buttons = new Image[9];
 
-	FontGenerator fg;
+	FontLoader fg;
 
 	private BitmapFont font = null;
 
@@ -51,8 +51,8 @@ public class View3x3Selector extends Group {
 	public View3x3Selector(Rectangle overscan) {
 		super();
 		screenSize.set(overscan);
-		fg = new FontGenerator();
-		font = fg.gen(baseFontSize);
+		fg = new FontLoader();
+		font = fg.get(baseFontSize);
 		titleStyle = new LabelStyle(font, GameColor.GREEN);
 		titleBox = new Label(" ", titleStyle);
 		this.addActor(titleBox);

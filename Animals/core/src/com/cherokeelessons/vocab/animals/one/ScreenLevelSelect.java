@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.IAP.Callback;
@@ -128,13 +128,13 @@ public class ScreenLevelSelect extends GameScreen {
 		LabelStyle ps = new LabelStyle();
 		int panel;
 		float bottomMargin;
-		FontGenerator fg = new FontGenerator();
+		FontLoader fg = new FontLoader();
 
 		panelSwitch = new Label[panelCount];
 		
 		minPercentAdvance = game.getMinPercent();
 
-		font = fg.gen(fontSize);
+		font = fg.get(fontSize);
 		ls.font = font;
 		ls.fontColor = new Color(fontColor);
 		ls.fontColor.a = 1f;

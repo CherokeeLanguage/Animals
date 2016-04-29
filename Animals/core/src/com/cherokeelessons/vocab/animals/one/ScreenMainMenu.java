@@ -9,28 +9,23 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
-import com.cherokeelessons.common.OS;
 import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
 public class ScreenMainMenu extends GameScreen {
 
-	public static final String INDICATOR = "images/indicators/abelo_6.png";
+	public static final String INDICATOR = "images/indicators/da-gi-si_2.png";
 	public static final float INDI_SCALE=.45f; 
 	private static class MenuLabel extends Label {
 
@@ -51,13 +46,13 @@ public class ScreenMainMenu extends GameScreen {
 		}
 	}
 
-	private static final String GAME_TITLE = "Esperanta Animaloj!";
-	private static final String NEW_GAME = "Nova Ludo / New Game";
-	private static final String LEADERS = "Altaj Poentaroj  / High Scores";
-	private static final String INSTRUCTIONS = "Instruoj / Instructions";
-	private static final String OPTIONS = "Agordoj / Options";
-	private static final String CREDITS = "Pri / About";
-	private static final String QUIT = "Halti / Quit";
+	private static final String GAME_TITLE = "ᎠᏂᏣᎳᎩ ᎡᎿᎢ!";
+	private static final String NEW_GAME = "New Game - ᎢᏤ ᏗᏁᎶᏗᎢ";
+	private static final String LEADERS = "High Scores - ᏬᏍᏓ ᏗᏎᏍᏗ";
+	private static final String INSTRUCTIONS = "Instructions - ᏗᏕᏲᏗ";
+	private static final String OPTIONS = "Options - ᎠᏑᏰᏍᏗᎢ";
+	private static final String CREDITS = "About - ᎢᎸᏢ";
+	private static final String QUIT = "Quit - ᎠᏑᎶᎪᏍᏗ";
 
 	private Array<MenuLabel> btns = new Array<MenuLabel>();
 
@@ -131,13 +126,13 @@ public class ScreenMainMenu extends GameScreen {
 		int fontSize = 96;
 		float graphicsHeight = 0;
 		float emptyHeight = 0;
-		FontGenerator fg = new FontGenerator();
+		FontLoader fg = new FontLoader();
 
 		BitmapFont bmFont;
-		bmFont = fg.gen(fontSize);
+		bmFont = fg.get(fontSize);
 
 		BitmapFont hsFont;
-		hsFont = fg.genFixedNumbers(fontSize / 2);
+		hsFont = fg.getFixed(fontSize / 2);
 
 		Color textColor = GameColor.GREEN;
 
@@ -344,7 +339,6 @@ public class ScreenMainMenu extends GameScreen {
 		highlight_button();
 	}
 
-	private float nagtick=0f;
 	@Override
 	public void render(float delta) {
 		super.render(delta);
@@ -355,53 +349,6 @@ public class ScreenMainMenu extends GameScreen {
 		}
 		batch.end();
 		gameStage.draw();
-		if (game.isNag()) {
-			nagtick+=delta;
-			if (nagtick>45f) {
-				nagtick=0f;
-				showNextNag();				
-			}
-		}
-	}
-
-	private Array<String> nags=new Array<String>();
-	private Label naglbl=null;
-	private void showNextNag() {
-		if (naglbl == null) {
-			BitmapFont f = new FontGenerator().gen(48);
-			LabelStyle ls = new LabelStyle();
-			ls.font = f;
-			ls.fontColor = GameColor.FIREBRICK;
-			naglbl = new Label("", ls);
-			naglbl.setTouchable(Touchable.disabled);
-			gameStage.addActor(naglbl);
-		}
-		if (nags.size==0) {
-			String tmp[] = Gdx.files.internal("data/desktop-nags.txt").readString("UTF-8").split("\n");
-			for (String msg: tmp) {
-				if (msg!=null && msg.length()>0) {
-					nags.add(msg);
-				}
-				nags.shuffle();
-			}			
-		}
-		final String nag = nags.get(0);
-		System.out.println(nag);
-		final Vector2 newpos = new Vector2();
-		nags.removeIndex(0);
-		final SequenceAction seq = Actions.sequence();
-		seq.addAction(Actions.moveTo(0, -1024, 5f, Interpolation.bounceOut));
-		seq.addAction(Actions.run(new Runnable() {			
-			@Override
-			public void run() {
-				naglbl.setText(nag);
-				naglbl.pack();
-				newpos.y=-screenSize.y;
-				newpos.x=(screenSize.width-naglbl.getWidth())/2;
-				seq.addAction(Actions.moveTo(newpos.x, newpos.y, 5f, Interpolation.bounceIn));
-			}
-		}));
-		naglbl.addAction(seq);
 	}
 
 	@Override
@@ -435,12 +382,5 @@ public class ScreenMainMenu extends GameScreen {
 		right_indicator.setScaleY(INDI_SCALE);
 
 		highlight_button();
-
-		if (OS.Platform.Android.equals(OS.platform)) {
-			game.setNag(false);
-		}
-		if (OS.Platform.Ouya.equals(OS.platform)) {
-			game.setNag(false);
-		}
 	}
 }

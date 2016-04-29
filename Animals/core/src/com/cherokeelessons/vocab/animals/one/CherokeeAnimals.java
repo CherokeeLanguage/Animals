@@ -7,25 +7,23 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.common.DisplaySize;
-import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameEventMessage;
 import com.cherokeelessons.common.GameMusic;
 import com.cherokeelessons.common.IAP;
 import com.cherokeelessons.common.IapNOP;
 import com.cherokeelessons.common.Leader;
-import com.cherokeelessons.common.ModMusicPlayer;
 import com.cherokeelessons.common.MusicAccessor;
 import com.cherokeelessons.common.Prefs;
 import com.cherokeelessons.common.SoundManager;
 import com.cherokeelessons.common.SpriteAccessor;
-import com.cherokeelessons.common.Toaster;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
 import aurelienribon.tweenengine.Tween;
 
 public class CherokeeAnimals implements ApplicationListener {
 
-	private static final String BAD_GL_VERSION = "Sorry! But your device does not support GL ES 2.0!";
+//	private static final String BAD_GL_VERSION = "Sorry! But your device does not support GL ES 2.0!";
 
 	final public static DisplaySize size = DisplaySize._1080p;
 
@@ -46,9 +44,9 @@ public class CherokeeAnimals implements ApplicationListener {
 
 	public SoundManager sm;
 
-	public FontGenerator fg;
+	public FontLoader fg;
 
-	public ModMusicPlayer musicPlayer;
+	public MusicPlayer musicPlayer;
 
 	@Override
 	public void create() {
@@ -97,7 +95,7 @@ public class CherokeeAnimals implements ApplicationListener {
 		Tween.registerAccessor(Sprite.class, new SpriteAccessor());
 
 		sm = new SoundManager(prefs);
-		fg = new FontGenerator();
+		fg = new FontLoader();
 
 		gameEvent(GameEvent.libGdx);
 	}
@@ -121,10 +119,12 @@ public class CherokeeAnimals implements ApplicationListener {
 	private ScreenCredits screenCredits;
 
 	public void gameEvent(final GameEvent gameEvent) {
+		Gdx.app.log(this.getClass().getName(), "gameEvent: "+gameEvent.name());
 		gameEvent(new GameEventMessage(gameEvent));
 	}
 	
 	public void gameEvent(final GameEventMessage event) {
+		Gdx.app.log(this.getClass().getName(), "gameEventMessage: "+event.getEvent().name());
 		Gdx.app.postRunnable(new Runnable() {
 			@Override
 			public void run() {
@@ -349,21 +349,4 @@ public class CherokeeAnimals implements ApplicationListener {
 	public void setLevelOn(int levelOn) {
 		this.levelOn = levelOn;
 	}
-
-	private boolean nag = false;
-
-	private Toaster toaster;
-
-	public boolean isNag() {
-		return nag;
-	}
-
-	public void setNag(boolean b) {
-		nag = b;
-	}
-
-	public void setToaster(Toaster toaster) {
-		this.toaster = toaster;		
-	}
-
 }

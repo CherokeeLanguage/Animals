@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.GamepadMap;
 import com.cherokeelessons.common.GamepadMap.Model;
@@ -94,11 +94,11 @@ public class ScreenTrainer extends GameScreen {
 	public ScreenTrainer(final CherokeeAnimals game) {
 		super(game);
 		isOuya=OS.Platform.Ouya.equals(OS.platform);
-		FontGenerator fg = new FontGenerator();
+		FontLoader fg = new FontLoader();
 		BitmapFont font;
 		Integer fontSize = 48;
 
-		font = fg.genFixedNumbers(fontSize);
+		font = fg.getFixed(fontSize);
 
 		buttonStyle = new LabelStyle();
 		buttonStyle.font = font;

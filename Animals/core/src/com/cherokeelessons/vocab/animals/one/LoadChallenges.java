@@ -39,8 +39,6 @@ public class LoadChallenges {
 
 	final private Array<String> challenges;
 
-	final private HashSet<String> challenges_plural;
-	
 	final private Array<String> challenges_single;
 	final private HashMap<String, ImageSet> imageDecks;
 	private boolean testmode=false;
@@ -54,16 +52,11 @@ public class LoadChallenges {
 		audioDecks = new HashMap<String, AudioSet>();
 		challenges = new Array<String>(count);
 		challenges_single = new Array<String>();
-		challenges_plural = new HashSet<String>();
 
 		for (FileHandle afile : audio) {
 			String name = afile.nameWithoutExtension();
 			challenges.add(name);
-			if (name.endsWith("j")) {
-				challenges_plural.add(name);
-			} else {
-				challenges_single.add(name);
-			}
+			challenges_single.add(name);
 			AudioSet aset = getAudioSetFor(name);
 			challengeAudio.put(name, aset);
 			ImageSet iset = getImageSetFor(name);
@@ -142,31 +135,6 @@ public class LoadChallenges {
 
 		challengeList.clear();
 		Array<String> list = giq.getIntervalQueue();
-		/*
-		 * shove in valid plurals at "positions" 5 and 7 also positions 12
-		 * and 14 for doubled up sets.
-		 */
-		for (int ic = 0; ic < seed.size; ic++) {
-			String challenge = seed.get(ic);
-			if (seed.indexOf(challenge, false) != ic) {
-				continue;
-			}
-			String plural = challenge + "j";
-			if (!challenges_plural.contains(plural)) {
-				continue;
-			}
-			int count = 0;
-			for (int ix = 0; ix < list.size; ix++) {
-				if (challenge.equals(list.get(ix))) {
-					count++;
-					if (count == 5 || count == 7 || count == 12
-							|| count == 14) {
-						list.set(ix, plural);
-					}
-				}
-			}
-		}
-
 		int split = list.size / screensPerChallengeSet;
 		int setStart = split * subSet;
 		int nextSet = split * (subSet + 1);

@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.OS;
 
@@ -45,8 +45,8 @@ public class ViewInGameControls extends Group {
 		bottomLeft = new Vector2(0, 0);
 		bottomCenter = new Vector2(overscan.width / 2, 0);
 
-		FontGenerator fg = new FontGenerator();
-		bitmapFont = fg.gen(fontSize);
+		FontLoader fg = new FontLoader();
+		bitmapFont = fg.get(fontSize);
 
 		labelStyle = new LabelStyle();
 		labelStyle.font = bitmapFont;

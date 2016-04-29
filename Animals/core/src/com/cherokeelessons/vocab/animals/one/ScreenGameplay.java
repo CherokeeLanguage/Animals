@@ -21,7 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.OS;
@@ -579,7 +579,7 @@ public class ScreenGameplay extends GameScreen {
 		pause_mask_image.pack();
 		pause_mask_image.scaleBy(fullscan.width, fullscan.height);
 		pauseOverlay.addActor(pause_mask_image);
-		LabelStyle continueStyle = new LabelStyle(new FontGenerator().gen(72), GameColor.GREEN);
+		LabelStyle continueStyle = new LabelStyle(new FontLoader().get(72), GameColor.GREEN);
 		String pauseMsg = isOuya?"Press [O] to continue.":"Tap to continue.";
 		Label toContinue = new Label(pauseMsg, continueStyle);
 		pauseOverlay.addActor(toContinue);

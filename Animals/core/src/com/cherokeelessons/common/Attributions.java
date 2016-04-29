@@ -14,7 +14,7 @@ public class Attributions extends Group {
 	final private Rectangle bbox=new Rectangle();
 	private String[] credits;
 
-	private FontGenerator fg;
+	private FontLoader fg;
 	private Color fontColor = Color.BLACK;
 	private int fontSize;
 	private float maxLineHeight;
@@ -43,12 +43,12 @@ public class Attributions extends Group {
 		float maxWidth = 0;
 
 		size = 72;
-		font = fg.gen(size);
+		font = fg.get(size);
 		testStyle = new TextButtonStyle();
 		testStyle.font = font;
 		testStyle.fontColor = new Color(fontColor);
 		testLabel = new TextButton("", testStyle);
-		font = fg.gen(size);
+		font = fg.get(size);
 		for (ix = 0; ix < credits.length; ix++) {
 			if (credits[ix].length() < 1)
 				continue;
@@ -77,7 +77,7 @@ public class Attributions extends Group {
 	}
 
 	public void init() {
-		fg = new FontGenerator();
+		fg = new FontLoader();
 		scrollingCredits = new TextButton[credits.length];
 		calculateFontSize();
 		populateCreditDisplay();
@@ -90,7 +90,7 @@ public class Attributions extends Group {
 		maxLineHeight = 0;
 		TextButton creditLine;
 		TextButtonStyle style;
-		font = fg.gen(fontSize);
+		font = fg.get(fontSize);
 		for (ix = 0; ix < credits.length; ix++) {
 			if (credits[ix].length() < 1) {
 				scrollingCredits[ix] = null;

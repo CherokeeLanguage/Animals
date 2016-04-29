@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.cherokeelessons.common.FontGenerator;
+import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.SoundManager;
 
@@ -87,8 +87,8 @@ public class ViewScoreBoard extends Group {
 		bbox.set(overscan);
 		this.sm = sm;
 
-		FontGenerator fg = new FontGenerator();
-		bitmapFont = fg.gen(fontSize);// ;fg.genFixedNumbers(fontSize);
+		FontLoader fg = new FontLoader();
+		bitmapFont = fg.get(fontSize);// ;fg.genFixedNumbers(fontSize);
 		boxStyle = new LabelStyle(bitmapFont, GameColor.GREEN);
 		scoreBox = new Label("", boxStyle);
 		setScore(0);
