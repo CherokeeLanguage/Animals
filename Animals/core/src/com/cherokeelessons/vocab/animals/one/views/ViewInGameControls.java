@@ -31,7 +31,7 @@ public class ViewInGameControls extends Group {
 
 	private Label btn_Options = null;
 	private Label btn_Pause = null;
-	private Label btn_Exit = null;
+//	private Label btn_Exit = null;
 
 	private int fontSize = 48;
 	private LabelStyle labelStyle = null;
@@ -58,13 +58,13 @@ public class ViewInGameControls extends Group {
 
 		btn_Options = new Label(TABLET_INFO, labelStyle);
 		btn_Pause = new Label("[PAUSE]", labelStyle);
-		btn_Exit = new Label("[EXIT]", labelStyle);
+//		btn_Exit = new Label("[EXIT]", labelStyle);
 
 		fixupPositions();
 
 		addActor(btn_Options);
 		addActor(btn_Pause);
-		addActor(btn_Exit);
+//		addActor(btn_Exit);
 	}
 
 	private void fixupPositions() {
@@ -73,7 +73,7 @@ public class ViewInGameControls extends Group {
 
 		btn_Options.pack();
 		btn_Pause.pack();
-		btn_Exit.pack();
+//		btn_Exit.pack();
 
 		/*
 		 * layout: left, center, right
@@ -97,19 +97,19 @@ public class ViewInGameControls extends Group {
 		btn_Options.setX(x);
 		btn_Options.setY(y);
 		
-		x = bottomRight.x - btn_Exit.getWidth();
-		y = bottomRight.y + bottomMargin;
-		btn_Exit.setX(x);
-		btn_Exit.setY(y);
-		btn_Exit.addListener(new InputListener(){
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				if (onExit!=null) {
-					Gdx.app.postRunnable(onExit);
-				}
-				return true;
-			}
-		});
+//		x = bottomRight.x - btn_Exit.getWidth();
+//		y = bottomRight.y + bottomMargin;
+//		btn_Exit.setX(x);
+//		btn_Exit.setY(y);
+//		btn_Exit.addListener(new InputListener(){
+//			@Override
+//			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+//				if (onExit!=null) {
+//					Gdx.app.postRunnable(onExit);
+//				}
+//				return true;
+//			}
+//		});
 	}
 
 	public void setOnPause(Runnable runnable) {

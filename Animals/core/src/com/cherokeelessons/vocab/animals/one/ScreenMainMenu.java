@@ -90,8 +90,7 @@ public class ScreenMainMenu extends GameScreen {
 		}
 	};
 
-	final Array<Sprite> wall = new Array<Sprite>();
-
+	private final Array<Sprite> wall = new Array<Sprite>();
 	private TextureAtlas wall_atlas;
 
 	final private ControllerMainMenu_Watch watcher = new ControllerMainMenu_Watch(

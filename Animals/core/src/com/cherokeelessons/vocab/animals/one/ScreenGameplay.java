@@ -584,7 +584,7 @@ public class ScreenGameplay extends GameScreen {
 		pauseOverlay.addActor(toContinue);
 		toContinue.pack();
 		toContinue.setX((fullscan.width-toContinue.getWidth())/2);
-		toContinue.setY((fullscan.height-toContinue.getHeight())/2);
+		toContinue.setY((fullscan.height-toContinue.getHeight())/2+toContinue.getHeight());
 		toContinue.addListener(new ClickListener(){	
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
@@ -593,6 +593,21 @@ public class ScreenGameplay extends GameScreen {
 				return true;
 			}
 		});
+		Label toExit = new Label("[EXIT]", continueStyle);
+		pauseOverlay.addActor(toExit);
+		toExit.pack();
+		toExit.setX((fullscan.width-toExit.getWidth())/2);
+		toExit.setY((fullscan.height-toExit.getHeight())/2-toExit.getHeight());
+		toExit.addListener(new ClickListener(){	
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				setPaused(false);
+				game.gameEvent(GameEvent.Done);
+				return true;
+			}
+		});
+		
 		//make sure pause overlay is in correct state
 		setPaused(isPaused());
 		updateChallengeBoard();// in case of challenge display option change
@@ -662,6 +677,7 @@ public class ScreenGameplay extends GameScreen {
 
 	private boolean switchToTrainer() {
 		if (game.prefs.getTrainingMode().equals(TrainingMode.Off)) {
+			alreadySeen.add(currentChallenge);
 			return false;
 		}
 		return !alreadySeen.contains(currentChallenge);

@@ -180,6 +180,7 @@ public class DreamLo {
 					if (score_record == null || score_record.length() == 0) {
 						continue;
 					}
+					
 					String[] s = score_record.split("\\|");
 					if (s == null || s.length < 4) {
 						continue;
@@ -196,19 +197,29 @@ public class DreamLo {
 					gs.tag = StringUtils.substringBefore(label, "!!!");
 					String decoded_other_name = StringUtils.substringAfter(label, "!!!");
 					String dreamLoId = StringUtils.defaultString(s[0]).trim();
+					try {
+						gs.levelOn=Integer.valueOf(StringUtils.substringAfter(dreamLoId, "-"));
+					} catch (NumberFormatException e) {
+						continue;
+					}
+					if (gs.levelOn==0){
+						continue;
+					}
 					gs.user = dreamLoId;
 					if (gs.user.startsWith(myId)) {
 						gs.user = decoded_other_name;
+						gs.isMe=true;
 					} else {
 						if (!decoded_other_name.matches(".*?[a-zA-Z].*?")) {
 							gs.user = StringUtils.left(decoded_other_name, 14) + " #" + dreamLoId;
 						}
+						gs.isMe=false;
 					}
 					gs.user = StringUtils.left(gs.user, 17);
-					gs.activeCards = StringUtils.defaultString(s[1]).trim();
-					gs.activeCards = StringUtils.reverse(gs.activeCards).replaceAll("(\\d{3})", "$1,");
-					gs.activeCards = StringUtils.reverse(gs.activeCards);
-					gs.activeCards = StringUtils.strip(gs.activeCards, ",");
+					gs.pctCorrect = StringUtils.defaultString(s[1]).trim();
+					gs.pctCorrect = StringUtils.reverse(gs.pctCorrect).replaceAll("(\\d{3})", "$1,");
+					gs.pctCorrect = StringUtils.reverse(gs.pctCorrect);
+					gs.pctCorrect = StringUtils.strip(gs.pctCorrect, ",");
 					gss.list.add(gs);
 				}
 				Comparator<GameScore> descending = new Comparator<GameScore>() {
@@ -223,35 +234,32 @@ public class DreamLo {
 						if (o1 == null) {
 							return 1;
 						}
-						if (StringUtils.isBlank(o1.tag) != StringUtils.isBlank(o2.tag)) {
-							return StringUtils.isBlank(o1.tag) ? 1 : -1;
-						}
-						long v1;
-						long v2;
+						int v1;
+						int v2;
 						try {
-							v1 = Long.valueOf(o1.activeCards.replace(",", ""));
+							v1 = Integer.valueOf(o1.pctCorrect.replace(",", ""));
 						} catch (NumberFormatException e) {
 							v1 = 0;
 						}
 						try {
-							v2 = Long.valueOf(o2.activeCards.replace(",", ""));
+							v2 = Integer.valueOf(o2.pctCorrect.replace(",", ""));
 						} catch (NumberFormatException e) {
 							v2 = 0;
 						}
 						if (v1 != v2) {
-							return v1 < v2 ? 1 : -1;
+							return v2-v1;
 						}
 						try {
-							v1 = Long.valueOf(o1.score.replace(",", ""));
+							v1 = Integer.valueOf(o1.score.replace(",", ""));
 						} catch (NumberFormatException e) {
 							v1 = 0;
 						}
 						try {
-							v2 = Long.valueOf(o2.score.replace(",", ""));
+							v2 = Integer.valueOf(o2.score.replace(",", ""));
 						} catch (NumberFormatException e) {
 							v2 = 0;
 						}
-						return v1 < v2 ? 1 : v1 > v2 ? -1 : 0;
+						return v2-v1;
 					}
 				};
 				Collections.sort(gss.list, descending);

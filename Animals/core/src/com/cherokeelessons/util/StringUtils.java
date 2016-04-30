@@ -2,6 +2,7 @@ package com.cherokeelessons.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class StringUtils {
 
@@ -782,4 +783,85 @@ public class StringUtils {
 		return list.toArray(new String[list.size()]);
 	}
 
+	/**
+     * <p>
+     * Similar to <a
+     * href="http://www.w3.org/TR/xpath/#function-normalize-space">http://www.w3.org/TR/xpath/#function-normalize
+     * -space</a>
+     * </p>
+     * <p>
+     * The function returns the argument string with whitespace normalized by using
+     * <code>{@link #trim(String)}</code> to remove leading and trailing whitespace
+     * and then replacing sequences of whitespace characters by a single space.
+     * </p>
+     * In XML Whitespace characters are the same as those allowed by the <a
+     * href="http://www.w3.org/TR/REC-xml/#NT-S">S</a> production, which is S ::= (#x20 | #x9 | #xD | #xA)+
+     * <p>
+     * Java's regexp pattern \s defines whitespace as [ \t\n\x0B\f\r]
+     * <p>
+     * For reference:
+     * <ul>
+     * <li>\x0B = vertical tab</li>
+     * <li>\f = #xC = form feed</li>
+     * <li>#x20 = space</li>
+     * <li>#x9 = \t</li>
+     * <li>#xA = \n</li>
+     * <li>#xD = \r</li>
+     * </ul>
+     * </p>
+     * <p>
+     * The difference is that Java's whitespace includes vertical tab and form feed, which this functional will also
+     * normalize. Additionally <code>{@link #trim(String)}</code> removes control characters (char &lt;= 32) from both
+     * ends of this String.
+     * </p>
+     *
+     * @see Pattern
+     * @see #trim(String)
+     * @see <a
+     *      href="http://www.w3.org/TR/xpath/#function-normalize-space">http://www.w3.org/TR/xpath/#function-normalize-space</a>
+     * @param str the source String to normalize whitespaces from, may be null
+     * @return the modified string with whitespace normalized, {@code null} if null String input
+     *
+     * @since 3.0
+     */
+    public static String normalizeSpace(String str) {
+        if (str == null) {
+            return null;
+        }
+        return WHITESPACE_BLOCK.matcher(trim(str)).replaceAll(" ");
+    }
+    
+    /**
+     * A regex pattern for recognizing blocks of whitespace characters.
+     */
+    private static final Pattern WHITESPACE_BLOCK = Pattern.compile("\\s+");
+    
+ // Trim
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Removes control characters (char &lt;= 32) from both
+     * ends of this String, handling {@code null} by returning
+     * {@code null}.</p>
+     *
+     * <p>The String is trimmed using {@link String#trim()}.
+     * Trim removes start and end characters &lt;= 32.
+     * To strip whitespace use {@link #strip(String)}.</p>
+     *
+     * <p>To trim your choice of characters, use the
+     * {@link #strip(String, String)} methods.</p>
+     *
+     * <pre>
+     * StringUtils.trim(null)          = null
+     * StringUtils.trim("")            = ""
+     * StringUtils.trim("     ")       = ""
+     * StringUtils.trim("abc")         = "abc"
+     * StringUtils.trim("    abc    ") = "abc"
+     * </pre>
+     *
+     * @param str  the String to be trimmed, may be null
+     * @return the trimmed string, {@code null} if null String input
+     */
+    public static String trim(String str) {
+        return str == null ? null : str.trim();
+    }
 }

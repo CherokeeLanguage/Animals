@@ -6,10 +6,25 @@ Michael Joyner / ᎹᎦᎵ ᏗᏁᏍᎨᏍᎩ
 - Audio -
 Audio Challenges - Michael Joyner
 Audio Effects - freesound.org
+
 All audio effects are cc-zero or public domain.
+
+- Music -
+"absolute xtc" - by m0d
+"happy" - by m0d
+"spo" - by m0d
+"calling 4 dx?!" - by m0d
+"cute october" - by m0d
+"pleasant2" - by m0d
+"rubbish2" - by m0d
+"wild perspective" - by m0d
+
+All music is cc-zero or public domain.
+http://modarchive.org
 
 - Font -
 Cherokee Hand One - by Joseph Erb
+https://www.facebook.com/joseph.erb
 
 - Language Reference -
 Language Assistance - ᏣᎵ ᎡᎵᏂ ᎠᏍᎦᏳᏏᏩᏍᎩ
@@ -19,6 +34,5 @@ Cherokee-English Dictionary (Durbin-Feeling)
 OpenClipart.Org
 Commons.Wikimedia.Org
 All pictures are cc-zero or public domain.
-http://www.CherokeeLessons.com/
 
-Game Version 5.01 (2016)
+http://www.CherokeeLessons.com/

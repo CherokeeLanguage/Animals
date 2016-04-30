@@ -89,6 +89,9 @@ public class CherokeeAnimals implements ApplicationListener {
 	//@Subscribe
 	private void _gameEvent(GameEventMessage event) {
 		switch (event.getEvent()) {
+		case ShowLeaderBoard:
+			setScreen(new ScreenHighScores(this));
+			break;
 		case libGdx:
 			setScreen(new ScreenPoweredBy(this));
 			break;
