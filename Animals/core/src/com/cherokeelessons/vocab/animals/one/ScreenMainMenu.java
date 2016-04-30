@@ -134,7 +134,7 @@ public class ScreenMainMenu extends GameScreen {
 		BitmapFont hsFont;
 		hsFont = fg.getFixed(fontSize / 2);
 
-		Color textColor = GameColor.GREEN;
+		Color textColor = GameColor.MAIN_TEXT;
 
 		MenuLabel titleText = null;
 		LabelStyle titleStyle = null;

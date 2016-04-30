@@ -38,7 +38,7 @@ public class ScreenLevelSelect extends GameScreen {
 			.internal("buttons/2714_white.png");
 	private BitmapFont font;
 
-	private Color fontColor = GameColor.GREEN;
+	private Color fontColor = GameColor.MAIN_TEXT;
 
 	private int fontSize = 44;
 
@@ -97,7 +97,7 @@ public class ScreenLevelSelect extends GameScreen {
 		ls.fontColor.a = 1f;
 
 		ps.font = font;
-		ps.fontColor = new Color(GameColor.GREEN);
+		ps.fontColor = new Color(GameColor.MAIN_TEXT);
 		ps.fontColor.a = 1f;
 		panelSwitch[0] = new Label(TAB_PANEL1_TEXT, ps);
 		panelSwitch[1] = new Label(TAB_PANEL2_TEXT,	ps);
@@ -384,7 +384,7 @@ public class ScreenLevelSelect extends GameScreen {
 					if (alpha < 0f)
 						alpha = 0f;
 					viewPanel.setImage(ix, didGood);
-					viewPanel.setColor(ix, GameColor.GREEN);
+					viewPanel.setColor(ix, GameColor.MAIN_TEXT);
 					viewPanel.setAlpha(ix, alpha);
 				} else {
 					viewPanel.setImage(ix, levelLockedPic);

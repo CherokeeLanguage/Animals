@@ -139,7 +139,7 @@ public class ScreenGameplay extends GameScreen {
 	private void buttonAsCorrect(int button) {
 		buttonPicture[button] = "";
 		gameBoard.setImage(button, fat_check);
-		gameBoard.setColor(button, GameColor.GREEN);
+		gameBoard.setColor(button, GameColor.MAIN_TEXT);
 		markedCorrect++;
 	}
 
@@ -408,7 +408,8 @@ public class ScreenGameplay extends GameScreen {
 		}
 		percent = (float) markedCorrect / (float) totalMarks;
 		game.prefs.setLevelAccuracy(game.getLevelOn(), (int) (100f * percent));
-		game.prefs.setLevelTime(game.getLevelOn(), boardElapsed);		
+		game.prefs.setLevelTime(game.getLevelOn(), boardElapsed);
+		game.prefs.setLastScore(game.getLevelOn(), scoreBoard.getScore());
 		game.sm.playEffect("cash_out");
 		game.gameEvent(GameEvent.LevelComplete);
 	}
@@ -577,7 +578,7 @@ public class ScreenGameplay extends GameScreen {
 		pause_mask_image.pack();
 		pause_mask_image.scaleBy(fullscan.width, fullscan.height);
 		pauseOverlay.addActor(pause_mask_image);
-		LabelStyle continueStyle = new LabelStyle(new FontLoader().get(72), GameColor.GREEN);
+		LabelStyle continueStyle = new LabelStyle(new FontLoader().get(72), GameColor.MAIN_TEXT);
 		String pauseMsg = "[CONTINUE]";
 		Label toContinue = new Label(pauseMsg, continueStyle);
 		pauseOverlay.addActor(toContinue);

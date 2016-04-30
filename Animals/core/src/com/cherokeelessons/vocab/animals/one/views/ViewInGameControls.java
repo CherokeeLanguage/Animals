@@ -54,7 +54,7 @@ public class ViewInGameControls extends Group {
 
 		labelStyle = new LabelStyle();
 		labelStyle.font = bitmapFont;
-		labelStyle.fontColor = GameColor.GREEN;
+		labelStyle.fontColor = GameColor.MAIN_TEXT;
 
 		btn_Options = new Label(TABLET_INFO, labelStyle);
 		btn_Pause = new Label("[PAUSE]", labelStyle);

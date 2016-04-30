@@ -27,7 +27,7 @@ public class FontLoader {
 	}
 
 	public BitmapFont get(int size) {
-		String fileName = "fonts/script-"+size+".fnt";
+		String fileName = "fonts/script-heavy-"+size+".fnt";
 		Gdx.app.log(this.getClass().getName(), "get: "+fileName);
 		if (!fonts.isLoaded(fileName)) {
 			fonts.load(fileName, BitmapFont.class, param);
@@ -39,7 +39,7 @@ public class FontLoader {
 	}
 
 	public BitmapFont getFixed(int size) {
-		String fileName = "fonts/script-"+size+".fnt";
+		String fileName = "fonts/script-heavy-"+size+".fnt";
 		Gdx.app.log(this.getClass().getName(), "getFixed: "+fileName);
 		if (!fonts_fixed.isLoaded(fileName)) {
 			fonts_fixed.load(fileName, BitmapFont.class, param);

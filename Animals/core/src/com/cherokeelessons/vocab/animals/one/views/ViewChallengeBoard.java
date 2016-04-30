@@ -33,7 +33,7 @@ public class ViewChallengeBoard extends Group {
 		this.screenSize.set(screenSize);
 		fontGen = new FontLoader();
 		font = fontGen.get(fontSize);
-		displayStyle = new LabelStyle(font, GameColor.GREEN);
+		displayStyle = new LabelStyle(font, GameColor.MAIN_TEXT);
 		displayText = new Label("", displayStyle);
 		clear();
 		addActor(displayText);

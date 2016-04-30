@@ -10,18 +10,16 @@ import com.cherokeelessons.common.DisplaySize;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameEventMessage;
 import com.cherokeelessons.common.GameMusic;
-import com.cherokeelessons.common.Leader;
 import com.cherokeelessons.common.MusicAccessor;
 import com.cherokeelessons.common.Prefs;
 import com.cherokeelessons.common.SoundManager;
 import com.cherokeelessons.common.SpriteAccessor;
+import com.cherokeelessons.util.DreamLo;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
 import aurelienribon.tweenengine.Tween;
 
 public class CherokeeAnimals implements ApplicationListener {
-
-//	private static final String BAD_GL_VERSION = "Sorry! But your device does not support GL ES 2.0!";
 
 	final public static DisplaySize size = DisplaySize._1080p;
 
@@ -45,15 +43,7 @@ public class CherokeeAnimals implements ApplicationListener {
 
 		prefs = new Prefs(this);
 		
-		Leader.uuid=prefs.getUuid();
-		final Leader lb = new Leader();
-		Runnable cb_uuid=new Runnable() {
-			@Override
-			public void run() {
-				prefs.setUuid(Leader.uuid);
-			}
-		};
-		lb.checkUuid(Leader.uuid, cb_uuid);
+		new DreamLo(prefs).registerWithDreamLoBoard();
 		
 		Tween.registerAccessor(GameMusic.class, new MusicAccessor());
 		Tween.registerAccessor(Sprite.class, new SpriteAccessor());

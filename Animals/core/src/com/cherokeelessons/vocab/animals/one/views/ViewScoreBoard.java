@@ -89,7 +89,7 @@ public class ViewScoreBoard extends Group {
 
 		FontLoader fg = new FontLoader();
 		bitmapFont = fg.get(fontSize);// ;fg.genFixedNumbers(fontSize);
-		boxStyle = new LabelStyle(bitmapFont, GameColor.GREEN);
+		boxStyle = new LabelStyle(bitmapFont, GameColor.MAIN_TEXT);
 		scoreBox = new Label("", boxStyle);
 		setScore(0);
 		fixUpPosition();

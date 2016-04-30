@@ -16,7 +16,8 @@ public class GameColor {
 	public static final Color GOLD3 = new Color(205f / 255f, 173f / 255f,
 			0f / 255f, 1);
 	public static final Color GREEN = new Color(0, .5f, 0, 1);
-	public static final Color DARKGREEN = new Color(0, .25f, 0, 1);
+	public static final Color MAIN_TEXT = new Color(0, .45f, 0, 1);
+	public static final Color INSTRUCTIONS_TEXT = new Color(0, .30f, 0, 1);
 	public static final Color PURPLE = new Color(128f / 255f, 0f / 255f,
 			128f / 255f, 1);
 }

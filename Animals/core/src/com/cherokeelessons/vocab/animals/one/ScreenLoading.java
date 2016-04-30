@@ -40,7 +40,7 @@ public class ScreenLoading extends GameScreen {
 		NinePatchDrawable patch_draw = new NinePatchDrawable(patch);
 		BitmapFont bf=game.fg.get(128);		
 		LabelStyle style=new LabelStyle();
-		style.fontColor=GameColor.DARKGREEN;
+		style.fontColor=GameColor.MAIN_TEXT;
 		style.font=bf;
 		style.background=patch_draw;
 		loading=new Label(i_am_thinking, style);

@@ -53,7 +53,7 @@ public class View3x3Selector extends Group {
 		screenSize.set(overscan);
 		fg = new FontLoader();
 		font = fg.get(baseFontSize);
-		titleStyle = new LabelStyle(font, GameColor.GREEN);
+		titleStyle = new LabelStyle(font, GameColor.MAIN_TEXT);
 		titleBox = new Label(" ", titleStyle);
 		this.addActor(titleBox);
 		buttonGroup = new Group();

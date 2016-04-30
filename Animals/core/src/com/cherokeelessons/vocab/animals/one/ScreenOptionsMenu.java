@@ -127,7 +127,7 @@ public class ScreenOptionsMenu extends GameScreen {
 		font = fg.get(optionItemSize);
 		BitmapFont ifont = fg.get(64);
 
-		textColor = GameColor.GREEN;
+		textColor = GameColor.MAIN_TEXT;
 
 		buttonStyle = new LabelStyle();
 		buttonStyle.font = font;

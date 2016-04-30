@@ -100,7 +100,7 @@ public class ScreenTrainer extends GameScreen {
 
 		buttonStyle = new LabelStyle();
 		buttonStyle.font = font;
-		buttonStyle.fontColor = GameColor.GREEN;
+		buttonStyle.fontColor = GameColor.MAIN_TEXT;
 
 		lbl_exitInfo = new Label("[SKIP]", buttonStyle);
 		lbl_exitInfo.setTouchable(Touchable.enabled);

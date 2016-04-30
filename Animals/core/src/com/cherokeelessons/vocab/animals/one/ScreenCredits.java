@@ -44,7 +44,7 @@ public class ScreenCredits extends GameScreen {
 		shadow.setyOffset(-2);
 
 		creditScroller = new Attributions(screenSize);
-		creditScroller.setFontColor(GameColor.GREEN);
+		creditScroller.setFontColor(GameColor.MAIN_TEXT);
 
 		wall_atlas=Utils.initBackdrop(wall);
 

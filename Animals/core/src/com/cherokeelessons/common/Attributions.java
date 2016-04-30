@@ -15,7 +15,7 @@ public class Attributions extends Group {
 	private String[] credits;
 
 	private FontLoader fg;
-	private Color fontColor = Color.BLACK;
+	private Color fontColor = new Color(Color.BLACK);
 	private int fontSize=88;
 	private float maxLineHeight;
 
