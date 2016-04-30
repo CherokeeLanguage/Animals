@@ -10,8 +10,6 @@ import com.cherokeelessons.common.DisplaySize;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameEventMessage;
 import com.cherokeelessons.common.GameMusic;
-import com.cherokeelessons.common.IAP;
-import com.cherokeelessons.common.IapNOP;
 import com.cherokeelessons.common.Leader;
 import com.cherokeelessons.common.MusicAccessor;
 import com.cherokeelessons.common.Prefs;
@@ -29,15 +27,6 @@ public class CherokeeAnimals implements ApplicationListener {
 
 	public Prefs prefs;
 	public TextureAtlas images_atlas;
-	protected IAP iap = new IapNOP();
-
-	public void setIap(IAP iap) {
-		this.iap = iap;
-	}
-
-	public IAP getIap() {
-		return iap;
-	}
 
 	public CherokeeAnimals() {
 	}
@@ -50,31 +39,6 @@ public class CherokeeAnimals implements ApplicationListener {
 
 	@Override
 	public void create() {
-		
-//		if (!Gdx.graphics.isGL20Available()) {
-//			if (toaster!=null) {
-//				toaster.toast(BAD_GL_VERSION, Length.Long);
-//				try {
-//					Thread.sleep(5000);
-//				} catch (InterruptedException e) {
-//				}
-//				toaster.toast("Upgrade your hardware!", Length.Long);
-//				try {
-//					Thread.sleep(5000);
-//				} catch (InterruptedException e) {
-//				}
-//				Gdx.app.exit();
-//				try {
-//					Thread.sleep(250);
-//				} catch (InterruptedException e) {
-//				}
-//				System.exit(0);
-//			}
-//		}
-		
-		Gdx.app.log(this.getClass().getSimpleName(), "Initial Heap memory: "+Gdx.app.getJavaHeap());
-		Gdx.app.log(this.getClass().getSimpleName(), "Initial Native memory: "+Gdx.app.getNativeHeap());
-		Gdx.app.log(this.getClass().getSimpleName(), "Initial Free memory: "+Runtime.getRuntime().freeMemory());
 		
 		Gdx.input.setCatchBackKey(true);
 		Gdx.input.setCatchMenuKey(true);
@@ -247,8 +211,10 @@ public class CherokeeAnimals implements ApplicationListener {
 
 	@Override
 	public void resize(int width, int height) {
-		if (screen != null)
+		Gdx.app.log(this.getClass().getName(), "resize: "+width+"x"+height);
+		if (screen != null) {
 			screen.resize(width, height);
+		}
 	}
 
 	/**
@@ -260,6 +226,7 @@ public class CherokeeAnimals implements ApplicationListener {
 	 */
 	public void setScreen(GameScreen screen) {
 		setScreen(screen, true);
+		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 
 	public void recordScreen(GameScreen screen) {
@@ -292,8 +259,6 @@ public class CherokeeAnimals implements ApplicationListener {
 				recordScreen(this.screen);
 			}
 			this.screen.show();
-			this.screen.resize(Gdx.graphics.getWidth(),
-					Gdx.graphics.getHeight());
 		}
 	}
 

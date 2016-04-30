@@ -17,7 +17,7 @@ import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.GamepadMap;
 import com.cherokeelessons.common.GamepadMap.Model;
 import com.cherokeelessons.common.Gamepads;
-import com.cherokeelessons.common.OS;
+import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 import com.cherokeelessons.vocab.animals.one.enums.TrainingMode;
 import com.cherokeelessons.vocab.animals.one.views.View3x3Selector;
@@ -90,10 +90,8 @@ public class ScreenTrainer extends GameScreen {
 
 	private ViewChallengeBoard writtenChallenge;
 
-	private boolean isOuya;
 	public ScreenTrainer(final CherokeeAnimals game) {
 		super(game);
-		isOuya=OS.Platform.Ouya.equals(OS.platform);
 		FontLoader fg = new FontLoader();
 		BitmapFont font;
 		Integer fontSize = 48;
@@ -104,7 +102,7 @@ public class ScreenTrainer extends GameScreen {
 		buttonStyle.font = font;
 		buttonStyle.fontColor = GameColor.GREEN;
 
-		lbl_exitInfo = new Label(isOuya?"[O] Skip Training":"Tap here to skip.", buttonStyle);
+		lbl_exitInfo = new Label("[SKIP]", buttonStyle);
 		lbl_exitInfo.setTouchable(Touchable.enabled);
 		lbl_exitInfo.setX(screenSize.width - lbl_exitInfo.getWidth());
 		lbl_exitInfo.setY(screenSize.height - lbl_exitInfo.getHeight());
@@ -231,11 +229,11 @@ public class ScreenTrainer extends GameScreen {
 	private void updateChallengeBoard() {
 		String challenge;
 		switch (game.prefs.getChallengeMode()) {
-		case Esperanto:
-			challenge = GraduatedIntervalQueue.esperanto_unescape(currentChallenge);
+		case Latin:
+			challenge = Utils.asLatin(currentChallenge);
 			break;
-		case EsperantoX:
-			challenge = currentChallenge;
+		case Syllabary:
+			challenge = Utils.asSyllabary(currentChallenge);
 			break;
 		default:
 			challenge = "";

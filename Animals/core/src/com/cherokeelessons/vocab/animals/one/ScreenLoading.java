@@ -1,7 +1,5 @@
 package com.cherokeelessons.vocab.animals.one;
 
-import java.security.PublicKey;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -87,6 +85,7 @@ public class ScreenLoading extends GameScreen {
 	boolean levelSet=false;
 	boolean fontsPrecalc=false;
 	private boolean backgroundMusicStarted=false;
+	private boolean syllabaryMapInit=false;
 	@Override
 	public void render(float delta) {
 		super.render(delta);
@@ -102,15 +101,6 @@ public class ScreenLoading extends GameScreen {
 			return;
 		}
 		if (!game.sm.preloadDone()) {
-			return;
-		}
-		if (!gotPublicKey) {
-			gotPublicKey = true;
-			PublicKey pk = game.iap.getPublicKey();
-			if (pk != null) {
-				Gdx.app.log("PublicKey Format: ", pk.getFormat());
-				Gdx.app.log("PublicKey Algorithm: ", pk.getAlgorithm());
-			}
 			return;
 		}
 		if (!challengesLoaded) {
@@ -129,6 +119,11 @@ public class ScreenLoading extends GameScreen {
 			levelSet=true;
 			game.challenges.setLevelCount(DesiredLevels);
 			game.setLevels(game.challenges.levelcount());
+			return;
+		}
+		if (!syllabaryMapInit) {
+			Utils.initTranslationMap();
+			syllabaryMapInit=true;
 			return;
 		}
 		

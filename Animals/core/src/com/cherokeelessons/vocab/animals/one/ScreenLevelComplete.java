@@ -14,21 +14,17 @@ import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Leader;
 import com.cherokeelessons.common.Leader.CB_AddScore;
-import com.cherokeelessons.common.OS;
 import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.leaderboards.pojo.BoardScore;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
 public class ScreenLevelComplete extends GameScreen {
 
-	private static final String OUYA_NEXT_LEVEL = "[O] - Choose Another Level";
 	private static final String TABLET_NEXT_LEVEL = "Tap Here to Choose Another Level";
 	private static final String COMPLETE = "Complete!";
 	private static final String CORRECT = "% Correct!";
 	private static final String LEVEL = "Level";
-	private static final String OUYA_PLAY_AGAIN = "[U] - Play Level Again";
 	private static final String TABLET_PLAY_AGAIN = "Tap Here to Play Level Again";
-	private static final String OUYA_MAIN = "[A] - Return to Main Menu";
 	private static final String TABLET_MAIN = "Tap here to Return to Main Menu";
 
 	private BitmapFont font;
@@ -84,9 +80,7 @@ public class ScreenLevelComplete extends GameScreen {
 		tbStyle.font = font;
 		tbStyle.fontColor = GameColor.GREEN;
 
-		boolean ouya = OS.Platform.Ouya.equals(OS.platform);
-		playLevelAgain = new Label(ouya ? OUYA_PLAY_AGAIN : TABLET_PLAY_AGAIN,
-				tbStyle);
+		playLevelAgain = new Label(TABLET_PLAY_AGAIN, tbStyle);
 		playLevelAgain.pack();
 		playLevelAgain.addCaptureListener(new ClickListener(){
 
@@ -99,8 +93,7 @@ public class ScreenLevelComplete extends GameScreen {
 			
 		});
 
-		goLevelSelect = new Label(ouya ? OUYA_NEXT_LEVEL : TABLET_NEXT_LEVEL,
-				tbStyle);
+		goLevelSelect = new Label(TABLET_NEXT_LEVEL, tbStyle);
 		goLevelSelect.addCaptureListener(new ClickListener(){
 
 			@Override
@@ -113,7 +106,7 @@ public class ScreenLevelComplete extends GameScreen {
 		});
 		goLevelSelect.pack();
 
-		gotoMainMenu = new Label(ouya ? OUYA_MAIN : TABLET_MAIN, tbStyle);
+		gotoMainMenu = new Label(TABLET_MAIN, tbStyle);
 		gotoMainMenu.addCaptureListener(new ClickListener(){
 
 			@Override

@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.cherokeelessons.common.DisplaySize;
 import com.cherokeelessons.common.GameColor;
@@ -60,7 +61,7 @@ public abstract class GameScreen implements Screen {
 
 		tmanager = new TweenManager();
 		
-		gameStage = new Stage(new FitViewport(screenSize.width, screenSize.height)) {
+		gameStage = new Stage(new FitViewport(fullscan.width, fullscan.height)) {
 			@Override
 			public boolean keyDown(int keyCode) {
 				if (keyCode == Input.Keys.ESCAPE) {
@@ -85,7 +86,7 @@ public abstract class GameScreen implements Screen {
 		};
 		gameStage.getRoot().setX(screenSize.x);
 		gameStage.getRoot().setY(screenSize.y);
-
+		gameStage.getRoot().setTouchable(Touchable.enabled);
 	}
 
 	protected void clearScreen() {
@@ -134,6 +135,7 @@ public abstract class GameScreen implements Screen {
 
 	@Override
 	public void hide() {
+		Gdx.app.log(this.getClass().getName(), "hide");
 		disconnectInputProcessor();
 		if (tv_box != null) {
 			tv_box.dispose();
@@ -170,31 +172,8 @@ public abstract class GameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		float scale_h;
-		float scale;
-		float newWidth;
-		float newHeight;
-
-		/*
-		 * http://www.badlogicgames.com/forum/viewtopic.php?f=11&t=3422
-		 */
-		scale = (float) fullscan.width / (float) width;
-		scale_h = (float) fullscan.height / (float) height;
-
-		if (scale_h > scale) {
-			scale = scale_h;
-		}
-
-		newWidth = (float) Math.ceil(scale * width);
-		newHeight = (float) Math.ceil(scale * height);
-
-		gameStage.setViewport(new FitViewport(newWidth, newHeight));
-		gameStage.getCamera().viewportHeight = newHeight;
-		gameStage.getCamera().viewportWidth = newWidth;
-		gameStage.getCamera().position.set(fullscan.width / 2,
-				fullscan.height / 2, 0);
-		gameStage.getCamera().update();
-
+		Gdx.app.log(this.getClass().getName(), "resize: "+width+"x"+height);
+		gameStage.getViewport().update(width, height, true);
 		batch.setProjectionMatrix(gameStage.getCamera().combined);
 	}
 

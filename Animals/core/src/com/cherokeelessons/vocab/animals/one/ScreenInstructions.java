@@ -1,5 +1,6 @@
 package com.cherokeelessons.vocab.animals.one;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -15,7 +16,6 @@ import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
-import com.cherokeelessons.common.OS;
 import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
@@ -65,8 +65,7 @@ public class ScreenInstructions extends GameScreen {
 			"You must get 80% or better on each level before",
 			"you are allowed to advance to the next level.",
 			"",
-			OS.Platform.Ouya.equals(OS.platform) ? "Press [A] to exit."
-					: "[EXIT]" };
+			"[EXIT]" };
 	private TextButton[] textLines;
 	private Color fontColor = GameColor.DARKGREEN;
 
@@ -75,14 +74,10 @@ public class ScreenInstructions extends GameScreen {
 
 		textLines = new TextButton[instructionText.length];
 
-		calculateFontSize();
-
 		populateInstructionDisplay();
 		if (instructions.getHeight() > screenSize.height) {
 			float fontScale = screenSize.height / instructions.getHeight();
-			fontSize = (int) ((float) fontSize * fontScale);
-			instructions.clear();
-			populateInstructionDisplay();
+			Gdx.app.log(this.getClass().getName(), "Need to shrink font to "+(int) ((float) fontSize * fontScale)+"!");
 		}
 		textLines[instructionText.length - 1].addListener(new ClickListener() {
 
@@ -97,7 +92,7 @@ public class ScreenInstructions extends GameScreen {
 
 	}
 
-	private int fontSize;
+	private final int fontSize=44;
 
 	private void populateInstructionDisplay() {
 		int ix = 0;
@@ -138,39 +133,6 @@ public class ScreenInstructions extends GameScreen {
 	}
 
 	private float maxLineHeight;
-
-	private void calculateFontSize() {
-		// starting size
-		TextButton testLabel = null;
-		TextButtonStyle testStyle;
-		int size;
-		int ix;
-		BitmapFont font;
-		float scale = 0;
-		float maxWidth = 0;
-
-		size = 72;
-		font = fg.get(size);
-		testStyle = new TextButtonStyle();
-		testStyle.font = font;
-		testStyle.fontColor = new Color(fontColor);
-		testLabel = new TextButton("", testStyle);
-		font = fg.get(size);
-		for (ix = 0; ix < instructionText.length; ix++) {
-			if (instructionText[ix].length() < 1)
-				continue;
-			testLabel.setText(instructionText[ix]);
-			testLabel.setStyle(testStyle);
-			testLabel.pack();
-			if (maxWidth < testLabel.getWidth()) {
-				maxWidth = testLabel.getWidth();
-			}
-
-		}
-		scale = 0.95f * screenSize.width / maxWidth;
-		size = (int) (scale * (float) size);
-		fontSize = size;
-	}
 
 	@Override
 	public void dispose() {

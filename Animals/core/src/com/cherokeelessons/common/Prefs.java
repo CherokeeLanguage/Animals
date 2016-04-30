@@ -76,7 +76,7 @@ public class Prefs implements com.badlogic.gdx.Preferences {
 		prefs.flush();
 	}
 	public ChallengeWordMode getChallengeMode(){
-		ChallengeWordMode mode=ChallengeWordMode.Esperanto;
+		ChallengeWordMode mode=ChallengeWordMode.Latin;
 		String key = Setting.ChallengeMode.name();
 		try {
 			String m = prefs.getString(key, mode.name());

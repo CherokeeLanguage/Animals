@@ -16,7 +16,7 @@ public class Attributions extends Group {
 
 	private FontLoader fg;
 	private Color fontColor = Color.BLACK;
-	private int fontSize;
+	private int fontSize=88;
 	private float maxLineHeight;
 
 	private TextButton[] scrollingCredits;
@@ -30,39 +30,6 @@ public class Attributions extends Group {
 		this.bbox.set(screenSize);
 		String tmp = Gdx.files.internal("data/credits.txt").readString("UTF-8");
 		credits = tmp.split("\n");
-	}
-
-	private void calculateFontSize() {
-		// starting size
-		TextButton testLabel = null;
-		TextButtonStyle testStyle;
-		int size;
-		int ix;
-		BitmapFont font;
-		float scale = 0;
-		float maxWidth = 0;
-
-		size = 72;
-		font = fg.get(size);
-		testStyle = new TextButtonStyle();
-		testStyle.font = font;
-		testStyle.fontColor = new Color(fontColor);
-		testLabel = new TextButton("", testStyle);
-		font = fg.get(size);
-		for (ix = 0; ix < credits.length; ix++) {
-			if (credits[ix].length() < 1)
-				continue;
-			testLabel.setText(credits[ix]);
-			testLabel.setStyle(testStyle);
-			testLabel.pack();
-			if (maxWidth < testLabel.getWidth()) {
-				maxWidth = testLabel.getWidth();
-			}
-
-		}
-		scale = 0.95f * bbox.width / maxWidth;
-		size = (int) (scale * (float) size);
-		fontSize = size;
 	}
 
 	public float getxOffset() {
@@ -79,7 +46,6 @@ public class Attributions extends Group {
 	public void init() {
 		fg = new FontLoader();
 		scrollingCredits = new TextButton[credits.length];
-		calculateFontSize();
 		populateCreditDisplay();
 
 	}

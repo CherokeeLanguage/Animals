@@ -10,11 +10,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.common.FontLoader;
@@ -234,13 +234,17 @@ public class ScreenMainMenu extends GameScreen {
 		 * connect touch handlers
 		 */
 		for (int ix=0; ix<btns.size; ix++) {
+			MenuLabel menuItem = btns.get(ix);
+			Gdx.app.log(this.getClass().getName(), "touch handlers: "+menuItem.getText());
 			final int button = ix;
-			btns.get(ix).setTouchable(Touchable.enabled);
-			btns.get(ix).addListener(new ClickListener(){
+			menuItem.pack();
+			menuItem.setTouchable(Touchable.enabled);
+			menuItem.addListener(new InputListener(){
 				private int btn = button;				
 				@Override
-				public boolean touchDown(InputEvent event, float x, float y,
+				public boolean touchDown(InputEvent event, float ix, float emptyHeight,
 						int pointer, int button) {
+					Gdx.app.log(this.getClass().getName(), "touchDown: "+btn);
 					highlight_button(btn, true);
 					doMenuItem();
 					return true;
@@ -273,7 +277,6 @@ public class ScreenMainMenu extends GameScreen {
 		gameStage.addActor(right_indicator);
 
 		wall_atlas=Utils.initBackdrop(wall);
-
 	}
 
 	@Override
@@ -354,7 +357,7 @@ public class ScreenMainMenu extends GameScreen {
 	@Override
 	public void show() {
 		super.show();
-		game.sm.playEffect("ding");		
+//		game.sm.playEffect("howa");
 		Gamepads.addListener(watcher);
 		for (Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);

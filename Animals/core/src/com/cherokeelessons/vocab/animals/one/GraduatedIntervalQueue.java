@@ -269,35 +269,24 @@ public class GraduatedIntervalQueue {
 		return newQueue;
 	}
 
-	public static String esperanto_unescape(String xencoded) {
-		if (xencoded==null) {
+	private static String asLatin(String raw_text) {
+		if (raw_text==null) {
 			return null;
 		}
-		xencoded=xencoded.replace("CX", "Ĉ");
-		xencoded=xencoded.replace("cx", "ĉ");
-		xencoded=xencoded.replace("GX", "Ĝ");
-		
-		xencoded=xencoded.replace("gx", "ĝ");
-		xencoded=xencoded.replace("HX", "Ĥ");
-		xencoded=xencoded.replace("hx", "ĥ");
-		
-		xencoded=xencoded.replace("JX", "Ĵ");
-		xencoded=xencoded.replace("jx", "ĵ");
-		xencoded=xencoded.replace("SX", "Ŝ");
-		
-		xencoded=xencoded.replace("sx", "ŝ");
-		xencoded=xencoded.replace("UX", "Ŭ");
-		xencoded=xencoded.replace("ux", "ŭ");
-		
-		return xencoded;
+		raw_text=raw_text.replace("-", "");
+		String text=raw_text.substring(0, 1).toUpperCase();
+		if (raw_text.length()>1) {
+			text += raw_text.substring(1);
+		}
+		return text;
 	}
 
 	public static final class SortSizeAscendingAlpha implements
 			Comparator<String> {
 		@Override
 		public int compare(String o1, String o2) {
-			o1 = esperanto_unescape(o1);
-			o2 = esperanto_unescape(o2);
+			o1 = asLatin(o1);
+			o2 = asLatin(o2);
 			if (o1.length() < o2.length())
 				return -1;
 			if (o1.length() > o2.length())
@@ -337,6 +326,11 @@ public class GraduatedIntervalQueue {
 			return "[" + x + "," + y + "]";
 		}
 
+	}
+
+	public static String asSyllabary(String currentChallenge) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

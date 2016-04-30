@@ -24,7 +24,7 @@ import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
-import com.cherokeelessons.common.OS;
+import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 import com.cherokeelessons.vocab.animals.one.enums.TrainingMode;
 import com.cherokeelessons.vocab.animals.one.views.ViewChallengeBoard;
@@ -569,8 +569,6 @@ public class ScreenGameplay extends GameScreen {
 	@Override
 	public void show() {
 		super.show();
-		final boolean isOuya = OS.Platform.Ouya.equals(OS.platform);
-		
 		pause_mask=new Pixmap(1, 1, Format.RGBA8888);
 		pause_mask.setColor(1f, 1f, 1f, .7f);
 		pause_mask.fill();
@@ -580,7 +578,7 @@ public class ScreenGameplay extends GameScreen {
 		pause_mask_image.scaleBy(fullscan.width, fullscan.height);
 		pauseOverlay.addActor(pause_mask_image);
 		LabelStyle continueStyle = new LabelStyle(new FontLoader().get(72), GameColor.GREEN);
-		String pauseMsg = isOuya?"Press [O] to continue.":"Tap to continue.";
+		String pauseMsg = "[CONTINUE]";
 		Label toContinue = new Label(pauseMsg, continueStyle);
 		pauseOverlay.addActor(toContinue);
 		toContinue.pack();
@@ -611,14 +609,17 @@ public class ScreenGameplay extends GameScreen {
 		}
 		hud_showIndicator();
 		connectClickhandlers();
-		gameControls.addListener(new ClickListener() {
+		gameControls.setOnPause(new Runnable() {
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
+			public void run() {
 				setPaused(true);
-				return true;
 			}
-
+		});
+		gameControls.setOnExit(new Runnable() {
+			@Override
+			public void run() {
+				game.gameEvent(GameEvent.Done);
+			}
 		});
 	}
 
@@ -673,12 +674,11 @@ public class ScreenGameplay extends GameScreen {
 	private void updateChallengeBoard() {
 		String challenge;
 		switch (game.prefs.getChallengeMode()) {
-		case Esperanto:
-			challenge = GraduatedIntervalQueue
-					.esperanto_unescape(currentChallenge);
+		case Latin:
+			challenge = Utils.asLatin(currentChallenge);
 			break;
-		case EsperantoX:
-			challenge = currentChallenge;
+		case Syllabary:
+			challenge = Utils.asSyllabary(currentChallenge);
 			break;
 		default:
 			challenge = "";

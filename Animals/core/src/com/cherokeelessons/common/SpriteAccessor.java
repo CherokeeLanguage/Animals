@@ -1,10 +1,10 @@
 package com.cherokeelessons.common;
 
-import aurelienribon.tweenengine.TweenAccessor;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+
+import aurelienribon.tweenengine.TweenAccessor;
 
 public class SpriteAccessor implements TweenAccessor<Sprite> {
 

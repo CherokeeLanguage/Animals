@@ -21,7 +21,6 @@ import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
-import com.cherokeelessons.common.OS;
 import com.cherokeelessons.common.Prefs;
 import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.vocab.animals.one.enums.ChallengeWordMode;
@@ -66,12 +65,9 @@ public class ScreenOptionsMenu extends GameScreen {
 		}
 	}
 
-	private boolean isOuya = false;
 	private static int idx_volume = 0;
-	private static final String OUYA_INSTRUCT = "DPAD up/down select option, [O] Change value, [A] Back";
-	private static final String OUYA_VOL_INSTRUCT = "DPAD up/down select option, DPAD left/right change value, [A] Back";
 
-	private static final String TAB_INSTRUCT = "Tap an option to change its value. Tap here to exit option screen.";
+	private static final String TAB_INSTRUCT = "[EXIT]";
 
 	private static final float INDI_SCALE = ScreenMainMenu.INDI_SCALE;
 	private float[] baseLines;
@@ -98,7 +94,7 @@ public class ScreenOptionsMenu extends GameScreen {
 
 	private float lineHeight = 0;
 	private float offset = 0;
-	private Integer optionItemSize = 76;
+	private Integer optionItemSize = 88;
 
 	public int optionsButton;
 
@@ -121,7 +117,6 @@ public class ScreenOptionsMenu extends GameScreen {
 	public ScreenOptionsMenu(final CherokeeAnimals _game) {
 		super(_game);
 		prefs = game.prefs;
-		isOuya = OS.Platform.Ouya.equals(OS.platform);
 
 		baseLines_cnt = 7;
 		baseLines = new float[baseLines_cnt];
@@ -130,7 +125,7 @@ public class ScreenOptionsMenu extends GameScreen {
 
 		FontLoader fg = new FontLoader();
 		font = fg.get(optionItemSize);
-		BitmapFont ifont = fg.get((optionItemSize * 2) / 3);
+		BitmapFont ifont = fg.get(64);
 
 		textColor = GameColor.GREEN;
 
@@ -144,8 +139,7 @@ public class ScreenOptionsMenu extends GameScreen {
 
 		displayLine = 0;
 
-		lbl_instructions = new MenuLabel(isOuya ? OUYA_INSTRUCT : TAB_INSTRUCT,
-				instructStyle);
+		lbl_instructions = new MenuLabel(TAB_INSTRUCT, instructStyle);
 		lbl_instructions.pack();
 		lbl_instructions
 				.setX((screenSize.width - lbl_instructions.getWidth()) / 2);
@@ -349,7 +343,7 @@ public class ScreenOptionsMenu extends GameScreen {
 	}
 
 	private String getVolumeLabel(int newVolume) {
-		String newText = isOuya ? "Master Volume: " : "[-] Master Volume: ";
+		String newText = "[-] Master Volume: ";
 		if (newVolume < 100) {
 			newText += " ";
 		}
@@ -357,12 +351,12 @@ public class ScreenOptionsMenu extends GameScreen {
 			newText += " ";
 		}
 		newText = newText + ((Integer) newVolume).toString() + "%";
-		newText += isOuya ? "" : " [+]";
+		newText += " [+]";
 		return newText;
 	}
 
 	private String getMusicLabel(int newVolume) {
-		String newText = isOuya ? "Music Volume: " : "[-] Music Volume: ";
+		String newText = "[-] Music Volume: ";
 		if (newVolume < 100) {
 			newText += " ";
 		}
@@ -370,7 +364,7 @@ public class ScreenOptionsMenu extends GameScreen {
 			newText += " ";
 		}
 		newText = newText + ((Integer) newVolume).toString() + "%";
-		newText += isOuya ? "" : " [+]";
+		newText += " [+]";
 		return newText;
 	}
 
@@ -574,9 +568,9 @@ public class ScreenOptionsMenu extends GameScreen {
 
 	public void updateInstructions() {
 		if (selected_btn == idx_volume || selected_btn == idx_music) {
-			lbl_instructions.setText(isOuya ? OUYA_VOL_INSTRUCT : TAB_INSTRUCT);
+			lbl_instructions.setText(TAB_INSTRUCT);
 		} else {
-			lbl_instructions.setText(isOuya ? OUYA_INSTRUCT : TAB_INSTRUCT);
+			lbl_instructions.setText(TAB_INSTRUCT);
 		}
 		lbl_instructions.pack();
 		lbl_instructions
@@ -604,14 +598,14 @@ public class ScreenOptionsMenu extends GameScreen {
 	public void wordMode() {
 
 		switch (prefs.getChallengeMode()) {
-		case Esperanto:
-			prefs.setChallengeMode(ChallengeWordMode.EsperantoX);
+		case Latin:
+			prefs.setChallengeMode(ChallengeWordMode.Syllabary);
 			break;
-		case EsperantoX:
+		case Syllabary:
 			prefs.setChallengeMode(ChallengeWordMode.None);
 			break;
 		case None:
-			prefs.setChallengeMode(ChallengeWordMode.Esperanto);
+			prefs.setChallengeMode(ChallengeWordMode.Latin);
 			break;
 		default:
 			break;

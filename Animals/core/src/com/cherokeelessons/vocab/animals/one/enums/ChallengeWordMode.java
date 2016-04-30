@@ -1,5 +1,5 @@
 package com.cherokeelessons.vocab.animals.one.enums;
 
 public enum ChallengeWordMode {
-	None, Esperanto, EsperantoX, 
+	None, Latin, Syllabary, 
 }

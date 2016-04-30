@@ -18,8 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
-import com.cherokeelessons.common.IAP.Callback;
-import com.cherokeelessons.common.OS;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 import com.cherokeelessons.vocab.animals.one.views.View3x3Selector;
 import com.cherokeelessons.vocab.animals.one.views.View3x3Selector.onClick;
@@ -27,18 +25,8 @@ import com.cherokeelessons.vocab.animals.one.views.View3x3Selector.onClick;
 
 public class ScreenLevelSelect extends GameScreen {
 
-	private static final String OUYA_PANEL1_TEXT = "DPAD - Navigate," +
-			" [O] - Select," +
-			" [Y] - Show Levels 10-18," +
-			" [A] - Main Menu";
-	
 	private static final String TAB_PANEL1_TEXT = "[Tap Here to Show Levels 10-18]";
 	
-	private static final String OUYA_PANEL2_TEXT = "DPAD - Navigate," +
-			" [O] - Select," +
-			" [U] - Show Levels 1-9," +
-			" [A] - Main Menu";
-
 	private static final String TAB_PANEL2_TEXT = "[Tap Here to Show Levels 1-9]";
 
 	private int activeHud = 0;
@@ -59,7 +47,6 @@ public class ScreenLevelSelect extends GameScreen {
 	private int minPercentAdvance = 80;
 	private FileHandle levelLockedPic = Gdx.files
 			.internal("images/indicators/Padlock-red.png");
-	private FileHandle levelNotPurchasedPic = Gdx.files.internal("images/indicators/credit-card-front.png");
 	private Label[] panelSwitch;
 
 	private View3x3Selector[] selectViewGraphic;
@@ -82,46 +69,16 @@ public class ScreenLevelSelect extends GameScreen {
 		}
 	};
 	
-	private String ouya_title_unlocked = "This level is unlocked. Press [O] to play.";
-	private String ouya_title_locked = "This level is locked until you get at least "+minPercentAdvance+"%+ on the previous level.";
-	private String ouya_title_premium = game.getIap().isDemo() ? "Not available in the demo version." : "This is premium content. Press [O] to purchase the full game.";
-	
 	private String tab_title_unlocked = "This level is unlocked. Tap to play.";
 	private String tab_title_locked = "This level is locked until you get at least "+minPercentAdvance+"%+ on the previous level.";
-	private String tab_title_premium = game.getIap().isDemo() ? "Not available in the demo version." : "This is premium content. Tap to purchase the full game.";
 	
 	final private ControllerLevelSelect_Watch watcher = new ControllerLevelSelect_Watch(
 			this);
 
-	private Callback update_select_display=new Callback() {		
-		@Override
-		public void onSuccess(final String success) {
-			Gdx.app.postRunnable(new Runnable() {				
-				@Override
-				public void run() {
-					showEnabledLevels();
-					game.sm.playEffect("cash_out");
-					hud_showIndicator();
-				}
-			});
-		}
-		
-		@Override
-		public void onFailure(int errorCode, String errorMessage) {
-			game.sm.playEffect("growl_0");
-		}
-		
-		@Override
-		public void onCancel() {
-		}
-	};
-
 	private int panelCount;
 
-	private boolean isOuya=false;
 	public ScreenLevelSelect(CherokeeAnimals game) {
 		super(game);
-		isOuya=OS.Platform.Ouya.equals(OS.platform);
 		panelCount=(int)Math.ceil(game.getLevels()/9);
 		int ix;
 		LabelStyle ls = new LabelStyle();
@@ -142,8 +99,8 @@ public class ScreenLevelSelect extends GameScreen {
 		ps.font = font;
 		ps.fontColor = new Color(GameColor.GREEN);
 		ps.fontColor.a = 1f;
-		panelSwitch[0] = new Label(isOuya?OUYA_PANEL1_TEXT:TAB_PANEL1_TEXT, ps);
-		panelSwitch[1] = new Label(isOuya?OUYA_PANEL2_TEXT:TAB_PANEL2_TEXT,	ps);
+		panelSwitch[0] = new Label(TAB_PANEL1_TEXT, ps);
+		panelSwitch[1] = new Label(TAB_PANEL2_TEXT,	ps);
 		panelSwitch[0].pack();
 		panelSwitch[1].pack();
 		panelSwitch[0].setX((screenSize.width - panelSwitch[0].getWidth()) / 2);
@@ -200,13 +157,13 @@ public class ScreenLevelSelect extends GameScreen {
 		selectViewHUD = new View3x3Selector[panelCount];
 		selectViewHUD[0] = new View3x3Selector(screenSize);
 		selectViewHUD[0].setTouchable(Touchable.disabled);
-		selectViewHUD[0].setTitle(isOuya?ouya_title_unlocked:tab_title_unlocked);
+		selectViewHUD[0].setTitle(tab_title_unlocked);
 		selectViewHUD[0].setBottomMargin(bottomMargin);
 		selectViewHUD[0].setHandler(startAtLevel_1_to_9);
 
 		selectViewHUD[1] = new View3x3Selector(screenSize);
 		selectViewHUD[1].setTouchable(Touchable.disabled);
-		selectViewHUD[1].setTitle(isOuya?ouya_title_unlocked:tab_title_unlocked);
+		selectViewHUD[1].setTitle(tab_title_unlocked);
 		selectViewHUD[1].setBottomMargin(bottomMargin);
 		selectViewHUD[1].setHandler(startAtLevel_10_to_18);
 
@@ -421,7 +378,6 @@ public class ScreenLevelSelect extends GameScreen {
 			panel = ix / 9;
 			viewPanel = selectViewOverlay[panel];
 			current = game.prefs.getLevelAccuracy(ix);
-			if (isLevelPurchased(ix)) {
 				if (isLevelUnlocked(ix)) {
 					alpha = ((float) current - (float) minPercentAdvance)
 							/ (100f - (float) minPercentAdvance);
@@ -435,11 +391,7 @@ public class ScreenLevelSelect extends GameScreen {
 					viewPanel.setColor(ix, Color.WHITE);
 					viewPanel.setAlpha(ix, .85f);
 				}
-			} else {
-				viewPanel.setImage(ix, levelNotPurchasedPic);
-				viewPanel.setColor(ix, Color.WHITE);
-				viewPanel.setAlpha(ix, .85f);
-			}
+			
 		}
 	}
 
@@ -466,15 +418,11 @@ public class ScreenLevelSelect extends GameScreen {
 		activehud.addAction(level_highlighted, act);
 		int level = activeHud*activehud.button_count()+level_highlighted;
 		do {
-			if (!isLevelPurchased(level)) {
-				selectViewHUD[activeHud].setTitle(isOuya?ouya_title_premium:tab_title_premium);
-				break;
-			}
 			if (!isLevelUnlocked(level)) {
-				selectViewHUD[activeHud].setTitle(isOuya?ouya_title_locked:tab_title_locked);
+				selectViewHUD[activeHud].setTitle(tab_title_locked);
 				break;
 			}
-			selectViewHUD[activeHud].setTitle(isOuya?ouya_title_unlocked:tab_title_unlocked);
+			selectViewHUD[activeHud].setTitle(tab_title_unlocked);
 			break;
 		} while(false);
 	}
@@ -532,20 +480,12 @@ public class ScreenLevelSelect extends GameScreen {
 	}
 
 	private void startGameLevel(int level) {
-		if (!isLevelPurchased(level)) {
-			game.getIap().purchaseGame(update_select_display);
-			return;
-		}
 		if (!isLevelUnlocked(level)) {
 			game.sm.playEffect("buzzer2");
 			return;
 		}
 		game.setLevelOn(level);
 		game.gameEvent(GameEvent.ShowGameBoard);
-	}
-
-	private boolean isLevelPurchased(int level) {
-		return level<3 || game.getIap().isPurchased();
 	}
 
 	private boolean isLevelUnlocked(int level) {
