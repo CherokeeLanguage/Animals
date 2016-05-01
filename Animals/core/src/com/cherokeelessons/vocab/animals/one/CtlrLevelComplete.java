@@ -8,10 +8,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.cherokeelessons.common.GamepadMap;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
-public class ControllerLevelComplete implements ControllerListener {
+public class CtlrLevelComplete implements ControllerListener {
 
 	private static void log(String msg) {
-		Gdx.app.log(ControllerLevelComplete.class.getCanonicalName(), msg);
+		Gdx.app.log(CtlrLevelComplete.class.getCanonicalName(), msg);
 	}
 
 	// private IntFloatMap axisMovedMap = new IntFloatMap();
@@ -23,7 +23,7 @@ public class ControllerLevelComplete implements ControllerListener {
 
 	private ScreenLevelComplete menu;
 
-	public ControllerLevelComplete(GamepadMap map, ScreenLevelComplete menu) {
+	public CtlrLevelComplete(GamepadMap map, ScreenLevelComplete menu) {
 		Gdx.app.log("ControllerMainMenu",
 				"Initializing with map: " + map.model.name());
 		this.map = map;
@@ -84,15 +84,15 @@ public class ControllerLevelComplete implements ControllerListener {
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
-		if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_A) {
+		if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
 			menu.game.gameEvent(GameEvent.MainMenu);
 			return true;
 		}
-		if (buttonCode == map.BUTTON_U) {
+		if (buttonCode == map.BUTTON_X) {
 			menu.game.gameEvent(GameEvent.ShowGameBoard);
 			return true;
 		}
-		if (buttonCode == map.BUTTON_O) {
+		if (buttonCode == map.BUTTON_A) {
 			menu.game.gameEvent(GameEvent.NewGame);
 			return true;
 		}

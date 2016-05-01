@@ -87,8 +87,8 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 	private Runnable performQuit = new Runnable() {
 		@Override
 		public void run() {
-			game.gameEvent(GameEvent.QuitGame);
 			game.sm.playEffect("menu-click");
+			game.gameEvent(GameEvent.QuitGame);
 			Gdx.app.exit();			
 		}
 	};
@@ -110,7 +110,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 	private final Array<Sprite> wall = new Array<Sprite>();
 	private TextureAtlas wall_atlas;
 
-	final private ControllerMainMenu_Watch watcher = new ControllerMainMenu_Watch(
+	final private CtlrMainMenu_Watch watcher = new CtlrMainMenu_Watch(
 			this);
 	private Runnable showInstructions=new Runnable() {
 		@Override
@@ -122,12 +122,14 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 	private Runnable showCredits=new Runnable() {
 		@Override
 		public void run() {
+			game.sm.playEffect("menu-click");
 			game.gameEvent(GameEvent.ShowCredits);
 		}
 	};
 	private Runnable showLeaderBoard=new Runnable() {
 		@Override
 		public void run() {
+			game.sm.playEffect("menu-click");
 			game.gameEvent(GameEvent.ShowLeaderBoard);
 		}
 	};
@@ -260,7 +262,6 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 				@Override
 				public boolean touchDown(InputEvent event, float ix, float emptyHeight,
 						int pointer, int button) {
-					Gdx.app.log(this.getClass().getName(), "touchDown: "+btn);
 					highlight_button(btn, true);
 					hud_select();
 					return true;

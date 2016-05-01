@@ -110,7 +110,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 
 	private float timeLimit = 5;
 
-	private final ControllerGamePlay_Watch watcher;
+	private final CtlrGamePlay_Watch watcher;
 
 	private WritingMode writingMode;
 
@@ -120,7 +120,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 
 	public ScreenGameplay(final CherokeeAnimals game) {
 		super(game);
-		watcher = new ControllerGamePlay_Watch(
+		watcher = new CtlrGamePlay_Watch(
 				this);
 
 		pbar = new ViewProgressBar(screenSize);

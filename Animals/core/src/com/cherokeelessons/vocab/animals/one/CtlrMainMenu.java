@@ -8,21 +8,19 @@ import com.badlogic.gdx.math.Vector3;
 import com.cherokeelessons.common.GamepadMap;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
-public class ControllerLevelSelect implements ControllerListener {
+public class CtlrMainMenu implements ControllerListener {
 
 	private void log(String msg) {
-		Gdx.app.log(this.getClass().getCanonicalName(), msg);
+		Gdx.app.log(this.getClass().getSimpleName(), msg);
 	}
-
-	private float deadzone = 0.7f;
 
 	private PovDirection lastDirection = PovDirection.center;
 
 	private GamepadMap map;
 
-	private ScreenLevelSelect menu;
+	private ScreenMainMenu menu;
 
-	public ControllerLevelSelect(GamepadMap map, ScreenLevelSelect menu) {
+	public CtlrMainMenu(GamepadMap map, ScreenMainMenu menu) {
 		this.map = map;
 		this.menu = menu;
 	}
@@ -37,41 +35,24 @@ public class ControllerLevelSelect implements ControllerListener {
 
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
+		log("axisMoved: "+controller.getName()+" axis="+axisCode+", value="+value);
+		
 		if (axisCode == map.AXIS_LEFT_TRIGGER
 				|| axisCode == map.AXIS_RIGHT_TRIGGER) {
 			return false;
 		}
 
 		if (axisCode == map.AXIS_LEFT_Y) {
-			if (value <= -deadzone && !lastDirection.equals(PovDirection.north)) {
+			if (value <= -.5 && !lastDirection.equals(PovDirection.north)) {
 				lastDirection = PovDirection.north;
 				return povMoved(controller, 0, PovDirection.north);
 			}
-			if (value >= deadzone && !lastDirection.equals(PovDirection.south)) {
+			if (value >= .5 && !lastDirection.equals(PovDirection.south)) {
 				lastDirection = PovDirection.south;
 				return povMoved(controller, 0, PovDirection.south);
 			}
-			if (value >= -deadzone
-					&& value <= deadzone
-					&& (lastDirection.equals(PovDirection.north) || lastDirection
-							.equals(PovDirection.south))) {
-				lastDirection = PovDirection.center;
-				return povMoved(controller, 0, PovDirection.center);
-			}
-		}
-		if (axisCode == map.AXIS_LEFT_X) {
-			if (value <= -deadzone && !lastDirection.equals(PovDirection.west)) {
-				lastDirection = PovDirection.west;
-				return povMoved(controller, 0, PovDirection.west);
-			}
-			if (value >= deadzone && !lastDirection.equals(PovDirection.east)) {
-				lastDirection = PovDirection.east;
-				return povMoved(controller, 0, PovDirection.east);
-			}
-			if (value >= -deadzone
-					&& value <= deadzone
-					&& (lastDirection.equals(PovDirection.east) || lastDirection
-							.equals(PovDirection.west))) {
+			if (value >= -.5 && value <= .5
+					&& !lastDirection.equals(PovDirection.center)) {
 				lastDirection = PovDirection.center;
 				return povMoved(controller, 0, PovDirection.center);
 			}
@@ -81,46 +62,38 @@ public class ControllerLevelSelect implements ControllerListener {
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
-		if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_A) {
-			menu.game.gameEvent(GameEvent.MainMenu);
-			return true;
+		log("buttonDown: "+controller.getName()+" buttonCode="+buttonCode);
+		bswitch: {			
+			if (buttonCode == map.BUTTON_A) {
+				menu.hud_select();
+				break bswitch;
+			}
+			if (buttonCode == map.BUTTON_MENU) {
+				menu.game.gameEvent(GameEvent.ShowOptions);
+				break bswitch;
+			}			
+			if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
+				if (menu.getSelected_btn() == menu.quitButton) {
+					menu.hud_select();				
+				}
+				while (menu.getSelected_btn() != menu.quitButton) {
+					menu.hud_moveSouth();
+				}
+				break bswitch;
+			}
+			if (buttonCode == map.BUTTON_DPAD_DOWN) {
+				return povMoved(controller, 0, PovDirection.south);
+			}
+			if (buttonCode == map.BUTTON_DPAD_UP) {
+				return povMoved(controller, 0, PovDirection.north);
+			}
 		}
-		if (buttonCode == map.BUTTON_Y) {
-			menu.moveTo10To18();
-			return true;
-		}
-		if (buttonCode == map.BUTTON_U) {
-			menu.moveTo1To9();
-			return true;
-		}
-		if (buttonCode == map.BUTTON_O) {
-			menu.hud_select();
-			return true;
-		}
-		if (buttonCode == map.BUTTON_MENU) {
-			menu.game.gameEvent(GameEvent.ShowOptions);
-			return true;
-		}
-		if (buttonCode == map.BUTTON_DPAD_UP) {
-			return povMoved(controller, 0, PovDirection.north);
-		}
-		if (buttonCode == map.BUTTON_DPAD_DOWN) {
-			return povMoved(controller, 0, PovDirection.south);
-		}
-		if (buttonCode == map.BUTTON_DPAD_RIGHT) {
-			return povMoved(controller, 0, PovDirection.east);
-		}
-		if (buttonCode == map.BUTTON_DPAD_LEFT) {
-			return povMoved(controller, 0, PovDirection.west);
-		}
-
-		log("buttonDown: " + controller.getName() + ", " + buttonCode);
 		return true;
 	}
 
 	@Override
 	public boolean buttonUp(Controller controller, int buttonCode) {
-//		log("buttonUp: " + controller.getName() + ", " + buttonCode);
+
 		return false;
 	}
 
@@ -136,19 +109,18 @@ public class ControllerLevelSelect implements ControllerListener {
 
 	@Override
 	public boolean povMoved(Controller controller, int povCode,
-			PovDirection value) {		
+			PovDirection value) {
+		log("povMoved: "+controller.getName()+" povCode="+povCode);
 		switch (value) {
 		case north:
+		case northEast:
+		case northWest:
 			menu.hud_moveNorth();
 			break;
 		case south:
+		case southEast:
+		case southWest:
 			menu.hud_moveSouth();
-			break;
-		case east:
-			menu.hud_moveRight();
-			break;
-		case west:
-			menu.hud_moveLeft();
 			break;
 		default:
 			break;

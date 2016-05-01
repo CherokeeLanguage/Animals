@@ -31,7 +31,7 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 	private final Array<Sprite> wall = new Array<Sprite>();
 	private TextureAtlas wall_atlas;
 
-	final private ControllerHighScores_Watch watcher = new ControllerHighScores_Watch(this);
+	private final CtlrHighScores_Watch watcher = new CtlrHighScores_Watch(this);
 
 	public ScreenHighScores(CherokeeAnimals game) {
 		super(game);
@@ -86,7 +86,9 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 		LabelStyle lstyle=new LabelStyle();
 		lstyle.font=game.fg.get(FONTSIZE);
 		lstyle.fontColor=GameColor.MAIN_TEXT;
-		Label exit = new Label("[EXIT]", lstyle);
+		String textExit;
+		textExit = "[EXIT]";
+		Label exit = new Label(textExit, lstyle);
 		exit.addListener(new InputListener(){
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

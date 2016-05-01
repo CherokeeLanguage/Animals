@@ -8,21 +8,22 @@ import com.badlogic.gdx.math.Vector3;
 import com.cherokeelessons.common.GamepadMap;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
-public class ControllerGamePlay implements ControllerListener {
+public class CtlrOptions implements ControllerListener {
 
 	private static void log(String msg) {
-		Gdx.app.log(ControllerGamePlay.class.getCanonicalName(), msg);
+		Gdx.app.log(CtlrOptions.class.getCanonicalName(), msg);
 	}
 
+	// private IntFloatMap axisMovedMap = new IntFloatMap();
 	private float deadzone = 0.7f;
 
 	private PovDirection lastDirection = PovDirection.center;
 
 	private GamepadMap map;
 
-	private ScreenGameplay menu;
+	private ScreenOptionsMenu menu;
 
-	public ControllerGamePlay(GamepadMap map, ScreenGameplay menu) {
+	public CtlrOptions(GamepadMap map, ScreenOptionsMenu menu) {
 		this.map = map;
 		this.menu = menu;
 	}
@@ -37,9 +38,6 @@ public class ControllerGamePlay implements ControllerListener {
 
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
-		if (menu.isPaused()) {
-			return false;
-		}
 		if (axisCode == map.AXIS_LEFT_TRIGGER
 				|| axisCode == map.AXIS_RIGHT_TRIGGER) {
 			return false;
@@ -84,34 +82,12 @@ public class ControllerGamePlay implements ControllerListener {
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
-		if (menu.isPaused()) {
-			if (buttonCode == map.BUTTON_O) {
-				menu.setPaused(false);
-				return true;
-			}
-			if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_A) {
-				menu.setPaused(false);
-				return true;
-			}
-			return true;
-		}
-		if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_A) {
+		if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
 			menu.game.gameEvent(GameEvent.Done);
 			return true;
 		}
-		if (buttonCode == map.BUTTON_Y) {
-			menu.setPaused(true);
-			return true;
-		}
-		if (buttonCode == map.BUTTON_U) {
-			return true;
-		}
-		if (buttonCode == map.BUTTON_O) {
-			menu.hud_select();
-			return true;
-		}
 		if (buttonCode == map.BUTTON_MENU) {
-			menu.game.gameEvent(GameEvent.ShowOptions);
+			menu.game.gameEvent(GameEvent.Done);
 		}
 		if (buttonCode == map.BUTTON_DPAD_UP) {
 			return povMoved(controller, 0, PovDirection.north);
@@ -125,8 +101,12 @@ public class ControllerGamePlay implements ControllerListener {
 		if (buttonCode == map.BUTTON_DPAD_LEFT) {
 			return povMoved(controller, 0, PovDirection.west);
 		}
-
-		log("buttonDown: " + controller.getName() + ", " + buttonCode);
+		if (buttonCode == map.BUTTON_A || buttonCode == map.BUTTON_X) {
+			menu.doMenuItem(PovDirection.east);
+		}
+		if (buttonCode == map.BUTTON_B || buttonCode == map.BUTTON_Y) {
+			menu.doMenuItem(PovDirection.west);
+		}
 		return true;
 	}
 
@@ -137,20 +117,15 @@ public class ControllerGamePlay implements ControllerListener {
 
 	@Override
 	public void connected(Controller controller) {
-		log("connected: " + controller.getName());
 	}
 
 	@Override
 	public void disconnected(Controller controller) {
-		log("disconnected: " + controller.getName());
 	}
 
 	@Override
 	public boolean povMoved(Controller controller, int povCode,
 			PovDirection value) {
-		if (menu.isPaused()) {
-			return false;
-		}
 		switch (value) {
 		case north:
 			menu.hud_moveNorth();
@@ -159,10 +134,10 @@ public class ControllerGamePlay implements ControllerListener {
 			menu.hud_moveSouth();
 			break;
 		case east:
-			menu.hud_moveRight();
+			menu.doMenuItem(PovDirection.east);
 			break;
 		case west:
-			menu.hud_moveLeft();
+			menu.doMenuItem(PovDirection.west);
 			break;
 		default:
 			break;
@@ -185,4 +160,5 @@ public class ControllerGamePlay implements ControllerListener {
 				+ value);
 		return false;
 	}
+
 }

@@ -26,26 +26,31 @@ import com.badlogic.gdx.Input;
  * buttons into differing event handlers! The triggers show up BOTH as AXIS and
  * BUTTONS!
  * 
+ * EH.. the Nvidia controller reports the LTRIGGER also as BRAKE (axis 23) and
+ * RTRIGGER as GAS (axis 22)
+ * 
  * @author mjoyner
- * @version 0.0.1
+ * @version 0.0.2
  * 
  *          Public Domain
  */
 
 public class GamepadMap {
 	public static enum Model {
-		Ouya, Xbox, SNES, Keyboard;
+		AndroidTv, Ouya, Xbox, SNES, Keyboard;
 	}
 
 	public final int AXIS_DPAD_X;
 	public final int AXIS_DPAD_Y;
 	public final int AXIS_LEFT_TRIGGER;
+	public final int AXIS_BRAKE;
 	public final int AXIS_LEFT_X;
 	public final int AXIS_LEFT_Y;
 	public final int AXIS_RIGHT_TRIGGER;
+	public final int AXIS_GAS;
 	public final int AXIS_RIGHT_X;
 	public final int AXIS_RIGHT_Y;
-	public final int BUTTON_A;
+	public final int BUTTON_B;
 	public final int BUTTON_BACK;
 	public final int BUTTON_DPAD_DOWN;
 	public final int BUTTON_DPAD_LEFT;
@@ -55,13 +60,14 @@ public class GamepadMap {
 	public final int BUTTON_L2 /* trigger */;
 	public final int BUTTON_L3 /* joystick */;
 	public final int BUTTON_MENU;
-	public final int BUTTON_O;
+	public final int BUTTON_A;
 	public final int BUTTON_R1 /* bumper */;
 	public final int BUTTON_R2 /* trigger */;
 	public final int BUTTON_R3 /* joystick */;
 	public final int BUTTON_START;
-	public final int BUTTON_U;
+	public final int BUTTON_X;
 	public final int BUTTON_Y;
+	public final int BUTTON_SEARCH; /* android tv */
 	public final boolean DPAD_IS_AXIS;
 	public final boolean DPAD_IS_BUTTON;
 	public final boolean DPAD_IS_POV;
@@ -71,11 +77,47 @@ public class GamepadMap {
 	public GamepadMap(Model model) {
 		this.model = model;
 		switch (model) {
+		case AndroidTv:
+			androidTv: {
+				BUTTON_A = 96;
+				BUTTON_X = 99;
+				BUTTON_Y = 100;
+				BUTTON_B = 97;
+				BUTTON_MENU = -1;
+				DPAD_IS_POV = true;
+				DPAD_IS_BUTTON = false;
+				BUTTON_DPAD_UP = -1;
+				BUTTON_DPAD_DOWN = -1;
+				BUTTON_DPAD_RIGHT = -1;
+				BUTTON_DPAD_LEFT = -1;
+				DPAD_IS_AXIS = true;
+				AXIS_DPAD_X = -1;//15;
+				AXIS_DPAD_Y = -1;//16;
+				BUTTON_L1 /* bumper */ = 102;
+				BUTTON_L2 /* trigger */ = -1;
+				BUTTON_L3 /* joystick */ = 106;
+				BUTTON_R1 /* bumper */ = 103;
+				BUTTON_R2 /* trigger */ = -1;
+				BUTTON_R3 /* joystick */ = 107;
+				AXIS_LEFT_X = 0;
+				AXIS_LEFT_Y = 1;
+				AXIS_LEFT_TRIGGER = 17;
+				AXIS_RIGHT_X = 11;
+				AXIS_RIGHT_Y = 14;
+				AXIS_RIGHT_TRIGGER = 107;
+				BUTTON_BACK = -1;
+				BUTTON_START = 108;
+				BUTTON_SEARCH = 84;
+				AXIS_BRAKE = 23;
+				AXIS_GAS = 22;
+				break androidTv;
+			}
+			break;
 		case Keyboard:
-			BUTTON_O = Input.Keys.ENTER;
-			BUTTON_U = -1;
+			BUTTON_A = Input.Keys.ENTER;
+			BUTTON_X = -1;
 			BUTTON_Y = -1;
-			BUTTON_A = Input.Keys.BACK;
+			BUTTON_B = Input.Keys.BACK;
 			BUTTON_MENU = Input.Keys.F1;
 			DPAD_IS_POV = false;
 			DPAD_IS_BUTTON = true;
@@ -100,15 +142,18 @@ public class GamepadMap {
 			AXIS_RIGHT_TRIGGER = -1;
 			BUTTON_BACK = Input.Keys.BACK;
 			BUTTON_START = -1;
+			BUTTON_SEARCH = -1;
+			AXIS_BRAKE = -1;
+			AXIS_GAS = -1;
 			break;
 		case Ouya:
 		default:
 			ouya: {
 				if (OS.platform.equals(OS.Platform.Linux)) {
-					BUTTON_O = 3;
-					BUTTON_U = 4;
+					BUTTON_A = 3;
+					BUTTON_X = 4;
 					BUTTON_Y = 5;
-					BUTTON_A = 6;
+					BUTTON_B = 6;
 					BUTTON_MENU = 17;
 					DPAD_IS_POV = false;
 					DPAD_IS_BUTTON = true;
@@ -133,13 +178,16 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = 5;
 					BUTTON_BACK = -1;
 					BUTTON_START = 18;
+					BUTTON_SEARCH = -1;
+					AXIS_BRAKE = -1;
+					AXIS_GAS = -1;
 					break ouya;
 				}
 				if (OS.platform.equals(OS.Platform.Windows)) {
-					BUTTON_O = 0;
-					BUTTON_U = 1;
+					BUTTON_A = 0;
+					BUTTON_X = 1;
 					BUTTON_Y = 2;
-					BUTTON_A = 3;
+					BUTTON_B = 3;
 					BUTTON_MENU = 14;
 					DPAD_IS_POV = false;
 					DPAD_IS_BUTTON = true;
@@ -164,13 +212,16 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = 5;
 					BUTTON_BACK = -1;
 					BUTTON_START = 15;
+					BUTTON_SEARCH = -1;
+					AXIS_BRAKE = -1;
+					AXIS_GAS = -1;
 					break ouya;
 				}
 				if (OS.platform.equals(OS.Platform.Ouya)) {
-					BUTTON_O = 96;
-					BUTTON_U = 99;
+					BUTTON_A = 96;
+					BUTTON_X = 99;
 					BUTTON_Y = 100;
-					BUTTON_A = 97;
+					BUTTON_B = 97;
 					BUTTON_MENU = 82;
 					DPAD_IS_POV = false;
 					DPAD_IS_BUTTON = true;
@@ -195,13 +246,16 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = 5;
 					BUTTON_BACK = -1;
 					BUTTON_START = -1;
+					BUTTON_SEARCH = -1;
+					AXIS_BRAKE = -1;
+					AXIS_GAS = -1;
 					break ouya;
 				}
 				if (OS.platform.equals(OS.Platform.Android)) {
-					BUTTON_O = 96;
-					BUTTON_U = 97;
+					BUTTON_A = 96;
+					BUTTON_X = 97;
 					BUTTON_Y = 98;
-					BUTTON_A = 99;
+					BUTTON_B = 99;
 					BUTTON_MENU = 107;
 					DPAD_IS_POV = false;
 					DPAD_IS_BUTTON = true;
@@ -226,13 +280,16 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = 5;
 					BUTTON_BACK = -1;
 					BUTTON_START = 0;
+					BUTTON_SEARCH = -1;
+					AXIS_BRAKE = -1;
+					AXIS_GAS = -1;
 					break ouya;
 				}
 				/* fallback values */
-				BUTTON_O = 3;
-				BUTTON_U = 4;
+				BUTTON_A = 3;
+				BUTTON_X = 4;
 				BUTTON_Y = 5;
-				BUTTON_A = 6;
+				BUTTON_B = 6;
 				BUTTON_MENU = 17;
 				DPAD_IS_POV = false;
 				DPAD_IS_BUTTON = true;
@@ -257,15 +314,18 @@ public class GamepadMap {
 				AXIS_RIGHT_TRIGGER = 5;
 				BUTTON_BACK = -1;
 				BUTTON_START = 18;
+				BUTTON_SEARCH = -1;
+				AXIS_BRAKE = -1;
+				AXIS_GAS = -1;
 			}
 			break;
 		case Xbox:
 			xbox: {
 				if (OS.platform.equals(OS.Platform.Linux)) {
-					BUTTON_O = 0;
-					BUTTON_U = 2;
+					BUTTON_A = 0;
+					BUTTON_X = 2;
 					BUTTON_Y = 3;
-					BUTTON_A = 1;
+					BUTTON_B = 1;
 					BUTTON_MENU = 8;
 					DPAD_IS_POV = true;
 					DPAD_IS_BUTTON = false;
@@ -290,13 +350,16 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = 5;
 					BUTTON_BACK = 6;
 					BUTTON_START = 7;
+					BUTTON_SEARCH = -1;
+					AXIS_BRAKE = -1;
+					AXIS_GAS = -1;
 					break xbox;
 				}
 				if (OS.platform.equals(OS.Platform.Windows)) {
-					BUTTON_O = 0;
-					BUTTON_U = 2;
+					BUTTON_A = 0;
+					BUTTON_X = 2;
 					BUTTON_Y = 3;
-					BUTTON_A = 1;
+					BUTTON_B = 1;
 					BUTTON_MENU = 7;
 					DPAD_IS_POV = true;
 					DPAD_IS_BUTTON = false;
@@ -322,13 +385,16 @@ public class GamepadMap {
 											// for LEFT trigger!
 					BUTTON_BACK = 6;
 					BUTTON_START = 7;
+					BUTTON_SEARCH = -1;
+					AXIS_BRAKE = -1;
+					AXIS_GAS = -1;
 					break xbox;
 				}
 				if (OS.platform.equals(OS.Platform.Ouya)) {
-					BUTTON_O = 96;
-					BUTTON_U = 99;
+					BUTTON_A = 96;
+					BUTTON_X = 99;
 					BUTTON_Y = 100;
-					BUTTON_A = 97;
+					BUTTON_B = 97;
 					BUTTON_MENU = 82;
 					DPAD_IS_POV = false;
 					DPAD_IS_BUTTON = false;
@@ -353,13 +419,16 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = 5;
 					BUTTON_BACK = -1;
 					BUTTON_START = 108;
+					BUTTON_SEARCH = -1;
+					AXIS_BRAKE = -1;
+					AXIS_GAS = -1;
 					break xbox;
 				}
 				if (OS.platform.equals(OS.Platform.Android)) {
-					BUTTON_O = 96;
-					BUTTON_U = 99;
+					BUTTON_A = 96;
+					BUTTON_X = 99;
 					BUTTON_Y = 100;
-					BUTTON_A = 97;
+					BUTTON_B = 97;
 					BUTTON_MENU = 108;
 					DPAD_IS_POV = false;
 					DPAD_IS_BUTTON = false;
@@ -384,13 +453,16 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = 5;
 					BUTTON_BACK = 109;
 					BUTTON_START = 110;
+					BUTTON_SEARCH = -1;
+					AXIS_BRAKE = -1;
+					AXIS_GAS = -1;
 					break xbox;
 				}
 				/* fallback values */
-				BUTTON_O = 0;
-				BUTTON_U = 2;
+				BUTTON_A = 0;
+				BUTTON_X = 2;
 				BUTTON_Y = 3;
-				BUTTON_A = 1;
+				BUTTON_B = 1;
 				BUTTON_MENU = 8;
 				DPAD_IS_POV = true;
 				DPAD_IS_BUTTON = false;
@@ -415,16 +487,19 @@ public class GamepadMap {
 				AXIS_RIGHT_TRIGGER = 5;
 				BUTTON_BACK = 6;
 				BUTTON_START = 7;
+				BUTTON_SEARCH = -1;
+				AXIS_BRAKE = -1;
+				AXIS_GAS = -1;
 			}
 			break;
 		case SNES:
 			snes: {
 				if (OS.platform.equals(OS.Platform.Linux)) {
 					/* by AngelusWeb » Fri Sep 06, 2013 11:33 pm */
-					BUTTON_O = 0;
-					BUTTON_U = 2;
+					BUTTON_A = 0;
+					BUTTON_X = 2;
 					BUTTON_Y = 3;
-					BUTTON_A = 1;
+					BUTTON_B = 1;
 					BUTTON_MENU = -1;
 					DPAD_IS_POV = false;
 					DPAD_IS_BUTTON = false;
@@ -449,13 +524,16 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = -1;
 					BUTTON_BACK = -1;
 					BUTTON_START = -1;
+					BUTTON_SEARCH = -1;
+					AXIS_BRAKE = -1;
+					AXIS_GAS = -1;
 					break snes;
 				}
 				/* default SNES mapping */
-				BUTTON_O = 0;
-				BUTTON_U = 2;
+				BUTTON_A = 0;
+				BUTTON_X = 2;
 				BUTTON_Y = 3;
-				BUTTON_A = 1;
+				BUTTON_B = 1;
 				BUTTON_MENU = -1;
 				DPAD_IS_POV = false;
 				DPAD_IS_BUTTON = false;
@@ -480,6 +558,9 @@ public class GamepadMap {
 				AXIS_RIGHT_TRIGGER = -1;
 				BUTTON_BACK = -1;
 				BUTTON_START = -1;
+				BUTTON_SEARCH = -1;
+				AXIS_BRAKE = -1;
+				AXIS_GAS = -1;
 			}
 			break;
 		}

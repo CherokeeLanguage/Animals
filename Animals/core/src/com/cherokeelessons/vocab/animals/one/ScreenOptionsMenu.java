@@ -108,7 +108,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 	private TextureAtlas wall_atlas;
 
-	final private ControllerOptions_Watch watcher = new ControllerOptions_Watch(this);
+	final private CtlrOptions_Watch watcher = new CtlrOptions_Watch(this);
 	private int idx_music;
 
 	final private Prefs prefs;
@@ -137,17 +137,21 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		instructStyle.fontColor = textColor;
 
 		displayLine = 0;
-
 		lbl_instructions = new MenuLabel(TAB_INSTRUCT, instructStyle);
 		lbl_instructions.pack();
 		lbl_instructions.setX((screenSize.width - lbl_instructions.getWidth()) / 2);
-		lbl_instructions.addListener(new ClickListener() {
+		lbl_instructions.menu_action_east=new Runnable() {
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+			public void run() {
 				game.gameEvent(GameEvent.Done);
-				return true;
 			}
-		});
+		};
+		lbl_instructions.menu_action_west=new Runnable() {
+			@Override
+			public void run() {
+				game.gameEvent(GameEvent.Done);
+			}
+		};
 
 		float optionsHeight = lbl_instructions.getHeight();
 		calculateBaseLines(optionsHeight);
@@ -297,7 +301,8 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		btns.add(btn_musicVolume);
 		idx_volume = btns.size;
 		btns.add(btn_masterVolume);
-
+		btns.add(lbl_instructions);
+		
 		gameStage.clear();
 		// gameStage.addActor(btn_aboutProgram);
 		gameStage.addActor(btn_resetStatistics);
@@ -602,7 +607,8 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	public boolean dpad(int keyCode) {
 		switch (keyCode) {
 		case Keys.DPAD_CENTER:
-			return false;
+			doMenuItem(PovDirection.east);
+			return true;
 		case Keys.DPAD_DOWN:
 			hud_moveSouth();
 			return true;

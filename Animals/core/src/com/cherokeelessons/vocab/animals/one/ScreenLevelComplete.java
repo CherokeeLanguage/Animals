@@ -55,7 +55,7 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 
 	private TextureAtlas wall_atlas;
 
-	final private ControllerLevelComplete_Watch watcher = new ControllerLevelComplete_Watch(
+	final private CtlrLevelComplete_Watch watcher = new CtlrLevelComplete_Watch(
 			this);
 	private int levelOn;
 	private int correct;

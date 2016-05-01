@@ -1,10 +1,12 @@
 package com.cherokeelessons.vocab.animals.one;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
+import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -12,11 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.GamepadMap;
-import com.cherokeelessons.common.GamepadMap.Model;
 import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
@@ -26,8 +26,7 @@ import com.cherokeelessons.vocab.animals.one.views.ViewChallengeBoard;
 
 public class ScreenTrainer extends GameScreen implements DpadInterface {
 
-	final private static Array<ControllerAdapter> listeners = new Array<ControllerAdapter>();
-	HashSet<FileHandle> alreadyShown;
+	private Set<FileHandle> alreadyShown;
 
 	private LabelStyle buttonStyle;
 
@@ -51,53 +50,19 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 		return false;
 	}
 	
-	private ControllerAdapter skipTraining = new ControllerAdapter() {
-		final private GamepadMap map_ouya = new GamepadMap(Model.Ouya);
-		final private GamepadMap map_xbox = new GamepadMap(Model.Xbox);
-
+	private ControllerAdapter skipTraining = new ControllerAdapter() { 
 		@Override
 		public boolean buttonDown(Controller controller, int buttonCode) {
-			do {
-				if (controller.getName().toLowerCase().contains("ouya")) {
-					if (buttonCode == map_ouya.BUTTON_O) {
-						break;
-					}
-				}
-				if (controller.getName().toLowerCase().contains("xbox")) {
-					if (buttonCode == map_xbox.BUTTON_O) {
-						break;
-					}
-				}
-				if (controller.getName().toLowerCase().contains("360")) {
-					if (buttonCode == map_xbox.BUTTON_O) {
-						break;
-					}
-				}
-				return false;
-			} while (false);
 			doSkipTraining();
 			return true;
 		}
 	};
 
-	private ControllerAdapter watcher = new ControllerAdapter() {
+	private GamepadAdapter<ScreenTrainer> watcher = new GamepadAdapter<ScreenTrainer>(this) {
 		@Override
-		public void connected(Controller controller) {
-			super.connected(controller);
-			ControllerAdapter listener;
-			listener = skipTraining;
-			controller.addListener(listener);
-			listeners.add(listener);
+		public ControllerListener factoryControllerListener(GamepadMap map, ScreenTrainer menu) {
+			return skipTraining;
 		}
-
-		@Override
-		public void disconnected(Controller controller) {
-			super.disconnected(controller);
-			for (ControllerAdapter listener : listeners) {
-				controller.removeListener(listener);
-			}
-		}
-
 	};
 
 	private ViewChallengeBoard writtenChallenge;
@@ -114,7 +79,14 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 		buttonStyle.font = font;
 		buttonStyle.fontColor = GameColor.MAIN_TEXT;
 
-		lbl_exitInfo = new Label("[SKIP]", buttonStyle);
+		
+		String textSkip;
+		if (game.isTv || watcher.hasControllers()) {
+			textSkip = "[FIRE] or [ENTER] to skip.";
+		} else {
+			textSkip = "[SKIP]";
+		}
+		lbl_exitInfo = new Label(textSkip, buttonStyle);
 		lbl_exitInfo.setTouchable(Touchable.enabled);
 		lbl_exitInfo.setX(screenSize.width - lbl_exitInfo.getWidth());
 		lbl_exitInfo.setY(screenSize.height - lbl_exitInfo.getHeight());

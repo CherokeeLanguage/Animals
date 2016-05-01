@@ -97,25 +97,26 @@ public class DreamLo {
 	private Runnable registerWithBoard = new Runnable() {
 		@Override
 		public void run() {
-			Gdx.app.log("DreamLo", "registerWithBoard");
+			Gdx.app.log(this.getClass().getName(), "DreamLo: registerWithBoard#run");
 			HttpRequest httpRequest = new HttpRequest("GET");
 			httpRequest.setUrl(readUrl + "/pipe");
-			Gdx.app.log("DreamLo", "URL: '" + httpRequest.getUrl() + "'");
+			Gdx.app.log(this.getClass().getName(), "DreamLo: '" + httpRequest.getUrl() + "'");
 			HttpResponseListener httpResponseListener = new HttpResponseListener() {
 				@Override
 				public void cancelled() {
-					Gdx.app.log("DreamLo", "registerWithBoard: TIMED OUT");
+					Gdx.app.log(this.getClass().getName(), "DreamLo: registerWithBoard: TIMED OUT");
 				}
 
 				@Override
 				public void failed(Throwable t) {
-					Gdx.app.log("DreamLo", "registerWithBoard: ", t);
+					Gdx.app.log(this.getClass().getName(), "DreamLo: registerWithBoard: ", t);
 				}
 
 				@Override
 				public void handleHttpResponse(HttpResponse httpResponse) {
-					Gdx.app.log("DreamLo", "registerWithBoard: " + httpResponse.getResultAsString());
-					String str_scores = httpResponse.getResultAsString();
+					String resultAsString = httpResponse.getResultAsString();
+					Gdx.app.log(this.getClass().getName(), "DreamLo: registerWithBoard: " + resultAsString);
+					String str_scores = resultAsString;
 					String[] scores = str_scores.split("\n");
 					Random r = new Random();
 					int id = 0;
@@ -159,13 +160,13 @@ public class DreamLo {
 		Gdx.net.sendHttpRequest(httpRequest, new HttpResponseListener() {
 			@Override
 			public void cancelled() {
-				Gdx.app.log("DreamLo", "lb_getScoresFor: timed out");
+				Gdx.app.log(this.getClass().getName(), "DreamLo: lb_getScoresFor: timed out");
 				Gdx.app.postRunnable(callback.with(new RuntimeException("TIMED OUT")));
 			}
 
 			@Override
 			public void failed(Throwable t) {
-				Gdx.app.log("DreamLo", "lb_getScoresFor:", t);
+				Gdx.app.log(this.getClass().getName(), "DreamLo: lb_getScoresFor:", t);
 				Gdx.app.postRunnable(callback.with(new RuntimeException(t)));
 			}
 
@@ -304,13 +305,13 @@ public class DreamLo {
 		Gdx.net.sendHttpRequest(httpRequest, new HttpResponseListener() {
 			@Override
 			public void cancelled() {
-				Gdx.app.log("DreamLo", "lb_submit: timed out");
+				Gdx.app.log(this.getClass().getName(), "DreamLo: lb_submit: timed out");
 				Gdx.app.postRunnable(callback.with(new RuntimeException("TIMED OUT")));
 			}
 
 			@Override
 			public void failed(Throwable t) {
-				Gdx.app.log("DreamLo", "lb_submit", t);
+				Gdx.app.log(this.getClass().getName(), "DreamLo: lb_submit", t);
 				Gdx.app.postRunnable(callback.with(new RuntimeException(t)));
 			}
 
@@ -324,7 +325,7 @@ public class DreamLo {
 	public boolean registerWithDreamLoBoard() {
 		if (prefs.getString(DREAMLO_USERID, "").length() == 0) {
 			if (!registeredListenerPending) {
-				Gdx.app.log("DreamLo", "registeredWithBoard: false");
+				Gdx.app.log(this.getClass().getName(), "DreamLo: registeredWithBoard: do");
 				registeredListenerPending = true;
 				Gdx.app.postRunnable(registerWithBoard);
 			}

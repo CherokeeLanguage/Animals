@@ -108,6 +108,9 @@ public abstract class GameScreen implements Screen {
 		case Input.Keys.DPAD_RIGHT:
 		case Input.Keys.DPAD_UP:
 			return dpad.dpad(keyCode);
+		case Input.Keys.ENTER:
+		case Input.Keys.NUMPAD_5:
+			return dpad.dpad(Input.Keys.DPAD_CENTER);
 		default:
 		}
 		return false;

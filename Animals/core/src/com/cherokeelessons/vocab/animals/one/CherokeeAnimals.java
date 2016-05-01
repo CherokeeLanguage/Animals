@@ -45,7 +45,7 @@ public class CherokeeAnimals implements ApplicationListener {
 
 		prefs = new Prefs(this);
 		
-		new DreamLo(prefs).registerWithDreamLoBoard();
+		Gdx.app.log(this.getClass().getName(), "DreamLo: "+new DreamLo(prefs).registerWithDreamLoBoard());
 		
 		Tween.registerAccessor(GameMusic.class, new MusicAccessor());
 		Tween.registerAccessor(Sprite.class, new SpriteAccessor());

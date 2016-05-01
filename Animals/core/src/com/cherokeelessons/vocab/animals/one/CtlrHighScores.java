@@ -8,10 +8,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.cherokeelessons.common.GamepadMap;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
-public class ControllerHighScores implements ControllerListener {
+public class CtlrHighScores implements ControllerListener {
 
 	private static void log(String msg) {
-		Gdx.app.log(ControllerHighScores.class.getCanonicalName(), msg);
+		Gdx.app.log(CtlrHighScores.class.getCanonicalName(), msg);
 	}
 
 	private float deadzone = 0.7f;
@@ -22,7 +22,7 @@ public class ControllerHighScores implements ControllerListener {
 
 	private ScreenHighScores menu;
 
-	public ControllerHighScores(GamepadMap map, ScreenHighScores menu) {
+	public CtlrHighScores(GamepadMap map, ScreenHighScores menu) {
 		this.map = map;
 		this.menu = menu;
 	}
@@ -85,17 +85,17 @@ public class ControllerHighScores implements ControllerListener {
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
 		if (menu.isPaused()) {
-			if (buttonCode == map.BUTTON_O) {
+			if (buttonCode == map.BUTTON_A) {
 				menu.setPaused(false);
 				return true;
 			}
-			if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_A) {
+			if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
 				menu.setPaused(false);
 				return true;
 			}
 			return true;
 		}
-		if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_A) {
+		if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
 			menu.game.gameEvent(GameEvent.Done);
 			return true;
 		}
