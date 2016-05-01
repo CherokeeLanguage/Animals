@@ -103,6 +103,11 @@ public class ScreenLoading extends GameScreen {
 		if (!game.sm.preloadDone()) {
 			return;
 		}
+		if (!syllabaryMapInit) {
+			Utils.initTranslationMap();
+			syllabaryMapInit=true;
+			return;
+		}
 		if (!challengesLoaded) {
 			challengesLoaded=true;
 			game.challenges = new LoadChallenges();
@@ -121,12 +126,6 @@ public class ScreenLoading extends GameScreen {
 			game.setLevels(game.challenges.levelcount());
 			return;
 		}
-		if (!syllabaryMapInit) {
-			Utils.initTranslationMap();
-			syllabaryMapInit=true;
-			return;
-		}
-		
 		if (!done) {			
 			done=true;			
 			loading.addAction(Actions.fadeOut(1f));

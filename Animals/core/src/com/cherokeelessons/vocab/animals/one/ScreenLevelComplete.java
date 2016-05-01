@@ -15,7 +15,6 @@ import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.util.Callback;
 import com.cherokeelessons.util.DreamLo;
-import com.cherokeelessons.util.GameScores.GameScore;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
 public class ScreenLevelComplete extends GameScreen {
@@ -37,8 +36,6 @@ public class ScreenLevelComplete extends GameScreen {
 	public int optionsButton;
 	private Label msg_elasped_time;
 	
-	private Label msg_ranking;
-
 	private Label playLevelAgain;
 
 	private LabelStyle tbStyle;
@@ -74,8 +71,6 @@ public class ScreenLevelComplete extends GameScreen {
 		msg_elasped_time = new Label(game.prefs.getLevelAccuracy(game
 				.getLevelOn()) + CORRECT, lStyle);
 		
-		msg_ranking = new Label("Level Ranking: ??, Overall Ranking: ??", lStyle);
-
 		tbStyle = new LabelStyle();
 		tbStyle.font = font;
 		tbStyle.fontColor = GameColor.MAIN_TEXT;
@@ -121,7 +116,6 @@ public class ScreenLevelComplete extends GameScreen {
 
 		gameStage.addActor(msg_accuracy);
 		gameStage.addActor(msg_elasped_time);
-		gameStage.addActor(msg_ranking);
 		gameStage.addActor(gotoMainMenu);
 		gameStage.addActor(playLevelAgain);
 		gameStage.addActor(goLevelSelect);
@@ -161,9 +155,6 @@ public class ScreenLevelComplete extends GameScreen {
 		playLevelAgain.setX(midX - playLevelAgain.getWidth() / 2);
 		playLevelAgain.setY(line - playLevelAgain.getHeight() / 2);
 		line += lineGap;
-		msg_ranking.setX(midX - msg_ranking.getWidth() / 2);
-		msg_ranking.setY(line - msg_ranking.getHeight() / 2);
-		line += lineGap;
 		msg_elasped_time.setX(midX - msg_elasped_time.getWidth() / 2);
 		msg_elasped_time.setY(line - msg_elasped_time.getHeight() / 2);
 		line += lineGap;
@@ -198,10 +189,8 @@ public class ScreenLevelComplete extends GameScreen {
 		elapsed_sec = elapsed/1000l;
 		elapsed_min = elapsed_sec/60;
 		elapsed_sec -= elapsed_min*60;
-		//record the score, if the leaderboard enabled
 		if (game.prefs.isLeaderBoardEnabled()) {
 			lb.lb_submit((levelOn+1)+"", correct, game.prefs.getLastScore(levelOn), "", show_ranking);
-//			lb.addScore(levelOn+1, correct, elapsed, show_ranking);
 		}
 		updateDisplay();
 	}
@@ -215,13 +204,5 @@ public class ScreenLevelComplete extends GameScreen {
 		msg_elasped_time.setText("Time elapsed: "+elapsed_min+" min "+elapsed_sec+" sec.");
 		msg_elasped_time.pack();
 		msg_elasped_time.setX(midX - msg_elasped_time.getWidth() / 2);
-	}
-	
-	private void updateRanking(GameScore score) {
-		//"Level Ranking: ??, Overall Ranking: ??"
-		int midX = (int) (screenSize.width / 2);
-		msg_ranking.setText("Level Ranking: #"+score.rank+", Overall Ranking: #"+score.rank);
-		msg_ranking.pack();
-		msg_ranking.setX(midX - msg_ranking.getWidth() / 2);
 	}
 }

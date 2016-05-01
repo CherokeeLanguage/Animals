@@ -97,7 +97,6 @@ public class CherokeeAnimals implements ApplicationListener {
 			break;
 		case Done:
 			if (getScreen() instanceof ScreenMainMenu) {
-				// ignore, ScreenMainMenu is the furthest back we allow
 				break;
 			}
 			if (getScreen() instanceof ScreenPoweredBy) {
@@ -105,6 +104,10 @@ public class CherokeeAnimals implements ApplicationListener {
 				break;
 			}
 			if (getScreen() instanceof ScreenLoading) {
+				gameEvent(GameEvent.MainMenu);
+				break;
+			}
+			if (getScreen() instanceof ScreenLevelComplete) {
 				gameEvent(GameEvent.MainMenu);
 				break;
 			}

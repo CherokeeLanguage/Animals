@@ -19,11 +19,13 @@ All audio effects are cc-zero or public domain.
 "rubbish2" - by m0d
 "wild perspective" - by m0d
 
-All music is cc-zero or public domain.
 http://modarchive.org
+
+All music is cc-zero or public domain.
 
 - Font -
 Cherokee Hand One - by Joseph Erb
+
 https://www.facebook.com/joseph.erb
 
 - Language Reference -
@@ -33,6 +35,7 @@ Cherokee-English Dictionary (Durbin-Feeling)
 - Pictures -
 OpenClipart.Org
 Commons.Wikimedia.Org
+
 All pictures are cc-zero or public domain.
 
 http://www.CherokeeLessons.com/

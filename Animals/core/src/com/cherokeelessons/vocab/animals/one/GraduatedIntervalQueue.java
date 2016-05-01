@@ -2,8 +2,9 @@ package com.cherokeelessons.vocab.animals.one;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
-import com.badlogic.gdx.utils.Array;
+import com.cherokeelessons.common.Utils;
 
 public class GraduatedIntervalQueue {
 
@@ -27,15 +28,15 @@ public class GraduatedIntervalQueue {
 		this.doubleMode = doubleMode;
 	}
 
-	private Array<String> startingEntries;
-	private Array<String> intervalQueue;
+	private List<String> startingEntries;
+	private List<String> intervalQueue;
 
-	public Array<String> getIntervalQueue() {
+	public List<String> getIntervalQueue() {
 		return intervalQueue;
 	}
 
 	public String getEntry(int ix) {
-		if (intervalQueue.size > ix && ix >= 0) {
+		if (intervalQueue.size() > ix && ix >= 0) {
 			return intervalQueue.get(ix);
 		}
 		return null;
@@ -45,8 +46,8 @@ public class GraduatedIntervalQueue {
 		super();
 	}
 
-	public void load(Array<String> _startingEntries) {
-		startingEntries = new Array<String>();
+	public void load(List<String> _startingEntries) {
+		startingEntries = new ArrayList<String>();
 //		bounderiesNameList = new Array<String>();
 //		bounderiesByName = new HashMap<String, Integer>();
 //		bounderiesByPosition = new HashMap<Integer, String>();
@@ -122,16 +123,16 @@ public class GraduatedIntervalQueue {
 //		return bounderiesByPosition.get(position);
 //	}
 
-	public void removeGaps(Array<String> queue) {
+	public void removeGaps(List<String> queue) {
 		int ix = 0, repeat;
-		Array<String> vx1 = null;
-		Array<String> vx2 = null;
+		List<String> vx1 = null;
+		List<String> vx2 = null;
 		boolean hasDupes = true;
 		String prev = null;
 		String current = null;
 
-		vx1 = new Array<String>();
-		vx2 = new Array<String>();
+		vx1 = new ArrayList<String>();
+		vx2 = new ArrayList<String>();
 
 		/**
 		 * scan for and try and prevent "repeats"
@@ -141,7 +142,7 @@ public class GraduatedIntervalQueue {
 			vx1.clear();
 			vx2.clear();
 			hasDupes = false;
-			for (ix = 0; ix < queue.size; ix++) {
+			for (ix = 0; ix < queue.size(); ix++) {
 				if (queue.get(ix) == null)
 					continue;
 				current = queue.get(ix);
@@ -231,14 +232,14 @@ public class GraduatedIntervalQueue {
 		return o1;
 	}
 
-	private Array<String> getQueue(Array<String> startingEntries2) {
+	private List<String> getQueue(List<String> startingEntries2) {
 		int ix, iy, ia;
 		ArrayList<Integer> offsets;
-		Array<String> newQueue = null;
-		Array<String> samples;
+		List<String> newQueue = null;
+		List<String> samples;
 
-		newQueue = new Array<String>();
-		samples = new Array<String>();
+		newQueue = new ArrayList<String>();
+		samples = new ArrayList<String>();
 		if (isDoubleMode()) {
 			offsets = getOffsetsDoubled();
 		} else {
@@ -250,14 +251,14 @@ public class GraduatedIntervalQueue {
 		/**
 		 * process samples creating non-random work queue
 		 */
-		for (ix = 0; ix < samples.size; ix++) {
+		for (ix = 0; ix < samples.size(); ix++) {
 			ia = 0;
 			for (iy = 0; iy < offsets.size(); iy++) {
-				while (newQueue.size < ia + 1)
+				while (newQueue.size() < ia + 1)
 					newQueue.add(null);
 				while (newQueue.get(ia) != null) {
 					ia++;
-					while (newQueue.size < ia + 1)
+					while (newQueue.size() < ia + 1)
 						newQueue.add(null);
 				}
 				newQueue.set(ia, samples.get(ix));
@@ -269,24 +270,24 @@ public class GraduatedIntervalQueue {
 		return newQueue;
 	}
 
-	private static String asLatin(String raw_text) {
-		if (raw_text==null) {
-			return null;
-		}
-		raw_text=raw_text.replace("-", "");
-		String text=raw_text.substring(0, 1).toUpperCase();
-		if (raw_text.length()>1) {
-			text += raw_text.substring(1);
-		}
-		return text;
-	}
+//	private static String asLatin(String raw_text) {
+//		if (raw_text==null) {
+//			return null;
+//		}
+//		raw_text=raw_text.replace("-", "");
+//		String text=raw_text.substring(0, 1).toUpperCase();
+//		if (raw_text.length()>1) {
+//			text += raw_text.substring(1);
+//		}
+//		return text;
+//	}
 
 	public static final class SortSizeAscendingAlpha implements
 			Comparator<String> {
 		@Override
 		public int compare(String o1, String o2) {
-			o1 = asLatin(o1);
-			o2 = asLatin(o2);
+			o1 = Utils.asSyllabary(o1);
+			o2 = Utils.asSyllabary(o2);
 			if (o1.length() < o2.length())
 				return -1;
 			if (o1.length() > o2.length())
@@ -327,10 +328,4 @@ public class GraduatedIntervalQueue {
 		}
 
 	}
-
-	public static String asSyllabary(String currentChallenge) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

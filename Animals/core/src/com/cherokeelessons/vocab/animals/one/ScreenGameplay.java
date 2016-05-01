@@ -1,6 +1,7 @@
 package com.cherokeelessons.vocab.animals.one;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
@@ -90,7 +91,7 @@ public class ScreenGameplay extends GameScreen {
 
 	private WritingMode writingMode;
 
-	private Array<String> queue;
+	private List<String> queue;
 
 	private Texture pause_texture;
 
@@ -386,7 +387,7 @@ public class ScreenGameplay extends GameScreen {
 		this.queue = game.challenges.getChallengesFor(level);
 
 		start = 0;
-		end = queue.size;
+		end = queue.size();
 		ip = start;
 		setChallenge();
 		updateProgress2();

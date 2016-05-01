@@ -155,7 +155,7 @@ public class DreamLo {
 		}
 		HttpRequest httpRequest = new HttpRequest("GET");
 		httpRequest.setTimeOut(10000);
-		httpRequest.setUrl(readUrl + "/pipe");
+		httpRequest.setUrl(readUrl + "/pipe/100");
 		Gdx.net.sendHttpRequest(httpRequest, new HttpResponseListener() {
 			@Override
 			public void cancelled() {

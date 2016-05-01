@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.BufferUtils;
+import com.cherokeelessons.util.StringUtils;
 
 public class Utils {
 
@@ -72,6 +73,9 @@ public class Utils {
 	}
 	
 	public static String asSyllabary(String string) {
+		if (StringUtils.isBlank(string)) {
+			return string;
+		}
 		string = invertSyllabary(string);
 		string = string.replaceAll("[^Ꭰ-Ᏼ ]", "");
 		return string;
