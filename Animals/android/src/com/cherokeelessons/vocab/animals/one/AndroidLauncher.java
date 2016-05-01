@@ -4,7 +4,6 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
 import android.app.UiModeManager;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;

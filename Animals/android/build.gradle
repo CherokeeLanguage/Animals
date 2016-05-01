@@ -23,6 +23,24 @@ android {
       abortOnError false
       checkReleaseBuilds false
   }
+  signingConfigs {
+        release {
+        		if (new File("/Users/mjoyner").isDirectory()) {
+        			storeFile file("/Users/mjoyner/Keystore")
+        		} else {
+        			storeFile file("/home/mjoyner/Keystore")
+        		}
+            
+            storePassword "Wayawaya359"
+            keyAlias "cherokeelessons.apk"
+            keyPassword "Wayawaya359"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
 }
 
 
