@@ -67,6 +67,9 @@ project(":android") {
         //controllers
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
 		compile "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
+		
+		//android tv
+		compile 'com.android.support:leanback-v17:23.1.1'
     }
 }
 
