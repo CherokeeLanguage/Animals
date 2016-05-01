@@ -1,5 +1,7 @@
 package com.cherokeelessons.common;
 
+import com.badlogic.gdx.Input;
+
 /**
  * Game Controller Mapping Object. Attempts to self adjust values based on OS
  * running on.
@@ -32,7 +34,7 @@ package com.cherokeelessons.common;
 
 public class GamepadMap {
 	public static enum Model {
-		Ouya, Xbox, SNES;
+		Ouya, Xbox, SNES, Keyboard;
 	}
 
 	public final int AXIS_DPAD_X;
@@ -69,9 +71,39 @@ public class GamepadMap {
 	public GamepadMap(Model model) {
 		this.model = model;
 		switch (model) {
+		case Keyboard:
+			BUTTON_O = Input.Keys.ENTER;
+			BUTTON_U = -1;
+			BUTTON_Y = -1;
+			BUTTON_A = Input.Keys.BACK;
+			BUTTON_MENU = Input.Keys.F1;
+			DPAD_IS_POV = false;
+			DPAD_IS_BUTTON = true;
+			BUTTON_DPAD_UP = Input.Keys.DPAD_UP;
+			BUTTON_DPAD_DOWN = Input.Keys.DPAD_DOWN;
+			BUTTON_DPAD_RIGHT = Input.Keys.DPAD_RIGHT;
+			BUTTON_DPAD_LEFT = Input.Keys.DPAD_LEFT;
+			DPAD_IS_AXIS = false;
+			AXIS_DPAD_X = -1;
+			AXIS_DPAD_Y = -1;
+			BUTTON_L1 /* bumper */ = -1;
+			BUTTON_L2 /* trigger */ = -1;
+			BUTTON_L3 /* joystick */ = -1;
+			BUTTON_R1 /* bumper */ = -1;
+			BUTTON_R2 /* trigger */ = -1;
+			BUTTON_R3 /* joystick */ = -1;
+			AXIS_LEFT_X = -1;
+			AXIS_LEFT_Y = -1;
+			AXIS_LEFT_TRIGGER = -1;
+			AXIS_RIGHT_X = -1;
+			AXIS_RIGHT_Y = -1;
+			AXIS_RIGHT_TRIGGER = -1;
+			BUTTON_BACK = Input.Keys.BACK;
+			BUTTON_START = -1;
+			break;
 		case Ouya:
 		default:
-			do {
+			ouya: {
 				if (OS.platform.equals(OS.Platform.Linux)) {
 					BUTTON_O = 3;
 					BUTTON_U = 4;
@@ -87,12 +119,12 @@ public class GamepadMap {
 					DPAD_IS_AXIS = false;
 					AXIS_DPAD_X = -1;
 					AXIS_DPAD_Y = -1;
-					BUTTON_L1 /* bumper */= 7;
-					BUTTON_L2 /* trigger */= 15;
-					BUTTON_L3 /* joystick */= 9;
-					BUTTON_R1 /* bumper */= 8;
-					BUTTON_R2 /* trigger */= 16;
-					BUTTON_R3 /* joystick */= 10;
+					BUTTON_L1 /* bumper */ = 7;
+					BUTTON_L2 /* trigger */ = 15;
+					BUTTON_L3 /* joystick */ = 9;
+					BUTTON_R1 /* bumper */ = 8;
+					BUTTON_R2 /* trigger */ = 16;
+					BUTTON_R3 /* joystick */ = 10;
 					AXIS_LEFT_X = 0;
 					AXIS_LEFT_Y = 1;
 					AXIS_LEFT_TRIGGER = 2;
@@ -101,7 +133,7 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = 5;
 					BUTTON_BACK = -1;
 					BUTTON_START = 18;
-					break;
+					break ouya;
 				}
 				if (OS.platform.equals(OS.Platform.Windows)) {
 					BUTTON_O = 0;
@@ -118,12 +150,12 @@ public class GamepadMap {
 					DPAD_IS_AXIS = false;
 					AXIS_DPAD_X = -1;
 					AXIS_DPAD_Y = -1;
-					BUTTON_L1 /* bumper */= 4;
-					BUTTON_L2 /* trigger */= -1;
-					BUTTON_L3 /* joystick */= 6;
-					BUTTON_R1 /* bumper */= 5;
-					BUTTON_R2 /* trigger */= -1;
-					BUTTON_R3 /* joystick */= 7;
+					BUTTON_L1 /* bumper */ = 4;
+					BUTTON_L2 /* trigger */ = -1;
+					BUTTON_L3 /* joystick */ = 6;
+					BUTTON_R1 /* bumper */ = 5;
+					BUTTON_R2 /* trigger */ = -1;
+					BUTTON_R3 /* joystick */ = 7;
 					AXIS_LEFT_X = 1;
 					AXIS_LEFT_Y = 0;
 					AXIS_LEFT_TRIGGER = 4;
@@ -132,7 +164,7 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = 5;
 					BUTTON_BACK = -1;
 					BUTTON_START = 15;
-					break;
+					break ouya;
 				}
 				if (OS.platform.equals(OS.Platform.Ouya)) {
 					BUTTON_O = 96;
@@ -149,12 +181,12 @@ public class GamepadMap {
 					DPAD_IS_AXIS = false;
 					AXIS_DPAD_X = -1;
 					AXIS_DPAD_Y = -1;
-					BUTTON_L1 /* bumper */= 102;
-					BUTTON_L2 /* trigger */= 104;
-					BUTTON_L3 /* joystick */= 106;
-					BUTTON_R1 /* bumper */= 103;
-					BUTTON_R2 /* trigger */= 105;
-					BUTTON_R3 /* joystick */= 107;
+					BUTTON_L1 /* bumper */ = 102;
+					BUTTON_L2 /* trigger */ = 104;
+					BUTTON_L3 /* joystick */ = 106;
+					BUTTON_R1 /* bumper */ = 103;
+					BUTTON_R2 /* trigger */ = 105;
+					BUTTON_R3 /* joystick */ = 107;
 					AXIS_LEFT_X = 0;
 					AXIS_LEFT_Y = 1;
 					AXIS_LEFT_TRIGGER = 2;
@@ -163,7 +195,7 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = 5;
 					BUTTON_BACK = -1;
 					BUTTON_START = -1;
-					break;
+					break ouya;
 				}
 				if (OS.platform.equals(OS.Platform.Android)) {
 					BUTTON_O = 96;
@@ -180,12 +212,12 @@ public class GamepadMap {
 					DPAD_IS_AXIS = false;
 					AXIS_DPAD_X = -1;
 					AXIS_DPAD_Y = -1;
-					BUTTON_L1 /* bumper */= 100;
-					BUTTON_L2 /* trigger */= 110;
-					BUTTON_L3 /* joystick */= 102;
-					BUTTON_R1 /* bumper */= 101;
-					BUTTON_R2 /* trigger */= 106;
-					BUTTON_R3 /* joystick */= 103;
+					BUTTON_L1 /* bumper */ = 100;
+					BUTTON_L2 /* trigger */ = 110;
+					BUTTON_L3 /* joystick */ = 102;
+					BUTTON_R1 /* bumper */ = 101;
+					BUTTON_R2 /* trigger */ = 106;
+					BUTTON_R3 /* joystick */ = 103;
 					AXIS_LEFT_X = 0;
 					AXIS_LEFT_Y = 1;
 					AXIS_LEFT_TRIGGER = 2;
@@ -194,7 +226,7 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = 5;
 					BUTTON_BACK = -1;
 					BUTTON_START = 0;
-					break;
+					break ouya;
 				}
 				/* fallback values */
 				BUTTON_O = 3;
@@ -211,12 +243,12 @@ public class GamepadMap {
 				DPAD_IS_AXIS = false;
 				AXIS_DPAD_X = -1;
 				AXIS_DPAD_Y = -1;
-				BUTTON_L1 /* bumper */= 7;
-				BUTTON_L2 /* trigger */= 15;
-				BUTTON_L3 /* joystick */= 9;
-				BUTTON_R1 /* bumper */= 8;
-				BUTTON_R2 /* trigger */= 16;
-				BUTTON_R3 /* joystick */= 10;
+				BUTTON_L1 /* bumper */ = 7;
+				BUTTON_L2 /* trigger */ = 15;
+				BUTTON_L3 /* joystick */ = 9;
+				BUTTON_R1 /* bumper */ = 8;
+				BUTTON_R2 /* trigger */ = 16;
+				BUTTON_R3 /* joystick */ = 10;
 				AXIS_LEFT_X = 0;
 				AXIS_LEFT_Y = 1;
 				AXIS_LEFT_TRIGGER = 2;
@@ -225,10 +257,10 @@ public class GamepadMap {
 				AXIS_RIGHT_TRIGGER = 5;
 				BUTTON_BACK = -1;
 				BUTTON_START = 18;
-			} while (false);
+			}
 			break;
 		case Xbox:
-			do {
+			xbox: {
 				if (OS.platform.equals(OS.Platform.Linux)) {
 					BUTTON_O = 0;
 					BUTTON_U = 2;
@@ -244,12 +276,12 @@ public class GamepadMap {
 					DPAD_IS_AXIS = false;
 					AXIS_DPAD_X = -1;
 					AXIS_DPAD_Y = -1;
-					BUTTON_L1 /* bumper */= 4;
-					BUTTON_L2 /* trigger */= -1;
-					BUTTON_L3 /* joystick */= 9;
-					BUTTON_R1 /* bumper */= 5;
-					BUTTON_R2 /* trigger */= -1;
-					BUTTON_R3 /* joystick */= 10;
+					BUTTON_L1 /* bumper */ = 4;
+					BUTTON_L2 /* trigger */ = -1;
+					BUTTON_L3 /* joystick */ = 9;
+					BUTTON_R1 /* bumper */ = 5;
+					BUTTON_R2 /* trigger */ = -1;
+					BUTTON_R3 /* joystick */ = 10;
 					AXIS_LEFT_X = 0;
 					AXIS_LEFT_Y = 1;
 					AXIS_LEFT_TRIGGER = 2;
@@ -258,7 +290,7 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = 5;
 					BUTTON_BACK = 6;
 					BUTTON_START = 7;
-					break;
+					break xbox;
 				}
 				if (OS.platform.equals(OS.Platform.Windows)) {
 					BUTTON_O = 0;
@@ -275,12 +307,12 @@ public class GamepadMap {
 					DPAD_IS_AXIS = false;
 					AXIS_DPAD_X = -1;
 					AXIS_DPAD_Y = -1;
-					BUTTON_L1 /* bumper */= 4;
-					BUTTON_L2 /* trigger */= -1;
-					BUTTON_L3 /* joystick */= 3;
-					BUTTON_R1 /* bumper */= 5;
-					BUTTON_R2 /* trigger */= -1;
-					BUTTON_R3 /* joystick */= 9;
+					BUTTON_L1 /* bumper */ = 4;
+					BUTTON_L2 /* trigger */ = -1;
+					BUTTON_L3 /* joystick */ = 3;
+					BUTTON_R1 /* bumper */ = 5;
+					BUTTON_R2 /* trigger */ = -1;
+					BUTTON_R3 /* joystick */ = 9;
 					AXIS_LEFT_X = 1;
 					AXIS_LEFT_Y = 0;
 					AXIS_LEFT_TRIGGER = 4;
@@ -290,7 +322,7 @@ public class GamepadMap {
 											// for LEFT trigger!
 					BUTTON_BACK = 6;
 					BUTTON_START = 7;
-					break;
+					break xbox;
 				}
 				if (OS.platform.equals(OS.Platform.Ouya)) {
 					BUTTON_O = 96;
@@ -307,12 +339,12 @@ public class GamepadMap {
 					DPAD_IS_AXIS = true;
 					AXIS_DPAD_X = 6;
 					AXIS_DPAD_Y = 7;
-					BUTTON_L1 /* bumper */= 102;
-					BUTTON_L2 /* trigger */= -1;
-					BUTTON_L3 /* joystick */= 106;
-					BUTTON_R1 /* bumper */= 103;
-					BUTTON_R2 /* trigger */= -1;
-					BUTTON_R3 /* joystick */= 107;
+					BUTTON_L1 /* bumper */ = 102;
+					BUTTON_L2 /* trigger */ = -1;
+					BUTTON_L3 /* joystick */ = 106;
+					BUTTON_R1 /* bumper */ = 103;
+					BUTTON_R2 /* trigger */ = -1;
+					BUTTON_R3 /* joystick */ = 107;
 					AXIS_LEFT_X = 0;
 					AXIS_LEFT_Y = 1;
 					AXIS_LEFT_TRIGGER = 2;
@@ -321,7 +353,7 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = 5;
 					BUTTON_BACK = -1;
 					BUTTON_START = 108;
-					break;
+					break xbox;
 				}
 				if (OS.platform.equals(OS.Platform.Android)) {
 					BUTTON_O = 96;
@@ -338,12 +370,12 @@ public class GamepadMap {
 					DPAD_IS_AXIS = true;
 					AXIS_DPAD_X = 6;
 					AXIS_DPAD_Y = 7;
-					BUTTON_L1 /* bumper */= 102;
-					BUTTON_L2 /* trigger */= -1; // axis(2)
-					BUTTON_L3 /* joystick */= 106;
-					BUTTON_R1 /* bumper */= 103;
-					BUTTON_R2 /* trigger */= -1; // axis(5)
-					BUTTON_R3 /* joystick */= 107;
+					BUTTON_L1 /* bumper */ = 102;
+					BUTTON_L2 /* trigger */ = -1; // axis(2)
+					BUTTON_L3 /* joystick */ = 106;
+					BUTTON_R1 /* bumper */ = 103;
+					BUTTON_R2 /* trigger */ = -1; // axis(5)
+					BUTTON_R3 /* joystick */ = 107;
 					AXIS_LEFT_X = 0;
 					AXIS_LEFT_Y = 1;
 					AXIS_LEFT_TRIGGER = 2;
@@ -352,7 +384,7 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = 5;
 					BUTTON_BACK = 109;
 					BUTTON_START = 110;
-					break;
+					break xbox;
 				}
 				/* fallback values */
 				BUTTON_O = 0;
@@ -369,12 +401,12 @@ public class GamepadMap {
 				DPAD_IS_AXIS = false;
 				AXIS_DPAD_X = -1;
 				AXIS_DPAD_Y = -1;
-				BUTTON_L1 /* bumper */= 4;
-				BUTTON_L2 /* trigger */= -1;
-				BUTTON_L3 /* joystick */= 9;
-				BUTTON_R1 /* bumper */= 5;
-				BUTTON_R2 /* trigger */= -1;
-				BUTTON_R3 /* joystick */= 10;
+				BUTTON_L1 /* bumper */ = 4;
+				BUTTON_L2 /* trigger */ = -1;
+				BUTTON_L3 /* joystick */ = 9;
+				BUTTON_R1 /* bumper */ = 5;
+				BUTTON_R2 /* trigger */ = -1;
+				BUTTON_R3 /* joystick */ = 10;
 				AXIS_LEFT_X = 0;
 				AXIS_LEFT_Y = 1;
 				AXIS_LEFT_TRIGGER = 2;
@@ -383,10 +415,10 @@ public class GamepadMap {
 				AXIS_RIGHT_TRIGGER = 5;
 				BUTTON_BACK = 6;
 				BUTTON_START = 7;
-			} while (false);
+			}
 			break;
 		case SNES:
-			do {
+			snes: {
 				if (OS.platform.equals(OS.Platform.Linux)) {
 					/* by AngelusWeb » Fri Sep 06, 2013 11:33 pm */
 					BUTTON_O = 0;
@@ -403,12 +435,12 @@ public class GamepadMap {
 					DPAD_IS_AXIS = true;
 					AXIS_DPAD_X = 0;
 					AXIS_DPAD_Y = 1;
-					BUTTON_L1 /* bumper */= 5;
-					BUTTON_L2 /* trigger */= -1;
-					BUTTON_L3 /* joystick */= -1;
-					BUTTON_R1 /* bumper */= 6;
-					BUTTON_R2 /* trigger */= -1;
-					BUTTON_R3 /* joystick */= -1;
+					BUTTON_L1 /* bumper */ = 5;
+					BUTTON_L2 /* trigger */ = -1;
+					BUTTON_L3 /* joystick */ = -1;
+					BUTTON_R1 /* bumper */ = 6;
+					BUTTON_R2 /* trigger */ = -1;
+					BUTTON_R3 /* joystick */ = -1;
 					AXIS_LEFT_X = -1;
 					AXIS_LEFT_Y = -1;
 					AXIS_LEFT_TRIGGER = -1;
@@ -417,7 +449,7 @@ public class GamepadMap {
 					AXIS_RIGHT_TRIGGER = -1;
 					BUTTON_BACK = -1;
 					BUTTON_START = -1;
-					break;
+					break snes;
 				}
 				/* default SNES mapping */
 				BUTTON_O = 0;
@@ -434,12 +466,12 @@ public class GamepadMap {
 				DPAD_IS_AXIS = true;
 				AXIS_DPAD_X = 0;
 				AXIS_DPAD_Y = 1;
-				BUTTON_L1 /* bumper */= 5;
-				BUTTON_L2 /* trigger */= -1;
-				BUTTON_L3 /* joystick */= -1;
-				BUTTON_R1 /* bumper */= 6;
-				BUTTON_R2 /* trigger */= -1;
-				BUTTON_R3 /* joystick */= -1;
+				BUTTON_L1 /* bumper */ = 5;
+				BUTTON_L2 /* trigger */ = -1;
+				BUTTON_L3 /* joystick */ = -1;
+				BUTTON_R1 /* bumper */ = 6;
+				BUTTON_R2 /* trigger */ = -1;
+				BUTTON_R3 /* joystick */ = -1;
 				AXIS_LEFT_X = -1;
 				AXIS_LEFT_Y = -1;
 				AXIS_LEFT_TRIGGER = -1;
@@ -448,7 +480,7 @@ public class GamepadMap {
 				AXIS_RIGHT_TRIGGER = -1;
 				BUTTON_BACK = -1;
 				BUTTON_START = -1;
-			} while (false);
+			}
 			break;
 		}
 	}

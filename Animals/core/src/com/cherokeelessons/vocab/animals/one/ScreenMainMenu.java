@@ -1,6 +1,7 @@
 package com.cherokeelessons.vocab.animals.one;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,7 +24,23 @@ import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
-public class ScreenMainMenu extends GameScreen {
+public class ScreenMainMenu extends GameScreen implements DpadInterface {
+	
+	@Override
+	public boolean dpad(int keyCode) {
+		switch (keyCode) {
+		case Keys.DPAD_CENTER:
+			hud_select();
+			return true;
+		case Keys.DPAD_DOWN:
+			hud_moveSouth();
+			return true;
+		case Keys.DPAD_UP:
+			hud_moveNorth();
+			return true;
+		}
+		return false;
+	}
 
 	public static final String INDICATOR = "images/indicators/da-gi-si_2.png";
 	public static final float INDI_SCALE=.45f; 
@@ -245,7 +262,7 @@ public class ScreenMainMenu extends GameScreen {
 						int pointer, int button) {
 					Gdx.app.log(this.getClass().getName(), "touchDown: "+btn);
 					highlight_button(btn, true);
-					doMenuItem();
+					hud_select();
 					return true;
 				}
 			});
@@ -284,7 +301,7 @@ public class ScreenMainMenu extends GameScreen {
 		super.dispose();
 	}
 
-	public void doMenuItem() {
+	public void hud_select() {
 		btns.get(selected_btn).doRun();
 	}
 
@@ -325,7 +342,7 @@ public class ScreenMainMenu extends GameScreen {
 		right_indicator.setPosition(right - 20, bottom);
 	}
 
-	public void nextMenuItem() {
+	public void hud_moveSouth() {
 		selected_btn++;
 		if (selected_btn >= btns.size) {
 			selected_btn = 0;
@@ -333,7 +350,7 @@ public class ScreenMainMenu extends GameScreen {
 		highlight_button();
 	}
 
-	public void prevMenuItem() {
+	public void hud_moveNorth() {
 		selected_btn--;
 		if (selected_btn < 0) {
 			selected_btn = btns.size - 1;

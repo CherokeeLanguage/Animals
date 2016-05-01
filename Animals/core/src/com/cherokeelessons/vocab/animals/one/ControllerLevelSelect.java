@@ -94,7 +94,7 @@ public class ControllerLevelSelect implements ControllerListener {
 			return true;
 		}
 		if (buttonCode == map.BUTTON_O) {
-			menu.hud_selectLevel();
+			menu.hud_select();
 			return true;
 		}
 		if (buttonCode == map.BUTTON_MENU) {

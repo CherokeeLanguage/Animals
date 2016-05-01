@@ -35,6 +35,8 @@ public class ControllerMainMenu implements ControllerListener {
 
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
+		log("axisMoved: "+controller.getName()+" axis="+axisCode+", value="+value);
+		
 		if (axisCode == map.AXIS_LEFT_TRIGGER
 				|| axisCode == map.AXIS_RIGHT_TRIGGER) {
 			return false;
@@ -60,23 +62,24 @@ public class ControllerMainMenu implements ControllerListener {
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
-		do {			
+		log("buttonDown: "+controller.getName()+" buttonCode="+buttonCode);
+		bswitch: {			
 			if (buttonCode == map.BUTTON_O) {
-				menu.doMenuItem();
-				break;
+				menu.hud_select();
+				break bswitch;
 			}
 			if (buttonCode == map.BUTTON_MENU) {
 				menu.game.gameEvent(GameEvent.ShowOptions);
-				break;
+				break bswitch;
 			}			
 			if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_A) {
 				if (menu.getSelected_btn() == menu.quitButton) {
-					menu.doMenuItem();				
+					menu.hud_select();				
 				}
 				while (menu.getSelected_btn() != menu.quitButton) {
-					menu.nextMenuItem();
+					menu.hud_moveSouth();
 				}
-				break;
+				break bswitch;
 			}
 			if (buttonCode == map.BUTTON_DPAD_DOWN) {
 				return povMoved(controller, 0, PovDirection.south);
@@ -84,8 +87,7 @@ public class ControllerMainMenu implements ControllerListener {
 			if (buttonCode == map.BUTTON_DPAD_UP) {
 				return povMoved(controller, 0, PovDirection.north);
 			}
-		} while(false);
-
+		}
 		return true;
 	}
 
@@ -108,16 +110,17 @@ public class ControllerMainMenu implements ControllerListener {
 	@Override
 	public boolean povMoved(Controller controller, int povCode,
 			PovDirection value) {
+		log("povMoved: "+controller.getName()+" povCode="+povCode);
 		switch (value) {
 		case north:
 		case northEast:
 		case northWest:
-			menu.prevMenuItem();
+			menu.hud_moveNorth();
 			break;
 		case south:
 		case southEast:
 		case southWest:
-			menu.nextMenuItem();
+			menu.hud_moveSouth();
 			break;
 		default:
 			break;

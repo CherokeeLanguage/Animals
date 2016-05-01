@@ -1,6 +1,7 @@
 package com.cherokeelessons.vocab.animals.one;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.graphics.Color;
@@ -35,11 +36,10 @@ import com.cherokeelessons.vocab.animals.one.enums.TrainingMode;
  * (Software Used, Fonts Used, etc)
  */
 
-public class ScreenOptionsMenu extends GameScreen {
+public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 	private void resetMusicVolume() {
-		game.musicPlayer.setVolume((float) prefs.getMasterVolume()
-				* (float) prefs.getMusicVolume() / 10000f);
+		game.musicPlayer.setVolume((float) prefs.getMasterVolume() * (float) prefs.getMusicVolume() / 10000f);
 	}
 
 	private static final String INDICATOR = ScreenMainMenu.INDICATOR;
@@ -108,8 +108,7 @@ public class ScreenOptionsMenu extends GameScreen {
 
 	private TextureAtlas wall_atlas;
 
-	final private ControllerOptions_Watch watcher = new ControllerOptions_Watch(
-			this);
+	final private ControllerOptions_Watch watcher = new ControllerOptions_Watch(this);
 	private int idx_music;
 
 	final private Prefs prefs;
@@ -141,12 +140,10 @@ public class ScreenOptionsMenu extends GameScreen {
 
 		lbl_instructions = new MenuLabel(TAB_INSTRUCT, instructStyle);
 		lbl_instructions.pack();
-		lbl_instructions
-				.setX((screenSize.width - lbl_instructions.getWidth()) / 2);
+		lbl_instructions.setX((screenSize.width - lbl_instructions.getWidth()) / 2);
 		lbl_instructions.addListener(new ClickListener() {
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				game.gameEvent(GameEvent.Done);
 				return true;
 			}
@@ -159,8 +156,7 @@ public class ScreenOptionsMenu extends GameScreen {
 		btn_masterVolume = new MenuLabel(getVolumeLabel(100), buttonStyle);
 		btn_masterVolume.setTouchable(Touchable.enabled);
 		btn_masterVolume.pack();
-		btn_masterVolume
-				.setX((screenSize.width - btn_masterVolume.getWidth()) / 2);
+		btn_masterVolume.setX((screenSize.width - btn_masterVolume.getWidth()) / 2);
 		btn_masterVolume.setY(getBaseLine(displayLine++));
 
 		btn_masterVolume.setText(getVolumeLabel(prefs.getMasterVolume()));
@@ -198,8 +194,7 @@ public class ScreenOptionsMenu extends GameScreen {
 		btn_musicVolume = new MenuLabel(getMusicLabel(100), buttonStyle);
 		btn_musicVolume.setTouchable(Touchable.enabled);
 		btn_musicVolume.pack();
-		btn_musicVolume
-				.setX((screenSize.width - btn_musicVolume.getWidth()) / 2);
+		btn_musicVolume.setX((screenSize.width - btn_musicVolume.getWidth()) / 2);
 		btn_musicVolume.setY(getBaseLine(displayLine++));
 		btn_musicVolume.setText(getMusicLabel(prefs.getMusicVolume()));
 		btn_musicVolume.menu_action_east = new Runnable() {
@@ -322,8 +317,8 @@ public class ScreenOptionsMenu extends GameScreen {
 		int ix;
 		lineHeight = (screenSize.height - bottomMargin) / baseLines.length;
 		for (ix = 0; ix < baseLines.length; ix++) {
-			baseLines[ix] = (float) Math.ceil(bottomMargin + ix * lineHeight
-					+ offset + (lineHeight - font.getLineHeight()) / 2);
+			baseLines[ix] = (float) Math
+					.ceil(bottomMargin + ix * lineHeight + offset + (lineHeight - font.getLineHeight()) / 2);
 		}
 	}
 
@@ -394,8 +389,7 @@ public class ScreenOptionsMenu extends GameScreen {
 		float left = label.getX();
 		float bottom = label.getY();
 		float right = label.getX() + label.getWidth();
-		left_indicator.setPosition(left - left_indicator.getWidth() + 20,
-				bottom);
+		left_indicator.setPosition(left - left_indicator.getWidth() + 20, bottom);
 		right_indicator.setPosition(right - 20, bottom);
 	}
 
@@ -403,7 +397,7 @@ public class ScreenOptionsMenu extends GameScreen {
 		highlight_button(false);
 	}
 
-	public void nextMenuItem() {
+	public void hud_moveSouth() {
 		selected_btn++;
 		if (selected_btn >= btns.size) {
 			selected_btn = 0;
@@ -412,7 +406,7 @@ public class ScreenOptionsMenu extends GameScreen {
 		updateInstructions();
 	}
 
-	public void prevMenuItem() {
+	public void hud_moveNorth() {
 		selected_btn--;
 		if (selected_btn < 0) {
 			selected_btn = btns.size - 1;
@@ -446,7 +440,7 @@ public class ScreenOptionsMenu extends GameScreen {
 	public void show() {
 		super.show();
 		update_btn_resetStatistics();
-		wall_atlas=Utils.initBackdrop(wall);
+		wall_atlas = Utils.initBackdrop(wall);
 
 		indicator = new Texture(INDICATOR);
 		indicator.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -485,8 +479,7 @@ public class ScreenOptionsMenu extends GameScreen {
 			btn.clearListeners();
 			btn.addListener(new ClickListener() {
 				@Override
-				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button) {
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 					selected_btn = _button;
 					highlight_button(true);
 					updateInstructions();
@@ -544,8 +537,7 @@ public class ScreenOptionsMenu extends GameScreen {
 	private void update_btn_resetStatistics(String msg) {
 		btn_resetStatistics.setText(msg);
 		btn_resetStatistics.pack();
-		btn_resetStatistics.setX((screenSize.width - btn_resetStatistics
-				.getWidth()) / 2);
+		btn_resetStatistics.setX((screenSize.width - btn_resetStatistics.getWidth()) / 2);
 	}
 
 	private void updateChallengeModeDisplay() {
@@ -555,15 +547,12 @@ public class ScreenOptionsMenu extends GameScreen {
 		} else {
 			btn_challengeSoundMode.setText("Challenge Audio: OFF");
 		}
-		btn_challengeWordMode.setText("Challenge Word Display: "
-				+ prefs.getChallengeMode().name());
+		btn_challengeWordMode.setText("Challenge Word Display: " + prefs.getChallengeMode().name());
 
 		btn_challengeSoundMode.pack();
 		btn_challengeWordMode.pack();
-		btn_challengeSoundMode.setX((screenSize.width - btn_challengeSoundMode
-				.getWidth()) / 2);
-		btn_challengeWordMode.setX((screenSize.width - btn_challengeWordMode
-				.getWidth()) / 2);
+		btn_challengeSoundMode.setX((screenSize.width - btn_challengeSoundMode.getWidth()) / 2);
+		btn_challengeWordMode.setX((screenSize.width - btn_challengeWordMode.getWidth()) / 2);
 	}
 
 	public void updateInstructions() {
@@ -573,26 +562,21 @@ public class ScreenOptionsMenu extends GameScreen {
 			lbl_instructions.setText(TAB_INSTRUCT);
 		}
 		lbl_instructions.pack();
-		lbl_instructions
-				.setX((screenSize.width - lbl_instructions.getWidth()) / 2);
+		lbl_instructions.setX((screenSize.width - lbl_instructions.getWidth()) / 2);
 	}
 
 	private void updateSoundEffectsDisplay() {
 
-		btn_soundEffects.setText("Sound Effects: "
-				+ prefs.getEffectsVolume().name());
+		btn_soundEffects.setText("Sound Effects: " + prefs.getEffectsVolume().name());
 		btn_soundEffects.pack();
-		btn_soundEffects
-				.setX((screenSize.width - btn_soundEffects.getWidth()) / 2);
+		btn_soundEffects.setX((screenSize.width - btn_soundEffects.getWidth()) / 2);
 	}
 
 	private void updateTrainingScreenDisplay() {
 
-		btn_trainingScreen.setText("Training Mode: "
-				+ prefs.getTrainingMode().name());
+		btn_trainingScreen.setText("Training Mode: " + prefs.getTrainingMode().name());
 		btn_trainingScreen.pack();
-		btn_trainingScreen.setX((screenSize.width - btn_trainingScreen
-				.getWidth()) / 2);
+		btn_trainingScreen.setX((screenSize.width - btn_trainingScreen.getWidth()) / 2);
 	}
 
 	public void wordMode() {
@@ -612,5 +596,26 @@ public class ScreenOptionsMenu extends GameScreen {
 		}
 		updateChallengeModeDisplay();
 		game.sm.playEffect("menu-click");
+	}
+
+	@Override
+	public boolean dpad(int keyCode) {
+		switch (keyCode) {
+		case Keys.DPAD_CENTER:
+			return false;
+		case Keys.DPAD_DOWN:
+			hud_moveSouth();
+			return true;
+		case Keys.DPAD_LEFT:
+			doMenuItem(PovDirection.west);
+			return true;
+		case Keys.DPAD_RIGHT:
+			doMenuItem(PovDirection.east);
+			return true;
+		case Keys.DPAD_UP:
+			hud_moveNorth();
+			return true;
+		}
+		return false;
 	}
 }

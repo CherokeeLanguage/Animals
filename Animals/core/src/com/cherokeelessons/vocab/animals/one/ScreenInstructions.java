@@ -1,6 +1,7 @@
 package com.cherokeelessons.vocab.animals.one;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -21,7 +22,7 @@ import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
-public class ScreenInstructions extends GameScreen {
+public class ScreenInstructions extends GameScreen implements DpadInterface {
 	
 	private static final int fontSize=64;
 
@@ -34,6 +35,16 @@ public class ScreenInstructions extends GameScreen {
 			return true;
 		}
 	};
+	
+	@Override
+	public boolean dpad(int keyCode) {
+		switch (keyCode) {
+		case Keys.DPAD_CENTER:
+			game.gameEvent(GameEvent.Done);
+			return true;
+		}
+		return false;
+	}
 
 	final Array<Sprite> wall = new Array<Sprite>();
 	private TextureAtlas wall_atlas;

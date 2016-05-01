@@ -1,5 +1,6 @@
 package com.cherokeelessons.vocab.animals.one;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -12,7 +13,7 @@ import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
-public class ScreenCredits extends GameScreen {
+public class ScreenCredits extends GameScreen implements DpadInterface {
 
 	public float scrollTime=30f;
 	
@@ -27,11 +28,19 @@ public class ScreenCredits extends GameScreen {
 			return true;
 		}
 	};
+	@Override
+	public boolean dpad(int keyCode) {
+		if (keyCode!=Input.Keys.DPAD_CENTER) {
+			return false;
+		}
+		game.gameEvent(GameEvent.Done);
+		return true;
+	}
 	final Array<Sprite> wall = new Array<Sprite>();
 	private TextureAtlas wall_atlas;
 
 	public ScreenCredits(CherokeeAnimals game) {
-		super(game);		
+		super(game);
 	}
 
 	private void initScreen() {
@@ -104,5 +113,6 @@ public class ScreenCredits extends GameScreen {
 		Gamepads.addListener(skipCredits);
 		doScroll(scrollTime);
 	}
+
 
 }

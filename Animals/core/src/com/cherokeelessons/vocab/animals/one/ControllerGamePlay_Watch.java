@@ -11,9 +11,8 @@ public class ControllerGamePlay_Watch extends ControllerAdapter {
 	final private static Array<ControllerGamePlay> listeners = new Array<ControllerGamePlay>();
 
 	GamepadMap map_ouya = new GamepadMap(Model.Ouya);
-
 	GamepadMap map_xbox = new GamepadMap(Model.Xbox);
-
+	
 	private ScreenGameplay menu;
 
 	public ControllerGamePlay_Watch(ScreenGameplay menu) {

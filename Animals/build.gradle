@@ -36,7 +36,8 @@ allprojects {
 
 project(":desktop") {
     apply plugin: "java"
-
+	sourceCompatibility = 1.6
+	
     dependencies {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
@@ -50,7 +51,8 @@ project(":desktop") {
 
 project(":android") {
     apply plugin: "android"
-
+	sourceCompatibility = 1.6
+	
     configurations { natives }
 
     dependencies {
@@ -71,7 +73,8 @@ project(":android") {
 project(":ios") {
     apply plugin: "java"
     apply plugin: "robovm"
-
+	sourceCompatibility = 1.6
+	
     dependencies {
         compile project(":core")
         compile "org.robovm:robovm-rt:$roboVMVersion"
@@ -84,7 +87,8 @@ project(":ios") {
 project(":html") {
     apply plugin: "gwt"
     apply plugin: "war"
-
+	sourceCompatibility = 1.6
+	
     dependencies {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
@@ -100,15 +104,13 @@ project(":html") {
 
 project(":core") {
     apply plugin: "java"
-
+	sourceCompatibility = 1.6
+	
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         
         //controllers
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
-        
-        //ozmod
-        compile fileTree(dir: 'libs', include: '*.jar')
         
         //tweenengine
         //compile "com.aurelienribon:tween-engine-api:+"

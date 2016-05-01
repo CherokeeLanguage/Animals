@@ -1,5 +1,6 @@
 package com.cherokeelessons.vocab.animals.one;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.utils.Array;
@@ -8,6 +9,10 @@ import com.cherokeelessons.common.GamepadMap.Model;
 
 public class ControllerMainMenu_Watch extends ControllerAdapter {
 
+	private void log(String message){
+		Gdx.app.log(this.getClass().getName(), message);
+	}
+	
 	final private static Array<ControllerMainMenu> listeners = new Array<ControllerMainMenu>();
 
 	GamepadMap map_ouya = new GamepadMap(Model.Ouya);
@@ -22,6 +27,7 @@ public class ControllerMainMenu_Watch extends ControllerAdapter {
 
 	@Override
 	public void connected(Controller controller) {
+		log("connected: "+controller.getName());
 		super.connected(controller);
 		String name = controller.getName().toLowerCase();
 		ControllerMainMenu listener;
@@ -46,6 +52,7 @@ public class ControllerMainMenu_Watch extends ControllerAdapter {
 
 	@Override
 	public void disconnected(Controller controller) {
+		log("disconnected: "+controller.getName());
 		super.disconnected(controller);
 		for (ControllerMainMenu listener : listeners) {
 			controller.removeListener(listener);

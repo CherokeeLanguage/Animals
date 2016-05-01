@@ -3,8 +3,10 @@ package com.cherokeelessons.vocab.animals.one;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -34,17 +36,39 @@ import com.cherokeelessons.vocab.animals.one.views.ViewInGameControls;
 import com.cherokeelessons.vocab.animals.one.views.ViewProgressBar;
 import com.cherokeelessons.vocab.animals.one.views.ViewScoreBoard;
 
-public class ScreenGameplay extends GameScreen {
+public class ScreenGameplay extends GameScreen implements DpadInterface {
 	
 	private float boardElapsed=0;
 
 	enum WritingMode {
 		Latin, None, Syllabary
 	}
+	
+	@Override
+	public boolean dpad(int keyCode) {
+		switch (keyCode) {
+		case Keys.DPAD_CENTER:
+			hud_select();
+			return true;
+		case Keys.DPAD_DOWN:
+			hud_moveSouth();
+			return true;
+		case Keys.DPAD_LEFT:
+			hud_moveLeft();
+			return true;
+		case Keys.DPAD_RIGHT:
+			hud_moveRight();
+			return true;
+		case Keys.DPAD_UP:
+			hud_moveNorth();
+			return true;
+		}
+		return false;
+	}
 
 	private ViewGameBoard activehud;
 
-	private HashSet<String> alreadySeen = new HashSet<String>();
+	private Set<String> alreadySeen = new HashSet<String>();
 
 	private int badPoints = 0;
 	FileHandle button_highlight = Gdx.files.internal("buttons/2610_white.png");
@@ -86,8 +110,7 @@ public class ScreenGameplay extends GameScreen {
 
 	private float timeLimit = 5;
 
-	final private ControllerGamePlay_Watch watcher = new ControllerGamePlay_Watch(
-			this);
+	private final ControllerGamePlay_Watch watcher;
 
 	private WritingMode writingMode;
 
@@ -97,6 +120,8 @@ public class ScreenGameplay extends GameScreen {
 
 	public ScreenGameplay(final CherokeeAnimals game) {
 		super(game);
+		watcher = new ControllerGamePlay_Watch(
+				this);
 
 		pbar = new ViewProgressBar(screenSize);
 		scoreBoard = new ViewScoreBoard(screenSize, game.sm);

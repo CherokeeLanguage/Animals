@@ -21,7 +21,6 @@ import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 import aurelienribon.tweenengine.TweenManager;
 
 public abstract class GameScreen implements Screen {
-
 	protected TweenManager tmanager;
 	protected AssetManager assets;
 	protected CherokeeAnimals game = null;
@@ -45,6 +44,10 @@ public abstract class GameScreen implements Screen {
 		this.isPaused = isPaused;
 	}
 
+	private void log(String message) {
+		Gdx.app.log(this.getClass().getName(), message);
+	}
+
 	public GameScreen(final CherokeeAnimals game) {
 		this.game = game;
 
@@ -60,7 +63,7 @@ public abstract class GameScreen implements Screen {
 		clearColor = new Color(Color.WHITE);
 
 		tmanager = new TweenManager();
-		
+
 		gameStage = new Stage(new FitViewport(fullscan.width, fullscan.height)) {
 			@Override
 			public boolean keyDown(int keyCode) {
@@ -80,6 +83,10 @@ public abstract class GameScreen implements Screen {
 					game.gameEvent(GameEvent.ShowOptions);
 					return true;
 				}
+				if (mapToGamepad(keyCode)) {
+					return true;
+				}
+				log("keyDown: " + keyCode);
 				return super.keyDown(keyCode);
 			}
 
@@ -89,9 +96,25 @@ public abstract class GameScreen implements Screen {
 		gameStage.getRoot().setTouchable(Touchable.enabled);
 	}
 
+	private boolean mapToGamepad(int keyCode) {
+		if (!(this instanceof DpadInterface)) {
+			return false;
+		}
+		DpadInterface dpad = (DpadInterface) this;
+		switch (keyCode) {
+		case Input.Keys.DPAD_CENTER:
+		case Input.Keys.DPAD_DOWN:
+		case Input.Keys.DPAD_LEFT:
+		case Input.Keys.DPAD_RIGHT:
+		case Input.Keys.DPAD_UP:
+			return dpad.dpad(keyCode);
+		default:
+		}
+		return false;
+	}
+
 	protected void clearScreen() {
-		Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b,
-				clearColor.a);
+		Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	}
 
@@ -122,14 +145,10 @@ public abstract class GameScreen implements Screen {
 		tv_box.setProjectionMatrix(gameStage.getCamera().combined);
 		tv_box.setColor(GameColor.FIREBRICK);
 		tv_box.begin(ShapeType.Filled);
-		tv_box.rect(-o_pad, -o_pad, fullscan.width + o_pad, screenSize.y
-				+ o_pad);
-		tv_box.rect(-o_pad, screenSize.height + screenSize.y, fullscan.width
-				+ o_pad, screenSize.y + o_pad);
-		tv_box.rect(-o_pad, -o_pad, screenSize.x + o_pad, fullscan.height
-				+ o_pad);
-		tv_box.rect(screenSize.width + screenSize.x, 0, screenSize.x + o_pad,
-				fullscan.height);
+		tv_box.rect(-o_pad, -o_pad, fullscan.width + o_pad, screenSize.y + o_pad);
+		tv_box.rect(-o_pad, screenSize.height + screenSize.y, fullscan.width + o_pad, screenSize.y + o_pad);
+		tv_box.rect(-o_pad, -o_pad, screenSize.x + o_pad, fullscan.height + o_pad);
+		tv_box.rect(screenSize.width + screenSize.x, 0, screenSize.x + o_pad, fullscan.height);
 		tv_box.end();
 	}
 
@@ -172,7 +191,7 @@ public abstract class GameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		Gdx.app.log(this.getClass().getName(), "resize: "+width+"x"+height);
+		Gdx.app.log(this.getClass().getName(), "resize: " + width + "x" + height);
 		gameStage.getViewport().update(width, height, true);
 		batch.setProjectionMatrix(gameStage.getCamera().combined);
 	}
@@ -182,8 +201,8 @@ public abstract class GameScreen implements Screen {
 		if (game.musicPlayer != null) {
 			if (!Gdx.app.getType().equals(ApplicationType.Desktop)) {
 				game.musicPlayer.resume();
-				game.musicPlayer.setVolume((float) game.prefs.getMasterVolume()
-						* (float) game.prefs.getMusicVolume() / 10000f);
+				game.musicPlayer
+						.setVolume((float) game.prefs.getMasterVolume() * (float) game.prefs.getMusicVolume() / 10000f);
 			}
 		}
 		tmanager.resume();

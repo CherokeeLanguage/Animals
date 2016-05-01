@@ -1,5 +1,6 @@
 package com.cherokeelessons.vocab.animals.one;
 
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -20,7 +21,7 @@ import com.cherokeelessons.util.GameScores;
 import com.cherokeelessons.util.GameScores.GameScore;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
-public class ScreenHighScores extends GameScreen {
+public class ScreenHighScores extends GameScreen implements DpadInterface {
 
 	private static final int FONTSIZE = 64;
 	private Table container;
@@ -127,6 +128,22 @@ public class ScreenHighScores extends GameScreen {
 
 	public void hud_moveSouth() {
 		scroll.setScrollY(scroll.getScrollY() + 500);
+	}
+	
+	@Override
+	public boolean dpad(int keyCode) {
+		switch (keyCode) {
+		case Keys.DPAD_CENTER:
+			game.gameEvent(GameEvent.Done);
+			return true;
+		case Keys.DPAD_DOWN:
+			hud_moveSouth();
+			return true;
+		case Keys.DPAD_UP:
+			hud_moveNorth();
+			return true;
+		}
+		return false;
 	}
 
 	@Override

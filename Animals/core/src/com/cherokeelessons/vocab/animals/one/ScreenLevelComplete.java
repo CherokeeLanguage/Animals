@@ -1,5 +1,6 @@
 package com.cherokeelessons.vocab.animals.one;
 
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -17,26 +18,36 @@ import com.cherokeelessons.util.Callback;
 import com.cherokeelessons.util.DreamLo;
 import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 
-public class ScreenLevelComplete extends GameScreen {
+public class ScreenLevelComplete extends GameScreen implements DpadInterface {
+	
+	@Override
+	public boolean dpad(int keyCode) {
+		switch (keyCode) {
+		case Keys.DPAD_CENTER:
+			game.gameEvent(GameEvent.Done);
+			return true;
+		}
+		return false;
+	}
 
-	private static final String TABLET_NEXT_LEVEL = "Tap Here to Choose Another Level";
+//	private static final String TABLET_NEXT_LEVEL = "Tap Here to Choose Another Level";
 	private static final String COMPLETE = "Complete!";
 	private static final String CORRECT = "% Correct!";
 	private static final String LEVEL = "Level";
-	private static final String TABLET_PLAY_AGAIN = "Tap Here to Play Level Again";
-	private static final String TABLET_MAIN = "Tap here to Return to Main Menu";
+//	private static final String TABLET_PLAY_AGAIN = "Tap Here to Play Level Again";
+	private static final String TABLET_MAIN = "[EXIT]";
 
 	private BitmapFont font;
 
 	private int fontSize = 88;
-	private Label goLevelSelect;
+//	private Label goLevelSelect;
 	private Label gotoMainMenu;
 	private LabelStyle lStyle;
 	private Label msg_accuracy;
 	public int optionsButton;
 	private Label msg_elasped_time;
 	
-	private Label playLevelAgain;
+//	private Label playLevelAgain;
 
 	private LabelStyle tbStyle;
 
@@ -75,31 +86,31 @@ public class ScreenLevelComplete extends GameScreen {
 		tbStyle.font = font;
 		tbStyle.fontColor = GameColor.MAIN_TEXT;
 
-		playLevelAgain = new Label(TABLET_PLAY_AGAIN, tbStyle);
-		playLevelAgain.pack();
-		playLevelAgain.addCaptureListener(new ClickListener(){
-
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				game.gameEvent(GameEvent.ShowGameBoard);
-				return true;
-			}
-			
-		});
-
-		goLevelSelect = new Label(TABLET_NEXT_LEVEL, tbStyle);
-		goLevelSelect.addCaptureListener(new ClickListener(){
-
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				game.gameEvent(GameEvent.NewGame);
-				return true;
-			}
-			
-		});
-		goLevelSelect.pack();
+//		playLevelAgain = new Label(TABLET_PLAY_AGAIN, tbStyle);
+//		playLevelAgain.pack();
+//		playLevelAgain.addCaptureListener(new ClickListener(){
+//
+//			@Override
+//			public boolean touchDown(InputEvent event, float x, float y,
+//					int pointer, int button) {
+//				game.gameEvent(GameEvent.ShowGameBoard);
+//				return true;
+//			}
+//			
+//		});
+//
+//		goLevelSelect = new Label(TABLET_NEXT_LEVEL, tbStyle);
+//		goLevelSelect.addCaptureListener(new ClickListener(){
+//
+//			@Override
+//			public boolean touchDown(InputEvent event, float x, float y,
+//					int pointer, int button) {
+//				game.gameEvent(GameEvent.NewGame);
+//				return true;
+//			}
+//			
+//		});
+//		goLevelSelect.pack();
 
 		gotoMainMenu = new Label(TABLET_MAIN, tbStyle);
 		gotoMainMenu.addCaptureListener(new ClickListener(){
@@ -117,8 +128,8 @@ public class ScreenLevelComplete extends GameScreen {
 		gameStage.addActor(msg_accuracy);
 		gameStage.addActor(msg_elasped_time);
 		gameStage.addActor(gotoMainMenu);
-		gameStage.addActor(playLevelAgain);
-		gameStage.addActor(goLevelSelect);
+//		gameStage.addActor(playLevelAgain);
+//		gameStage.addActor(goLevelSelect);
 		gameStage.getRoot().setX(screenSize.x);
 		gameStage.getRoot().setY(screenSize.y);
 	}
@@ -149,12 +160,12 @@ public class ScreenLevelComplete extends GameScreen {
 		gotoMainMenu.setX(midX - gotoMainMenu.getWidth() / 2);
 		gotoMainMenu.setY(line - gotoMainMenu.getHeight() / 2);
 		line += lineGap;
-		goLevelSelect.setX(midX - goLevelSelect.getWidth() / 2);
-		goLevelSelect.setY(line - goLevelSelect.getHeight() / 2);
-		line += lineGap;
-		playLevelAgain.setX(midX - playLevelAgain.getWidth() / 2);
-		playLevelAgain.setY(line - playLevelAgain.getHeight() / 2);
-		line += lineGap;
+//		goLevelSelect.setX(midX - goLevelSelect.getWidth() / 2);
+//		goLevelSelect.setY(line - goLevelSelect.getHeight() / 2);
+//		line += lineGap;
+//		playLevelAgain.setX(midX - playLevelAgain.getWidth() / 2);
+//		playLevelAgain.setY(line - playLevelAgain.getHeight() / 2);
+//		line += lineGap;
 		msg_elasped_time.setX(midX - msg_elasped_time.getWidth() / 2);
 		msg_elasped_time.setY(line - msg_elasped_time.getHeight() / 2);
 		line += lineGap;

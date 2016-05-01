@@ -1,6 +1,7 @@
 package com.cherokeelessons.vocab.animals.one;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -23,13 +24,35 @@ import com.cherokeelessons.vocab.animals.one.views.View3x3Selector;
 import com.cherokeelessons.vocab.animals.one.views.View3x3Selector.onClick;
 
 
-public class ScreenLevelSelect extends GameScreen {
+public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 
 	private static final String TAB_PANEL1_TEXT = "[Tap Here to Show Levels 10-18]";
 	
 	private static final String TAB_PANEL2_TEXT = "[Tap Here to Show Levels 1-9]";
 
 	private int activeHud = 0;
+	
+	@Override
+	public boolean dpad(int keyCode) {
+		switch (keyCode) {
+		case Keys.DPAD_CENTER:
+			hud_select();
+			return true;
+		case Keys.DPAD_DOWN:
+			hud_moveSouth();
+			return true;
+		case Keys.DPAD_LEFT:
+			hud_moveLeft();
+			return true;
+		case Keys.DPAD_RIGHT:
+			hud_moveRight();
+			return true;
+		case Keys.DPAD_UP:
+			hud_moveNorth();
+			return true;
+		}
+		return false;
+	}
 
 	private Label[][] btn_labels = new Label[game.getLevels() / 9][9];
 	FileHandle button_highlight = Gdx.files
@@ -235,7 +258,7 @@ public class ScreenLevelSelect extends GameScreen {
 						activeHud=pnl;
 						level_highlighted=btn;
 						hud_showIndicator(true);
-						hud_selectLevel();
+						hud_select();
 						return true;
 					}
 				});
@@ -324,7 +347,7 @@ public class ScreenLevelSelect extends GameScreen {
 		} while (false);
 	}
 
-	public void hud_selectLevel() {
+	public void hud_select() {
 		do {
 			if (activeHud == 0) {
 				startAtLevel_1_to_9.handleClick(level_highlighted);

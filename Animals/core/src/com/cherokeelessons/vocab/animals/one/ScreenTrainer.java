@@ -2,6 +2,7 @@ package com.cherokeelessons.vocab.animals.one;
 
 import java.util.HashSet;
 
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.files.FileHandle;
@@ -23,7 +24,7 @@ import com.cherokeelessons.vocab.animals.one.enums.TrainingMode;
 import com.cherokeelessons.vocab.animals.one.views.View3x3Selector;
 import com.cherokeelessons.vocab.animals.one.views.ViewChallengeBoard;
 
-public class ScreenTrainer extends GameScreen {
+public class ScreenTrainer extends GameScreen implements DpadInterface {
 
 	final private static Array<ControllerAdapter> listeners = new Array<ControllerAdapter>();
 	HashSet<FileHandle> alreadyShown;
@@ -39,6 +40,17 @@ public class ScreenTrainer extends GameScreen {
 	final private float interval = 2.5f;
 	private Label lbl_exitInfo;
 	private View3x3Selector pictureChallenge;
+	
+	@Override
+	public boolean dpad(int keyCode) {
+		switch (keyCode) {
+		case Keys.DPAD_CENTER:
+			doSkipTraining();
+			return true;
+		}
+		return false;
+	}
+	
 	private ControllerAdapter skipTraining = new ControllerAdapter() {
 		final private GamepadMap map_ouya = new GamepadMap(Model.Ouya);
 		final private GamepadMap map_xbox = new GamepadMap(Model.Xbox);

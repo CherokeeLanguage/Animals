@@ -63,7 +63,7 @@ public class LoadChallenges {
 			ImageSet iset = getImageSetFor(name);
 			challengeImages.put(name, iset);
 		}
-		challenges.sort(new SortSizeAscendingAlpha());
+		Collections.sort(challenges,new SortSizeAscendingAlpha());
 	}
 
 	private List<String> calculateSeed(int start, int end) {

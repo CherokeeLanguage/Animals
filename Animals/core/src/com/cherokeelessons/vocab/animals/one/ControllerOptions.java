@@ -125,10 +125,10 @@ public class ControllerOptions implements ControllerListener {
 			PovDirection value) {
 		switch (value) {
 		case north:
-			menu.prevMenuItem();
+			menu.hud_moveNorth();
 			break;
 		case south:
-			menu.nextMenuItem();
+			menu.hud_moveSouth();
 			break;
 		case east:
 			menu.doMenuItem(PovDirection.east);
