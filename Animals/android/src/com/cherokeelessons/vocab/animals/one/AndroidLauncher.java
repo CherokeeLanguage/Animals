@@ -1,16 +1,29 @@
 package com.cherokeelessons.vocab.animals.one;
 
-import android.os.Bundle;
-
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.cherokeelessons.vocab.animals.one.CherokeeAnimals;
+
+import android.app.UiModeManager;
+import android.content.Context;
+import android.content.res.Configuration;
+import android.os.Build;
+import android.os.Bundle;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
-	protected void onCreate (Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new CherokeeAnimals(), config);
+		CherokeeAnimals game = new CherokeeAnimals();
+		game.isTv=isAndroidTV();
+		initialize(game, config);
+	}
+
+	public boolean isAndroidTV() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+			UiModeManager uiModeManager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
+			return (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION);
+		}
+		return false;
 	}
 }

@@ -20,6 +20,8 @@ import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
 import aurelienribon.tweenengine.Tween;
 
 public class CherokeeAnimals implements ApplicationListener {
+	
+	public boolean isTv = false;
 
 	final public static DisplaySize size = DisplaySize._1080p;
 
