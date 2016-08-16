@@ -284,6 +284,10 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 	}
 
 	public void hud_moveLeft() {
+		if (!showSelector) {
+			showSelector=true;
+			hud_showIndicator(true);
+		}
 		atLeftCheck: {
 			if (level_highlighted == 0) {
 				if (activeHud == 1) {
@@ -312,6 +316,10 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 	}
 
 	public void hud_moveNorth() {
+		if (!showSelector) {
+			showSelector=true;
+			hud_showIndicator(true);
+		}
 		do {
 			if (level_highlighted == 0) {
 				break;
@@ -328,6 +336,10 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 	}
 
 	public void hud_moveRight() {
+		if (!showSelector) {
+			showSelector=true;
+			hud_showIndicator(true);
+		}
 		do {
 			if (level_highlighted == 2) {
 				if (activeHud == 0) {
@@ -358,6 +370,10 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 	}
 
 	public void hud_moveSouth() {
+		if (!showSelector) {
+			showSelector=true;
+			hud_showIndicator(true);
+		}
 		do {
 			if (level_highlighted == 6) {
 				break;

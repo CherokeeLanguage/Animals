@@ -201,7 +201,7 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		elapsed_min = elapsed_sec/60;
 		elapsed_sec -= elapsed_min*60;
 		if (game.prefs.isLeaderBoardEnabled()) {
-			lb.lb_submit((levelOn+1)+"", correct, game.prefs.getLastScore(levelOn), "", show_ranking);
+			lb.lb_submit((levelOn+1)+"", game.prefs.getLastScore(levelOn), correct, "", show_ranking);
 		}
 		updateDisplay();
 	}

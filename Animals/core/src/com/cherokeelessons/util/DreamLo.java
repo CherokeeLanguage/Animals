@@ -286,21 +286,21 @@ public class DreamLo {
 		});
 	}
 
-	public void lb_submit(final String boardId, final long cards, final long score, final String label,
+	public void lb_submit(final String boardId, final long score, final long timeElapsed, final String label,
 			final Callback<Void> callback) {
 		if (!registerWithDreamLoBoard()) {
 			Gdx.app.postRunnable(new Runnable() {
 				@Override
 				public void run() {
-					DreamLo.this.lb_submit(boardId, cards, score, label, callback);
+					DreamLo.this.lb_submit(boardId, score, timeElapsed, label, callback);
 				}
 			});
 			return;
 		}
 		HttpRequest httpRequest = new HttpRequest("GET");
 		httpRequest.setTimeOut(10000);
-		String url = writeUrl + "/add/" + prefs.getString(DREAMLO_USERID, "") + "-" + boardId + "/" + cards + "/"
-				+ score + "/" + encode(label);
+		String url = writeUrl + "/add/" + prefs.getString(DREAMLO_USERID, "") + "-" + boardId + "/" + score + "/"
+				+ timeElapsed + "/" + encode(label);
 		httpRequest.setUrl(url);
 		Gdx.net.sendHttpRequest(httpRequest, new HttpResponseListener() {
 			@Override

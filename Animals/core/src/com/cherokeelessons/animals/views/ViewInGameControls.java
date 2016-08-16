@@ -11,13 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
+import com.cherokeelessons.common.Gamepads;
 
 /*
  * In game controls (pause, exit, mute)
  */
 public class ViewInGameControls extends Group {
 	
-	private static final String TABLET_INFO = "Tap picture matching challenge.";
+	private final String TABLET_INFO;
+	private final String PAUSE_INFO;
 
 	private BitmapFont bitmapFont = null;
 
@@ -44,6 +46,13 @@ public class ViewInGameControls extends Group {
 
 	public ViewInGameControls(Rectangle overscan) {
 		super();
+		if (Gamepads.getControllers().size==0) {
+			TABLET_INFO = "Tap picture matching challenge.";
+			PAUSE_INFO="[PAUSE]";
+		} else {
+			TABLET_INFO = "Use [DPAD] and [SELECT] to choose.";
+			PAUSE_INFO="Use [BACK] to pause.";
+		}
 
 		bottomRight = new Vector2(overscan.width, 0);
 		bottomLeft = new Vector2(0, 0);
@@ -57,7 +66,7 @@ public class ViewInGameControls extends Group {
 		labelStyle.fontColor = GameColor.MAIN_TEXT;
 
 		btn_Options = new Label(TABLET_INFO, labelStyle);
-		btn_Pause = new Label("[PAUSE]", labelStyle);
+		btn_Pause = new Label(PAUSE_INFO, labelStyle);
 //		btn_Exit = new Label("[EXIT]", labelStyle);
 
 		fixupPositions();
@@ -92,7 +101,8 @@ public class ViewInGameControls extends Group {
 			}
 		});
 
-		x = bottomCenter.x - btn_Options.getWidth() / 2;
+//		x = bottomCenter.x - btn_Options.getWidth() / 2;
+		x = bottomRight.x - btn_Options.getWidth();
 		y = bottomCenter.y + bottomMargin;
 		btn_Options.setX(x);
 		btn_Options.setY(y);

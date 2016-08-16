@@ -316,6 +316,10 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 	}
 
 	public void hud_moveLeft() {
+		if (!showSelector) {
+			showSelector=true;
+			hud_showIndicator(true);
+		}
 		do {
 			if (item_highlighted == 0) {
 				break;
@@ -329,6 +333,10 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 	}
 
 	public void hud_moveNorth() {
+		if (!showSelector) {
+			showSelector=true;
+			hud_showIndicator(true);
+		}
 		do {
 			if (item_highlighted == 0) {
 				break;
@@ -345,6 +353,10 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 	}
 
 	public void hud_moveRight() {
+		if (!showSelector) {
+			showSelector=true;
+			hud_showIndicator(true);
+		}
 		do {
 			if (item_highlighted == 2) {
 				break;
@@ -358,6 +370,10 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 	}
 
 	public void hud_moveSouth() {
+		if (!showSelector) {
+			showSelector=true;
+			hud_showIndicator(true);
+		}
 		do {
 			if (item_highlighted == 3) {
 				break;
