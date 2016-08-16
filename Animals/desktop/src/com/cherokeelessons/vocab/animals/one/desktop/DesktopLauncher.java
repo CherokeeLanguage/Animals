@@ -3,7 +3,7 @@ package com.cherokeelessons.vocab.animals.one.desktop;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.cherokeelessons.vocab.animals.one.CherokeeAnimals;
+import com.cherokeelessons.animals.CherokeeAnimals;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

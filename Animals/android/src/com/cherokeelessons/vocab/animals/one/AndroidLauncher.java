@@ -2,6 +2,7 @@ package com.cherokeelessons.vocab.animals.one;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.cherokeelessons.animals.CherokeeAnimals;
 
 import android.app.UiModeManager;
 import android.content.res.Configuration;
