@@ -17,6 +17,13 @@ import com.cherokeelessons.util.GameScores.GameScore;
 
 public class DreamLo {
 
+	private static final int USERNAME = 0;
+	private static final int SCORE = 1;
+	private static final int TIME = 2;
+	private static final int LABEL = 3;
+	private static final int DATE = 4;
+	private static final int INDEX = 5;
+
 	private static final String PRIVATE_CODE = "Vm-nbYP_PESG2jZIvqx9fAju9H0-_iz0qj7oDcgpbNgw";
 	private static final String PUBLIC_CODE = "572424bd6e51b60bc08ed5a8";
 
@@ -181,7 +188,7 @@ public class DreamLo {
 					if (score_record == null || score_record.length() == 0) {
 						continue;
 					}
-					
+
 					String[] s = score_record.split("\\|");
 					if (s == null || s.length < 4) {
 						continue;
@@ -190,34 +197,24 @@ public class DreamLo {
 					 * 0: username 1: score 2: time 3: tag 4: date 5: index
 					 */
 					GameScore gs = new GameScore();
-					gs.score = StringUtils.defaultString(s[2]).trim();
+					gs.score = StringUtils.defaultString(s[SCORE]).trim();
 					gs.score = StringUtils.reverse(gs.score).replaceAll("(\\d{3})", "$1,");
 					gs.score = StringUtils.reverse(gs.score);
 					gs.score = StringUtils.strip(gs.score, ",");
-					String label = StringUtils.defaultString(s[3]).trim();
-					gs.tag = StringUtils.substringBefore(label, "!!!");
-					String decoded_other_name = StringUtils.substringAfter(label, "!!!");
+					gs.tag = StringUtils.defaultString(s[LABEL]).trim();
 					String dreamLoId = StringUtils.defaultString(s[0]).trim();
 					try {
-						gs.levelOn=Integer.valueOf(StringUtils.substringAfter(dreamLoId, "-"));
+						gs.levelOn = Integer.valueOf(StringUtils.substringAfter(dreamLoId, "-"));
 					} catch (NumberFormatException e) {
 						continue;
 					}
-					if (gs.levelOn==0){
+					if (gs.levelOn == 0) {
 						continue;
 					}
 					gs.user = dreamLoId;
-					if (gs.user.startsWith(myId)) {
-						gs.user = decoded_other_name;
-						gs.isMe=true;
-					} else {
-						if (!decoded_other_name.matches(".*?[a-zA-Z].*?")) {
-							gs.user = StringUtils.left(decoded_other_name, 14) + " #" + dreamLoId;
-						}
-						gs.isMe=false;
-					}
+					gs.isMe = gs.user.startsWith(myId);
 					gs.user = StringUtils.left(gs.user, 17);
-					gs.pctCorrect = StringUtils.defaultString(s[1]).trim();
+					gs.pctCorrect = StringUtils.defaultString(s[TIME]).trim();
 					gs.pctCorrect = StringUtils.reverse(gs.pctCorrect).replaceAll("(\\d{3})", "$1,");
 					gs.pctCorrect = StringUtils.reverse(gs.pctCorrect);
 					gs.pctCorrect = StringUtils.strip(gs.pctCorrect, ",");
@@ -238,19 +235,6 @@ public class DreamLo {
 						int v1;
 						int v2;
 						try {
-							v1 = Integer.valueOf(o1.pctCorrect.replace(",", ""));
-						} catch (NumberFormatException e) {
-							v1 = 0;
-						}
-						try {
-							v2 = Integer.valueOf(o2.pctCorrect.replace(",", ""));
-						} catch (NumberFormatException e) {
-							v2 = 0;
-						}
-						if (v1 != v2) {
-							return v2-v1;
-						}
-						try {
 							v1 = Integer.valueOf(o1.score.replace(",", ""));
 						} catch (NumberFormatException e) {
 							v1 = 0;
@@ -260,7 +244,25 @@ public class DreamLo {
 						} catch (NumberFormatException e) {
 							v2 = 0;
 						}
-						return v2-v1;
+						if (v1 != v2) {
+							return v2 - v1;
+						}
+						v1 = o1.levelOn;
+						v2 = o2.levelOn;
+						if (v1 != v2) {
+							return v2 - v1;
+						}
+						try {
+							v1 = Integer.valueOf(o1.pctCorrect.replace(",", ""));
+						} catch (NumberFormatException e) {
+							v1 = 0;
+						}
+						try {
+							v2 = Integer.valueOf(o2.pctCorrect.replace(",", ""));
+						} catch (NumberFormatException e) {
+							v2 = 0;
+						}
+						return v2 - v1;
 					}
 				};
 				Collections.sort(gss.list, descending);
