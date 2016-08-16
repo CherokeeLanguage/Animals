@@ -5,9 +5,9 @@ import java.util.Map;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.cherokeelessons.vocab.animals.one.enums.ChallengeWordMode;
-import com.cherokeelessons.vocab.animals.one.enums.SoundEffectVolume;
-import com.cherokeelessons.vocab.animals.one.enums.TrainingMode;
+import com.cherokeelessons.animals.enums.ChallengeWordMode;
+import com.cherokeelessons.animals.enums.SoundEffectVolume;
+import com.cherokeelessons.animals.enums.TrainingMode;
 
 public class Prefs implements com.badlogic.gdx.Preferences {
 

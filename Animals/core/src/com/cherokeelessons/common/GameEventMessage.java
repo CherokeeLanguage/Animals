@@ -1,6 +1,6 @@
 package com.cherokeelessons.common;
 
-import com.cherokeelessons.vocab.animals.one.enums.GameEvent;
+import com.cherokeelessons.animals.enums.GameEvent;
 
 
 public class GameEventMessage {
