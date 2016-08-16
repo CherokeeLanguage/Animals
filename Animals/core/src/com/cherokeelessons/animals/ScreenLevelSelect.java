@@ -35,6 +35,10 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 
 	@Override
 	public boolean dpad(int keyCode) {
+		if (!showSelector) {
+			showSelector=true;
+			hud_showIndicator(true);
+		}
 		switch (keyCode) {
 		case Keys.DPAD_CENTER:
 			hud_select();
@@ -397,6 +401,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		hud_showIndicator();
 	}
 
+	private boolean showSelector=false;
 	@Override
 	public void show() {
 		super.show();
@@ -408,6 +413,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		for (Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
 		}
+		showSelector=false;
 		hud_showIndicator();
 		connectClickers();
 	}
@@ -451,7 +457,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		hud_clearIndicator();
 		activehud.setImage(level_highlighted, button_highlight);
 		activehud.setColor(level_highlighted, GameColor.GOLD2);
-		activehud.setAlpha(level_highlighted, .7f);
+		activehud.setAlpha(level_highlighted, showSelector?.7f:.0f);
 		Color gold3_50 = new Color(GameColor.GOLD3);
 		gold3_50.a = .7f;
 		Color gold2_50 = new Color(GameColor.GOLD2);
@@ -460,7 +466,9 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		Action act_gold2 = Actions.color(gold2_50, 1f, Interpolation.sine);
 		Action act_seq = Actions.sequence(act_gold3, act_gold2);
 		Action act = Actions.forever(act_seq);
-		activehud.addAction(level_highlighted, act);
+		if (showSelector) {
+			activehud.addAction(level_highlighted, act);
+		}
 		int level = activeHud * activehud.button_count() + level_highlighted;
 		do {
 			if (!isLevelUnlocked(level)) {

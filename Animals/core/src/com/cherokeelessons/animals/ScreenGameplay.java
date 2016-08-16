@@ -46,6 +46,10 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 	
 	@Override
 	public boolean dpad(int keyCode) {
+		if (!showSelector) {
+			showSelector=true;
+			hud_showIndicator(true);
+		}
 		switch (keyCode) {
 		case Keys.DPAD_CENTER:
 			hud_select();
@@ -65,7 +69,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		}
 		return false;
 	}
-
+	
 	private ViewGameBoard activehud;
 
 	private Set<String> alreadySeen = new HashSet<String>();
@@ -390,7 +394,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 
 		activehud.setImage(item_highlighted, button_highlight);
 		activehud.setColor(item_highlighted, GameColor.GOLD2);
-		activehud.setAlpha(item_highlighted, .7f);
+		activehud.setAlpha(item_highlighted, showSelector?.7f:.0f);
 		Color gold3_50 = new Color(GameColor.GOLD3);
 		gold3_50.a = .7f;
 		Color gold2_50 = new Color(GameColor.GOLD2);
@@ -399,7 +403,9 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		Action act_gold2 = Actions.color(gold2_50, 1f, Interpolation.sine);
 		Action act_seq = Actions.sequence(act_gold3, act_gold2);
 		Action act = Actions.forever(act_seq);
-		activehud.addAction(item_highlighted, act);
+		if (showSelector) {
+			activehud.addAction(item_highlighted, act);
+		}
 	}
 
 	public void initLevel(int level) {
@@ -443,7 +449,12 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		game.gameEvent(GameEvent.LevelComplete);
 	}
 
+	private boolean showSelector=false;
 	private void loadBoard() {
+		showSelector=false;
+		bonusPoints=0;
+		goodPoints=0;
+		doBonus=true;
 		int ix;
 		Random r;
 		String name;
@@ -506,9 +517,6 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		pbar.setProgress1(0);
 		updateProgress2();
 		pbar.setProgress3(1);
-		bonusPoints=0;
-		goodPoints=0;
-		doBonus=true;
 	}
 
 	private void loadNewBoard() {
