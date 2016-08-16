@@ -35,7 +35,7 @@ public class CherokeeAnimals implements ApplicationListener {
 
 	public FontLoader fg;
 
-	public MusicPlayer musicPlayer;
+//	public MusicPlayer musicPlayer;
 
 	@Override
 	public void create() {

@@ -86,8 +86,6 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 
 	private ViewInGameControls gameControls;
 
-	private int goodPoints = 0;
-
 	private int ip = 0;
 
 	private int item_highlighted = 0;
@@ -154,11 +152,11 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		if (isPaused()) {
 			pauseOverlay.getColor().a = .1f;
 			pauseOverlay.setTouchable(Touchable.enabled);
-			game.musicPlayer.pause();
+//			game.musicPlayer.pause();
 		} else {
 			pauseOverlay.getColor().a = 0f;
 			pauseOverlay.setTouchable(Touchable.disabled);
-			game.musicPlayer.resume();
+//			game.musicPlayer.resume();
 		}
 	}
 
@@ -176,43 +174,49 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		markedWrong++;
 	}
 
+	private int bonusPoints=0;
+	private int goodPoints=0;
 	private void checkButton(int button) {
 		if (buttonPicture[button] == null || buttonPicture[button].equals("")) {
 			return;
 		}
-		int bonus = 0;
-		elapsedTime = 0;
 		if (!buttonPicture[button].equals(currentChallenge)) {
+			doBonus=false;
 			buttonAsWrong(button);
 			scoreBoard.changeScoreBy(-badPoints - 1);
 			badPoints = (badPoints + 1) % 5;
-			goodPoints = 0;
 			game.sm.playEffect("buzzer2");
+			elapsedTime = 0;
+			bonusPoints=0;
 			return;
+		}
+		if (doBonus) {
+			int timeBonus = (int)((5*(timeLimit-elapsedTime))/timeLimit);
+			bonusPoints+=timeBonus;
 		}
 		buttonAsCorrect(button);
 		gameBoard.spin(button);
-		scoreBoard.changeScoreBy(goodPoints + 1);
+		scoreBoard.changeScoreBy(++goodPoints);
 		badPoints = 0;
-		goodPoints = (goodPoints + 1) % 5;
 		if (getCorrectCount() < 1) {
+			scoreBoard.changeScoreBy(bonusPoints);
 			for (button = 0; button < buttonPicture.length; button++) {
 				if (!buttonPicture[button].equals("")) {
-					bonus++;
-					buttonPicture[button] = "";
-					scoreBoard.changeScoreBy(bonus);
 					buttonPicture[button] = "";
 					gameBoard.flyaway(button);
+//					scoreBoard.changeScoreBy(bonus);
 				} else if (buttonPictureCopy[button].equals(currentChallenge)) {
 					gameBoard.setImage(button, savedPictureFH[button]);
 					gameBoard.spin(button);
 				}
 			}
-			elapsedTime = 0;
 			nextScreen = true;
 			ip++;
 			updateProgress2();
 			pbar.setProgress1(0f);
+			elapsedTime = 0;
+			bonusPoints=0;
+			return;
 		}
 	}
 
@@ -237,7 +241,6 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		}
 		buttonAsWrong(ix);
 		badPoints = (badPoints + 2) % 5;
-		goodPoints = 0;
 		scoreBoard.changeScoreBy(-badPoints - 1);
 		switch (r.nextInt(3)) {
 		case 0:
@@ -476,14 +479,10 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 				correct++;
 			}
 		}
-		boolean isPlural = (currentChallenge.endsWith("j") || currentChallenge
-				.endsWith("J"));
-		String altForm = isPlural ? currentChallenge.substring(0,
-				currentChallenge.length() - 1) : currentChallenge + "j";
-		while (alreadySeen.contains(altForm)) {
+		while (alreadySeen.contains(currentChallenge)) {
 			boolean already = false;
 			for (int iy = 0; iy < buttonPicture.length; iy++) {
-				if (buttonPicture[iy].equals(altForm)) {
+				if (buttonPicture[iy].equals(currentChallenge)) {
 					already = true;
 					break;
 				}
@@ -494,7 +493,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 						&& buttonPicture[slot].equals(currentChallenge)) {
 					continue;
 				}
-				buttonPicture[slot] = altForm;
+				buttonPicture[slot] = currentChallenge;
 			}
 			break;
 		}
@@ -507,6 +506,9 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		pbar.setProgress1(0);
 		updateProgress2();
 		pbar.setProgress3(1);
+		bonusPoints=0;
+		goodPoints=0;
+		doBonus=true;
 	}
 
 	private void loadNewBoard() {
@@ -514,6 +516,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		nextScreen = false;
 		elapsedTime = 0;
 	}
+	private boolean doBonus=true;
 
 	final protected Group pauseOverlay = new Group();
 
@@ -560,6 +563,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		}
 
 		if (elapsedTime > timeLimit) {
+			doBonus=false;
 			elapsedTime = 0;
 			tooMuchTimePassed();
 			pbar.setProgress1(0f);

@@ -38,9 +38,9 @@ import com.cherokeelessons.common.Utils;
 
 public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
-	private void resetMusicVolume() {
-		game.musicPlayer.setVolume((float) prefs.getMasterVolume() * (float) prefs.getMusicVolume() / 10000f);
-	}
+//	private void resetMusicVolume() {
+//		game.musicPlayer.setVolume((float) prefs.getMasterVolume() * (float) prefs.getMusicVolume() / 10000f);
+//	}
 
 	private static final String INDICATOR = ScreenMainMenu.INDICATOR;
 
@@ -174,7 +174,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 					btn_masterVolume.setText(getVolumeLabel(volume));
 					game.sm.playEffect("menu-click");
 					highlight_button(true);
-					resetMusicVolume();
+//					resetMusicVolume();
 				}
 			}
 		};
@@ -188,7 +188,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 					btn_masterVolume.setText(getVolumeLabel(volume));
 					game.sm.playEffect("menu-click");
 					highlight_button(true);
-					resetMusicVolume();
+//					resetMusicVolume();
 				}
 			}
 
@@ -211,7 +211,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 					btn_musicVolume.setText(getMusicLabel(volume));
 					game.sm.playEffect("menu-click");
 					highlight_button(true);
-					resetMusicVolume();
+//					resetMusicVolume();
 				}
 			}
 		};
@@ -225,7 +225,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 					btn_musicVolume.setText(getMusicLabel(volume));
 					game.sm.playEffect("menu-click");
 					highlight_button(true);
-					resetMusicVolume();
+//					resetMusicVolume();
 				}
 			}
 		};

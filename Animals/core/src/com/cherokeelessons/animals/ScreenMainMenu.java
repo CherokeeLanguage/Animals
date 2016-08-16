@@ -41,7 +41,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		}
 		return false;
 	}
-
+	
 	public static final String INDICATOR = "images/indicators/da-gi-si_2.png";
 	public static final float INDI_SCALE=.45f; 
 	private static class MenuLabel extends Label {
@@ -79,6 +79,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 	private Runnable newGame = new Runnable() {
 		@Override
 		public void run() {
+			music.pause();
 			game.sm.playEffect("menu-click");
 			game.gameEvent(GameEvent.NewGame);
 		}
@@ -294,10 +295,18 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		gameStage.addActor(right_indicator);
 
 		wall_atlas=Utils.initBackdrop(wall);
+		
+		music = new MusicPlayer();
+		music.loadUsingPlist();
+		float masterVolume = ((float)game.prefs.getMasterVolume())/100f;
+		float musicVolume = ((float)game.prefs.getMusicVolume())/100f;
+		music.play(masterVolume*musicVolume);
 	}
+	private final MusicPlayer music;
 
 	@Override
 	public void dispose() {
+		music.dispose();
 		wall_atlas.dispose();
 		super.dispose();
 	}
@@ -370,11 +379,14 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		batch.end();
 		gameStage.draw();
 	}
-
+	
 	@Override
 	public void show() {
 		super.show();
-//		game.sm.playEffect("howa");
+		float masterVolume = ((float)game.prefs.getMasterVolume())/100f;
+		float musicVolume = ((float)game.prefs.getMusicVolume())/100f;
+		music.setVolume(masterVolume*musicVolume);
+		music.resume();
 		Gamepads.addListener(watcher);
 		for (Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);

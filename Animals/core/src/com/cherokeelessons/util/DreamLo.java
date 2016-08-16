@@ -21,6 +21,7 @@ public class DreamLo {
 	private static final int SCORE = 1;
 	private static final int TIME = 2;
 	private static final int LABEL = 3;
+	@SuppressWarnings("unused")
 	private static final int DATE = 4;
 	private static final int INDEX = 5;
 
@@ -48,36 +49,36 @@ public class DreamLo {
 		}
 
 		final StringBuilder sb = new StringBuilder();
-
-		try {
-			for (final char c : s.toCharArray()) {
-				if (((c >= 'A') && (c <= 'Z')) //
-						|| ((c >= 'a') && (c <= 'z')) //
-						|| ((c >= '0') && (c <= '9')) //
-						|| (c == '-') //
-						|| (c == '.') //
-						|| (c == '_') //
-						|| (c == '~')) {
-					sb.append(c);
-					continue;
-				}
-
-				final byte[] bytes = ("" + c).getBytes("UTF-8");
-
-				for (byte b : bytes) {
-					sb.append('%');
-
-					int upper = (((int) b) >> 4) & 0xf;
-					sb.append(Integer.toHexString(upper).toUpperCase());
-
-					int lower = ((int) b) & 0xf;
-					sb.append(Integer.toHexString(lower).toUpperCase());
-				}
+		for (final char c : s.toCharArray()) {
+			if (((c >= 'A') && (c <= 'Z')) //
+					|| ((c >= 'a') && (c <= 'z')) //
+					|| ((c >= '0') && (c <= '9')) //
+					|| (c == '-') //
+					|| (c == '.') //
+					|| (c == '_') //
+					|| (c == '~')) {
+				sb.append(c);
+				continue;
 			}
-			return sb.toString();
-		} catch (UnsupportedEncodingException uee) {
-			throw new RuntimeException("UTF-8 unsupported!?", uee);
+
+			byte[] bytes;
+			try {
+				bytes = ("" + c).getBytes("UTF-8");
+			} catch (UnsupportedEncodingException uee) {
+				bytes = ("" + c).getBytes();
+			}
+
+			for (byte b : bytes) {
+				sb.append('%');
+
+				int upper = (((int) b) >> 4) & 0xf;
+				sb.append(Integer.toHexString(upper).toUpperCase());
+
+				int lower = ((int) b) & 0xf;
+				sb.append(Integer.toHexString(lower).toUpperCase());
+			}
 		}
+		return sb.toString();
 	}
 
 	/**
@@ -190,19 +191,16 @@ public class DreamLo {
 					}
 
 					String[] s = score_record.split("\\|");
-					if (s == null || s.length < 4) {
+					if (s == null || s.length < INDEX + 1) {
 						continue;
 					}
-					/*
-					 * 0: username 1: score 2: time 3: tag 4: date 5: index
-					 */
 					GameScore gs = new GameScore();
 					gs.score = StringUtils.defaultString(s[SCORE]).trim();
 					gs.score = StringUtils.reverse(gs.score).replaceAll("(\\d{3})", "$1,");
 					gs.score = StringUtils.reverse(gs.score);
 					gs.score = StringUtils.strip(gs.score, ",");
 					gs.tag = StringUtils.defaultString(s[LABEL]).trim();
-					String dreamLoId = StringUtils.defaultString(s[0]).trim();
+					String dreamLoId = StringUtils.defaultString(s[USERNAME]).trim();
 					try {
 						gs.levelOn = Integer.valueOf(StringUtils.substringAfter(dreamLoId, "-"));
 					} catch (NumberFormatException e) {

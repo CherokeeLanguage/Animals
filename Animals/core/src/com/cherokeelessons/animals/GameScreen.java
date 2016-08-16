@@ -1,6 +1,5 @@
 package com.cherokeelessons.animals;
 
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -172,11 +171,11 @@ public abstract class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
-		if (game.musicPlayer != null) {
-			if (!Gdx.app.getType().equals(ApplicationType.Desktop)) {
-				game.musicPlayer.pause();
-			}
-		}
+//		if (game.musicPlayer != null) {
+//			if (!Gdx.app.getType().equals(ApplicationType.Desktop)) {
+//				game.musicPlayer.pause();
+//			}
+//		}
 		disconnectInputProcessor();
 	}
 
@@ -201,13 +200,13 @@ public abstract class GameScreen implements Screen {
 
 	@Override
 	public void resume() {
-		if (game.musicPlayer != null) {
-			if (!Gdx.app.getType().equals(ApplicationType.Desktop)) {
-				game.musicPlayer.resume();
-				game.musicPlayer
-						.setVolume((float) game.prefs.getMasterVolume() * (float) game.prefs.getMusicVolume() / 10000f);
-			}
-		}
+//		if (game.musicPlayer != null) {
+//			if (!Gdx.app.getType().equals(ApplicationType.Desktop)) {
+//				game.musicPlayer.resume();
+//				game.musicPlayer
+//						.setVolume((float) game.prefs.getMasterVolume() * (float) game.prefs.getMusicVolume() / 10000f);
+//			}
+//		}
 		tmanager.resume();
 		Gdx.input.setInputProcessor(gameStage);
 	}

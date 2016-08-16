@@ -34,7 +34,9 @@ public class MusicPlayer {
 
 	public void setVolume(float f) {
 		volume = f;
-		m.setVolume(volume);
+		if (m!=null) {
+			m.setVolume(volume);
+		}
 	}
 
 	private final List<String> songs = new ArrayList<String>();
@@ -82,5 +84,16 @@ public class MusicPlayer {
 		m.setVolume(volume);
 		m.setLooping(false);
 		m.play();
+	}
+
+	public void dispose() {
+		if (m!=null) {
+			m.stop();
+			m=null;
+		}
+		if (am!=null) {
+			am.clear();
+			am.dispose();
+		}
 	}
 }
