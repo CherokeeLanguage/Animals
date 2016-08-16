@@ -44,24 +44,24 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 			BitmapFont font = game.fg.get(64);
 			scrolltable.reset();
 			scrolltable.defaults().expandX();
-			String text = "Rank";
 			LabelStyle style = new LabelStyle(font, GameColor.SCORES_TEXT);
 			LabelStyle mestyle = new LabelStyle(font, GameColor.SCORES_TEXT_ME);
-			scrolltable.add(new Label(text, style)).center();
-			text = "Accuracy";
+			String text = "Rank";
 			scrolltable.add(new Label(text, style)).center();
 			text = "Score";
 			scrolltable.add(new Label(text, style)).center();
 			text = "Level";
+			scrolltable.add(new Label(text, style)).center();
+			text = "Accuracy";
 			scrolltable.add(new Label(text, style)).center();
 
 			for (GameScore score : result.list) {
 				LabelStyle tmp = score.isMe?mestyle:style;
 				scrolltable.row();
 				scrolltable.add(new Label(score.rank, tmp)).center();
-				scrolltable.add(new Label(score.pctCorrect+"%", tmp)).center();
 				scrolltable.add(new Label(score.score, tmp)).center();
 				scrolltable.add(new Label(score.levelOn+"", tmp)).center();
+				scrolltable.add(new Label(score.pctCorrect+"%", tmp)).center();
 			}
 			
 			for (int ix = result.list.size(); ix < ranks.length; ix++) {
