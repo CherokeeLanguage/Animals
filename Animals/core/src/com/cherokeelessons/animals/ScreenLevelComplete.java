@@ -20,7 +20,7 @@ import com.cherokeelessons.util.DreamLo;
 import com.cherokeelessons.util.StringUtils;
 
 public class ScreenLevelComplete extends GameScreen implements DpadInterface {
-	
+
 	@Override
 	public boolean dpad(int keyCode) {
 		switch (keyCode) {
@@ -46,27 +46,27 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	private Label msg_score;
 	public int optionsButton;
 	private Label msg_elasped_time;
-	
+
 	private LabelStyle tbStyle;
 
 	final Array<Sprite> wall = new Array<Sprite>();
 
 	private TextureAtlas wall_atlas;
 
-	final private CtlrLevelComplete_Watch watcher = new CtlrLevelComplete_Watch(
-			this);
+	final private CtlrLevelComplete_Watch watcher = new CtlrLevelComplete_Watch(this);
 	private int levelOn;
 	private int correct;
 	private long elapsed;
 	private long elapsed_sec;
 	private long elapsed_min;
-	private Callback<Void> show_ranking=new Callback<Void>() {
+	private Callback<Void> show_ranking = new Callback<Void>() {
 		@Override
 		public void success(Void result) {
-			//updateRanking(score);
+			// updateRanking(score);
 		}
 	};
 	private int score;
+
 	public ScreenLevelComplete(final CherokeeAnimals game) {
 		super(game);
 
@@ -75,29 +75,26 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		font = fg.get(fontSize);
 
 		lStyle = new LabelStyle(font, GameColor.MAIN_TEXT);
-		msg_accuracy = new Label(LEVEL + " " + (game.getLevelOn() + 1) + " "
-				+ COMPLETE, lStyle);
+		msg_accuracy = new Label(LEVEL + " " + (game.getLevelOn() + 1) + " " + COMPLETE, lStyle);
 
-		msg_elasped_time = new Label(game.prefs.getLevelAccuracy(game
-				.getLevelOn()) + CORRECT, lStyle);
-		
+		msg_elasped_time = new Label(game.prefs.getLevelAccuracy(game.getLevelOn()) + CORRECT, lStyle);
+
 		msg_score = new Label(SCORE + "0", lStyle);
 		msg_score.pack();
-		
+
 		tbStyle = new LabelStyle();
 		tbStyle.font = font;
 		tbStyle.fontColor = GameColor.MAIN_TEXT;
 
 		gotoMainMenu = new Label(TABLET_MAIN, tbStyle);
-		gotoMainMenu.addCaptureListener(new ClickListener(){
+		gotoMainMenu.addCaptureListener(new ClickListener() {
 
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				game.gameEvent(GameEvent.MainMenu);
 				return true;
 			}
-			
+
 		});
 		gotoMainMenu.pack();
 		gameStage.addActor(msg_score);
@@ -159,39 +156,40 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	public void show() {
 		super.show();
 		positionItems();
-		wall_atlas=Utils.initBackdrop(wall);
+		wall_atlas = Utils.initBackdrop(wall);
 		Gamepads.addListener(watcher);
 		for (Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
 		}
 		final DreamLo lb = new DreamLo(game.prefs);
-		levelOn=game.getLevelOn();
-		score=game.prefs.getLastScore(levelOn);
+		levelOn = game.getLevelOn();
+		score = game.prefs.getLastScore(levelOn);
 		correct = game.prefs.getLevelAccuracy(levelOn);
 		elapsed = game.prefs.getLevelTime(levelOn);
-		elapsed_sec = elapsed/1000l;
-		elapsed_min = elapsed_sec/60;
-		elapsed_sec -= elapsed_min*60;
+		elapsed_sec = elapsed / 1000l;
+		elapsed_min = elapsed_sec / 60;
+		elapsed_sec -= elapsed_min * 60;
 		if (game.prefs.isLeaderBoardEnabled()) {
-			lb.lb_submit((levelOn+1)+"", score, correct, "", show_ranking);
+			lb.lb_submit((levelOn + 1) + "", score, correct, "", show_ranking);
 		}
 		updateDisplay();
 	}
 
 	private void updateDisplay() {
 		int midX = (int) (screenSize.width / 2);
-		msg_accuracy.setText("Level "+(levelOn+1)+": "+game.prefs.getLevelAccuracy(game.getLevelOn())
-				+ CORRECT);
+		msg_accuracy
+				.setText("Level " + (levelOn + 1) + ": " + game.prefs.getLevelAccuracy(game.getLevelOn()) + CORRECT);
 		msg_accuracy.pack();
 		msg_accuracy.setX(midX - msg_accuracy.getWidth() / 2);
-		msg_elasped_time.setText("Time elapsed: "+elapsed_min+" min "+elapsed_sec+" sec.");
+		msg_elasped_time.setText("Time elapsed: " + elapsed_min + " min " + elapsed_sec + " sec.");
 		msg_elasped_time.pack();
 		msg_elasped_time.setX(midX - msg_elasped_time.getWidth() / 2);
-		
-		String str_score = score+"";
-		str_score= StringUtils.reverse(str_score);
-		str_score=str_score.replaceAll("(\\d{3})", "$1,");
-		str_score= StringUtils.reverse(str_score);
+
+		String str_score = score + "";
+		str_score = StringUtils.reverse(str_score);
+		str_score = str_score.replaceAll("(\\d{3})", "$1,");
+		str_score = StringUtils.reverse(str_score);
+		str_score = StringUtils.strip(str_score, ",");
 		msg_score.setText(SCORE + str_score);
 		msg_score.pack();
 		msg_score.setX(midX - msg_score.getWidth() / 2);
