@@ -76,7 +76,7 @@ public class ScreenPoweredBy extends GameScreen {
 //		IntBuffer buf = BufferUtils.newIntBuffer(16);
 //		Gdx.gl.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, buf);
 		int packSize=Utils.getPackSize();
-		audio = new GameMusic(Gdx.audio.newMusic(Gdx.files.internal("libgdx/atmoseerie03.ogg")));
+		audio = new GameMusic(Gdx.audio.newMusic(Gdx.files.internal("libgdx/atmoseerie03.wav")));
 		audio.setVolume(0f);
 		o_pad=0;
 		pack = new PixmapPacker(packSize, packSize, Format.RGBA8888, 2, true);

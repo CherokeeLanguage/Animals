@@ -11,7 +11,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Music.OnCompletionListener;
 
 public class MusicPlayer {
-	private static final String WILD_PERSPECTIVE = "musix-wild-perspective.ogg";
+	private static final String WILD_PERSPECTIVE = "musix-wild-perspective.wav";
 	private final AssetManager am;
 	private int activeSong = 0;
 	private Music m = null;
@@ -54,9 +54,9 @@ public class MusicPlayer {
 	private float volume = 1f;
 
 	public void loadUsingPlist() {
-		String oggs = Gdx.files.internal("music/00-plist.txt").readString("UTF-8");
+		String songsPlist = Gdx.files.internal("music/00-plist.txt").readString("UTF-8");
 		songs.clear();
-		songs.addAll(Arrays.asList(oggs.split("\n")));
+		songs.addAll(Arrays.asList(songsPlist.split("\n")));
 		Collections.shuffle(songs);
 		for (int ix = 1; ix < songs.size(); ix++) {
 			if (songs.get(ix).equals(WILD_PERSPECTIVE)) {

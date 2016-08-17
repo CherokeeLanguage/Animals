@@ -97,18 +97,6 @@ public class LoadChallenges {
 		return wasBefore;
 	}
 
-	// private AudioSet getAudioSetFor(String name) {
-	// AudioSet set = new AudioSet();
-	// for (int ix = -1; ix < 10; ix++) {
-	// String sfx = (ix != -1 ? "_" + ix : "");
-	// //trust the plist!
-	// FileHandle audio = Gdx.files.internal(AUDIO_CHALLENGES + name + sfx
-	// + ".ogg");
-	// set.audio.add(audio);
-	// }
-	// return set;
-	// }
-
 	public List<String> getChallengesFor(int level) {
 		if (cache_curr.containsKey(level)) {
 			return new ArrayList<String>(cache_curr.get(level).list);
