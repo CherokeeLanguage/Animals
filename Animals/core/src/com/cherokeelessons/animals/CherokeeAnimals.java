@@ -133,9 +133,10 @@ public class CherokeeAnimals implements ApplicationListener {
 			setScreen(screenLevelSelect, false);// no history
 			break;
 		case ShowGameBoard:
-			if (screenGameplay == null) {
-				screenGameplay = new ScreenGameplay(this);
+			if (screenGameplay != null) {
+				screenGameplay.dispose();
 			}
+			screenGameplay=new ScreenGameplay(this);
 			screenGameplay.initLevel(levelOn);
 			setScreen(screenGameplay);
 			break;
