@@ -80,7 +80,7 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 		TextButtonStyle tstyle = new TextButtonStyle();
 		tstyle.font=fg.get(fontSize);
 		tstyle.fontColor=new Color(GameColor.INSTRUCTIONS_TEXT);
-		TextButton btnExit = new TextButton("[EXIT]", tstyle);
+		TextButton btnExit = new TextButton("[BACK]", tstyle);
 		
 		instructions.row();
 		instructions.add(btnExit).center().pad(0).space(0).bottom();

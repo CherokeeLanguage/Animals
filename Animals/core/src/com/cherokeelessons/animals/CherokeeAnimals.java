@@ -35,7 +35,7 @@ public class CherokeeAnimals implements ApplicationListener {
 
 	public FontLoader fg;
 
-//	public MusicPlayer musicPlayer;
+	public MusicPlayer music;
 
 	@Override
 	public void create() {
@@ -54,6 +54,12 @@ public class CherokeeAnimals implements ApplicationListener {
 		fg = new FontLoader();
 
 		gameEvent(GameEvent.libGdx);
+		
+		music = new MusicPlayer();
+		music.loadUsingPlist();
+		float masterVolume = ((float)prefs.getMasterVolume())/100f;
+		float musicVolume = ((float)prefs.getMusicVolume())/100f;
+		music.setVolume(masterVolume*musicVolume);
 	}
 
 	protected float elapsed = 0;
@@ -90,6 +96,10 @@ public class CherokeeAnimals implements ApplicationListener {
 	}
 	//@Subscribe
 	private void _gameEvent(GameEventMessage event) {
+		GameScreen activeScreen = getScreen();
+		if (activeScreen!=null) {
+			Gdx.app.log("SCREEN+EVENT:", activeScreen.getClass().getSimpleName()+"/"+event.getClass().getSimpleName());
+		}
 		switch (event.getEvent()) {
 		case ShowLeaderBoard:
 			setScreen(new ScreenHighScores(this));
@@ -98,18 +108,19 @@ public class CherokeeAnimals implements ApplicationListener {
 			setScreen(new ScreenPoweredBy(this));
 			break;
 		case Done:
-			if (getScreen() instanceof ScreenMainMenu) {
+			if (activeScreen instanceof ScreenMainMenu) {
+				((ScreenMainMenu)activeScreen).maybeQuit();
 				break;
 			}
-			if (getScreen() instanceof ScreenPoweredBy) {
+			if (activeScreen instanceof ScreenPoweredBy) {
 				setScreen(new ScreenLoading(this));
 				break;
 			}
-			if (getScreen() instanceof ScreenLoading) {
+			if (activeScreen instanceof ScreenLoading) {
 				gameEvent(GameEvent.MainMenu);
 				break;
 			}
-			if (getScreen() instanceof ScreenLevelComplete) {
+			if (activeScreen instanceof ScreenLevelComplete) {
 				gameEvent(GameEvent.MainMenu);
 				break;
 			}
@@ -154,11 +165,17 @@ public class CherokeeAnimals implements ApplicationListener {
 			}
 			setScreen(screenInstructions, false);
 			break;
-		case ShowOptions:
-			if (getScreen() instanceof ScreenPoweredBy) {
+		case Menu:
+			if (activeScreen instanceof ScreenPoweredBy) {
 				break;
 			}
-			if (getScreen() instanceof ScreenLoading) {
+			if (activeScreen instanceof ScreenLoading) {
+				break;
+			}
+			if (activeScreen instanceof ScreenGameplay) {
+				ScreenGameplay sg = ((ScreenGameplay)activeScreen);
+				sg.setPaused(!sg.isPaused());
+				Gdx.app.log("PAUSED: ",Boolean.toString(sg.isPaused()));
 				break;
 			}
 			if (screenOptions == null) {
@@ -185,26 +202,36 @@ public class CherokeeAnimals implements ApplicationListener {
 
 	@Override
 	public void dispose() {
-		if (screen != null)
+		if (screen != null) {
 			screen.hide();
+			screen = null;
+		}
+		if (music !=null) {
+			music.pause();
+			music.dispose();
+			music = null;
+		}
 	}
 
 	@Override
 	public void pause() {
-		if (screen != null)
+		if (screen != null) {
 			screen.pause();
+		}
 	}
 
 	@Override
 	public void resume() {
-		if (screen != null)
+		if (screen != null) {
 			screen.resume();
+		}
 	}
 
 	@Override
 	public void render() {
-		if (screen != null)
+		if (screen != null) {
 			screen.render(Gdx.graphics.getDeltaTime());
+		}
 	}
 
 	@Override

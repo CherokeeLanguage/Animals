@@ -35,7 +35,7 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	private static final String CORRECT = "% Correct!";
 	private static final String LEVEL = "Level";
 //	private static final String TABLET_PLAY_AGAIN = "Tap Here to Play Level Again";
-	private static final String TABLET_MAIN = "[EXIT]";
+	private static final String TABLET_MAIN = "[BACK]";
 
 	private BitmapFont font;
 

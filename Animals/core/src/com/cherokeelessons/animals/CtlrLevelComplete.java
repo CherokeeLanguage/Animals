@@ -84,6 +84,7 @@ public class CtlrLevelComplete implements ControllerListener {
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
+		menu.game.isTv=true;
 		if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
 			menu.game.gameEvent(GameEvent.MainMenu);
 			return true;
@@ -97,7 +98,7 @@ public class CtlrLevelComplete implements ControllerListener {
 			return true;
 		}
 		if (buttonCode == map.BUTTON_MENU) {
-			menu.game.gameEvent(GameEvent.ShowOptions);
+			menu.game.gameEvent(GameEvent.Menu);
 		}
 		if (buttonCode == map.BUTTON_DPAD_UP) {
 			return povMoved(controller, 0, PovDirection.north);
@@ -135,6 +136,7 @@ public class CtlrLevelComplete implements ControllerListener {
 	@Override
 	public boolean povMoved(Controller controller, int povCode,
 			PovDirection value) {
+		menu.game.isTv=true;
 		log("povModed: " + controller.getName() + ", " + povCode + ", "
 				+ value.name());
 		switch (value) {

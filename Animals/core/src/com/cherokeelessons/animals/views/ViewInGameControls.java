@@ -44,14 +44,16 @@ public class ViewInGameControls extends Group {
 
 	private Runnable onPause;
 
+	private boolean usingController = false;
 	public ViewInGameControls(Rectangle overscan) {
 		super();
-		if (Gamepads.getControllers().size==0) {
-			TABLET_INFO = "Tap picture matching challenge.";
+		usingController = Gamepads.getControllers().size!=0;
+		if (usingController) {
+			TABLET_INFO = "Tap picture(s) matching challenge.";
 			PAUSE_INFO="[PAUSE]";
 		} else {
 			TABLET_INFO = "Use [DPAD] and [SELECT] to choose.";
-			PAUSE_INFO="Use [BACK] to pause.";
+			PAUSE_INFO="Use [MENU] to pause.";
 		}
 
 		bottomRight = new Vector2(overscan.width, 0);
@@ -67,13 +69,11 @@ public class ViewInGameControls extends Group {
 
 		btn_Options = new Label(TABLET_INFO, labelStyle);
 		btn_Pause = new Label(PAUSE_INFO, labelStyle);
-//		btn_Exit = new Label("[EXIT]", labelStyle);
 
 		fixupPositions();
 
 		addActor(btn_Options);
 		addActor(btn_Pause);
-//		addActor(btn_Exit);
 	}
 
 	private void fixupPositions() {

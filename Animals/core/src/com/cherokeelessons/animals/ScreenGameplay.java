@@ -47,6 +47,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 	@Override
 	public boolean dpad(int keyCode) {
 		if (!showSelector) {
+			game.isTv=true;
 			showSelector=true;
 			hud_showIndicator(true);
 		}
@@ -120,6 +121,8 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 
 	private Texture pause_texture;
 
+	private boolean usingController;
+
 	public ScreenGameplay(final CherokeeAnimals game) {
 		super(game);
 		watcher = new CtlrGamePlay_Watch(
@@ -146,21 +149,23 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		
 		setPaused(false);
 
+		usingController = Gamepads.getControllers().size!=0;
 	}
 	
 	private Pixmap pause_mask;
 
+	
 	@Override
 	public void setPaused(boolean isPaused) {
 		super.setPaused(isPaused);
 		if (isPaused()) {
 			pauseOverlay.getColor().a = .1f;
 			pauseOverlay.setTouchable(Touchable.enabled);
-//			game.musicPlayer.pause();
+			game.music.pause();
 		} else {
 			pauseOverlay.getColor().a = 0f;
 			pauseOverlay.setTouchable(Touchable.disabled);
-//			game.musicPlayer.resume();
+			game.music.resume();
 		}
 	}
 
@@ -195,7 +200,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 			return;
 		}
 		if (doBonus) {
-			int timeBonus = (int)((5*(timeLimit-elapsedTime))/timeLimit);
+			int timeBonus = (int)((game.getLevelOn()*(timeLimit-elapsedTime))/timeLimit);
 			bonusPoints+=timeBonus;
 		}
 		buttonAsCorrect(button);
@@ -633,7 +638,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		pause_mask_image.scaleBy(fullscan.width, fullscan.height);
 		pauseOverlay.addActor(pause_mask_image);
 		LabelStyle continueStyle = new LabelStyle(new FontLoader().get(72), GameColor.MAIN_TEXT);
-		String pauseMsg = "[CONTINUE]";
+		String pauseMsg = usingController?"Use [MENU] to resume.":"[CONTINUE]";
 		Label toContinue = new Label(pauseMsg, continueStyle);
 		pauseOverlay.addActor(toContinue);
 		toContinue.pack();
@@ -647,7 +652,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 				return true;
 			}
 		});
-		Label toExit = new Label("[EXIT]", continueStyle);
+		Label toExit = new Label(usingController?"Use [BACK] to exit.":"[BACK]", continueStyle);
 		pauseOverlay.addActor(toExit);
 		toExit.pack();
 		toExit.setX((fullscan.width-toExit.getWidth())/2);
@@ -676,6 +681,9 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		Gamepads.addListener(watcher);
 		for (Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
+		}
+		if (game.isTv) {
+			showSelector=true;
 		}
 		hud_showIndicator();
 		connectClickhandlers();

@@ -3,6 +3,9 @@ package com.cherokeelessons.animals;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerAdapter;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
@@ -20,7 +23,7 @@ import com.cherokeelessons.animals.enums.GameEvent;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Utils;
 
-public class ScreenLoading extends GameScreen {
+public class ScreenLoading extends GameScreen implements DpadInterface {
 
 	private static final String STARTUP_OGG = "audio/effects/startup.ogg";
 	private static final int DesiredLevels = 18;
@@ -36,6 +39,9 @@ public class ScreenLoading extends GameScreen {
 	@Override
 	public void show() {
 		super.show();
+		for (Controller c: Controllers.getControllers()) {
+			c.addListener(this.ca);
+		}
 		ta = pack_9patches();
 		AtlasRegion patch_texture = ta.findRegion("Blocks_01_64x64_Alt_04_003");
 		NinePatch patch = new NinePatch(patch_texture, 15, 15, 15, 15);
@@ -84,6 +90,9 @@ public class ScreenLoading extends GameScreen {
 
 	@Override
 	public void hide() {
+		for (Controller c: Controllers.getControllers()) {
+			c.removeListener(this.ca);
+		}
 		m.stop();
 		am.clear();
 		m = null;
@@ -145,6 +154,9 @@ public class ScreenLoading extends GameScreen {
 			game.setLevels(game.challenges.levelcount());
 			return;
 		}
+		if (!done && m.isPlaying() && Gdx.input.isTouched()) {
+			m.stop();
+		}
 		if (!done && !m.isPlaying()) {
 			done = true;
 			loading.addAction(Actions.fadeOut(1f));
@@ -166,4 +178,23 @@ public class ScreenLoading extends GameScreen {
 			});
 		}
 	}
+
+	@Override
+	public boolean dpad(int keyCode) {
+		if (!done) {
+			m.stop();
+		}
+		Gdx.app.log("DPAD: ", keyCode+"");
+		return true;
+	}
+	
+	private final ControllerAdapter ca = new ControllerAdapter(){
+		@Override
+		public boolean buttonDown(Controller controller, int buttonIndex) {
+			if (m!=null && m.isPlaying()) {
+				m.stop();
+			}
+			return true;
+		}
+	};
 }

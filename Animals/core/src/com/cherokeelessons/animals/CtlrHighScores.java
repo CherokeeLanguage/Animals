@@ -84,6 +84,7 @@ public class CtlrHighScores implements ControllerListener {
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
+		menu.game.isTv=true;
 		if (menu.isPaused()) {
 			if (buttonCode == map.BUTTON_A) {
 				menu.setPaused(false);
@@ -100,7 +101,7 @@ public class CtlrHighScores implements ControllerListener {
 			return true;
 		}
 		if (buttonCode == map.BUTTON_MENU) {
-			menu.game.gameEvent(GameEvent.ShowOptions);
+			menu.game.gameEvent(GameEvent.Menu);
 		}
 		if (buttonCode == map.BUTTON_DPAD_UP) {
 			return povMoved(controller, 0, PovDirection.north);
@@ -131,6 +132,7 @@ public class CtlrHighScores implements ControllerListener {
 	@Override
 	public boolean povMoved(Controller controller, int povCode,
 			PovDirection value) {
+		menu.game.isTv=true;
 		if (menu.isPaused()) {
 			return false;
 		}

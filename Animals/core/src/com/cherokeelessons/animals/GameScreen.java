@@ -75,11 +75,11 @@ public abstract class GameScreen implements Screen {
 					return true;
 				}
 				if (keyCode == Input.Keys.MENU) {
-					game.gameEvent(GameEvent.ShowOptions);
+					game.gameEvent(GameEvent.Menu);
 					return true;
 				}
 				if (keyCode == Input.Keys.F1) {
-					game.gameEvent(GameEvent.ShowOptions);
+					game.gameEvent(GameEvent.Menu);
 					return true;
 				}
 				if (mapToGamepad(keyCode)) {

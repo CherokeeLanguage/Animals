@@ -20,11 +20,11 @@ public class CtlrGamePlay implements ControllerListener {
 
 	private GamepadMap map;
 
-	private ScreenGameplay menu;
+	private ScreenGameplay gameboard;
 
-	public CtlrGamePlay(GamepadMap map, ScreenGameplay menu) {
+	public CtlrGamePlay(GamepadMap map, ScreenGameplay gameboard) {
 		this.map = map;
-		this.menu = menu;
+		this.gameboard = gameboard;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class CtlrGamePlay implements ControllerListener {
 
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
-		if (menu.isPaused()) {
+		if (gameboard.isPaused()) {
 			return false;
 		}
 		if (axisCode == map.AXIS_LEFT_TRIGGER
@@ -84,34 +84,38 @@ public class CtlrGamePlay implements ControllerListener {
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
-		if (menu.isPaused()) {
+		gameboard.game.isTv=true;
+		if (gameboard.isPaused()) {
 			if (buttonCode == map.BUTTON_A) {
-				menu.setPaused(false);
+				gameboard.setPaused(false);
 				return true;
 			}
 			if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
-				menu.setPaused(false);
+				gameboard.game.gameEvent(GameEvent.Done);
 				return true;
+			}
+			if (buttonCode == map.BUTTON_MENU) {
+				gameboard.setPaused(false);
 			}
 			return true;
 		}
 		if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
-			menu.game.gameEvent(GameEvent.Done);
+			gameboard.game.gameEvent(GameEvent.Done);
 			return true;
 		}
 		if (buttonCode == map.BUTTON_Y) {
-			menu.setPaused(true);
+			gameboard.setPaused(true);
 			return true;
 		}
 		if (buttonCode == map.BUTTON_X) {
 			return true;
 		}
 		if (buttonCode == map.BUTTON_A) {
-			menu.hud_select();
+			gameboard.hud_select();
 			return true;
 		}
 		if (buttonCode == map.BUTTON_MENU) {
-			menu.game.gameEvent(GameEvent.ShowOptions);
+			gameboard.game.gameEvent(GameEvent.Menu);
 		}
 		if (buttonCode == map.BUTTON_DPAD_UP) {
 			return povMoved(controller, 0, PovDirection.north);
@@ -148,21 +152,22 @@ public class CtlrGamePlay implements ControllerListener {
 	@Override
 	public boolean povMoved(Controller controller, int povCode,
 			PovDirection value) {
-		if (menu.isPaused()) {
+		gameboard.game.isTv=true;
+		if (gameboard.isPaused()) {
 			return false;
 		}
 		switch (value) {
 		case north:
-			menu.hud_moveNorth();
+			gameboard.hud_moveNorth();
 			break;
 		case south:
-			menu.hud_moveSouth();
+			gameboard.hud_moveSouth();
 			break;
 		case east:
-			menu.hud_moveRight();
+			gameboard.hud_moveRight();
 			break;
 		case west:
-			menu.hud_moveLeft();
+			gameboard.hud_moveLeft();
 			break;
 		default:
 			break;

@@ -28,6 +28,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 	
 	@Override
 	public boolean dpad(int keyCode) {
+		game.isTv=true;
 		switch (keyCode) {
 		case Keys.DPAD_CENTER:
 			hud_select();
@@ -79,7 +80,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 	private Runnable newGame = new Runnable() {
 		@Override
 		public void run() {
-			music.pause();
+			game.music.pause();
 			game.sm.playEffect("menu-click");
 			game.gameEvent(GameEvent.NewGame);
 		}
@@ -104,7 +105,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		@Override
 		public void run() {
 			game.sm.playEffect("menu-click");
-			game.gameEvent(GameEvent.ShowOptions);
+			game.gameEvent(GameEvent.Menu);
 		}
 	};
 
@@ -295,18 +296,11 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		gameStage.addActor(right_indicator);
 
 		wall_atlas=Utils.initBackdrop(wall);
-		
-		music = new MusicPlayer();
-		music.loadUsingPlist();
-		float masterVolume = ((float)game.prefs.getMasterVolume())/100f;
-		float musicVolume = ((float)game.prefs.getMusicVolume())/100f;
-		music.play(masterVolume*musicVolume);
 	}
-	private final MusicPlayer music;
-
+	
 	@Override
 	public void dispose() {
-		music.dispose();
+		game.music.dispose();
 		wall_atlas.dispose();
 		super.dispose();
 	}
@@ -385,8 +379,8 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		super.show();
 		float masterVolume = ((float)game.prefs.getMasterVolume())/100f;
 		float musicVolume = ((float)game.prefs.getMusicVolume())/100f;
-		music.setVolume(masterVolume*musicVolume);
-		music.resume();
+		game.music.setVolume(masterVolume*musicVolume);
+		game.music.resume();
 		Gamepads.addListener(watcher);
 		for (Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
@@ -413,6 +407,15 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		right_indicator.setScaleX(-INDI_SCALE);
 		right_indicator.setScaleY(INDI_SCALE);
 
+		highlight_button();
+	}
+
+	public void maybeQuit() {
+		if (selected_btn==quitButton) {
+			Gdx.app.postRunnable(performQuit);
+			return;
+		}
+		selected_btn=quitButton;
 		highlight_button();
 	}
 }

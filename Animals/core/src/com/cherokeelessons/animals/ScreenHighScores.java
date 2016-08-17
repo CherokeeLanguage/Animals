@@ -87,7 +87,7 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 		lstyle.font=game.fg.get(FONTSIZE);
 		lstyle.fontColor=GameColor.MAIN_TEXT;
 		String textExit;
-		textExit = "[EXIT]";
+		textExit = "[BACK]";
 		Label exit = new Label(textExit, lstyle);
 		exit.addListener(new InputListener(){
 			@Override
