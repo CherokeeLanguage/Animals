@@ -146,6 +146,7 @@ public class ScreenPoweredBy extends GameScreen {
 		}	
 		
 		
+		audio.setVolume(.7f);
 		audio.play();
 	}
 

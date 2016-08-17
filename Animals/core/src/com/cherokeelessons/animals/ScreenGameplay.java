@@ -207,6 +207,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		gameBoard.spin(button);
 		scoreBoard.changeScoreBy(++goodPoints);
 		badPoints = 0;
+		elapsedTime = 0;
 		if (getCorrectCount() < 1) {
 			scoreBoard.changeScoreBy(bonusPoints);
 			for (button = 0; button < buttonPicture.length; button++) {
@@ -223,7 +224,6 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 			ip++;
 			updateProgress2();
 			pbar.setProgress1(0f);
-			elapsedTime = 0;
 			bonusPoints = 0;
 			return;
 		}
