@@ -15,7 +15,7 @@ createIPA.dependsOn build
 
 eclipse.project {
     name = appName + "-ios"
-    natures 'org.robovm.eclipse.RoboVMNature'
+    natures 'com.mobidevelop.robovm.eclipse.RoboVMNature'
 }
 eclipse.jdt {
 	sourceCompatibility=1.6
