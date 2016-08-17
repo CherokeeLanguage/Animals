@@ -16,7 +16,7 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = '5.03'
+    version = '5.04'
     
     ext {
         appName = "Animals"
