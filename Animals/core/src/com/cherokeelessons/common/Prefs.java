@@ -98,8 +98,9 @@ public class Prefs implements com.badlogic.gdx.Preferences {
 	
 	public int getLastScore(int level) {
 		String key = Setting.LevelScore.name() + "_";
-		if (level < 10)
+		if (level < 10) {
 			key += "0";
+		}
 		key += level;
 		try {
 			return prefs.getInteger(key, 0);
@@ -332,8 +333,9 @@ public class Prefs implements com.badlogic.gdx.Preferences {
 	
 	public void setLastScore(int level, int score) {
 		String key = Setting.LevelScore.name() + "_";
-		if (level < 10)
+		if (level < 10) {
 			key += "0";
+		}
 		key += level;
 		prefs.putInteger(key, score);
 		prefs.flush();

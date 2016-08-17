@@ -41,7 +41,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	private void resetMusicVolume() {
 		float masterVolume = ((float)game.prefs.getMasterVolume())/100f;
 		float musicVolume = ((float)game.prefs.getMusicVolume())/100f;
-		game.music.play(masterVolume*musicVolume);
+		game.music.setVolume(masterVolume*musicVolume);
 	}
 
 	private static final String INDICATOR = ScreenMainMenu.INDICATOR;

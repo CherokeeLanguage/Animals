@@ -97,9 +97,6 @@ public class CherokeeAnimals implements ApplicationListener {
 	//@Subscribe
 	private void _gameEvent(GameEventMessage event) {
 		GameScreen activeScreen = getScreen();
-		if (activeScreen!=null) {
-			Gdx.app.log("SCREEN+EVENT:", activeScreen.getClass().getSimpleName()+"/"+event.getClass().getSimpleName());
-		}
 		switch (event.getEvent()) {
 		case ShowLeaderBoard:
 			setScreen(new ScreenHighScores(this));
@@ -108,6 +105,9 @@ public class CherokeeAnimals implements ApplicationListener {
 			setScreen(new ScreenPoweredBy(this));
 			break;
 		case Done:
+			if (activeScreen==null) {
+				break;
+			}
 			if (activeScreen instanceof ScreenMainMenu) {
 				((ScreenMainMenu)activeScreen).maybeQuit();
 				break;
@@ -166,6 +166,12 @@ public class CherokeeAnimals implements ApplicationListener {
 			setScreen(screenInstructions, false);
 			break;
 		case Menu:
+			if (activeScreen==null) {
+				break;
+			}
+			if (activeScreen instanceof ScreenLevelComplete) {
+				break;
+			}
 			if (activeScreen instanceof ScreenPoweredBy) {
 				break;
 			}

@@ -300,7 +300,6 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 	
 	@Override
 	public void dispose() {
-		game.music.dispose();
 		wall_atlas.dispose();
 		super.dispose();
 	}
@@ -379,8 +378,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		super.show();
 		float masterVolume = ((float)game.prefs.getMasterVolume())/100f;
 		float musicVolume = ((float)game.prefs.getMusicVolume())/100f;
-		game.music.setVolume(masterVolume*musicVolume);
-		game.music.resume();
+		game.music.play(masterVolume*musicVolume);
 		Gamepads.addListener(watcher);
 		for (Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);

@@ -17,6 +17,7 @@ import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.util.Callback;
 import com.cherokeelessons.util.DreamLo;
+import com.cherokeelessons.util.StringUtils;
 
 public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	
@@ -30,25 +31,22 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		return false;
 	}
 
-//	private static final String TABLET_NEXT_LEVEL = "Tap Here to Choose Another Level";
+	private static final String SCORE = "SCORE: ";
 	private static final String COMPLETE = "Complete!";
 	private static final String CORRECT = "% Correct!";
 	private static final String LEVEL = "Level";
-//	private static final String TABLET_PLAY_AGAIN = "Tap Here to Play Level Again";
 	private static final String TABLET_MAIN = "[BACK]";
 
 	private BitmapFont font;
 
 	private int fontSize = 88;
-//	private Label goLevelSelect;
 	private Label gotoMainMenu;
 	private LabelStyle lStyle;
 	private Label msg_accuracy;
+	private Label msg_score;
 	public int optionsButton;
 	private Label msg_elasped_time;
 	
-//	private Label playLevelAgain;
-
 	private LabelStyle tbStyle;
 
 	final Array<Sprite> wall = new Array<Sprite>();
@@ -68,6 +66,7 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 			//updateRanking(score);
 		}
 	};
+	private int score;
 	public ScreenLevelComplete(final CherokeeAnimals game) {
 		super(game);
 
@@ -82,35 +81,12 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		msg_elasped_time = new Label(game.prefs.getLevelAccuracy(game
 				.getLevelOn()) + CORRECT, lStyle);
 		
+		msg_score = new Label(SCORE + "0", lStyle);
+		msg_score.pack();
+		
 		tbStyle = new LabelStyle();
 		tbStyle.font = font;
 		tbStyle.fontColor = GameColor.MAIN_TEXT;
-
-//		playLevelAgain = new Label(TABLET_PLAY_AGAIN, tbStyle);
-//		playLevelAgain.pack();
-//		playLevelAgain.addCaptureListener(new ClickListener(){
-//
-//			@Override
-//			public boolean touchDown(InputEvent event, float x, float y,
-//					int pointer, int button) {
-//				game.gameEvent(GameEvent.ShowGameBoard);
-//				return true;
-//			}
-//			
-//		});
-//
-//		goLevelSelect = new Label(TABLET_NEXT_LEVEL, tbStyle);
-//		goLevelSelect.addCaptureListener(new ClickListener(){
-//
-//			@Override
-//			public boolean touchDown(InputEvent event, float x, float y,
-//					int pointer, int button) {
-//				game.gameEvent(GameEvent.NewGame);
-//				return true;
-//			}
-//			
-//		});
-//		goLevelSelect.pack();
 
 		gotoMainMenu = new Label(TABLET_MAIN, tbStyle);
 		gotoMainMenu.addCaptureListener(new ClickListener(){
@@ -124,12 +100,10 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 			
 		});
 		gotoMainMenu.pack();
-
+		gameStage.addActor(msg_score);
 		gameStage.addActor(msg_accuracy);
 		gameStage.addActor(msg_elasped_time);
 		gameStage.addActor(gotoMainMenu);
-//		gameStage.addActor(playLevelAgain);
-//		gameStage.addActor(goLevelSelect);
 		gameStage.getRoot().setX(screenSize.x);
 		gameStage.getRoot().setY(screenSize.y);
 	}
@@ -146,7 +120,7 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	}
 
 	private void positionItems() {
-		final int linesDisplayed = 6;
+		final int linesDisplayed = 4;
 		int lineGap;
 		int midX;
 		int line;
@@ -160,17 +134,14 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		gotoMainMenu.setX(midX - gotoMainMenu.getWidth() / 2);
 		gotoMainMenu.setY(line - gotoMainMenu.getHeight() / 2);
 		line += lineGap;
-//		goLevelSelect.setX(midX - goLevelSelect.getWidth() / 2);
-//		goLevelSelect.setY(line - goLevelSelect.getHeight() / 2);
-//		line += lineGap;
-//		playLevelAgain.setX(midX - playLevelAgain.getWidth() / 2);
-//		playLevelAgain.setY(line - playLevelAgain.getHeight() / 2);
-//		line += lineGap;
 		msg_elasped_time.setX(midX - msg_elasped_time.getWidth() / 2);
 		msg_elasped_time.setY(line - msg_elasped_time.getHeight() / 2);
 		line += lineGap;
 		msg_accuracy.setX(midX - msg_accuracy.getWidth() / 2);
 		msg_accuracy.setY(line - msg_accuracy.getHeight() / 2);
+		line += lineGap;
+		msg_score.setX(midX - msg_score.getWidth() / 2);
+		msg_score.setY(line - msg_score.getHeight() / 2);
 	}
 
 	@Override
@@ -195,13 +166,14 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		}
 		final DreamLo lb = new DreamLo(game.prefs);
 		levelOn=game.getLevelOn();
+		score=game.prefs.getLastScore(levelOn);
 		correct = game.prefs.getLevelAccuracy(levelOn);
 		elapsed = game.prefs.getLevelTime(levelOn);
 		elapsed_sec = elapsed/1000l;
 		elapsed_min = elapsed_sec/60;
 		elapsed_sec -= elapsed_min*60;
 		if (game.prefs.isLeaderBoardEnabled()) {
-			lb.lb_submit((levelOn+1)+"", game.prefs.getLastScore(levelOn), correct, "", show_ranking);
+			lb.lb_submit((levelOn+1)+"", score, correct, "", show_ranking);
 		}
 		updateDisplay();
 	}
@@ -215,5 +187,13 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		msg_elasped_time.setText("Time elapsed: "+elapsed_min+" min "+elapsed_sec+" sec.");
 		msg_elasped_time.pack();
 		msg_elasped_time.setX(midX - msg_elasped_time.getWidth() / 2);
+		
+		String str_score = score+"";
+		str_score= StringUtils.reverse(str_score);
+		str_score=str_score.replaceAll("(\\d{3})", "$1,");
+		str_score= StringUtils.reverse(str_score);
+		msg_score.setText(SCORE + str_score);
+		msg_score.pack();
+		msg_score.setX(midX - msg_score.getWidth() / 2);
 	}
 }
