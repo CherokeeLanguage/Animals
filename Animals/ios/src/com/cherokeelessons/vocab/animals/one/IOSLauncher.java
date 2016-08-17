@@ -20,9 +20,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
 
     public static void main(String[] argv) {
         NSAutoreleasePool pool = new NSAutoreleasePool();
-        System.out.println("STARTUP");
         UIApplication.main(argv, null, IOSLauncher.class);
-        System.out.println("SHUTDOWN");
         pool.close();
     }
 }
