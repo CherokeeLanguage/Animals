@@ -136,7 +136,7 @@ public class ScreenPoweredBy extends GameScreen {
 			if (ix==0) {				
 				Timeline al = Timeline.createSequence();
 				al.pushPause(1f);
-				al.push(Tween.to(audio, MusicAccessor.Volume, 4f).target(1f));
+				al.push(Tween.to(audio, MusicAccessor.Volume, 4f).target(.7f));
 				al.pushPause(4f);
 				al.push(Tween.to(audio, MusicAccessor.Volume, 2f).target(0f));
 				al.setCallback(logoDone);
@@ -146,7 +146,6 @@ public class ScreenPoweredBy extends GameScreen {
 		}	
 		
 		
-		audio.setVolume(.7f);
 		audio.play();
 	}
 

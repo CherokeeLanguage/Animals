@@ -122,8 +122,8 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 		batch.end();
 		if (!backgroundMusicStarted) {
 			backgroundMusicStarted = true;
-			m.setVolume(.7f);
 			m.setLooping(false);
+			m.setVolume(.4f);
 			m.play();
 			elapsed=0f;
 			return;
