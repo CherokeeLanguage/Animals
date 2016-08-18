@@ -25,7 +25,7 @@ import com.cherokeelessons.common.Utils;
 
 public class ScreenLoading extends GameScreen implements DpadInterface {
 
-	private static final String STARTUP_SND = "audio/effects/startup.wav";
+	private static final String STARTUP_SND = "audio/effects/startup.mp3";
 	private static final int DesiredLevels = 18;
 	private String i_am_thinking = "ᎦᏓᏅᏖᎭ ...";
 	private TextureAtlas ta;

@@ -11,7 +11,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Music.OnCompletionListener;
 
 public class MusicPlayer {
-	private static final String WILD_PERSPECTIVE = "musix-wild-perspective.wav";
+	private static final String WILD_PERSPECTIVE = "musix-wild-perspective.mp3";
 	private final AssetManager am;
 	private int activeSong = 0;
 	private Music m = null;
