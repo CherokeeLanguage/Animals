@@ -81,7 +81,7 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 
 		
 		String textSkip;
-		if (game.isTv || watcher.hasControllers()) {
+		if (game.isTelevision() || watcher.hasControllers()) {
 			textSkip = "[FIRE] or [ENTER] to skip.";
 		} else {
 			textSkip = "[SKIP]";

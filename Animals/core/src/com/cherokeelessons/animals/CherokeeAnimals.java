@@ -19,16 +19,23 @@ import com.cherokeelessons.util.DreamLo;
 
 import aurelienribon.tweenengine.Tween;
 
-public class CherokeeAnimals implements ApplicationListener {
+public class CherokeeAnimals implements ApplicationListener, TvDetector {
 	
-	public boolean isTv = false;
-
 	final public static DisplaySize size = DisplaySize._1080p;
 
 	public Prefs prefs;
 	public TextureAtlas images_atlas;
 
 	public CherokeeAnimals() {
+		/**
+		 * Assume *not* a TV unless set otherwise.
+		 */
+		tvDetector = new TvDetector() {
+			@Override
+			public boolean isTelevision() {
+				return false;
+			}
+		};
 	}
 
 	public SoundManager sm;
@@ -327,6 +334,8 @@ public class CherokeeAnimals implements ApplicationListener {
 
 	public String activeChallenge;
 
+	private TvDetector tvDetector;
+
 	public void setLevels(int levelcount) {
 		levels = levelcount;
 	}
@@ -345,5 +354,18 @@ public class CherokeeAnimals implements ApplicationListener {
 
 	public void setLevelOn(int levelOn) {
 		this.levelOn = levelOn;
+	}
+
+	public void setIsTelevisionDetector(TvDetector detector) {
+		this.tvDetector = detector;
+	}
+	
+	private Boolean _isTelevision;
+	@Override
+	public boolean isTelevision() {
+		if (_isTelevision==null) {
+			_isTelevision = this.tvDetector.isTelevision();
+		}
+		return _isTelevision;
 	}
 }

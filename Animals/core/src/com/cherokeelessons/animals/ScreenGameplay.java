@@ -47,7 +47,6 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 	@Override
 	public boolean dpad(int keyCode) {
 		if (!showSelector) {
-			game.isTv = true;
 			showSelector = true;
 			hud_showIndicator(true);
 		}
@@ -683,7 +682,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		for (Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
 		}
-		if (game.isTv) {
+		if (game.isTelevision()) {
 			showSelector = true;
 		}
 		hud_showIndicator();

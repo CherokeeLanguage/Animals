@@ -36,7 +36,6 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 	@Override
 	public boolean dpad(int keyCode) {
 		if (!showSelector) {
-			game.isTv=true;
 			showSelector=true;
 			hud_showIndicator(true);
 		}
@@ -127,7 +126,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		ps.font = font;
 		ps.fontColor = new Color(GameColor.MAIN_TEXT);
 		ps.fontColor.a = 1f;
-		if (game.isTv||usingController) {
+		if (game.isTelevision()||usingController) {
 			panelSwitch[0] = new Label(TV_PANEL1_TEXT, ps);
 			panelSwitch[1] = new Label(TV_PANEL2_TEXT, ps);
 		} else {
@@ -434,7 +433,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		}
 		showSelector=false;
 		connectClickers();
-		if (game.isTv) {
+		if (game.isTelevision()) {
 			showSelector=true;
 		}
 		hud_showIndicator();

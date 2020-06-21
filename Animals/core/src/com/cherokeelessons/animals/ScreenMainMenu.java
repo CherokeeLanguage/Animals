@@ -28,7 +28,6 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 	
 	@Override
 	public boolean dpad(int keyCode) {
-		game.isTv=true;
 		switch (keyCode) {
 		case Keys.DPAD_CENTER:
 			hud_select();

@@ -84,7 +84,6 @@ public class CtlrHighScores implements ControllerListener {
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
-		menu.game.isTv=true;
 		if (menu.isPaused()) {
 			if (buttonCode == map.BUTTON_A) {
 				menu.setPaused(false);
@@ -132,7 +131,6 @@ public class CtlrHighScores implements ControllerListener {
 	@Override
 	public boolean povMoved(Controller controller, int povCode,
 			PovDirection value) {
-		menu.game.isTv=true;
 		if (menu.isPaused()) {
 			return false;
 		}

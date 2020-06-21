@@ -84,7 +84,6 @@ public class CtlrGamePlay implements ControllerListener {
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
-		gameboard.game.isTv=true;
 		if (gameboard.isPaused()) {
 			if (buttonCode == map.BUTTON_A) {
 				gameboard.setPaused(false);
@@ -152,7 +151,6 @@ public class CtlrGamePlay implements ControllerListener {
 	@Override
 	public boolean povMoved(Controller controller, int povCode,
 			PovDirection value) {
-		gameboard.game.isTv=true;
 		if (gameboard.isPaused()) {
 			return false;
 		}

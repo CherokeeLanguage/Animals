@@ -62,7 +62,6 @@ public class CtlrMainMenu implements ControllerListener {
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
-		menu.game.isTv=true;
 		log("buttonDown: "+controller.getName()+" buttonCode="+buttonCode);
 		bswitch: {			
 			if (buttonCode == map.BUTTON_A) {
@@ -111,7 +110,6 @@ public class CtlrMainMenu implements ControllerListener {
 	@Override
 	public boolean povMoved(Controller controller, int povCode,
 			PovDirection value) {
-		menu.game.isTv=true;
 		log("povMoved: "+controller.getName()+" povCode="+povCode);
 		switch (value) {
 		case north:
