@@ -97,12 +97,14 @@ public class ScreenPoweredBy extends GameScreen {
 				int z = 4 - y;
 				int p = z * 5 + x;
 				i = new Sprite(ta.findRegion(p + ""));
+				if (y==0) {
+					width += i.getWidth();
+				}
 				i.setPosition(width, height);
 				height += i.getRegionHeight();				
 				i.setOrigin(0, 0);
 				logo.add(i);
 			}
-			width += i.getWidth();
 		}
 		
 		Rectangle logobox = new Rectangle(0, 0, width, height);		

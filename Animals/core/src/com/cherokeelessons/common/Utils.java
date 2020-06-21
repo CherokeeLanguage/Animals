@@ -49,13 +49,15 @@ public class Utils {
 				int p = z * perRow + x;
 				final AtlasRegion piece = wall_atlas.findRegion(p + "");
 				i = new Sprite(piece, 0, 0, piece.getRegionWidth(), piece.getRegionHeight());
+				if (y==0) {
+					px += i.getWidth();
+				}
 				i.setX(px);
 				i.setY(py);
 				i.setColor(1f, 1f, 1f, 0.35f);
 				py += i.getHeight();
 				wall.add(i);
 			}
-			px += i.getWidth();
 		}
 		return wall_atlas;
 	}
