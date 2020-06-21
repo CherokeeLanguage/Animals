@@ -10,23 +10,23 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="1092.2667"
-   height="533.33331"
+   width="1024"
+   height="500"
    id="svg2"
    version="1.1"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="CherokeeAnimals-promo.svg"
    viewBox="0 0 1024 500"
    inkscape:export-filename="CherokeeAnimals-promo.png"
-   inkscape:export-xdpi="168.75"
-   inkscape:export-ydpi="168.75">
+   inkscape:export-xdpi="300.06"
+   inkscape:export-ydpi="300.06">
   <defs
      id="defs4">
     <filter
        inkscape:label="Drop Shadow"
        inkscape:menu="Materials"
        inkscape:menu-tooltip="Eroded metal texture with ridges, grooves, holes and bumps"
-       style="color-interpolation-filters:sRGB"
+       style="color-interpolation-filters:sRGB;"
        id="filter4710">
       <feGaussianBlur
          result="result0"
@@ -44,9 +44,7 @@
          xChannelSelector="R"
          in2="result1"
          result="result91"
-         id="feDisplacementMap4716"
-         scale="0"
-         yChannelSelector="A" />
+         id="feDisplacementMap4716" />
       <feComposite
          result="result2"
          operator="out"
@@ -60,9 +58,7 @@
          in="SourceAlpha"
          operator="arithmetic"
          result="result5"
-         id="feComposite4720"
-         k2="0"
-         k4="0" />
+         id="feComposite4720" />
       <feBlend
          result="fbSourceGraphic"
          mode="multiply"
@@ -76,9 +72,9 @@
       <feSpecularLighting
          in="result0"
          result="result1"
-         lighting-color="#fee65d"
+         lighting-color="rgb(254,230,93)"
          surfaceScale="3"
-         specularConstant="0.40000001"
+         specularConstant="0.4"
          specularExponent="15"
          id="feSpecularLighting4726">
         <fePointLight
@@ -101,8 +97,7 @@
          k2="2.5"
          k3="3.5"
          in2="result2"
-         id="feComposite4732"
-         k4="0" />
+         id="feComposite4732" />
       <feBlend
          mode="multiply"
          in2="result4"
@@ -143,7 +138,7 @@
          result="composite2" />
     </filter>
     <filter
-       style="color-interpolation-filters:sRGB"
+       style="color-interpolation-filters:sRGB;"
        inkscape:label="Drop Shadow"
        id="filter4750">
       <feFlood
@@ -175,7 +170,7 @@
          id="feComposite4760" />
     </filter>
     <filter
-       style="color-interpolation-filters:sRGB"
+       style="color-interpolation-filters:sRGB;"
        inkscape:label="Drop Shadow"
        id="filter4771">
       <feFlood
@@ -214,9 +209,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4775001"
-     inkscape:cx="546.13336"
-     inkscape:cy="266.66666"
+     inkscape:zoom="0.784"
+     inkscape:cx="1061.2424"
+     inkscape:cy="387.93537"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -243,13 +238,6 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-552.36218)">
-    <rect
-       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:71.37731171;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
-       id="rect61"
-       width="1023.8364"
-       height="499.96481"
-       x="0"
-       y="552.3974" />
     <image
        y="784.49121"
        x="-176.85992"
@@ -350,20 +338,21 @@
        width="108.61906" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;line-height:0%;font-family:ALEWISDODI;-inkscape-font-specification:'ALEWISDODI Ultra-Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:#800000;stroke-width:2.77155423;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-size:76.04003143px;line-height:100%;font-family:ALEWISDODI;-inkscape-font-specification:'ALEWISDODI Ultra-Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:#800000;stroke-width:2.77155423;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        x="17.212402"
        y="617.26636"
-       id="text3536"><tspan
+       id="text3536"
+       sodipodi:linespacing="100%"><tspan
          sodipodi:role="line"
          id="tspan3538"
          x="17.212402"
          y="617.26636"
-         style="font-size:76.04003143px;line-height:1;stroke-width:2.77155423">Cherokee</tspan><tspan
+         style="stroke-width:2.77155423">Cherokee</tspan><tspan
          sodipodi:role="line"
          x="17.212402"
          y="693.3064"
          id="tspan3542"
-         style="font-size:76.04003143px;line-height:1;stroke-width:2.77155423">Animals</tspan></text>
+         style="stroke-width:2.77155423">Animals</tspan></text>
     <image
        y="539.25977"
        x="-737.33984"
@@ -379,7 +368,7 @@
        transform="matrix(1.2294212,0,0,1.2294212,-41.094909,-241.07181)">
       <g
          id="g3393"
-         transform="translate(-55.064182)">
+         transform="translate(-55.064182,0)">
         <rect
            transform="matrix(1.2533864,0,0,0.94486433,-58.929889,55.340127)"
            style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.18742847;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter4750)"
@@ -390,27 +379,28 @@
            y="964.47888" />
         <text
            xml:space="preserve"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Aboriginal Serif';-inkscape-font-specification:'Aboriginal Serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#800000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter4710)"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:77.59605408px;line-height:100%;font-family:'Aboriginal Serif';-inkscape-font-specification:'Aboriginal Serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#800000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter4710)"
            x="250.74756"
            y="1028.7006"
-           id="text4350"><tspan
+           id="text4350"
+           sodipodi:linespacing="100%"><tspan
              sodipodi:role="line"
              id="tspan4352"
              x="250.74756"
-             y="1028.7006"
-             style="font-size:77.59605408px;line-height:1">ᎠᏂᏣᎳᎩ ᎡᎿᎢ</tspan></text>
+             y="1028.7006">ᎠᏂᏣᎳᎩ ᎡᎿᎢ</tspan></text>
       </g>
     </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;line-height:0%;font-family:CherokeeHandone;-inkscape-font-specification:'CherokeeHandone Medium';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#0000ff;fill-opacity:1;stroke:#0000ff;stroke-width:1.05166399px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:86.37471771px;line-height:100%;font-family:CherokeeHandone;-inkscape-font-specification:'CherokeeHandone Medium';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#0000ff;fill-opacity:1;stroke:#0000ff;stroke-width:1.05166399px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="520.54047"
        y="673.34937"
-       id="text4767"><tspan
+       id="text4767"
+       sodipodi:linespacing="100%"><tspan
          sodipodi:role="line"
          id="tspan4769"
          x="520.54047"
          y="673.34937"
-         style="font-size:86.37471771px;line-height:1;stroke-width:1.05166399px">ᎣᏏᏲ!</tspan></text>
+         style="stroke-width:1.05166399px">ᎣᏏᏲ!</tspan></text>
   </g>
 </svg>
