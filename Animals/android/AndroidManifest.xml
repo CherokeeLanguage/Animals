@@ -34,7 +34,7 @@
 
     <application
         android:allowBackup="true"
-        android:banner="@drawable/tv_banner"
+        android:banner="@mipmap/tv_banner"
         android:icon="@mipmap/ic_launcher"
         android:isGame="true"
         android:label="@string/app_name"
