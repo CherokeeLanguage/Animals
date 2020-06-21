@@ -1,6 +1,6 @@
 android {
-    buildToolsVersion "23.0.3"
-    compileSdkVersion 23
+   buildToolsVersion "29.0.2"
+    compileSdkVersion 29
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -17,7 +17,7 @@ android {
     defaultConfig {
         applicationId "com.cherokeelessons.vocab.animals.one"
         minSdkVersion 8
-        targetSdkVersion 23
+        targetSdkVersion 29
     }
     lintOptions {
       abortOnError false
@@ -25,10 +25,10 @@ android {
   }
   signingConfigs {
         release {
-        		if (new File("/Users/mjoyner").isDirectory()) {
-        			storeFile file("/Users/mjoyner/Keystore")
+        		if (new File("/Users/muksihs").isDirectory()) {
+        			storeFile file("/Users/muksihs/Keystore")
         		} else {
-        			storeFile file("/home/mjoyner/Keystore")
+        			storeFile file("/home/muksihs/Keystore")
         		}
             
             storePassword "Wayawaya359"
