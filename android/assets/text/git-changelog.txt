@@ -1,4 +1,6 @@
-2020-06-23 [904f9e8]: (HEAD -> master, origin/master) Add README with content.
+2020-06-23 [4295c40]: (HEAD -> master) Implement automatic version bump, tag, and release build process.
+2020-06-23 [1bac630]: Update git changelog.
+2020-06-23 [904f9e8]: (origin/master) Add README with content.
 2020-06-23 [6dd1207]: Create README2.md
 2020-06-23 [b311956]: (tag: 2020-06-23-reparent) Reparent.
 2020-06-22 [28df975]: begin effort to remove the misbehaving sprite batch
