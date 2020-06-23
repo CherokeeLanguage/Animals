@@ -4,13 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -24,11 +23,11 @@ public abstract class GameScreen implements Screen {
 	protected TweenManager tmanager;
 	protected AssetManager assets;
 	protected CherokeeAnimals game = null;
-	public Rectangle fullscan = new Rectangle();
+	public Rectangle fullScreenSize = new Rectangle();
 	protected boolean showOverscan = false;
 	private ShapeRenderer tv_box = null;
 
-	final protected Rectangle screenSize;
+	final protected Rectangle safeZoneSize;
 	final protected Color clearColor;
 //	protected Batch batch;
 
@@ -44,7 +43,7 @@ public abstract class GameScreen implements Screen {
 		this.isPaused = isPaused;
 	}
 
-	private void log(String message) {
+	protected void log(String message) {
 		Gdx.app.log(this.getClass().getName(), message);
 	}
 
@@ -57,14 +56,14 @@ public abstract class GameScreen implements Screen {
 
 		assets = new AssetManager();
 
-		screenSize = DisplaySize._1080p.overscansize();
-		fullscan = DisplaySize._1080p.size();
+		safeZoneSize = DisplaySize._1080p.overscansize();
+		fullScreenSize = DisplaySize._1080p.size();
 
 		clearColor = new Color(Color.WHITE);
 
 		tmanager = new TweenManager();
 
-		gameStage = new Stage(new FitViewport(fullscan.width, fullscan.height)) {
+		gameStage = new Stage() {
 			@Override
 			public boolean keyDown(int keyCode) {
 				if (keyCode == Input.Keys.ESCAPE) {
@@ -89,10 +88,8 @@ public abstract class GameScreen implements Screen {
 				log("keyDown: " + keyCode);
 				return super.keyDown(keyCode);
 			}
-
 		};
-		gameStage.getRoot().setX(screenSize.x);
-		gameStage.getRoot().setY(screenSize.y);
+	    gameStage.setViewport(getFitViewport(gameStage.getCamera()));
 		gameStage.getRoot().setTouchable(Touchable.enabled);
 	}
 
@@ -148,10 +145,10 @@ public abstract class GameScreen implements Screen {
 		tv_box.setProjectionMatrix(gameStage.getCamera().combined);
 		tv_box.setColor(GameColor.FIREBRICK);
 		tv_box.begin(ShapeType.Filled);
-		tv_box.rect(-o_pad, -o_pad, fullscan.width + o_pad, screenSize.y + o_pad);
-		tv_box.rect(-o_pad, screenSize.height + screenSize.y, fullscan.width + o_pad, screenSize.y + o_pad);
-		tv_box.rect(-o_pad, -o_pad, screenSize.x + o_pad, fullscan.height + o_pad);
-		tv_box.rect(screenSize.width + screenSize.x, 0, screenSize.x + o_pad, fullscan.height);
+		tv_box.rect(-o_pad, -o_pad, fullScreenSize.width + o_pad, safeZoneSize.y + o_pad);
+		tv_box.rect(-o_pad, safeZoneSize.height + safeZoneSize.y, fullScreenSize.width + o_pad, safeZoneSize.y + o_pad);
+		tv_box.rect(-o_pad, -o_pad, safeZoneSize.x + o_pad, fullScreenSize.height + o_pad);
+		tv_box.rect(safeZoneSize.width + safeZoneSize.x, 0, safeZoneSize.x + o_pad, fullScreenSize.height);
 		tv_box.end();
 	}
 
@@ -194,42 +191,11 @@ public abstract class GameScreen implements Screen {
 	}
 	
 	@Override
-	public void resize(int width, int height) {
-		Gdx.app.log(this.getClass().getName(), "resize: " + width + "x" + height);
-		
-		float scale_h;
-		float scale;
-		float newWidth;
-		float newHeight;
-
-		/*
-		 * http://www.badlogicgames.com/forum/viewtopic.php?f=11&t=3422
-		 */
-		scale = stageSize.width / width;
-		scale_h = stageSize.height / height;
-
-		if (scale_h > scale) {
-			scale = scale_h;
-		}
-		
-		newWidth = (float) Math.ceil(scale * width);
-		newHeight = (float) Math.ceil(scale * height);
-		
-		viewPortSize.x=newWidth;
-		viewPortSize.y=newHeight;
-
-			Gdx.app.log(this.getClass().getSimpleName(),"=============================");
-			Gdx.app.log(this.getClass().getSimpleName(),"scale: " + (1/scale));
-			Gdx.app.log(this.getClass().getSimpleName(),"Width: " + newWidth + ", Height: " + newHeight);
-			Gdx.app.log(this.getClass().getSimpleName(),"=============================");
-		
-		gameStage.getViewport().update(width, height, true);
-		//batch.setProjectionMatrix(gameStage.getCamera().combined);
+	public void resize(final int width, final int height) {
+		gameStage.setViewport(getFitViewport(gameStage.getCamera()));
+		gameStage.getViewport().update(width, height);
 	}
 	
-	protected Rectangle stageSize = DisplaySize._1080p.size();
-	final protected Vector2 viewPortSize=new Vector2();
-
 	@Override
 	public void resume() {
 //		if (game.musicPlayer != null) {
@@ -251,6 +217,13 @@ public abstract class GameScreen implements Screen {
 	public void show() {
 		Gdx.input.setInputProcessor(gameStage);
 		tv_box = new ShapeRenderer();
-		//batch = gameStage.getBatch();
+	}
+	
+	public FitViewport getFitViewport(final Camera camera) {
+		final Rectangle surrounds = DisplaySize._1080p.size();
+		final FitViewport fitViewport = new FitViewport(surrounds.width, surrounds.height, camera);
+		fitViewport.update((int) surrounds.width, (int) surrounds.height, true);
+		log("Camera Size: " + (int) surrounds.getWidth() + "x" + (int) surrounds.getHeight());
+		return fitViewport;
 	}
 }

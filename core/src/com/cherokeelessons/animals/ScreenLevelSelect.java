@@ -135,9 +135,9 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		}
 		panelSwitch[0].pack();
 		panelSwitch[1].pack();
-		panelSwitch[0].setX((screenSize.width - panelSwitch[0].getWidth()) / 2);
+		panelSwitch[0].setX((safeZoneSize.width - panelSwitch[0].getWidth()) / 2);
 		panelSwitch[0].setY(0);
-		panelSwitch[1].setX((screenSize.width - panelSwitch[1].getWidth()) / 2);
+		panelSwitch[1].setX((safeZoneSize.width - panelSwitch[1].getWidth()) / 2);
 		panelSwitch[1].setY(0);
 		panelSwitch[0].addListener(new ClickListener() {
 			@Override
@@ -156,42 +156,42 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		bottomMargin = panelSwitch[0].getHeight();
 
 		selectViewLevelIndicator = new View3x3Selector[panelCount];
-		selectViewLevelIndicator[0] = new View3x3Selector(screenSize);
+		selectViewLevelIndicator[0] = new View3x3Selector(safeZoneSize);
 		selectViewLevelIndicator[0].setTouchable(Touchable.enabled);
 		selectViewLevelIndicator[0].setBottomMargin(bottomMargin);
 
-		selectViewLevelIndicator[1] = new View3x3Selector(screenSize);
+		selectViewLevelIndicator[1] = new View3x3Selector(safeZoneSize);
 		selectViewLevelIndicator[1].setTouchable(Touchable.enabled);
 		selectViewLevelIndicator[1].setBottomMargin(bottomMargin);
 
 		selectViewGraphic = new View3x3Selector[panelCount];
-		selectViewGraphic[0] = new View3x3Selector(screenSize);
+		selectViewGraphic[0] = new View3x3Selector(safeZoneSize);
 		selectViewGraphic[0].setTouchable(Touchable.disabled);
 		selectViewGraphic[0].setBottomMargin(bottomMargin);
 
-		selectViewGraphic[1] = new View3x3Selector(screenSize);
+		selectViewGraphic[1] = new View3x3Selector(safeZoneSize);
 		selectViewGraphic[1].setTouchable(Touchable.disabled);
 		selectViewGraphic[1].setBottomMargin(bottomMargin);
 
 		selectViewOverlay = new View3x3Selector[panelCount];
-		selectViewOverlay[0] = new View3x3Selector(screenSize);
+		selectViewOverlay[0] = new View3x3Selector(safeZoneSize);
 		selectViewOverlay[0].setTouchable(Touchable.disabled);
 		selectViewOverlay[0].setBottomMargin(bottomMargin);
 		selectViewOverlay[0].setHandler(startAtLevel_1_to_9);
 
-		selectViewOverlay[1] = new View3x3Selector(screenSize);
+		selectViewOverlay[1] = new View3x3Selector(safeZoneSize);
 		selectViewOverlay[1].setTouchable(Touchable.disabled);
 		selectViewOverlay[1].setBottomMargin(bottomMargin);
 		selectViewOverlay[1].setHandler(startAtLevel_10_to_18);
 
 		selectViewHUD = new View3x3Selector[panelCount];
-		selectViewHUD[0] = new View3x3Selector(screenSize);
+		selectViewHUD[0] = new View3x3Selector(safeZoneSize);
 		selectViewHUD[0].setTouchable(Touchable.disabled);
 		selectViewHUD[0].setTitle(tab_title_unlocked);
 		selectViewHUD[0].setBottomMargin(bottomMargin);
 		selectViewHUD[0].setHandler(startAtLevel_1_to_9);
 
-		selectViewHUD[1] = new View3x3Selector(screenSize);
+		selectViewHUD[1] = new View3x3Selector(safeZoneSize);
 		selectViewHUD[1].setTouchable(Touchable.disabled);
 		selectViewHUD[1].setTitle(tab_title_unlocked);
 		selectViewHUD[1].setBottomMargin(bottomMargin);
@@ -216,11 +216,11 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		 * move the second set off screen to the right..
 		 */
 		final int extra_offset = 100;
-		selectViewLevelIndicator[1].setX(fullscan.width + selectViewLevelIndicator[1].getX() + extra_offset);
-		selectViewGraphic[1].setX(fullscan.width + selectViewGraphic[1].getX() + extra_offset);
-		selectViewOverlay[1].setX(fullscan.width + selectViewOverlay[1].getX() + extra_offset);
-		selectViewHUD[1].setX(fullscan.width + selectViewHUD[1].getX() + extra_offset);
-		panelSwitch[1].setX(fullscan.width + panelSwitch[1].getX() + extra_offset);
+		selectViewLevelIndicator[1].setX(fullScreenSize.width + selectViewLevelIndicator[1].getX() + extra_offset);
+		selectViewGraphic[1].setX(fullScreenSize.width + selectViewGraphic[1].getX() + extra_offset);
+		selectViewOverlay[1].setX(fullScreenSize.width + selectViewOverlay[1].getX() + extra_offset);
+		selectViewHUD[1].setX(fullScreenSize.width + selectViewHUD[1].getX() + extra_offset);
+		panelSwitch[1].setX(fullScreenSize.width + panelSwitch[1].getX() + extra_offset);
 
 		masterGroup.addActor(selectViewGraphic[0]);
 		masterGroup.addActor(selectViewGraphic[1]);
@@ -404,7 +404,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 	/* [Y] */
 	public void moveTo10To18() {
 		masterGroup.clearActions();
-		masterGroup.addAction(Actions.moveTo(-fullscan.width - 100, 0, .25f));
+		masterGroup.addAction(Actions.moveTo(-fullScreenSize.width - 100, 0, .25f));
 		hud_clearIndicator();
 		activeHud = 1;
 		hud_showIndicator();

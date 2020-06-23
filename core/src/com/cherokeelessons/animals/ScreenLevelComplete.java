@@ -101,8 +101,8 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		gameStage.addActor(msg_accuracy);
 		gameStage.addActor(msg_elasped_time);
 		gameStage.addActor(gotoMainMenu);
-		gameStage.getRoot().setX(screenSize.x);
-		gameStage.getRoot().setY(screenSize.y);
+		gameStage.getRoot().setX(safeZoneSize.x);
+		gameStage.getRoot().setY(safeZoneSize.y);
 	}
 
 	@Override
@@ -122,9 +122,9 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		int midX;
 		int line;
 
-		lineGap = (int) (screenSize.height / linesDisplayed);
+		lineGap = (int) (safeZoneSize.height / linesDisplayed);
 		line = lineGap / 2;
-		midX = (int) (screenSize.width / 2);
+		midX = (int) (safeZoneSize.width / 2);
 
 		updateDisplay();
 
@@ -176,7 +176,7 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	}
 
 	private void updateDisplay() {
-		int midX = (int) (screenSize.width / 2);
+		int midX = (int) (safeZoneSize.width / 2);
 		msg_accuracy
 				.setText("Level " + (levelOn + 1) + ": " + game.prefs.getLevelAccuracy(game.getLevelOn()) + CORRECT);
 		msg_accuracy.pack();

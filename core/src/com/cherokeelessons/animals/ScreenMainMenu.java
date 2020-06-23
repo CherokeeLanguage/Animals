@@ -141,7 +141,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		
 		float currentY;
 		float linesOfText = 6;
-		float skipAmount = screenSize.height / (linesOfText);
+		float skipAmount = fullScreenSize.height / (linesOfText);
 		int fontSize = 96;
 		float graphicsHeight = 0;
 		float emptyHeight = 0;
@@ -192,29 +192,29 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		graphicsHeight = titleText.getHeight() + btn_NewGame.getHeight()
 				+ btn_Options.getHeight() + btn_Quit.getHeight() + btn_Instructions.getHeight()
 				+ btn_Credits.getHeight() + btn_Leaders.getHeight();
-		emptyHeight = screenSize.height - graphicsHeight;
+		emptyHeight = fullScreenSize.height - graphicsHeight;
 		skipAmount = emptyHeight / (linesOfText + 1);
 
 		/*
 		 * center each line
 		 */
 		titleText
-				.setX(((screenSize.width - titleText.getWidth()) / 2));
-		btn_NewGame.setX((screenSize.width - btn_NewGame.getWidth())
+				.setX(((fullScreenSize.width - titleText.getWidth()) / 2));
+		btn_NewGame.setX((fullScreenSize.width - btn_NewGame.getWidth())
 				/ 2);
-		btn_Leaders.setX((screenSize.width-btn_Leaders.getWidth())/2);
-		btn_Instructions.setX((screenSize.width - btn_Instructions.getWidth())/2);
-		btn_Options.setX((screenSize.width - btn_Options.getWidth())
+		btn_Leaders.setX((fullScreenSize.width-btn_Leaders.getWidth())/2);
+		btn_Instructions.setX((fullScreenSize.width - btn_Instructions.getWidth())/2);
+		btn_Options.setX((fullScreenSize.width - btn_Options.getWidth())
 				/ 2);
-		btn_Credits.setX((screenSize.width - btn_Credits.getWidth())
+		btn_Credits.setX((fullScreenSize.width - btn_Credits.getWidth())
 				/ 2);
-		btn_Quit.setX((screenSize.width - btn_Quit.getWidth()) / 2);
+		btn_Quit.setX((fullScreenSize.width - btn_Quit.getWidth()) / 2);
 
 		/*
 		 * position each one equal distant based on screen height
 		 */
 		// start at top of screen
-		currentY = screenSize.height;
+		currentY = fullScreenSize.height;
 		// subtract empty gap + line height before placement
 		currentY -= (titleText.getHeight() + skipAmount);
 		titleText.setY(currentY);
@@ -363,13 +363,6 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		gameStage.act(delta);		
-//		batch.begin();
-//		for (Sprite s : wall) {
-//			s.draw(batch);
-//		}
-//		batch.end();
-		gameStage.draw();
 	}
 	
 	@Override

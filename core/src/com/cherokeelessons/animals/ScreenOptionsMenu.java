@@ -141,7 +141,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		displayLine = 0;
 		lbl_instructions = new MenuLabel(TAB_INSTRUCT, instructStyle);
 		lbl_instructions.pack();
-		lbl_instructions.setX((screenSize.width - lbl_instructions.getWidth()) / 2);
+		lbl_instructions.setX((safeZoneSize.width - lbl_instructions.getWidth()) / 2);
 		lbl_instructions.menu_action_east=new Runnable() {
 			@Override
 			public void run() {
@@ -162,7 +162,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		btn_masterVolume = new MenuLabel(getVolumeLabel(100), buttonStyle);
 		btn_masterVolume.setTouchable(Touchable.enabled);
 		btn_masterVolume.pack();
-		btn_masterVolume.setX((screenSize.width - btn_masterVolume.getWidth()) / 2);
+		btn_masterVolume.setX((safeZoneSize.width - btn_masterVolume.getWidth()) / 2);
 		btn_masterVolume.setY(getBaseLine(displayLine++));
 
 		btn_masterVolume.setText(getVolumeLabel(prefs.getMasterVolume()));
@@ -200,7 +200,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		btn_musicVolume = new MenuLabel(getMusicLabel(100), buttonStyle);
 		btn_musicVolume.setTouchable(Touchable.enabled);
 		btn_musicVolume.pack();
-		btn_musicVolume.setX((screenSize.width - btn_musicVolume.getWidth()) / 2);
+		btn_musicVolume.setX((safeZoneSize.width - btn_musicVolume.getWidth()) / 2);
 		btn_musicVolume.setY(getBaseLine(displayLine++));
 		btn_musicVolume.setText(getMusicLabel(prefs.getMusicVolume()));
 		btn_musicVolume.menu_action_east = new Runnable() {
@@ -322,7 +322,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 	private void calculateBaseLines(float bottomMargin) {
 		int ix;
-		lineHeight = (screenSize.height - bottomMargin) / baseLines.length;
+		lineHeight = (safeZoneSize.height - bottomMargin) / baseLines.length;
 		for (ix = 0; ix < baseLines.length; ix++) {
 			baseLines[ix] = (float) Math
 					.ceil(bottomMargin + ix * lineHeight + offset + (lineHeight - font.getLineHeight()) / 2);
@@ -544,7 +544,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	private void update_btn_resetStatistics(String msg) {
 		btn_resetStatistics.setText(msg);
 		btn_resetStatistics.pack();
-		btn_resetStatistics.setX((screenSize.width - btn_resetStatistics.getWidth()) / 2);
+		btn_resetStatistics.setX((safeZoneSize.width - btn_resetStatistics.getWidth()) / 2);
 	}
 
 	private void updateChallengeModeDisplay() {
@@ -558,8 +558,8 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 		btn_challengeSoundMode.pack();
 		btn_challengeWordMode.pack();
-		btn_challengeSoundMode.setX((screenSize.width - btn_challengeSoundMode.getWidth()) / 2);
-		btn_challengeWordMode.setX((screenSize.width - btn_challengeWordMode.getWidth()) / 2);
+		btn_challengeSoundMode.setX((safeZoneSize.width - btn_challengeSoundMode.getWidth()) / 2);
+		btn_challengeWordMode.setX((safeZoneSize.width - btn_challengeWordMode.getWidth()) / 2);
 	}
 
 	public void updateInstructions() {
@@ -569,21 +569,21 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 			lbl_instructions.setText(TAB_INSTRUCT);
 		}
 		lbl_instructions.pack();
-		lbl_instructions.setX((screenSize.width - lbl_instructions.getWidth()) / 2);
+		lbl_instructions.setX((safeZoneSize.width - lbl_instructions.getWidth()) / 2);
 	}
 
 	private void updateSoundEffectsDisplay() {
 
 		btn_soundEffects.setText("Sound Effects: " + prefs.getEffectsVolume().name());
 		btn_soundEffects.pack();
-		btn_soundEffects.setX((screenSize.width - btn_soundEffects.getWidth()) / 2);
+		btn_soundEffects.setX((safeZoneSize.width - btn_soundEffects.getWidth()) / 2);
 	}
 
 	private void updateTrainingScreenDisplay() {
 
 		btn_trainingScreen.setText("Training Mode: " + prefs.getTrainingMode().name());
 		btn_trainingScreen.pack();
-		btn_trainingScreen.setX((screenSize.width - btn_trainingScreen.getWidth()) / 2);
+		btn_trainingScreen.setX((safeZoneSize.width - btn_trainingScreen.getWidth()) / 2);
 	}
 
 	public void wordMode() {

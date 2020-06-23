@@ -98,8 +98,8 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 		});
 		DreamLo lb = new DreamLo(game.prefs);
 		container = new Table();
-		container.setWidth(screenSize.width);
-		container.setHeight(screenSize.height);
+		container.setWidth(safeZoneSize.width);
+		container.setHeight(safeZoneSize.height);
 		scrolltable = new Table();
 		scroll = new ScrollPane(scrolltable);
 		scroll.setFadeScrollBars(false);

@@ -58,8 +58,8 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 		gameStage.addActor(instructions);
 		wall_atlas = Utils.initBackdrop(wall);
 		init();
-		instructions.setWidth(screenSize.width);
-		instructions.setHeight(screenSize.height);
+		instructions.setWidth(safeZoneSize.width);
+		instructions.setHeight(safeZoneSize.height);
 	}
 
 	private FontLoader fg;

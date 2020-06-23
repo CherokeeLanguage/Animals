@@ -1,12 +1,12 @@
 package com.cherokeelessons.common;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import aurelienribon.tweenengine.TweenAccessor;
 
-public class SpriteAccessor implements TweenAccessor<Sprite> {
+public class ImageAccessor implements TweenAccessor<Image> {
 
 	final public static int BoundingRectangle = 0;// Rectangle
 	final public static int X = 1;//
@@ -25,13 +25,13 @@ public class SpriteAccessor implements TweenAccessor<Sprite> {
 	final public static int Alpha = 14;
 
 	@Override
-	public int getValues(Sprite target, int tweenType, float[] returnValues) {
+	public int getValues(Image target, int tweenType, float[] returnValues) {
 		int c = -1;
 		Rectangle rec;
 		Color col;
 		switch (tweenType) {
 		case BoundingRectangle:
-			rec = target.getBoundingRectangle();
+			rec = getBoundingRectangle(target);
 			returnValues[0]=rec.x;
 			returnValues[1]=rec.y;
 			returnValues[2]=rec.width;
@@ -107,8 +107,17 @@ public class SpriteAccessor implements TweenAccessor<Sprite> {
 		return c;
 	}
 
+	private Rectangle getBoundingRectangle(Image target) {
+		Rectangle bounds = new Rectangle();
+		bounds.x = target.getImageX();
+		bounds.y = target.getImageY();
+		bounds.width = target.getImageWidth();
+		bounds.height = target.getImageHeight();
+		return bounds;
+	}
+
 	@Override
-	public void setValues(Sprite target, int tweenType, float[] newValues) {
+	public void setValues(Image target, int tweenType, float[] newValues) {
 		Rectangle rec;
 		float originX;
 		float originY;
@@ -124,12 +133,12 @@ public class SpriteAccessor implements TweenAccessor<Sprite> {
 			target.setY(newValues[0]);
 			break;
 		case Width:
-			rec = target.getBoundingRectangle();
+			rec = getBoundingRectangle(target);
 			rec.width=newValues[0];
 			target.setBounds(rec.x, rec.y, rec.width, rec.height);
 			break;
 		case Height:
-			rec = target.getBoundingRectangle();
+			rec = getBoundingRectangle(target);
 			rec.height=newValues[0];
 			target.setBounds(rec.x, rec.y, rec.width, rec.height);
 			break;

@@ -2,27 +2,25 @@ package com.cherokeelessons.animals;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.animals.enums.GameEvent;
-import com.cherokeelessons.common.DisplaySize;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameEventMessage;
 import com.cherokeelessons.common.GameMusic;
+import com.cherokeelessons.common.ImageAccessor;
 import com.cherokeelessons.common.MusicAccessor;
 import com.cherokeelessons.common.Prefs;
 import com.cherokeelessons.common.SoundManager;
-import com.cherokeelessons.common.SpriteAccessor;
 import com.cherokeelessons.util.DreamLo;
 
 import aurelienribon.tweenengine.Tween;
 
 public class CherokeeAnimals implements ApplicationListener, TvDetector {
 	
-	final public static DisplaySize size = DisplaySize._720p;
-
 	public Prefs prefs;
 	public TextureAtlas images_atlas;
 
@@ -47,15 +45,15 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 	@Override
 	public void create() {
 		
-		Gdx.input.setCatchBackKey(true);
-		Gdx.input.setCatchMenuKey(true);
+		Gdx.input.setCatchKey(Input.Keys.BACK, true);
+		Gdx.input.setCatchKey(Input.Keys.MENU, true);
 
 		prefs = new Prefs(this);
 		
 		Gdx.app.log(this.getClass().getName(), "DreamLo: "+new DreamLo(prefs).registerWithDreamLoBoard());
 		
 		Tween.registerAccessor(GameMusic.class, new MusicAccessor());
-		Tween.registerAccessor(Sprite.class, new SpriteAccessor());
+		Tween.registerAccessor(Image.class, new ImageAccessor());
 
 		sm = new SoundManager(prefs);
 		fg = new FontLoader();
@@ -248,9 +246,13 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 		}
 	}
 
+	protected void log(String message) {
+		Gdx.app.log(this.getClass().getName(), message);
+	}
+	
 	@Override
 	public void resize(int width, int height) {
-		Gdx.app.log(this.getClass().getName(), "resize: "+width+"x"+height);
+		log("app resize: "+width+"x"+height);
 		if (screen != null) {
 			screen.resize(width, height);
 		}

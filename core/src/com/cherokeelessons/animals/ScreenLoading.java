@@ -60,10 +60,11 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 		loading.addAction(Actions.alpha(1f, .25f));
 		float y;
 		float x;
-		x = (fullscan.width - loading.getWidth()) / 2;
-		y = (fullscan.height - loading.getHeight()) / 2;
+		x = (fullScreenSize.width - loading.getWidth()) / 2;
+		y = (fullScreenSize.height - loading.getHeight()) / 2;
 		loading.setPosition(x, y);
-
+		gameStage.addActor(loading);
+		
 		if (am != null) {
 			am.clear();
 		}
@@ -162,6 +163,7 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 			done = true;
 			loading.addAction(Actions.fadeOut(1f));
 			loading.addAction(Actions.delay(1.25f, Actions.run(new Runnable() {
+				@Override
 				public void run() {
 					game.gameEvent(GameEvent.Done);
 				}
@@ -173,6 +175,7 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 		if (!done && elapsed>18f) {
 			done = true;
 			Gdx.app.postRunnable(new Runnable() {
+				@Override
 				public void run() {
 					game.gameEvent(GameEvent.Done);
 				}

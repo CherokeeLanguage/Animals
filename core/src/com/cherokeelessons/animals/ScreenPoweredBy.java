@@ -8,16 +8,18 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.animals.enums.GameEvent;
+import com.cherokeelessons.common.DisplaySize;
 import com.cherokeelessons.common.GameMusic;
 import com.cherokeelessons.common.Gamepads;
+import com.cherokeelessons.common.ImageAccessor;
 import com.cherokeelessons.common.MusicAccessor;
-import com.cherokeelessons.common.SpriteAccessor;
 import com.cherokeelessons.common.Utils;
 
 import aurelienribon.tweenengine.BaseTween;
@@ -27,7 +29,7 @@ import aurelienribon.tweenengine.TweenCallback;
 
 public class ScreenPoweredBy extends GameScreen {
 
-	private final Array<Sprite> logo = new Array<Sprite>();
+	private final Array<Image> logo = new Array<>();
 	
 	private PixmapPacker pack;
 	private ControllerAdapter skipScreen = new ControllerAdapter() {
@@ -73,8 +75,6 @@ public class ScreenPoweredBy extends GameScreen {
 	}
 
 	private void init() {
-//		IntBuffer buf = BufferUtils.newIntBuffer(16);
-//		Gdx.gl.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, buf);
 		int packSize=Utils.getPackSize();
 		audio = new GameMusic(Gdx.audio.newMusic(Gdx.files.internal("libgdx/atmoseerie03.mp3")));
 		audio.setVolume(0f);
@@ -92,28 +92,37 @@ public class ScreenPoweredBy extends GameScreen {
 		int height = 0;
 		for (int x = 0; x < 5; x++) {
 			height = 0;
-			Sprite i = null;
+			Image i = null;
 			for (int y = 0; y < 5; y++) {
 				int z = 4 - y;
 				int p = z * 5 + x;
-				i = new Sprite(ta.findRegion(p + ""));
-				if (y==0) {
-					width += i.getWidth();
-				}
+				final AtlasRegion region = ta.findRegion(p + "");
+				i = new Image(region);
+				//i = new Sprite(ta.findRegion(p + ""));
 				i.setPosition(width, height);
-				height += i.getRegionHeight();				
+				height += i.getHeight();// region.getRegionHeight();				
 				i.setOrigin(0, 0);
 				logo.add(i);
+				gameStage.addActor(i);
+			}
+			if (i!=null) {
+				width += i.getWidth();// region.getRegionWidth();
 			}
 		}
 		
 		Rectangle logobox = new Rectangle(0, 0, width, height);		
-		logobox.fitInside(screenSize);
+		
+		Rectangle stageSize=DisplaySize._1080p.size();
+		Rectangle wantedLogoSize=DisplaySize._1080p.overscansize();
+		logobox.fitInside(wantedLogoSize);
 		float scaleXY=logobox.height/height;
 		if (scaleXY>logobox.width/width) scaleXY=logobox.width/width;
 		
-		float offsetX = screenSize.x+(screenSize.width-logobox.width)/2;
-		float offsetY = screenSize.y+(screenSize.height-logobox.height)/2;
+		float offsetX = (stageSize.width-logobox.width)/2;
+		float offsetY = (stageSize.height-logobox.height)/2;
+		
+		log("Logo scaleXY: "+scaleXY);
+		log("Logo offsetXY: "+offsetX+"x"+offsetY);
 		
 		clearColor.set(Color.BLACK);
 		start = System.currentTimeMillis();
@@ -121,17 +130,17 @@ public class ScreenPoweredBy extends GameScreen {
 		Vector2 center=new Vector2();
 		logobox.getCenter(center);
 		for(int ix=0; ix<logo.size; ix++) {
-			Sprite s=logo.get(ix);
+			Image lImagePart=logo.get(ix);
 			Timeline tl = Timeline.createSequence();
-			s.setScale(scaleXY);
-			s.setX(s.getX()*scaleXY+offsetX);
-			s.setY(s.getY()*scaleXY+offsetY);
-			s.setColor(1f, 1f, 1f, 0f);
+			lImagePart.setScale(scaleXY);
+			lImagePart.setX(lImagePart.getX()*scaleXY+offsetX);
+			lImagePart.setY(lImagePart.getY()*scaleXY+offsetY);
+			lImagePart.setColor(1f, 1f, 1f, 0f);
 			
 			tl.pushPause(1f);
-			tl.push(Tween.to(s, SpriteAccessor.Alpha, 4f).target(1f));
+			tl.push(Tween.to(lImagePart, ImageAccessor.Alpha, 4f).target(1f));
 			tl.pushPause(4f);
-			tl.push(Tween.to(s, SpriteAccessor.Alpha, 2f).target(0f));
+			tl.push(Tween.to(lImagePart, ImageAccessor.Alpha, 2f).target(0f));
 			tl.pushPause(1f);
 			tl.start(tmanager);
 			
