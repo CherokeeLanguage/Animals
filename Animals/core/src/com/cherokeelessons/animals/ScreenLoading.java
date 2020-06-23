@@ -121,10 +121,6 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		batch.begin();
-		loading.act(delta);
-		loading.draw(batch, 1f);
-		batch.end();
 		if (!backgroundMusicStarted) {
 			backgroundMusicStarted = true;
 			m.setLooping(false);

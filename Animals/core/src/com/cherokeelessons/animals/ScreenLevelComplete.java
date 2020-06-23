@@ -144,11 +144,11 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		batch.begin();
-		for (Sprite s : wall) {
-			s.draw(batch);
-		}
-		batch.end();
+//		batch.begin();
+//		for (Sprite s : wall) {
+//			s.draw(batch);
+//		}
+//		batch.end();
 		gameStage.draw();
 	}
 

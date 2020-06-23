@@ -364,11 +364,11 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 	public void render(float delta) {
 		super.render(delta);
 		gameStage.act(delta);		
-		batch.begin();
-		for (Sprite s : wall) {
-			s.draw(batch);
-		}
-		batch.end();
+//		batch.begin();
+//		for (Sprite s : wall) {
+//			s.draw(batch);
+//		}
+//		batch.end();
 		gameStage.draw();
 	}
 	

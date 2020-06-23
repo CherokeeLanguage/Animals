@@ -154,15 +154,6 @@ public class ScreenPoweredBy extends GameScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		clearScreen();
-		drawOverscan();
-
-		batch.begin();
-		for (Sprite s: logo) {
-			s.draw(batch);
-		}
-		batch.end();
-		
 	}
 
 	@Override

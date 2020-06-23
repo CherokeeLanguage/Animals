@@ -30,7 +30,7 @@ public abstract class GameScreen implements Screen {
 
 	final protected Rectangle screenSize;
 	final protected Color clearColor;
-	protected Batch batch;
+//	protected Batch batch;
 
 	protected Stage gameStage;
 
@@ -135,7 +135,7 @@ public abstract class GameScreen implements Screen {
 		disconnectInputProcessor();
 		tmanager.killAll();
 		gameStage.clear();
-		batch.dispose();
+		//batch.dispose();
 	}
 
 	protected int o_pad = 200;
@@ -187,6 +187,7 @@ public abstract class GameScreen implements Screen {
 			tmanager.update(delta);
 		}
 		clearScreen();
+		gameStage.draw();
 		if (showOverscan) {
 			drawOverscan();
 		}
@@ -222,8 +223,8 @@ public abstract class GameScreen implements Screen {
 			Gdx.app.log(this.getClass().getSimpleName(),"Width: " + newWidth + ", Height: " + newHeight);
 			Gdx.app.log(this.getClass().getSimpleName(),"=============================");
 		
-		gameStage.getViewport().update(width, height, false);
-		batch.setProjectionMatrix(gameStage.getCamera().combined);
+		gameStage.getViewport().update(width, height, true);
+		//batch.setProjectionMatrix(gameStage.getCamera().combined);
 	}
 	
 	protected Rectangle stageSize = DisplaySize._1080p.size();
@@ -250,6 +251,6 @@ public abstract class GameScreen implements Screen {
 	public void show() {
 		Gdx.input.setInputProcessor(gameStage);
 		tv_box = new ShapeRenderer();
-		batch = gameStage.getBatch();
+		//batch = gameStage.getBatch();
 	}
 }
