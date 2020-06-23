@@ -1,27 +1,32 @@
 buildscript {
     repositories {
-        jcenter()
+        mavenLocal()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "http://dl.bintray.com/mars3142/maven" }
+        jcenter()
+        google()
     }
     dependencies {
-        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
-        classpath 'com.android.tools.build:gradle:1.5.0'
-        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.1.0'
+        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.9'
     }
 }
 
-allprojects {
-    apply plugin: "eclipse"
-    apply plugin: "idea"
 
+allprojects {
     version = '5.06'
     
+    apply plugin: "eclipse"
+	eclipse {
+	    classpath {
+	       downloadSources=true
+	    }
+	}    
     ext {
         appName = "Animals"
-        gdxVersion = '1.9.3'
-        roboVMVersion = '2.1.0'
+        gdxVersion = '1.9.10'
+        roboVMVersion = '2.3.9'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
@@ -29,35 +34,35 @@ allprojects {
 
     repositories {
         mavenCentral()
+        jcenter()
+        google()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
 }
 
 project(":desktop") {
-    apply plugin: "java"
-	sourceCompatibility = 1.6
+    apply plugin: "java-library"
+	sourceCompatibility = 1.7
+	archivesBaseName = 'Animals'
 	
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-     
-     	//controllers
-     	compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
-		compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"   
+        implementation project(":core")
+        api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+     	api "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"   
     }
 }
 
 project(":android") {
     apply plugin: "android"
-	sourceCompatibility = 1.6
-	
+	sourceCompatibility = 1.7
     configurations { natives }
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+        implementation project(":core")
+        api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
@@ -65,8 +70,8 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
         
         //controllers
-        compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
-		compile "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
 		
 		//android tv
 		//compile 'com.android.support:leanback-v17:23.3.0'
@@ -76,7 +81,8 @@ project(":android") {
 project(":ios") {
     apply plugin: "java"
     apply plugin: "robovm"
-	sourceCompatibility = 1.6
+    apply plugin: "eclipse-wtp"
+	sourceCompatibility = 1.7
 	
     dependencies {
         compile project(":core")
@@ -87,21 +93,16 @@ project(":ios") {
     }
     
     robovm {
-    		//iosSignIdentity = "iPhone Distribution: Michael Joyner"
-    		//iosProvisioningProfile = 'iOS Store General Profile'
-    		iosSignIdentity = "iPhone Developer: Michael Joyner (7T8K4MBSQ2)"
-    		iosProvisioningProfile = "iOS Development - Provisioning"
-    		iosSkipSigning = false;
-    		stdoutFifo = ""
-    		stderrFifo = ""
-    		archs = "thumbv7:arm64"
+		iosSignIdentity = "Apple Distribution: Michael Joyner (43974U4CP4)"
+		iosSkipSigning = false;
+		archs = "thumbv7:arm64"
     }
 }
 
-project(":html") {
+/*project(":html") {
     apply plugin: "gwt"
     apply plugin: "war"
-	sourceCompatibility = 1.6
+	sourceCompatibility = 1.7
 	
     dependencies {
         compile project(":core")
@@ -114,20 +115,16 @@ project(":html") {
 		compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion"
 		compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion:sources"
     }
-}
+}*/
 
 project(":core") {
     apply plugin: "java"
-	sourceCompatibility = 1.6
+	apply plugin: "eclipse-wtp"
+	sourceCompatibility = 1.7
 	
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        
-        //controllers
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
-        
-        //tweenengine
-        //compile "com.aurelienribon:tween-engine-api:+"
     }
 }
 

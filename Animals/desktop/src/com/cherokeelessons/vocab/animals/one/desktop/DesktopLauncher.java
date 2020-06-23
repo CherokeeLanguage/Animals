@@ -7,14 +7,8 @@ import com.cherokeelessons.animals.CherokeeAnimals;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		float width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
-		if (width<1) {
-			width = CherokeeAnimals.size.size().width;
-		}
-		float height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
-		if (height<1) {
-			height = CherokeeAnimals.size.size().height;
-		}
+		float width = CherokeeAnimals.size.size().width;
+		float height = CherokeeAnimals.size.size().height;
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.allowSoftwareMode=true;
 		config.audioDeviceBufferSize=4*1024;

@@ -43,7 +43,10 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 			c.addListener(this.ca);
 		}
 		ta = pack_9patches();
-		AtlasRegion patch_texture = ta.findRegion("Blocks_01_64x64_Alt_04_003");
+		for (AtlasRegion region: ta.getRegions()) {
+			Gdx.app.log("Animals", "9pack region: " + region.name);
+		}
+		AtlasRegion patch_texture = ta.findRegion("Blocks_01_64x64_Alt_04_003X");
 		NinePatch patch = new NinePatch(patch_texture, 15, 15, 15, 15);
 		NinePatchDrawable patch_draw = new NinePatchDrawable(patch);
 		BitmapFont bf = game.fg.get(128);
@@ -71,9 +74,11 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 	}
 
 	protected TextureAtlas pack_9patches() {
+		Gdx.app.log("Animals", "ScreenLoading");
 		// IntBuffer buf = BufferUtils.newIntBuffer(16);
 		// Gdx.gl.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, buf);
 		int packSize = Utils.getPackSize();
+		Gdx.app.log("Animals", "Pack size: "+packSize);
 		PixmapPacker packer = new PixmapPacker(packSize, packSize, Format.RGBA8888, 2, true);
 		String t1 = Gdx.files.internal("9patch/00-plist.txt").readString("UTF-8");
 		String[] t2 = t1.split("\n");
@@ -83,7 +88,7 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 			if (t3.length() == 0) {
 				continue;
 			}
-			packer.pack(t3.replace(".png", ""), new Pixmap(Gdx.files.internal("9patch/" + t3)));
+			packer.pack(t3.replace(".png", "")+"X", new Pixmap(Gdx.files.internal("9patch/" + t3)));
 		}
 		return packer.generateTextureAtlas(TextureFilter.Linear, TextureFilter.Linear, false);
 	}

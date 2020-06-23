@@ -33,7 +33,7 @@ public class Utils {
 		PixmapPacker pack = new PixmapPacker(packSize, packSize, Format.RGBA8888, 2, true);
 		for (int i = 0; i < 32; i++) {
 			Pixmap image = new Pixmap(Gdx.files.internal("images/backdrops/p_" + i + "_dsci2549.png"));
-			pack.pack(i + "", image);
+			pack.pack(i + "X", image);
 		}
 		wall_atlas = pack.generateTextureAtlas(TextureFilter.Linear, TextureFilter.Linear, false);
 
@@ -47,7 +47,7 @@ public class Utils {
 			for (int y = 0; y < columns; y++) {
 				int z = columns - (y + 1);
 				int p = z * perRow + x;
-				final AtlasRegion piece = wall_atlas.findRegion(p + "");
+				final AtlasRegion piece = wall_atlas.findRegion(p + "X");
 				i = new Sprite(piece, 0, 0, piece.getRegionWidth(), piece.getRegionHeight());
 				if (y==0) {
 					px += i.getWidth();

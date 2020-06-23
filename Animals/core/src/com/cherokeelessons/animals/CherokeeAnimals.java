@@ -21,7 +21,7 @@ import aurelienribon.tweenengine.Tween;
 
 public class CherokeeAnimals implements ApplicationListener, TvDetector {
 	
-	final public static DisplaySize size = DisplaySize._1080p;
+	final public static DisplaySize size = DisplaySize._720p;
 
 	public Prefs prefs;
 	public TextureAtlas images_atlas;

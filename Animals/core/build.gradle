@@ -1,6 +1,6 @@
 apply plugin: "java"
 
-sourceCompatibility = 1.6
+sourceCompatibility = 1.7
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]
@@ -8,28 +8,5 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 
 eclipse.project {
     name = appName + "-core"
-}
-eclipse.jdt {
-	sourceCompatibility=1.6
-	targetCompatibility=1.6
-}
-
-project.afterEvaluate {
-	// use jre lib matching version used by project, not the workspace default
-	if (sourceCompatibility != null) {
-		def target = project.sourceCompatibility.toString()
-		def containerPrefix = "org.eclipse.jdt.launching.JRE_CONTAINER"
-		def containerSuffix
-		if (target =~ /1.[4-5]/) {
-			containerSuffix = '/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-' + target
-		} else if (target =~ /1.[6-8]/) {
-			containerSuffix = '/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-' + target
-		}
-		if (containerSuffix != null) {
-			project.eclipse.classpath {
-				containers.removeAll { it.startsWith(containerPrefix) }
-				containers.add(containerPrefix + containerSuffix)
-			}
-		}
-	}
+    linkedResource name: 'assets', type: '2', location: 'PARENT-1-PROJECT_LOC/android/assets'
 }

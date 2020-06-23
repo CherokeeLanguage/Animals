@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -190,13 +191,43 @@ public abstract class GameScreen implements Screen {
 			drawOverscan();
 		}
 	}
-
+	
 	@Override
 	public void resize(int width, int height) {
 		Gdx.app.log(this.getClass().getName(), "resize: " + width + "x" + height);
-		gameStage.getViewport().update(width, height, true);
+		
+		float scale_h;
+		float scale;
+		float newWidth;
+		float newHeight;
+
+		/*
+		 * http://www.badlogicgames.com/forum/viewtopic.php?f=11&t=3422
+		 */
+		scale = stageSize.width / width;
+		scale_h = stageSize.height / height;
+
+		if (scale_h > scale) {
+			scale = scale_h;
+		}
+		
+		newWidth = (float) Math.ceil(scale * width);
+		newHeight = (float) Math.ceil(scale * height);
+		
+		viewPortSize.x=newWidth;
+		viewPortSize.y=newHeight;
+
+			Gdx.app.log(this.getClass().getSimpleName(),"=============================");
+			Gdx.app.log(this.getClass().getSimpleName(),"scale: " + (1/scale));
+			Gdx.app.log(this.getClass().getSimpleName(),"Width: " + newWidth + ", Height: " + newHeight);
+			Gdx.app.log(this.getClass().getSimpleName(),"=============================");
+		
+		gameStage.getViewport().update(width, height, false);
 		batch.setProjectionMatrix(gameStage.getCamera().combined);
 	}
+	
+	protected Rectangle stageSize = DisplaySize._1080p.size();
+	final protected Vector2 viewPortSize=new Vector2();
 
 	@Override
 	public void resume() {

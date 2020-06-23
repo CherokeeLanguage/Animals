@@ -5,6 +5,11 @@ import com.badlogic.gdx.math.Rectangle;
 public enum DisplaySize {
 	_1080p, _240p, _480p, _720p;
 
+	public static class Resolution {
+		public int w=0;
+		public int h=0;
+	}
+	
 	public Rectangle size() {
 		Rectangle r = new Rectangle();
 		switch (this) {
