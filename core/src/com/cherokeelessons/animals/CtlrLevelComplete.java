@@ -10,38 +10,34 @@ import com.cherokeelessons.common.GamepadMap;
 
 public class CtlrLevelComplete implements ControllerListener {
 
-	private static void log(String msg) {
+	private static void log(final String msg) {
 		Gdx.app.log(CtlrLevelComplete.class.getCanonicalName(), msg);
 	}
 
 	// private IntFloatMap axisMovedMap = new IntFloatMap();
-	private float deadzone = 0.7f;
+	private final float deadzone = 0.7f;
 
 	private PovDirection lastDirection = PovDirection.center;
 
-	private GamepadMap map;
+	private final GamepadMap map;
 
-	private ScreenLevelComplete menu;
+	private final ScreenLevelComplete menu;
 
-	public CtlrLevelComplete(GamepadMap map, ScreenLevelComplete menu) {
-		Gdx.app.log("ControllerMainMenu",
-				"Initializing with map: " + map.model.name());
+	public CtlrLevelComplete(final GamepadMap map, final ScreenLevelComplete menu) {
+		Gdx.app.log("ControllerMainMenu", "Initializing with map: " + map.model.name());
 		this.map = map;
 		this.menu = menu;
 	}
 
 	@Override
-	public boolean accelerometerMoved(Controller controller,
-			int accelerometerCode, Vector3 value) {
-		log("accelerometerMoved: " + controller.getName() + ", "
-				+ accelerometerCode + ", " + value);
+	public boolean accelerometerMoved(final Controller controller, final int accelerometerCode, final Vector3 value) {
+		log("accelerometerMoved: " + controller.getName() + ", " + accelerometerCode + ", " + value);
 		return false;
 	}
 
 	@Override
-	public boolean axisMoved(Controller controller, int axisCode, float value) {
-		if (axisCode == map.AXIS_LEFT_TRIGGER
-				|| axisCode == map.AXIS_RIGHT_TRIGGER) {
+	public boolean axisMoved(final Controller controller, final int axisCode, final float value) {
+		if (axisCode == map.AXIS_LEFT_TRIGGER || axisCode == map.AXIS_RIGHT_TRIGGER) {
 			return false;
 		}
 
@@ -54,10 +50,8 @@ public class CtlrLevelComplete implements ControllerListener {
 				lastDirection = PovDirection.south;
 				return povMoved(controller, 0, PovDirection.south);
 			}
-			if (value >= -deadzone
-					&& value <= deadzone
-					&& (lastDirection.equals(PovDirection.north) || lastDirection
-							.equals(PovDirection.south))) {
+			if (value >= -deadzone && value <= deadzone
+					&& (lastDirection.equals(PovDirection.north) || lastDirection.equals(PovDirection.south))) {
 				lastDirection = PovDirection.center;
 				return povMoved(controller, 0, PovDirection.center);
 			}
@@ -71,10 +65,8 @@ public class CtlrLevelComplete implements ControllerListener {
 				lastDirection = PovDirection.east;
 				return povMoved(controller, 0, PovDirection.east);
 			}
-			if (value >= -deadzone
-					&& value <= deadzone
-					&& (lastDirection.equals(PovDirection.east) || lastDirection
-							.equals(PovDirection.west))) {
+			if (value >= -deadzone && value <= deadzone
+					&& (lastDirection.equals(PovDirection.east) || lastDirection.equals(PovDirection.west))) {
 				lastDirection = PovDirection.center;
 				return povMoved(controller, 0, PovDirection.center);
 			}
@@ -83,7 +75,7 @@ public class CtlrLevelComplete implements ControllerListener {
 	}
 
 	@Override
-	public boolean buttonDown(Controller controller, int buttonCode) {
+	public boolean buttonDown(final Controller controller, final int buttonCode) {
 		if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
 			menu.game.gameEvent(GameEvent.MainMenu);
 			return true;
@@ -117,26 +109,24 @@ public class CtlrLevelComplete implements ControllerListener {
 	}
 
 	@Override
-	public boolean buttonUp(Controller controller, int buttonCode) {
+	public boolean buttonUp(final Controller controller, final int buttonCode) {
 		log("buttonUp: " + controller.getName() + ", " + buttonCode);
 		return false;
 	}
 
 	@Override
-	public void connected(Controller controller) {
+	public void connected(final Controller controller) {
 		log("connected: " + controller.getName());
 	}
 
 	@Override
-	public void disconnected(Controller controller) {
+	public void disconnected(final Controller controller) {
 		log("disconnected: " + controller.getName());
 	}
 
 	@Override
-	public boolean povMoved(Controller controller, int povCode,
-			PovDirection value) {
-		log("povModed: " + controller.getName() + ", " + povCode + ", "
-				+ value.name());
+	public boolean povMoved(final Controller controller, final int povCode, final PovDirection value) {
+		log("povModed: " + controller.getName() + ", " + povCode + ", " + value.name());
 		switch (value) {
 		case north:
 			// menu.hud_moveNorth();
@@ -157,18 +147,14 @@ public class CtlrLevelComplete implements ControllerListener {
 	}
 
 	@Override
-	public boolean xSliderMoved(Controller controller, int sliderCode,
-			boolean value) {
-		log("xSliderMoved: " + controller.getName() + ", " + sliderCode + ", "
-				+ value);
+	public boolean xSliderMoved(final Controller controller, final int sliderCode, final boolean value) {
+		log("xSliderMoved: " + controller.getName() + ", " + sliderCode + ", " + value);
 		return false;
 	}
 
 	@Override
-	public boolean ySliderMoved(Controller controller, int sliderCode,
-			boolean value) {
-		log("ySliderMoved: " + controller.getName() + ", " + sliderCode + ", "
-				+ value);
+	public boolean ySliderMoved(final Controller controller, final int sliderCode, final boolean value) {
+		log("ySliderMoved: " + controller.getName() + ", " + sliderCode + ", " + value);
 		return false;
 	}
 

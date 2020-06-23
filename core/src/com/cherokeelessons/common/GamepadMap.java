@@ -5,38 +5,38 @@ import com.badlogic.gdx.Input;
 /**
  * Game Controller Mapping Object. Attempts to self adjust values based on OS
  * running on.
- * 
+ *
  * Usage:
- * 
+ *
  * GamepadMap ouya_map = new GamepadMap(Model.Ouya); GamepadMap xbox_map = new
  * GamepadMap(Model.Xbox);
- * 
+ *
  * A value of "-1" for an axis or button indicates no matching event is
  * generated. This is especially an issue for the DPAD which may show up in one
  * of THREE ways for the Xbox as POV, BUTTONS, or AXIS, depending on OS!
  * Additionally, the trigger buttons appear useless when using Windows, both are
  * mapped to the same axis number!
- * 
+ *
  * The L1 and L2 values are not the same as those found in
  * com.badlogic.gdx.controllers.mappings.Ouya!
- * 
+ *
  * L1 is supposed to be the bumper and L2 is supposed to be the trigger.
- * 
+ *
  * It is also ODD that the OUYA insists on generating TWO events for some
  * buttons into differing event handlers! The triggers show up BOTH as AXIS and
  * BUTTONS!
- * 
+ *
  * EH.. the Nvidia controller reports the LTRIGGER also as BRAKE (axis 23) and
  * RTRIGGER as GAS (axis 22)
- * 
+ *
  * @author mjoyner
  * @version 0.0.2
- * 
+ *
  *          Public Domain
  */
 
 public class GamepadMap {
-	public static enum Model {
+	public enum Model {
 		AndroidTv, Ouya, Xbox, SNES, Keyboard;
 	}
 
@@ -74,7 +74,7 @@ public class GamepadMap {
 
 	public final Model model;
 
-	public GamepadMap(Model model) {
+	public GamepadMap(final Model model) {
 		this.model = model;
 		switch (model) {
 		case AndroidTv:
@@ -91,8 +91,8 @@ public class GamepadMap {
 				BUTTON_DPAD_RIGHT = -1;
 				BUTTON_DPAD_LEFT = -1;
 				DPAD_IS_AXIS = true;
-				AXIS_DPAD_X = -1;//15;
-				AXIS_DPAD_Y = -1;//16;
+				AXIS_DPAD_X = -1;// 15;
+				AXIS_DPAD_Y = -1;// 16;
 				BUTTON_L1 /* bumper */ = 102;
 				BUTTON_L2 /* trigger */ = -1;
 				BUTTON_L3 /* joystick */ = 106;

@@ -9,9 +9,9 @@ import com.badlogic.gdx.utils.Array;
 
 public class Gamepads extends Controllers {
 
-	final public static HashSet<ControllerListener> listenerList = new HashSet<ControllerListener>();
+	final public static HashSet<ControllerListener> listenerList = new HashSet<>();
 
-	public static void addListener(ControllerListener listener) {
+	public static void addListener(final ControllerListener listener) {
 		if (listenerList.contains(listener)) {
 			return;
 		}
@@ -20,7 +20,7 @@ public class Gamepads extends Controllers {
 	}
 
 	public static void clearListeners() {
-		for (ControllerListener listener : listenerList) {
+		for (final ControllerListener listener : listenerList) {
 			Controllers.removeListener(listener);
 		}
 		listenerList.clear();
@@ -30,7 +30,7 @@ public class Gamepads extends Controllers {
 		return Controllers.getControllers();
 	}
 
-	public static void removeListener(ControllerListener listener) {
+	public static void removeListener(final ControllerListener listener) {
 		Controllers.removeListener(listener);
 		listenerList.remove(listener);
 	}

@@ -9,17 +9,22 @@ public class StringUtils {
 	public static final String EMPTY = "";
 	/**
 	 * Represents a failed index search.
-	 * 
+	 *
 	 * @since 2.1
 	 */
 	public static final int INDEX_NOT_FOUND = -1;
+
+	/**
+	 * A regex pattern for recognizing blocks of whitespace characters.
+	 */
+	private static final Pattern WHITESPACE_BLOCK = Pattern.compile("\\s+");
 
 	// Defaults
 	// -----------------------------------------------------------------------
 	/**
 	 * <p>
-	 * Returns either the passed in String, or if the String is {@code null}
-	 * , an empty String ("").
+	 * Returns either the passed in String, or if the String is {@code null} , an
+	 * empty String ("").
 	 * </p>
 	 *
 	 * <pre>
@@ -30,12 +35,10 @@ public class StringUtils {
 	 *
 	 * @see ObjectUtils#toString(Object)
 	 * @see String#valueOf(Object)
-	 * @param str
-	 *            the String to check, may be null
-	 * @return the passed in String, or the empty String if it was
-	 *         {@code null}
+	 * @param str the String to check, may be null
+	 * @return the passed in String, or the empty String if it was {@code null}
 	 */
-	public static String defaultString(String str) {
+	public static String defaultString(final String str) {
 		return str == null ? EMPTY : str;
 	}
 
@@ -52,14 +55,12 @@ public class StringUtils {
 	 * StringUtils.isBlank("  bob  ") = false
 	 * </pre>
 	 *
-	 * @param cs
-	 *            the CharSequence to check, may be null
+	 * @param cs the CharSequence to check, may be null
 	 * @return {@code true} if the CharSequence is null, empty or whitespace
 	 * @since 2.0
-	 * @since 3.0 Changed signature from isBlank(String) to
-	 *        isBlank(CharSequence)
+	 * @since 3.0 Changed signature from isBlank(String) to isBlank(CharSequence)
 	 */
-	public static boolean isBlank(CharSequence cs) {
+	public static boolean isBlank(final CharSequence cs) {
 		int strLen;
 		if (cs == null || (strLen = cs.length()) == 0) {
 			return true;
@@ -92,13 +93,11 @@ public class StringUtils {
 	 * CharSequence. That functionality is available in isBlank().
 	 * </p>
 	 *
-	 * @param cs
-	 *            the CharSequence to check, may be null
+	 * @param cs the CharSequence to check, may be null
 	 * @return {@code true} if the CharSequence is empty or null
-	 * @since 3.0 Changed signature from isEmpty(String) to
-	 *        isEmpty(CharSequence)
+	 * @since 3.0 Changed signature from isEmpty(String) to isEmpty(CharSequence)
 	 */
-	public static boolean isEmpty(CharSequence cs) {
+	public static boolean isEmpty(final CharSequence cs) {
 		return cs == null || cs.length() == 0;
 	}
 
@@ -110,9 +109,9 @@ public class StringUtils {
 	 * </p>
 	 *
 	 * <p>
-	 * If {@code len} characters are not available, or the String is
-	 * {@code null}, the String will be returned without an exception. An
-	 * empty String is returned if len is negative.
+	 * If {@code len} characters are not available, or the String is {@code null},
+	 * the String will be returned without an exception. An empty String is returned
+	 * if len is negative.
 	 * </p>
 	 *
 	 * <pre>
@@ -124,14 +123,11 @@ public class StringUtils {
 	 * StringUtils.left("abc", 4)   = "abc"
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String to get the leftmost characters from, may be
-	 *            null
-	 * @param len
-	 *            the length of the required String
+	 * @param str the String to get the leftmost characters from, may be null
+	 * @param len the length of the required String
 	 * @return the leftmost characters, {@code null} if null String input
 	 */
-	public static String left(String str, int len) {
+	public static String left(final String str, final int len) {
 		if (str == null) {
 			return null;
 		}
@@ -150,10 +146,10 @@ public class StringUtils {
 	 * </p>
 	 *
 	 * <p>
-	 * If {@code len} characters are not available, the remainder of the
-	 * String will be returned without an exception. If the String is
-	 * {@code null}, {@code null} will be returned. An empty String is
-	 * returned if len is negative or exceeds the length of {@code str}.
+	 * If {@code len} characters are not available, the remainder of the String will
+	 * be returned without an exception. If the String is {@code null}, {@code null}
+	 * will be returned. An empty String is returned if len is negative or exceeds
+	 * the length of {@code str}.
 	 * </p>
 	 *
 	 * <pre>
@@ -167,15 +163,12 @@ public class StringUtils {
 	 * StringUtils.mid("abc", -2, 2)  = "ab"
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String to get the characters from, may be null
-	 * @param pos
-	 *            the position to start from, negative treated as zero
-	 * @param len
-	 *            the length of the required String
+	 * @param str the String to get the characters from, may be null
+	 * @param pos the position to start from, negative treated as zero
+	 * @param len the length of the required String
 	 * @return the middle characters, {@code null} if null String input
 	 */
-	public static String mid(String str, int pos, int len) {
+	public static String mid(final String str, int pos, final int len) {
 		if (str == null) {
 			return null;
 		}
@@ -189,6 +182,57 @@ public class StringUtils {
 			return str.substring(pos);
 		}
 		return str.substring(pos, pos + len);
+	}
+
+	/**
+	 * <p>
+	 * Similar to <a href=
+	 * "http://www.w3.org/TR/xpath/#function-normalize-space">http://www.w3.org/TR/xpath/#function-normalize
+	 * -space</a>
+	 * </p>
+	 * <p>
+	 * The function returns the argument string with whitespace normalized by using
+	 * <code>{@link #trim(String)}</code> to remove leading and trailing whitespace
+	 * and then replacing sequences of whitespace characters by a single space.
+	 * </p>
+	 * In XML Whitespace characters are the same as those allowed by the
+	 * <a href="http://www.w3.org/TR/REC-xml/#NT-S">S</a> production, which is S ::=
+	 * (#x20 | #x9 | #xD | #xA)+
+	 * <p>
+	 * Java's regexp pattern \s defines whitespace as [ \t\n\x0B\f\r]
+	 * <p>
+	 * For reference:
+	 * <ul>
+	 * <li>\x0B = vertical tab</li>
+	 * <li>\f = #xC = form feed</li>
+	 * <li>#x20 = space</li>
+	 * <li>#x9 = \t</li>
+	 * <li>#xA = \n</li>
+	 * <li>#xD = \r</li>
+	 * </ul>
+	 * </p>
+	 * <p>
+	 * The difference is that Java's whitespace includes vertical tab and form feed,
+	 * which this functional will also normalize. Additionally
+	 * <code>{@link #trim(String)}</code> removes control characters (char &lt;= 32)
+	 * from both ends of this String.
+	 * </p>
+	 *
+	 * @see Pattern
+	 * @see #trim(String)
+	 * @see <a href=
+	 *      "http://www.w3.org/TR/xpath/#function-normalize-space">http://www.w3.org/TR/xpath/#function-normalize-space</a>
+	 * @param str the source String to normalize whitespaces from, may be null
+	 * @return the modified string with whitespace normalized, {@code null} if null
+	 *         String input
+	 *
+	 * @since 3.0
+	 */
+	public static String normalizeSpace(final String str) {
+		if (str == null) {
+			return null;
+		}
+		return WHITESPACE_BLOCK.matcher(trim(str)).replaceAll(" ");
 	}
 
 	// Reversing
@@ -208,11 +252,10 @@ public class StringUtils {
 	 * StringUtils.reverse("bat") = "tab"
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String to reverse, may be null
+	 * @param str the String to reverse, may be null
 	 * @return the reversed String, {@code null} if null String input
 	 */
-	public static String reverse(String str) {
+	public static String reverse(final String str) {
 		if (str == null) {
 			return null;
 		}
@@ -225,9 +268,9 @@ public class StringUtils {
 	 * </p>
 	 *
 	 * <p>
-	 * If {@code len} characters are not available, or the String is
-	 * {@code null}, the String will be returned without an an exception. An
-	 * empty String is returned if len is negative.
+	 * If {@code len} characters are not available, or the String is {@code null},
+	 * the String will be returned without an an exception. An empty String is
+	 * returned if len is negative.
 	 * </p>
 	 *
 	 * <pre>
@@ -239,14 +282,11 @@ public class StringUtils {
 	 * StringUtils.right("abc", 4)   = "abc"
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String to get the rightmost characters from, may be
-	 *            null
-	 * @param len
-	 *            the length of the required String
+	 * @param str the String to get the rightmost characters from, may be null
+	 * @param len the length of the required String
 	 * @return the rightmost characters, {@code null} if null String input
 	 */
-	public static String right(String str, int len) {
+	public static String right(final String str, final int len) {
 		if (str == null) {
 			return null;
 		}
@@ -267,8 +307,8 @@ public class StringUtils {
 	 * </p>
 	 *
 	 * <p>
-	 * This is similar to {@link #trim(String)} but removes whitespace.
-	 * Whitespace is defined by {@link Character#isWhitespace(char)}.
+	 * This is similar to {@link #trim(String)} but removes whitespace. Whitespace
+	 * is defined by {@link Character#isWhitespace(char)}.
 	 * </p>
 	 *
 	 * <p>
@@ -286,29 +326,28 @@ public class StringUtils {
 	 * StringUtils.strip(" ab c ") = "ab c"
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String to remove whitespace from, may be null
+	 * @param str the String to remove whitespace from, may be null
 	 * @return the stripped String, {@code null} if null String input
 	 */
-	public static String strip(String str) {
+	public static String strip(final String str) {
 		return strip(str, null);
 	}
 
 	/**
 	 * <p>
-	 * Strips any of a set of characters from the start and end of a String.
-	 * This is similar to {@link String#trim()} but allows the characters to
-	 * be stripped to be controlled.
+	 * Strips any of a set of characters from the start and end of a String. This is
+	 * similar to {@link String#trim()} but allows the characters to be stripped to
+	 * be controlled.
 	 * </p>
 	 *
 	 * <p>
-	 * A {@code null} input String returns {@code null}. An empty string
-	 * ("") input returns the empty string.
+	 * A {@code null} input String returns {@code null}. An empty string ("") input
+	 * returns the empty string.
 	 * </p>
 	 *
 	 * <p>
-	 * If the stripChars String is {@code null}, whitespace is stripped as
-	 * defined by {@link Character#isWhitespace(char)}. Alternatively use
+	 * If the stripChars String is {@code null}, whitespace is stripped as defined
+	 * by {@link Character#isWhitespace(char)}. Alternatively use
 	 * {@link #strip(String)}.
 	 * </p>
 	 *
@@ -322,13 +361,11 @@ public class StringUtils {
 	 * StringUtils.strip("  abcyx", "xyz") = "  abc"
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String to remove characters from, may be null
-	 * @param stripChars
-	 *            the characters to remove, null treated as whitespace
+	 * @param str        the String to remove characters from, may be null
+	 * @param stripChars the characters to remove, null treated as whitespace
 	 * @return the stripped String, {@code null} if null String input
 	 */
-	public static String strip(String str, String stripChars) {
+	public static String strip(String str, final String stripChars) {
 		if (isEmpty(str)) {
 			return str;
 		}
@@ -342,13 +379,13 @@ public class StringUtils {
 	 * </p>
 	 *
 	 * <p>
-	 * A {@code null} input String returns {@code null}. An empty string
-	 * ("") input returns the empty string.
+	 * A {@code null} input String returns {@code null}. An empty string ("") input
+	 * returns the empty string.
 	 * </p>
 	 *
 	 * <p>
-	 * If the stripChars String is {@code null}, whitespace is stripped as
-	 * defined by {@link Character#isWhitespace(char)}.
+	 * If the stripChars String is {@code null}, whitespace is stripped as defined
+	 * by {@link Character#isWhitespace(char)}.
 	 * </p>
 	 *
 	 * <pre>
@@ -363,14 +400,11 @@ public class StringUtils {
 	 * StringUtils.stripEnd("120.00", ".0")   = "12"
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String to remove characters from, may be null
-	 * @param stripChars
-	 *            the set of characters to remove, null treated as
-	 *            whitespace
+	 * @param str        the String to remove characters from, may be null
+	 * @param stripChars the set of characters to remove, null treated as whitespace
 	 * @return the stripped String, {@code null} if null String input
 	 */
-	public static String stripEnd(String str, String stripChars) {
+	public static String stripEnd(final String str, final String stripChars) {
 		int end;
 		if (str == null || (end = str.length()) == 0) {
 			return str;
@@ -396,13 +430,13 @@ public class StringUtils {
 	 * </p>
 	 *
 	 * <p>
-	 * A {@code null} input String returns {@code null}. An empty string
-	 * ("") input returns the empty string.
+	 * A {@code null} input String returns {@code null}. An empty string ("") input
+	 * returns the empty string.
 	 * </p>
 	 *
 	 * <p>
-	 * If the stripChars String is {@code null}, whitespace is stripped as
-	 * defined by {@link Character#isWhitespace(char)}.
+	 * If the stripChars String is {@code null}, whitespace is stripped as defined
+	 * by {@link Character#isWhitespace(char)}.
 	 * </p>
 	 *
 	 * <pre>
@@ -416,13 +450,11 @@ public class StringUtils {
 	 * StringUtils.stripStart("yxabc  ", "xyz") = "abc  "
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String to remove characters from, may be null
-	 * @param stripChars
-	 *            the characters to remove, null treated as whitespace
+	 * @param str        the String to remove characters from, may be null
+	 * @param stripChars the characters to remove, null treated as whitespace
 	 * @return the stripped String, {@code null} if null String input
 	 */
-	public static String stripStart(String str, String stripChars) {
+	public static String stripStart(final String str, final String stripChars) {
 		int strLen;
 		if (str == null || (strLen = str.length()) == 0) {
 			return str;
@@ -444,14 +476,14 @@ public class StringUtils {
 
 	/**
 	 * <p>
-	 * Gets the substring after the first occurrence of a separator. The
-	 * separator is not returned.
+	 * Gets the substring after the first occurrence of a separator. The separator
+	 * is not returned.
 	 * </p>
 	 *
 	 * <p>
-	 * A {@code null} string input will return {@code null}. An empty ("")
-	 * string input will return the empty string. A {@code null} separator
-	 * will return the empty string if the input string is not {@code null}.
+	 * A {@code null} string input will return {@code null}. An empty ("") string
+	 * input will return the empty string. A {@code null} separator will return the
+	 * empty string if the input string is not {@code null}.
 	 * </p>
 	 *
 	 * <p>
@@ -469,22 +501,20 @@ public class StringUtils {
 	 * StringUtils.substringAfter("abc", "")    = "abc"
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String to get a substring from, may be null
-	 * @param separator
-	 *            the String to search for, may be null
+	 * @param str       the String to get a substring from, may be null
+	 * @param separator the String to search for, may be null
 	 * @return the substring after the first occurrence of the separator,
 	 *         {@code null} if null String input
 	 * @since 2.0
 	 */
-	public static String substringAfter(String str, String separator) {
+	public static String substringAfter(final String str, final String separator) {
 		if (isEmpty(str)) {
 			return str;
 		}
 		if (separator == null) {
 			return EMPTY;
 		}
-		int pos = str.indexOf(separator);
+		final int pos = str.indexOf(separator);
 		if (pos == INDEX_NOT_FOUND) {
 			return EMPTY;
 		}
@@ -493,15 +523,14 @@ public class StringUtils {
 
 	/**
 	 * <p>
-	 * Gets the substring after the last occurrence of a separator. The
-	 * separator is not returned.
+	 * Gets the substring after the last occurrence of a separator. The separator is
+	 * not returned.
 	 * </p>
 	 *
 	 * <p>
-	 * A {@code null} string input will return {@code null}. An empty ("")
-	 * string input will return the empty string. An empty or {@code null}
-	 * separator will return the empty string if the input string is not
-	 * {@code null}.
+	 * A {@code null} string input will return {@code null}. An empty ("") string
+	 * input will return the empty string. An empty or {@code null} separator will
+	 * return the empty string if the input string is not {@code null}.
 	 * </p>
 	 *
 	 * <p>
@@ -520,22 +549,20 @@ public class StringUtils {
 	 * StringUtils.substringAfterLast("a", "z")     = ""
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String to get a substring from, may be null
-	 * @param separator
-	 *            the String to search for, may be null
+	 * @param str       the String to get a substring from, may be null
+	 * @param separator the String to search for, may be null
 	 * @return the substring after the last occurrence of the separator,
 	 *         {@code null} if null String input
 	 * @since 2.0
 	 */
-	public static String substringAfterLast(String str, String separator) {
+	public static String substringAfterLast(final String str, final String separator) {
 		if (isEmpty(str)) {
 			return str;
 		}
 		if (isEmpty(separator)) {
 			return EMPTY;
 		}
-		int pos = str.lastIndexOf(separator);
+		final int pos = str.lastIndexOf(separator);
 		if (pos == INDEX_NOT_FOUND || pos == str.length() - separator.length()) {
 			return EMPTY;
 		}
@@ -546,14 +573,14 @@ public class StringUtils {
 	// -----------------------------------------------------------------------
 	/**
 	 * <p>
-	 * Gets the substring before the first occurrence of a separator. The
-	 * separator is not returned.
+	 * Gets the substring before the first occurrence of a separator. The separator
+	 * is not returned.
 	 * </p>
 	 *
 	 * <p>
-	 * A {@code null} string input will return {@code null}. An empty ("")
-	 * string input will return the empty string. A {@code null} separator
-	 * will return the input string.
+	 * A {@code null} string input will return {@code null}. An empty ("") string
+	 * input will return the empty string. A {@code null} separator will return the
+	 * input string.
 	 * </p>
 	 *
 	 * <p>
@@ -571,22 +598,20 @@ public class StringUtils {
 	 * StringUtils.substringBefore("abc", null)  = "abc"
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String to get a substring from, may be null
-	 * @param separator
-	 *            the String to search for, may be null
+	 * @param str       the String to get a substring from, may be null
+	 * @param separator the String to search for, may be null
 	 * @return the substring before the first occurrence of the separator,
 	 *         {@code null} if null String input
 	 * @since 2.0
 	 */
-	public static String substringBefore(String str, String separator) {
+	public static String substringBefore(final String str, final String separator) {
 		if (isEmpty(str) || separator == null) {
 			return str;
 		}
 		if (separator.length() == 0) {
 			return EMPTY;
 		}
-		int pos = str.indexOf(separator);
+		final int pos = str.indexOf(separator);
 		if (pos == INDEX_NOT_FOUND) {
 			return str;
 		}
@@ -595,14 +620,14 @@ public class StringUtils {
 
 	/**
 	 * <p>
-	 * Gets the substring before the last occurrence of a separator. The
-	 * separator is not returned.
+	 * Gets the substring before the last occurrence of a separator. The separator
+	 * is not returned.
 	 * </p>
 	 *
 	 * <p>
-	 * A {@code null} string input will return {@code null}. An empty ("")
-	 * string input will return the empty string. An empty or {@code null}
-	 * separator will return the input string.
+	 * A {@code null} string input will return {@code null}. An empty ("") string
+	 * input will return the empty string. An empty or {@code null} separator will
+	 * return the input string.
 	 * </p>
 	 *
 	 * <p>
@@ -620,19 +645,17 @@ public class StringUtils {
 	 * StringUtils.substringBeforeLast("a", "")      = "a"
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String to get a substring from, may be null
-	 * @param separator
-	 *            the String to search for, may be null
+	 * @param str       the String to get a substring from, may be null
+	 * @param separator the String to search for, may be null
 	 * @return the substring before the last occurrence of the separator,
 	 *         {@code null} if null String input
 	 * @since 2.0
 	 */
-	public static String substringBeforeLast(String str, String separator) {
+	public static String substringBeforeLast(final String str, final String separator) {
 		if (isEmpty(str) || isEmpty(separator)) {
 			return str;
 		}
-		int pos = str.lastIndexOf(separator);
+		final int pos = str.lastIndexOf(separator);
 		if (pos == INDEX_NOT_FOUND) {
 			return str;
 		}
@@ -643,13 +666,12 @@ public class StringUtils {
 	// -----------------------------------------------------------------------
 	/**
 	 * <p>
-	 * Gets the String that is nested in between two instances of the same
-	 * String.
+	 * Gets the String that is nested in between two instances of the same String.
 	 * </p>
 	 *
 	 * <p>
-	 * A {@code null} input String returns {@code null}. A {@code null} tag
-	 * returns {@code null}.
+	 * A {@code null} input String returns {@code null}. A {@code null} tag returns
+	 * {@code null}.
 	 * </p>
 	 *
 	 * <pre>
@@ -661,27 +683,25 @@ public class StringUtils {
 	 * StringUtils.substringBetween("tagabctag", "tag") = "abc"
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String containing the substring, may be null
-	 * @param tag
-	 *            the String before and after the substring, may be null
+	 * @param str the String containing the substring, may be null
+	 * @param tag the String before and after the substring, may be null
 	 * @return the substring, {@code null} if no match
 	 * @since 2.0
 	 */
-	public static String substringBetween(String str, String tag) {
+	public static String substringBetween(final String str, final String tag) {
 		return substringBetween(str, tag, tag);
 	}
 
 	/**
 	 * <p>
-	 * Gets the String that is nested in between two Strings. Only the first
-	 * match is returned.
+	 * Gets the String that is nested in between two Strings. Only the first match
+	 * is returned.
 	 * </p>
 	 *
 	 * <p>
-	 * A {@code null} input String returns {@code null}. A {@code null}
-	 * open/close returns {@code null} (no match). An empty ("") open and
-	 * close returns an empty string.
+	 * A {@code null} input String returns {@code null}. A {@code null} open/close
+	 * returns {@code null} (no match). An empty ("") open and close returns an
+	 * empty string.
 	 * </p>
 	 *
 	 * <pre>
@@ -697,22 +717,19 @@ public class StringUtils {
 	 * StringUtils.substringBetween("yabczyabcz", "y", "z")   = "abc"
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String containing the substring, may be null
-	 * @param open
-	 *            the String before the substring, may be null
-	 * @param close
-	 *            the String after the substring, may be null
+	 * @param str   the String containing the substring, may be null
+	 * @param open  the String before the substring, may be null
+	 * @param close the String after the substring, may be null
 	 * @return the substring, {@code null} if no match
 	 * @since 2.0
 	 */
-	public static String substringBetween(String str, String open, String close) {
+	public static String substringBetween(final String str, final String open, final String close) {
 		if (str == null || open == null || close == null) {
 			return null;
 		}
-		int start = str.indexOf(open);
+		final int start = str.indexOf(open);
 		if (start != INDEX_NOT_FOUND) {
-			int end = str.indexOf(close, start + open.length());
+			final int end = str.indexOf(close, start + open.length());
 			if (end != INDEX_NOT_FOUND) {
 				return str.substring(start + open.length(), end);
 			}
@@ -722,14 +739,14 @@ public class StringUtils {
 
 	/**
 	 * <p>
-	 * Searches a String for substrings delimited by a start and end tag,
-	 * returning all matching substrings in an array.
+	 * Searches a String for substrings delimited by a start and end tag, returning
+	 * all matching substrings in an array.
 	 * </p>
 	 *
 	 * <p>
-	 * A {@code null} input String returns {@code null}. A {@code null}
-	 * open/close returns {@code null} (no match). An empty ("") open/close
-	 * returns {@code null} (no match).
+	 * A {@code null} input String returns {@code null}. A {@code null} open/close
+	 * returns {@code null} (no match). An empty ("") open/close returns
+	 * {@code null} (no match).
 	 * </p>
 	 *
 	 * <pre>
@@ -740,29 +757,26 @@ public class StringUtils {
 	 * StringUtils.substringsBetween("", "[", "]")          = []
 	 * </pre>
 	 *
-	 * @param str
-	 *            the String containing the substrings, null returns null,
-	 *            empty returns empty
-	 * @param open
-	 *            the String identifying the start of the substring, empty
-	 *            returns null
-	 * @param close
-	 *            the String identifying the end of the substring, empty
-	 *            returns null
+	 * @param str   the String containing the substrings, null returns null, empty
+	 *              returns empty
+	 * @param open  the String identifying the start of the substring, empty returns
+	 *              null
+	 * @param close the String identifying the end of the substring, empty returns
+	 *              null
 	 * @return a String Array of substrings, or {@code null} if no match
 	 * @since 2.3
 	 */
-	public static String[] substringsBetween(String str, String open, String close) {
+	public static String[] substringsBetween(final String str, final String open, final String close) {
 		if (str == null || isEmpty(open) || isEmpty(close)) {
 			return null;
 		}
-		int strLen = str.length();
+		final int strLen = str.length();
 		if (strLen == 0) {
 			return ArrayUtils.EMPTY_STRING_ARRAY;
 		}
-		int closeLen = close.length();
-		int openLen = open.length();
-		List<String> list = new ArrayList<String>();
+		final int closeLen = close.length();
+		final int openLen = open.length();
+		final List<String> list = new ArrayList<>();
 		int pos = 0;
 		while (pos < strLen - closeLen) {
 			int start = str.indexOf(open, pos);
@@ -770,7 +784,7 @@ public class StringUtils {
 				break;
 			}
 			start += openLen;
-			int end = str.indexOf(close, start);
+			final int end = str.indexOf(close, start);
 			if (end < 0) {
 				break;
 			}
@@ -783,85 +797,36 @@ public class StringUtils {
 		return list.toArray(new String[list.size()]);
 	}
 
+	// Trim
+	// -----------------------------------------------------------------------
 	/**
-     * <p>
-     * Similar to <a
-     * href="http://www.w3.org/TR/xpath/#function-normalize-space">http://www.w3.org/TR/xpath/#function-normalize
-     * -space</a>
-     * </p>
-     * <p>
-     * The function returns the argument string with whitespace normalized by using
-     * <code>{@link #trim(String)}</code> to remove leading and trailing whitespace
-     * and then replacing sequences of whitespace characters by a single space.
-     * </p>
-     * In XML Whitespace characters are the same as those allowed by the <a
-     * href="http://www.w3.org/TR/REC-xml/#NT-S">S</a> production, which is S ::= (#x20 | #x9 | #xD | #xA)+
-     * <p>
-     * Java's regexp pattern \s defines whitespace as [ \t\n\x0B\f\r]
-     * <p>
-     * For reference:
-     * <ul>
-     * <li>\x0B = vertical tab</li>
-     * <li>\f = #xC = form feed</li>
-     * <li>#x20 = space</li>
-     * <li>#x9 = \t</li>
-     * <li>#xA = \n</li>
-     * <li>#xD = \r</li>
-     * </ul>
-     * </p>
-     * <p>
-     * The difference is that Java's whitespace includes vertical tab and form feed, which this functional will also
-     * normalize. Additionally <code>{@link #trim(String)}</code> removes control characters (char &lt;= 32) from both
-     * ends of this String.
-     * </p>
-     *
-     * @see Pattern
-     * @see #trim(String)
-     * @see <a
-     *      href="http://www.w3.org/TR/xpath/#function-normalize-space">http://www.w3.org/TR/xpath/#function-normalize-space</a>
-     * @param str the source String to normalize whitespaces from, may be null
-     * @return the modified string with whitespace normalized, {@code null} if null String input
-     *
-     * @since 3.0
-     */
-    public static String normalizeSpace(String str) {
-        if (str == null) {
-            return null;
-        }
-        return WHITESPACE_BLOCK.matcher(trim(str)).replaceAll(" ");
-    }
-    
-    /**
-     * A regex pattern for recognizing blocks of whitespace characters.
-     */
-    private static final Pattern WHITESPACE_BLOCK = Pattern.compile("\\s+");
-    
- // Trim
-    //-----------------------------------------------------------------------
-    /**
-     * <p>Removes control characters (char &lt;= 32) from both
-     * ends of this String, handling {@code null} by returning
-     * {@code null}.</p>
-     *
-     * <p>The String is trimmed using {@link String#trim()}.
-     * Trim removes start and end characters &lt;= 32.
-     * To strip whitespace use {@link #strip(String)}.</p>
-     *
-     * <p>To trim your choice of characters, use the
-     * {@link #strip(String, String)} methods.</p>
-     *
-     * <pre>
-     * StringUtils.trim(null)          = null
-     * StringUtils.trim("")            = ""
-     * StringUtils.trim("     ")       = ""
-     * StringUtils.trim("abc")         = "abc"
-     * StringUtils.trim("    abc    ") = "abc"
-     * </pre>
-     *
-     * @param str  the String to be trimmed, may be null
-     * @return the trimmed string, {@code null} if null String input
-     */
-    public static String trim(String str) {
-        return str == null ? null : str.trim();
-    }
+	 * <p>
+	 * Removes control characters (char &lt;= 32) from both ends of this String,
+	 * handling {@code null} by returning {@code null}.
+	 * </p>
+	 *
+	 * <p>
+	 * The String is trimmed using {@link String#trim()}. Trim removes start and end
+	 * characters &lt;= 32. To strip whitespace use {@link #strip(String)}.
+	 * </p>
+	 *
+	 * <p>
+	 * To trim your choice of characters, use the {@link #strip(String, String)}
+	 * methods.
+	 * </p>
+	 *
+	 * <pre>
+	 * StringUtils.trim(null)          = null
+	 * StringUtils.trim("")            = ""
+	 * StringUtils.trim("     ")       = ""
+	 * StringUtils.trim("abc")         = "abc"
+	 * StringUtils.trim("    abc    ") = "abc"
+	 * </pre>
+	 *
+	 * @param str the String to be trimmed, may be null
+	 * @return the trimmed string, {@code null} if null String input
+	 */
+	public static String trim(final String str) {
+		return str == null ? null : str.trim();
+	}
 }

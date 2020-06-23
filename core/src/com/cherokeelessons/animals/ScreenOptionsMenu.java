@@ -38,24 +38,16 @@ import com.cherokeelessons.common.Utils;
 
 public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
-	private void resetMusicVolume() {
-		float masterVolume = ((float)game.prefs.getMasterVolume())/100f;
-		float musicVolume = ((float)game.prefs.getMusicVolume())/100f;
-		game.music.setVolume(masterVolume*musicVolume);
-	}
-
-	private static final String INDICATOR = ScreenMainMenu.INDICATOR;
-
 	private static class MenuLabel extends Label {
 
 		private Runnable menu_action_east = null;
 		private Runnable menu_action_west = null;
 
-		public MenuLabel(CharSequence text, LabelStyle style) {
+		public MenuLabel(final CharSequence text, final LabelStyle style) {
 			super(text, style);
 		}
 
-		public void doRun(PovDirection direction) {
+		public void doRun(final PovDirection direction) {
 			if (menu_action_east != null && direction.equals(PovDirection.east)) {
 				Gdx.app.postRunnable(menu_action_east);
 				return;
@@ -67,52 +59,54 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		}
 	}
 
+	private static final String INDICATOR = ScreenMainMenu.INDICATOR;
+
 	private static int idx_volume = 0;
 
 	private static final String TAB_INSTRUCT = "[BACK]";
 
 	private static final float INDI_SCALE = ScreenMainMenu.INDI_SCALE;
-	private float[] baseLines;
 
-	private int baseLines_cnt;
-	private MenuLabel btn_challengeSoundMode;
-	private MenuLabel btn_challengeWordMode;
-	private MenuLabel btn_resetStatistics;
-	private MenuLabel btn_soundEffects;
-	private MenuLabel btn_trainingScreen;
-	private MenuLabel btn_musicVolume;
-	private MenuLabel btn_masterVolume;
+	private final float[] baseLines;
+	private final int baseLines_cnt;
 
-	private Array<MenuLabel> btns = new Array<MenuLabel>();
-	private LabelStyle buttonStyle;
+	private final MenuLabel btn_challengeSoundMode;
+	private final MenuLabel btn_challengeWordMode;
+	private final MenuLabel btn_resetStatistics;
+	private final MenuLabel btn_soundEffects;
+	private final MenuLabel btn_trainingScreen;
+	private final MenuLabel btn_musicVolume;
+	private final MenuLabel btn_masterVolume;
+	private final Array<MenuLabel> btns = new Array<>();
+
+	private final LabelStyle buttonStyle;
 	private BitmapFont font = null;
 	private Texture indicator;
+	private final LabelStyle instructStyle;
 
-	private LabelStyle instructStyle;
+	private final MenuLabel lbl_instructions;
 
-	private MenuLabel lbl_instructions;
-
-	private Image left_indicator = new Image();
+	private final Image left_indicator = new Image();
 
 	private float lineHeight = 0;
-	private float offset = 0;
-	private Integer optionItemSize = 88;
 
+	private final float offset = 0;
+	private final Integer optionItemSize = 88;
 	public int optionsButton;
 
-	private Image right_indicator = new Image();
+	private final Image right_indicator = new Image();
 
 	private int selected_btn = 0;
 
-	private Color textColor;
+	private final Color textColor;
 
-	final Array<Sprite> wall = new Array<Sprite>();
+	final Array<Sprite> wall = new Array<>();
 
 	private TextureAtlas wall_atlas;
 
 	final private CtlrOptions_Watch watcher = new CtlrOptions_Watch(this);
-	private int idx_music;
 
+	private final int idx_music;
 	final private Prefs prefs;
 
 	public ScreenOptionsMenu(final CherokeeAnimals _game) {
@@ -124,9 +118,9 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 		int displayLine;
 
-		FontLoader fg = new FontLoader();
+		final FontLoader fg = new FontLoader();
 		font = fg.get(optionItemSize);
-		BitmapFont ifont = fg.get(64);
+		final BitmapFont ifont = fg.get(64);
 
 		textColor = GameColor.MAIN_TEXT;
 
@@ -142,20 +136,20 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		lbl_instructions = new MenuLabel(TAB_INSTRUCT, instructStyle);
 		lbl_instructions.pack();
 		lbl_instructions.setX((safeZoneSize.width - lbl_instructions.getWidth()) / 2);
-		lbl_instructions.menu_action_east=new Runnable() {
+		lbl_instructions.menu_action_east = new Runnable() {
 			@Override
 			public void run() {
 				game.gameEvent(GameEvent.Done);
 			}
 		};
-		lbl_instructions.menu_action_west=new Runnable() {
+		lbl_instructions.menu_action_west = new Runnable() {
 			@Override
 			public void run() {
 				game.gameEvent(GameEvent.Done);
 			}
 		};
 
-		float optionsHeight = lbl_instructions.getHeight();
+		final float optionsHeight = lbl_instructions.getHeight();
 		calculateBaseLines(optionsHeight);
 
 		// start off with 100% volume level for width calculations
@@ -304,7 +298,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		idx_volume = btns.size;
 		btns.add(btn_masterVolume);
 		btns.add(lbl_instructions);
-		
+
 		gameStage.clear();
 		// gameStage.addActor(btn_aboutProgram);
 		gameStage.addActor(btn_resetStatistics);
@@ -320,7 +314,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		gameStage.addActor(right_indicator);
 	}
 
-	private void calculateBaseLines(float bottomMargin) {
+	private void calculateBaseLines(final float bottomMargin) {
 		int ix;
 		lineHeight = (safeZoneSize.height - bottomMargin) / baseLines.length;
 		for (ix = 0; ix < baseLines.length; ix++) {
@@ -329,23 +323,41 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		}
 	}
 
-	public void doMenuItem(PovDirection direction) {
+	public void doMenuItem(final PovDirection direction) {
 		btns.get(selected_btn).doRun(direction);
 	}
 
-	private float getBaseLine(int ix) {
+	@Override
+	public boolean dpad(final int keyCode) {
+		switch (keyCode) {
+		case Keys.DPAD_CENTER:
+			doMenuItem(PovDirection.east);
+			return true;
+		case Keys.DPAD_DOWN:
+			hud_moveSouth();
+			return true;
+		case Keys.DPAD_LEFT:
+			doMenuItem(PovDirection.west);
+			return true;
+		case Keys.DPAD_RIGHT:
+			doMenuItem(PovDirection.east);
+			return true;
+		case Keys.DPAD_UP:
+			hud_moveNorth();
+			return true;
+		}
+		return false;
+	}
+
+	private float getBaseLine(final int ix) {
 		if (ix < 0 || ix >= baseLines.length) {
 			return 0f;
 		}
 		return baseLines[ix];
 	}
 
-	public int getSelected_btn() {
-		return selected_btn;
-	}
-
-	private String getVolumeLabel(int newVolume) {
-		String newText = "[-] Master Volume: ";
+	private String getMusicLabel(final int newVolume) {
+		String newText = "[-] Music Volume: ";
 		if (newVolume < 100) {
 			newText += " ";
 		}
@@ -357,8 +369,12 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		return newText;
 	}
 
-	private String getMusicLabel(int newVolume) {
-		String newText = "[-] Music Volume: ";
+	public int getSelected_btn() {
+		return selected_btn;
+	}
+
+	private String getVolumeLabel(final int newVolume) {
+		String newText = "[-] Master Volume: ";
 		if (newVolume < 100) {
 			newText += " ";
 		}
@@ -377,7 +393,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 	@Override
 	public void hide() {
-		for (Controller controller : Gamepads.getControllers()) {
+		for (final Controller controller : Gamepads.getControllers()) {
 			watcher.disconnected(controller);
 		}
 		Gamepads.clearListeners();
@@ -388,29 +404,20 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		super.hide();
 	}
 
-	private void highlight_button(boolean quiet) {
-		if (!quiet) {
-			game.sm.playEffect("box_moved");
-		}
-		MenuLabel label = btns.get(selected_btn);
-		float left = label.getX();
-		float bottom = label.getY();
-		float right = label.getX() + label.getWidth();
-		left_indicator.setPosition(left - left_indicator.getWidth() + 20, bottom);
-		right_indicator.setPosition(right - 20, bottom);
-	}
-
 	private void highlight_button() {
 		highlight_button(false);
 	}
 
-	public void hud_moveSouth() {
-		selected_btn++;
-		if (selected_btn >= btns.size) {
-			selected_btn = 0;
+	private void highlight_button(final boolean quiet) {
+		if (!quiet) {
+			game.sm.playEffect("box_moved");
 		}
-		highlight_button();
-		updateInstructions();
+		final MenuLabel label = btns.get(selected_btn);
+		final float left = label.getX();
+		final float bottom = label.getY();
+		final float right = label.getX() + label.getWidth();
+		left_indicator.setPosition(left - left_indicator.getWidth() + 20, bottom);
+		right_indicator.setPosition(right - 20, bottom);
 	}
 
 	public void hud_moveNorth() {
@@ -422,8 +429,17 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		updateInstructions();
 	}
 
+	public void hud_moveSouth() {
+		selected_btn++;
+		if (selected_btn >= btns.size) {
+			selected_btn = 0;
+		}
+		highlight_button();
+		updateInstructions();
+	}
+
 	@Override
-	public void render(float delta) {
+	public void render(final float delta) {
 		super.render(delta);
 //		batch.begin();
 //		for (Sprite s : wall) {
@@ -431,6 +447,12 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 //		}
 //		batch.end();
 		gameStage.draw();
+	}
+
+	private void resetMusicVolume() {
+		final float masterVolume = game.prefs.getMasterVolume() / 100f;
+		final float musicVolume = game.prefs.getMusicVolume() / 100f;
+		game.music.setVolume(masterVolume * musicVolume);
 	}
 
 	public void resetStatistics() {
@@ -476,21 +498,22 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		highlight_button(true);
 
 		Gamepads.addListener(watcher);
-		for (Controller c : Gamepads.getControllers()) {
+		for (final Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
 		}
 
 		for (int ix = 0; ix < btns.size; ix++) {
 			final int _button = ix;
-			MenuLabel btn = btns.get(ix);
+			final MenuLabel btn = btns.get(ix);
 			btn.clearListeners();
 			btn.addListener(new ClickListener() {
 				@Override
-				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
+						final int button) {
 					selected_btn = _button;
 					highlight_button(true);
 					updateInstructions();
-					float w = event.getListenerActor().getWidth();
+					final float w = event.getListenerActor().getWidth();
 					if (x / w >= .5f) {
 						doMenuItem(PovDirection.east);
 					} else {
@@ -541,7 +564,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		update_btn_resetStatistics("Reset Statistics");
 	}
 
-	private void update_btn_resetStatistics(String msg) {
+	private void update_btn_resetStatistics(final String msg) {
 		btn_resetStatistics.setText(msg);
 		btn_resetStatistics.pack();
 		btn_resetStatistics.setX((safeZoneSize.width - btn_resetStatistics.getWidth()) / 2);
@@ -603,27 +626,5 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		}
 		updateChallengeModeDisplay();
 		game.sm.playEffect("menu-click");
-	}
-
-	@Override
-	public boolean dpad(int keyCode) {
-		switch (keyCode) {
-		case Keys.DPAD_CENTER:
-			doMenuItem(PovDirection.east);
-			return true;
-		case Keys.DPAD_DOWN:
-			hud_moveSouth();
-			return true;
-		case Keys.DPAD_LEFT:
-			doMenuItem(PovDirection.west);
-			return true;
-		case Keys.DPAD_RIGHT:
-			doMenuItem(PovDirection.east);
-			return true;
-		case Keys.DPAD_UP:
-			hud_moveNorth();
-			return true;
-		}
-		return false;
 	}
 }

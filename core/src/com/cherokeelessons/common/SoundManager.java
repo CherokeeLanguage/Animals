@@ -10,42 +10,22 @@ import com.badlogic.gdx.files.FileHandle;
 
 public class SoundManager {
 
-	final private HashMap<String, FileHandle> audioFiles = new HashMap<String, FileHandle>();
+	final private HashMap<String, FileHandle> audioFiles = new HashMap<>();
 	private boolean challengeEnabled = true;
 
-	final private HashMap<String, Music> challenges = new HashMap<String, Music>();
+	final private HashMap<String, Music> challenges = new HashMap<>();
 
-	final private HashMap<String, Sound> effects = new HashMap<String, Sound>();
+	final private HashMap<String, Sound> effects = new HashMap<>();
 
 	private boolean effectsEnabled = true;
 
-	final private HashMap<String, FileHandle> validEffects = new HashMap<String, FileHandle>();
-	private Prefs prefs;
+	final private HashMap<String, FileHandle> validEffects = new HashMap<>();
+	private final Prefs prefs;
 
-	public SoundManager(Prefs prefs) {
+	public SoundManager(final Prefs prefs) {
 		this.prefs = prefs;
 		loadEffectNames();
 		loadChallengeNames();
-	}
-
-	private void loadChallengeNames() {
-		FileHandle fh;
-		int ix;
-
-		String t1 = Gdx.files.internal("audio/challenges/00-plist.txt").readString("UTF-8");
-		String[] dirListing = t1.split("\n");
-		for (ix = 0; ix < dirListing.length; ix++) {
-			fh = Gdx.files.internal("audio/challenges/"+dirListing[ix]);
-			long length;
-			try {
-				length = fh.length();
-			} catch (Exception e) {
-				length=0;
-			}
-			if (length>0) {
-				audioFiles.put(fh.nameWithoutExtension(), fh);
-			}
-		}
 	}
 
 	public HashMap<String, FileHandle> getChallengeAudioList() {
@@ -64,22 +44,22 @@ public class SoundManager {
 		case Off:
 			return 0f;
 		case Low:
-			return 0.3f*getMasterVolume();
+			return 0.3f * getMasterVolume();
 		case High:
-			return getMasterVolume(); 
-		}		
+			return getMasterVolume();
+		}
 		return getMasterVolume();
 	}
 
 	private float getMasterVolume() {
-		return ((float)prefs.getMasterVolume())/100f;
+		return prefs.getMasterVolume() / 100f;
 	}
 
 	public boolean isChallengeEnabled() {
 		return challengeEnabled;
 	}
 
-	public boolean isChallengePlaying(String challenge) {
+	public boolean isChallengePlaying(final String challenge) {
 		if (!challenges.containsKey(challenge)) {
 			return false;
 		}
@@ -90,7 +70,7 @@ public class SoundManager {
 		return effectsEnabled;
 	}
 
-	private void loadChallenge(String challenge) {
+	private void loadChallenge(final String challenge) {
 		FileHandle fh;
 		Music msc;
 		if (challenges.containsKey(challenge)) {
@@ -104,7 +84,7 @@ public class SoundManager {
 		 * make sure we don't overload the sound subsystem...
 		 */
 		if (challenges.size() > 5) {
-			for (String key : challenges.keySet()) {
+			for (final String key : challenges.keySet()) {
 				challenges.get(key).stop();
 				challenges.get(key).dispose();
 			}
@@ -114,26 +94,66 @@ public class SoundManager {
 			fh = audioFiles.get(challenge);
 			msc = Gdx.audio.newMusic(fh);
 			challenges.put(challenge, msc);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void loadChallengeNames() {
+		FileHandle fh;
+		int ix;
+
+		final String t1 = Gdx.files.internal("audio/challenges/00-plist.txt").readString("UTF-8");
+		final String[] dirListing = t1.split("\n");
+		for (ix = 0; ix < dirListing.length; ix++) {
+			fh = Gdx.files.internal("audio/challenges/" + dirListing[ix]);
+			long length;
+			try {
+				length = fh.length();
+			} catch (final Exception e) {
+				length = 0;
+			}
+			if (length > 0) {
+				audioFiles.put(fh.nameWithoutExtension(), fh);
+			}
 		}
 	}
 
 	public void loadEffect(final String effect) {
 		Sound snd;
-		if (effects.containsKey(effect)){
+		if (effects.containsKey(effect)) {
 			return;
 		}
 		if (!validEffects.containsKey(effect)) {
 			return;
 		}
 		snd = Gdx.audio.newSound(validEffects.get(effect));
-		if (snd!=null) {
+		if (snd != null) {
 			effects.put(effect, snd);
 		}
 	}
 
-	public void playChallenge(String challenge) {
+	public void loadEffectNames() {
+		FileHandle fh;
+		int ix;
+
+		final String t1 = Gdx.files.internal("audio/effects/00-plist.txt").readString("UTF-8");
+		final String[] dirListing = t1.split("\n");
+		for (ix = 0; ix < dirListing.length; ix++) {
+			fh = Gdx.files.internal("audio/effects/" + dirListing[ix]);
+			long length;
+			try {
+				length = fh.length();
+			} catch (final Exception e) {
+				length = 0;
+			}
+			if (length > 0) {
+				validEffects.put(fh.nameWithoutExtension(), fh);
+			}
+		}
+	}
+
+	public void playChallenge(final String challenge) {
 		if (!isChallengeEnabled()) {
 			return;
 		}
@@ -147,7 +167,7 @@ public class SoundManager {
 		challenges.get(challenge).setVolume(getChallengeVolume());
 		try {
 			challenges.get(challenge).play();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -157,40 +177,20 @@ public class SoundManager {
 			return;
 		}
 		if (!validEffects.containsKey(effect)) {
-			System.out.println("Unknown: "+effect);
+			System.out.println("Unknown: " + effect);
 			return;
 		}
 		loadEffect(effect);
-		float effectVolume = getEffectVolume();
-		effects.get(effect).play(effectVolume);		
+		final float effectVolume = getEffectVolume();
+		effects.get(effect).play(effectVolume);
 	}
 
-	public void loadEffectNames() {
-		FileHandle fh;
-		int ix;
-
-		String t1 = Gdx.files.internal("audio/effects/00-plist.txt").readString("UTF-8");
-		String[] dirListing = t1.split("\n");
-		for (ix = 0; ix < dirListing.length; ix++) {
-			fh = Gdx.files.internal("audio/effects/"+dirListing[ix]);
-			long length;
-			try {
-				length = fh.length();
-			} catch (Exception e) {
-				length=0;
-			}
-			if (length>0) {
-				validEffects.put(fh.nameWithoutExtension(), fh);
-			}
-		}
-	}
-	
-	public boolean preloadDone(){
-		boolean done=true;		
-		for(final String effect: validEffects.keySet()) {
+	public boolean preloadDone() {
+		boolean done = true;
+		for (final String effect : validEffects.keySet()) {
 			if (!effects.containsKey(effect)) {
 				loadEffect(effect);
-				done=false;
+				done = false;
 				break;
 			}
 		}
@@ -201,13 +201,13 @@ public class SoundManager {
 		Set<String> keys;
 
 		keys = effects.keySet();
-		for (String key : keys) {
+		for (final String key : keys) {
 			effects.get(key).stop();
 			effects.get(key).dispose();
 			effects.remove(key);
 		}
 		keys = challenges.keySet();
-		for (String key : keys) {
+		for (final String key : keys) {
 			challenges.get(key).stop();
 			challenges.get(key).dispose();
 			challenges.remove(key);
@@ -215,11 +215,11 @@ public class SoundManager {
 		loadEffectNames();
 	}
 
-	public void setChallengeEnabled(boolean challengeEnabled) {
+	public void setChallengeEnabled(final boolean challengeEnabled) {
 		this.challengeEnabled = challengeEnabled;
 	}
 
-	public void setEffectsEnabled(boolean effectsEnabled) {
+	public void setEffectsEnabled(final boolean effectsEnabled) {
 		this.effectsEnabled = effectsEnabled;
 	}
 }

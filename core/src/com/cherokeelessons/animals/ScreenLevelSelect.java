@@ -33,47 +33,21 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 
 	private int activeHud = 0;
 
-	@Override
-	public boolean dpad(int keyCode) {
-		if (!showSelector) {
-			showSelector=true;
-			hud_showIndicator(true);
-		}
-		switch (keyCode) {
-		case Keys.DPAD_CENTER:
-			hud_select();
-			return true;
-		case Keys.DPAD_DOWN:
-			hud_moveSouth();
-			return true;
-		case Keys.DPAD_LEFT:
-			hud_moveLeft();
-			return true;
-		case Keys.DPAD_RIGHT:
-			hud_moveRight();
-			return true;
-		case Keys.DPAD_UP:
-			hud_moveNorth();
-			return true;
-		}
-		return false;
-	}
+	private final Label[][] btn_labels = new Label[game.getLevels() / 9][9];
 
-	private Label[][] btn_labels = new Label[game.getLevels() / 9][9];
 	FileHandle button_highlight = Gdx.files.internal("buttons/2610_white.png");
-	private FileHandle didGood = Gdx.files.internal("buttons/2714_white.png");
+	private final FileHandle didGood = Gdx.files.internal("buttons/2714_white.png");
 	private BitmapFont font;
+	private final Color fontColor = GameColor.MAIN_TEXT;
 
-	private Color fontColor = GameColor.MAIN_TEXT;
-
-	private int fontSize = 44;
+	private final int fontSize = 44;
 
 	private int level_highlighted = 0;
-	private Group masterGroup = new Group();
-	private int minPercentAdvance = 80;
-	private FileHandle levelLockedPic = Gdx.files.internal("images/indicators/Padlock-red.png");
-	private Label[] panelSwitch;
 
+	private final Group masterGroup = new Group();
+	private int minPercentAdvance = 80;
+	private final FileHandle levelLockedPic = Gdx.files.internal("images/indicators/Padlock-red.png");
+	private Label[] panelSwitch;
 	private View3x3Selector[] selectViewGraphic;
 
 	private View3x3Selector[] selectViewHUD;
@@ -81,38 +55,41 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 	private View3x3Selector[] selectViewLevelIndicator;
 
 	private View3x3Selector[] selectViewOverlay;
-	private View3x3Selector.onClick startAtLevel_1_to_9 = new onClick() {
+
+	private final View3x3Selector.onClick startAtLevel_1_to_9 = new onClick() {
 		@Override
-		public void handleClick(int level) {
+		public void handleClick(final int level) {
 			startGameLevel(level);
 		}
 	};
-	private View3x3Selector.onClick startAtLevel_10_to_18 = new onClick() {
+	private final View3x3Selector.onClick startAtLevel_10_to_18 = new onClick() {
 		@Override
-		public void handleClick(int level) {
+		public void handleClick(final int level) {
 			startGameLevel(level + 9);
 		}
 	};
+	private final String tab_title_unlocked = "This level is unlocked. Tap to play.";
 
-	private String tab_title_unlocked = "This level is unlocked. Tap to play.";
-	private String tab_title_locked = "This level is locked until you get at least " + minPercentAdvance
+	private final String tab_title_locked = "This level is locked until you get at least " + minPercentAdvance
 			+ "%+ on the previous level.";
-
-	private final CtlrLevelSelect_Watch watcher=new CtlrLevelSelect_Watch(this);
+	private final CtlrLevelSelect_Watch watcher = new CtlrLevelSelect_Watch(this);
 
 	private int panelCount;
 
 	private boolean usingController;
-	public ScreenLevelSelect(CherokeeAnimals game) {
+
+	private boolean showSelector = false;
+
+	public ScreenLevelSelect(final CherokeeAnimals game) {
 		super(game);
-		usingController = Gamepads.getControllers().size!=0;
+		usingController = Gamepads.getControllers().size != 0;
 		panelCount = (int) Math.ceil(game.getLevels() / 9);
 		int ix;
-		LabelStyle ls = new LabelStyle();
-		LabelStyle ps = new LabelStyle();
+		final LabelStyle ls = new LabelStyle();
+		final LabelStyle ps = new LabelStyle();
 		int panel;
 		float bottomMargin;
-		FontLoader fg = new FontLoader();
+		final FontLoader fg = new FontLoader();
 
 		panelSwitch = new Label[panelCount];
 
@@ -126,7 +103,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		ps.font = font;
 		ps.fontColor = new Color(GameColor.MAIN_TEXT);
 		ps.fontColor.a = 1f;
-		if (game.isTelevision()||usingController) {
+		if (game.isTelevision() || usingController) {
 			panelSwitch[0] = new Label(TV_PANEL1_TEXT, ps);
 			panelSwitch[1] = new Label(TV_PANEL2_TEXT, ps);
 		} else {
@@ -141,14 +118,16 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		panelSwitch[1].setY(0);
 		panelSwitch[0].addListener(new ClickListener() {
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
+					final int button) {
 				moveTo10To18();
 				return true;
 			}
 		});
 		panelSwitch[1].addListener(new ClickListener() {
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
+					final int button) {
 				moveTo1To9();
 				return true;
 			}
@@ -241,14 +220,6 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 
 	}
 
-	private void disconnectClickers() {
-		for (int ia = 0; ia < 2; ia++) {
-			for (int ib = 0; ib < selectViewLevelIndicator[ia].button_count(); ib++) {
-				selectViewLevelIndicator[ia].clearListeners(ib);
-			}
-		}
-	}
-
 	private void connectClickers() {
 		for (int ia = 0; ia < 2; ia++) {
 			final int pnl = ia;
@@ -256,7 +227,8 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 				final int btn = ib;
 				selectViewLevelIndicator[ia].addListener(btn, new ClickListener() {
 					@Override
-					public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+					public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
+							final int button) {
 						activeHud = pnl;
 						level_highlighted = btn;
 						hud_showIndicator(true);
@@ -268,9 +240,43 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		}
 	}
 
+	private void disconnectClickers() {
+		for (int ia = 0; ia < 2; ia++) {
+			for (int ib = 0; ib < selectViewLevelIndicator[ia].button_count(); ib++) {
+				selectViewLevelIndicator[ia].clearListeners(ib);
+			}
+		}
+	}
+
+	@Override
+	public boolean dpad(final int keyCode) {
+		if (!showSelector) {
+			showSelector = true;
+			hud_showIndicator(true);
+		}
+		switch (keyCode) {
+		case Keys.DPAD_CENTER:
+			hud_select();
+			return true;
+		case Keys.DPAD_DOWN:
+			hud_moveSouth();
+			return true;
+		case Keys.DPAD_LEFT:
+			hud_moveLeft();
+			return true;
+		case Keys.DPAD_RIGHT:
+			hud_moveRight();
+			return true;
+		case Keys.DPAD_UP:
+			hud_moveNorth();
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void hide() {
-		for (Controller controller : Gamepads.getControllers()) {
+		for (final Controller controller : Gamepads.getControllers()) {
 			watcher.disconnected(controller);
 		}
 		Gamepads.clearListeners();
@@ -279,7 +285,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 	}
 
 	private void hud_clearIndicator() {
-		View3x3Selector activehud = selectViewHUD[activeHud];
+		final View3x3Selector activehud = selectViewHUD[activeHud];
 		for (int ix = 0; ix < activehud.button_count(); ix++) {
 			activehud.setImage(ix, null);
 		}
@@ -287,7 +293,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 
 	public void hud_moveLeft() {
 		if (!showSelector) {
-			showSelector=true;
+			showSelector = true;
 			hud_showIndicator(true);
 		}
 		atLeftCheck: {
@@ -319,7 +325,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 
 	public void hud_moveNorth() {
 		if (!showSelector) {
-			showSelector=true;
+			showSelector = true;
 			hud_showIndicator(true);
 		}
 		do {
@@ -339,7 +345,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 
 	public void hud_moveRight() {
 		if (!showSelector) {
-			showSelector=true;
+			showSelector = true;
 			hud_showIndicator(true);
 		}
 		do {
@@ -373,7 +379,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 
 	public void hud_moveSouth() {
 		if (!showSelector) {
-			showSelector=true;
+			showSelector = true;
 			hud_showIndicator(true);
 		}
 		do {
@@ -401,6 +407,46 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		} while (false);
 	}
 
+	private void hud_showIndicator() {
+		hud_showIndicator(false);
+	}
+
+	private void hud_showIndicator(final boolean quiet) {
+		if (!quiet) {
+			game.sm.playEffect("box_moved");
+		}
+		final View3x3Selector activehud = selectViewHUD[activeHud];
+		hud_clearIndicator();
+		activehud.setImage(level_highlighted, button_highlight);
+		activehud.setColor(level_highlighted, GameColor.GOLD2);
+		activehud.setAlpha(level_highlighted, showSelector ? .7f : .0f);
+		final Color gold3_50 = new Color(GameColor.GOLD3);
+		gold3_50.a = .7f;
+		final Color gold2_50 = new Color(GameColor.GOLD2);
+		gold2_50.a = .7f;
+		final Action act_gold3 = Actions.color(gold3_50, 1f, Interpolation.sine);
+		final Action act_gold2 = Actions.color(gold2_50, 1f, Interpolation.sine);
+		final Action act_seq = Actions.sequence(act_gold3, act_gold2);
+		final Action act = Actions.forever(act_seq);
+		if (showSelector) {
+			activehud.addAction(level_highlighted, act);
+		}
+		final int level = activeHud * activehud.button_count() + level_highlighted;
+		do {
+			if (!isLevelUnlocked(level)) {
+				selectViewHUD[activeHud].setTitle(tab_title_locked);
+				break;
+			}
+			selectViewHUD[activeHud].setTitle(tab_title_unlocked);
+			break;
+		} while (false);
+	}
+
+	private boolean isLevelUnlocked(final int level) {
+		return !(level > 0 && game.prefs.getLevelAccuracy(level) == 0
+				&& game.prefs.getLevelAccuracy(level - 1) < minPercentAdvance);
+	}
+
 	/* [Y] */
 	public void moveTo10To18() {
 		masterGroup.clearActions();
@@ -419,7 +465,12 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		hud_showIndicator();
 	}
 
-	private boolean showSelector=false;
+	@Override
+	public void render(final float delta) {
+		super.render(delta);
+		gameStage.draw();
+	}
+
 	@Override
 	public void show() {
 		super.show();
@@ -428,13 +479,13 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		showLevelImages();
 		showLevelNumbers();
 		Gamepads.addListener(watcher);
-		for (Controller c : Gamepads.getControllers()) {
+		for (final Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
 		}
-		showSelector=false;
+		showSelector = false;
 		connectClickers();
 		if (game.isTelevision()) {
-			showSelector=true;
+			showSelector = true;
 		}
 		hud_showIndicator();
 	}
@@ -451,9 +502,10 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 			viewPanel = selectViewOverlay[panel];
 			current = game.prefs.getLevelAccuracy(ix);
 			if (isLevelUnlocked(ix)) {
-				alpha = ((float) current - (float) minPercentAdvance) / (100f - (float) minPercentAdvance);
-				if (alpha < 0f)
+				alpha = ((float) current - (float) minPercentAdvance) / (100f - minPercentAdvance);
+				if (alpha < 0f) {
 					alpha = 0f;
+				}
 				viewPanel.setImage(ix, didGood);
 				viewPanel.setColor(ix, GameColor.MAIN_TEXT);
 				viewPanel.setAlpha(ix, alpha);
@@ -464,41 +516,6 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 			}
 
 		}
-	}
-
-	private void hud_showIndicator() {
-		hud_showIndicator(false);
-	}
-
-	private void hud_showIndicator(boolean quiet) {
-		if (!quiet) {
-			game.sm.playEffect("box_moved");
-		}
-		View3x3Selector activehud = selectViewHUD[activeHud];
-		hud_clearIndicator();
-		activehud.setImage(level_highlighted, button_highlight);
-		activehud.setColor(level_highlighted, GameColor.GOLD2);
-		activehud.setAlpha(level_highlighted, showSelector?.7f:.0f);
-		Color gold3_50 = new Color(GameColor.GOLD3);
-		gold3_50.a = .7f;
-		Color gold2_50 = new Color(GameColor.GOLD2);
-		gold2_50.a = .7f;
-		Action act_gold3 = Actions.color(gold3_50, 1f, Interpolation.sine);
-		Action act_gold2 = Actions.color(gold2_50, 1f, Interpolation.sine);
-		Action act_seq = Actions.sequence(act_gold3, act_gold2);
-		Action act = Actions.forever(act_seq);
-		if (showSelector) {
-			activehud.addAction(level_highlighted, act);
-		}
-		int level = activeHud * activehud.button_count() + level_highlighted;
-		do {
-			if (!isLevelUnlocked(level)) {
-				selectViewHUD[activeHud].setTitle(tab_title_locked);
-				break;
-			}
-			selectViewHUD[activeHud].setTitle(tab_title_unlocked);
-			break;
-		} while (false);
 	}
 
 	private void showLevelImages() {
@@ -553,23 +570,12 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		}
 	}
 
-	private void startGameLevel(int level) {
+	private void startGameLevel(final int level) {
 		if (!isLevelUnlocked(level)) {
 			game.sm.playEffect("buzzer2");
 			return;
 		}
 		game.setLevelOn(level);
 		game.gameEvent(GameEvent.ShowGameBoard);
-	}
-
-	private boolean isLevelUnlocked(int level) {
-		return !(level > 0 && game.prefs.getLevelAccuracy(level) == 0
-				&& game.prefs.getLevelAccuracy(level - 1) < minPercentAdvance);
-	}
-
-	@Override
-	public void render(float delta) {
-		super.render(delta);
-		gameStage.draw();
 	}
 }

@@ -5,12 +5,12 @@ import com.cherokeelessons.common.GamepadMap;
 
 public class CtlrMainMenu_Watch extends GamepadAdapter<ScreenMainMenu> {
 
-	public CtlrMainMenu_Watch(ScreenMainMenu menu) {
+	public CtlrMainMenu_Watch(final ScreenMainMenu menu) {
 		super(menu);
 	}
 
 	@Override
-	public ControllerListener factoryControllerListener(GamepadMap map, ScreenMainMenu menu) {
+	public ControllerListener factoryControllerListener(final GamepadMap map, final ScreenMainMenu menu) {
 		return new CtlrMainMenu(map, menu);
 	}
 

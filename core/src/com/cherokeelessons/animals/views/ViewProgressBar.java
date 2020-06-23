@@ -15,40 +15,40 @@ public class ViewProgressBar extends Group {
 	}
 
 	final private Rectangle bbox = new Rectangle();
-	private Image botLayer;
+	private final Image botLayer;
 
-	private FileHandle botLayerFH;
-	private TextureRegion botLayerR;
-	private Texture botLayerT;
+	private final FileHandle botLayerFH;
+	private final TextureRegion botLayerR;
+	private final Texture botLayerT;
 
-	private Image midLayer;
-	private FileHandle midLayerFH;
-	private TextureRegion midLayerR;
+	private final Image midLayer;
+	private final FileHandle midLayerFH;
+	private final TextureRegion midLayerR;
 
-	private Texture midLayerT;
+	private final Texture midLayerT;
 	private Position position;
 	private float progress1;
 
 	private float progress2;
 	private float progress3;
 
-	private float scaleWidth;
+	private final float scaleWidth;
 
 	private float sideMargins = 20;
 
 	private float topBottomMargins = 15;
 
-	private Image topLayer;
+	private final Image topLayer;
 
-	private FileHandle topLayerFH;
+	private final FileHandle topLayerFH;
 
-	private TextureRegion topLayerR;
+	private final TextureRegion topLayerR;
 
-	private Texture topLayerT;
+	private final Texture topLayerT;
 
 	private boolean visible;
 
-	public ViewProgressBar(Rectangle overscan) {
+	public ViewProgressBar(final Rectangle overscan) {
 		super();
 		float scaleBy;
 
@@ -95,7 +95,7 @@ public class ViewProgressBar extends Group {
 		botLayer.setScaleY(scaleBy);
 		midLayer.setScaleY(scaleBy);
 		topLayer.setScaleY(scaleBy);
-		scaleWidth = (getWidth() / botLayer.getWidth());
+		scaleWidth = getWidth() / botLayer.getWidth();
 
 		setProgress1(0f);
 		setProgress2(0f);
@@ -131,11 +131,12 @@ public class ViewProgressBar extends Group {
 		return topBottomMargins;
 	}
 
+	@Override
 	public boolean isVisible() {
 		return visible;
 	}
 
-	public void setPosition(Position position) {
+	public void setPosition(final Position position) {
 		this.position = position;
 		switch (position) {
 		case Top:
@@ -147,33 +148,34 @@ public class ViewProgressBar extends Group {
 		}
 	}
 
-	public void setProgress1(float progress1) {
+	public void setProgress1(final float progress1) {
 		this.progress1 = progress1;
 		topLayer.setScaleX(scaleWidth * progress1);
 		topLayer.pack();
 	}
 
-	public void setProgress2(float progress2) {
+	public void setProgress2(final float progress2) {
 		this.progress2 = progress2;
 		midLayer.setScaleX(scaleWidth * progress2);
 		midLayer.pack();
 	}
 
-	public void setProgress3(float progress3) {
+	public void setProgress3(final float progress3) {
 		this.progress3 = progress3;
 		botLayer.setScaleX(scaleWidth * progress3);
 		botLayer.pack();
 	}
 
-	public void setSideMargins(float sideMargins) {
+	public void setSideMargins(final float sideMargins) {
 		this.sideMargins = sideMargins;
 	}
 
-	public void setTopBottomMargins(float topBottomMargins) {
+	public void setTopBottomMargins(final float topBottomMargins) {
 		this.topBottomMargins = topBottomMargins;
 	}
 
-	public void setVisible(boolean visible) {
+	@Override
+	public void setVisible(final boolean visible) {
 		this.visible = visible;
 	}
 }

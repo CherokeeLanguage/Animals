@@ -8,53 +8,80 @@ import com.cherokeelessons.common.Utils;
 
 public class GraduatedIntervalQueue {
 
-	public boolean isDebug() {
-		return debug;
+	public static class Point {
+
+		protected int x, y;
+
+		public Point() {
+
+			setPoint(0, 0);
+
+		}
+
+		public Point(final int coordx, final int coordy) {
+			setPoint(coordx, coordy);
+		}
+
+		public int getX() {
+			return x;
+		}
+
+		public int getY() {
+			return y;
+		}
+
+		public void setPoint(final int coordx, final int coordy) {
+			x = coordx;
+			y = coordy;
+		}
+
+		public String toPrint() {
+			return "[" + x + "," + y + "]";
+		}
+
 	}
 
-	public void setDebug(boolean debug) {
-		this.debug = debug;
+	public static final class SortSizeAscendingAlpha implements Comparator<String> {
+		@Override
+		public int compare(String o1, String o2) {
+			o1 = Utils.asSyllabary(o1);
+			o2 = Utils.asSyllabary(o2);
+			if (o1.length() < o2.length()) {
+				return -1;
+			}
+			if (o1.length() > o2.length()) {
+				return 1;
+			}
+			return o1.compareTo(o2);
+		}
 	}
 
 	private boolean debug = true;
 
 	private boolean doubleMode = false;
 
-	public boolean isDoubleMode() {
-		return doubleMode;
-	}
-
-	public void setDoubleMode(boolean doubleMode) {
-		this.doubleMode = doubleMode;
-	}
-
 	private List<String> startingEntries;
+
 	private List<String> intervalQueue;
 
-	public List<String> getIntervalQueue() {
-		return intervalQueue;
+	private ArrayList<Point> levelMarks;
+	private boolean briefList = false;
+
+	private boolean shortList = false;
+
+	public GraduatedIntervalQueue() {
+		super();
 	}
 
-	public String getEntry(int ix) {
+	public String getEntry(final int ix) {
 		if (intervalQueue.size() > ix && ix >= 0) {
 			return intervalQueue.get(ix);
 		}
 		return null;
 	}
 
-	public GraduatedIntervalQueue() {
-		super();
-	}
-
-	public void load(List<String> _startingEntries) {
-		startingEntries = new ArrayList<String>();
-//		bounderiesNameList = new Array<String>();
-//		bounderiesByName = new HashMap<String, Integer>();
-//		bounderiesByPosition = new HashMap<Integer, String>();
-		startingEntries.addAll(_startingEntries);
-		intervalQueue = getQueue(startingEntries);
-//		locateBounderies();
-//		calculateLevelStarts(18);
+	public List<String> getIntervalQueue() {
+		return intervalQueue;
 	}
 
 //	private Array<String> bounderiesNameList;
@@ -76,7 +103,9 @@ public class GraduatedIntervalQueue {
 //		}
 //	}
 
-	private ArrayList<Point> levelMarks;
+	int getLevelCount() {
+		return levelMarks.size();
+	}
 
 //	public void calculateLevelStarts(int levels) {
 //		int startingPoint;
@@ -105,93 +134,23 @@ public class GraduatedIntervalQueue {
 //		}
 //	}
 
-	int getLevelCount() {
-		return levelMarks.size();
+	int getLevelEndPosition(final int level) {
+		return levelMarks.get(level).y;
 	}
 
-	int getLevelStartPosition(int level) {
-		return (int) levelMarks.get(level).x;
-	}
-
-	int getLevelEndPosition(int level) {
-		return (int) levelMarks.get(level).y;
-	}
-
-//	String getLevelStartName(int level) {
-//		int position;
-//		position = getLevelStartPosition(level);
-//		return bounderiesByPosition.get(position);
-//	}
-
-	public void removeGaps(List<String> queue) {
-		int ix = 0, repeat;
-		List<String> vx1 = null;
-		List<String> vx2 = null;
-		boolean hasDupes = true;
-		String prev = null;
-		String current = null;
-
-		vx1 = new ArrayList<String>();
-		vx2 = new ArrayList<String>();
-
-		/**
-		 * scan for and try and prevent "repeats"
-		 */
-		for (repeat = 0; hasDupes && repeat < 10; repeat++) {
-			prev = null;
-			vx1.clear();
-			vx2.clear();
-			hasDupes = false;
-			for (ix = 0; ix < queue.size(); ix++) {
-				if (queue.get(ix) == null)
-					continue;
-				current = queue.get(ix);
-				if (!current.equals(prev)) {
-					vx1.add(current);
-					prev = current;
-				} else {
-					vx2.add(current);
-					hasDupes = true;
-				}
-			}
-			queue.clear();
-			queue.addAll(vx1);
-			queue.addAll(vx2);
-		}
-
-		vx1.clear();
-		vx2.clear();
-	}
-
-	private boolean briefList = false;
-
-	public boolean isBriefList() {
-		return briefList;
-	}
-
-	public void setBriefList(boolean briefList) {
-		this.briefList = briefList;
-	}
-
-	private boolean shortList = false;
-
-	public boolean isShortList() {
-		return shortList;
-	}
-
-	public void setShortList(boolean shortList) {
-		this.shortList = shortList;
+	int getLevelStartPosition(final int level) {
+		return levelMarks.get(level).x;
 	}
 
 	/**
 	 * based on getOffsetsReal from 'translations.php'
-	 * 
+	 *
 	 * @return ArrayList<Integer>
 	 */
 	private ArrayList<Integer> getOffsets() {
 		ArrayList<Integer> o1;
 		int ip, depth = 6, stagger = 2, ix, basePower = 2;
-		o1 = new ArrayList<Integer>();
+		o1 = new ArrayList<>();
 
 		if (isBriefList()) {
 			depth = 6;
@@ -213,16 +172,24 @@ public class GraduatedIntervalQueue {
 		return o1;
 	}
 
+//	String getLevelStartName(int level) {
+//		int position;
+//		position = getLevelStartPosition(level);
+//		return bounderiesByPosition.get(position);
+//	}
+
 	/**
 	 * based on getOffsetsReal from 'translations.php'
-	 * 
+	 *
 	 * @return ArrayList<Integer>
 	 */
 	private ArrayList<Integer> getOffsetsDoubled() {
 		ArrayList<Integer> o1;
-		int ip, depth = 6, stagger = 4, ix;
+		int ip;
+		final int depth = 6, stagger = 4;
+		int ix;
 
-		o1 = new ArrayList<Integer>();
+		o1 = new ArrayList<>();
 
 		for (ix = 0; ix < stagger; ix++) {
 			for (ip = 0; ip <= depth; ip++) {
@@ -232,14 +199,14 @@ public class GraduatedIntervalQueue {
 		return o1;
 	}
 
-	private List<String> getQueue(List<String> startingEntries2) {
+	private List<String> getQueue(final List<String> startingEntries2) {
 		int ix, iy, ia;
 		ArrayList<Integer> offsets;
 		List<String> newQueue = null;
 		List<String> samples;
 
-		newQueue = new ArrayList<String>();
-		samples = new ArrayList<String>();
+		newQueue = new ArrayList<>();
+		samples = new ArrayList<>();
 		if (isDoubleMode()) {
 			offsets = getOffsetsDoubled();
 		} else {
@@ -254,12 +221,14 @@ public class GraduatedIntervalQueue {
 		for (ix = 0; ix < samples.size(); ix++) {
 			ia = 0;
 			for (iy = 0; iy < offsets.size(); iy++) {
-				while (newQueue.size() < ia + 1)
+				while (newQueue.size() < ia + 1) {
 					newQueue.add(null);
+				}
 				while (newQueue.get(ia) != null) {
 					ia++;
-					while (newQueue.size() < ia + 1)
+					while (newQueue.size() < ia + 1) {
 						newQueue.add(null);
+					}
 				}
 				newQueue.set(ia, samples.get(ix));
 				ia += offsets.get(iy);
@@ -268,6 +237,82 @@ public class GraduatedIntervalQueue {
 		removeGaps(newQueue);
 
 		return newQueue;
+	}
+
+	public boolean isBriefList() {
+		return briefList;
+	}
+
+	public boolean isDebug() {
+		return debug;
+	}
+
+	public boolean isDoubleMode() {
+		return doubleMode;
+	}
+
+	public boolean isShortList() {
+		return shortList;
+	}
+
+	public void load(final List<String> _startingEntries) {
+		startingEntries = new ArrayList<>();
+//		bounderiesNameList = new Array<String>();
+//		bounderiesByName = new HashMap<String, Integer>();
+//		bounderiesByPosition = new HashMap<Integer, String>();
+		startingEntries.addAll(_startingEntries);
+		intervalQueue = getQueue(startingEntries);
+//		locateBounderies();
+//		calculateLevelStarts(18);
+	}
+
+	public void removeGaps(final List<String> queue) {
+		int ix = 0, repeat;
+		List<String> vx1 = null;
+		List<String> vx2 = null;
+		boolean hasDupes = true;
+		String prev = null;
+		String current = null;
+
+		vx1 = new ArrayList<>();
+		vx2 = new ArrayList<>();
+
+		/**
+		 * scan for and try and prevent "repeats"
+		 */
+		for (repeat = 0; hasDupes && repeat < 10; repeat++) {
+			prev = null;
+			vx1.clear();
+			vx2.clear();
+			hasDupes = false;
+			for (ix = 0; ix < queue.size(); ix++) {
+				if (queue.get(ix) == null) {
+					continue;
+				}
+				current = queue.get(ix);
+				if (!current.equals(prev)) {
+					vx1.add(current);
+					prev = current;
+				} else {
+					vx2.add(current);
+					hasDupes = true;
+				}
+			}
+			queue.clear();
+			queue.addAll(vx1);
+			queue.addAll(vx2);
+		}
+
+		vx1.clear();
+		vx2.clear();
+	}
+
+	public void setBriefList(final boolean briefList) {
+		this.briefList = briefList;
+	}
+
+	public void setDebug(final boolean debug) {
+		this.debug = debug;
 	}
 
 //	private static String asLatin(String raw_text) {
@@ -282,50 +327,11 @@ public class GraduatedIntervalQueue {
 //		return text;
 //	}
 
-	public static final class SortSizeAscendingAlpha implements
-			Comparator<String> {
-		@Override
-		public int compare(String o1, String o2) {
-			o1 = Utils.asSyllabary(o1);
-			o2 = Utils.asSyllabary(o2);
-			if (o1.length() < o2.length())
-				return -1;
-			if (o1.length() > o2.length())
-				return 1;
-			return (o1.compareTo(o2));
-		}
+	public void setDoubleMode(final boolean doubleMode) {
+		this.doubleMode = doubleMode;
 	}
 
-	public static class Point {
-
-		protected int x, y;
-
-		public Point() {
-
-			setPoint(0, 0);
-
-		}
-
-		public Point(int coordx, int coordy) {
-			setPoint(coordx, coordy);
-		}
-
-		public void setPoint(int coordx, int coordy) {
-			x = coordx;
-			y = coordy;
-		}
-
-		public int getX() {
-			return x;
-		}
-
-		public int getY() {
-			return y;
-		}
-
-		public String toPrint() {
-			return "[" + x + "," + y + "]";
-		}
-
+	public void setShortList(final boolean shortList) {
+		this.shortList = shortList;
 	}
 }

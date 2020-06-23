@@ -21,47 +21,38 @@ import com.cherokeelessons.util.StringUtils;
 
 public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 
-	@Override
-	public boolean dpad(int keyCode) {
-		switch (keyCode) {
-		case Keys.DPAD_CENTER:
-			game.gameEvent(GameEvent.Done);
-			return true;
-		}
-		return false;
-	}
-
 	private static final String SCORE = "SCORE: ";
+
 	private static final String COMPLETE = "Complete!";
 	private static final String CORRECT = "% Correct!";
 	private static final String LEVEL = "Level";
 	private static final String TABLET_MAIN = "[BACK]";
-
 	private BitmapFont font;
 
-	private int fontSize = 88;
+	private final int fontSize = 88;
+
 	private Label gotoMainMenu;
 	private LabelStyle lStyle;
 	private Label msg_accuracy;
 	private Label msg_score;
 	public int optionsButton;
 	private Label msg_elasped_time;
-
 	private LabelStyle tbStyle;
 
-	final Array<Sprite> wall = new Array<Sprite>();
+	final Array<Sprite> wall = new Array<>();
 
 	private TextureAtlas wall_atlas;
 
 	final private CtlrLevelComplete_Watch watcher = new CtlrLevelComplete_Watch(this);
+
 	private int levelOn;
 	private int correct;
 	private long elapsed;
 	private long elapsed_sec;
 	private long elapsed_min;
-	private Callback<Void> show_ranking = new Callback<Void>() {
+	private final Callback<Void> show_ranking = new Callback<Void>() {
 		@Override
-		public void success(Void result) {
+		public void success(final Void result) {
 			// updateRanking(score);
 		}
 	};
@@ -70,7 +61,7 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	public ScreenLevelComplete(final CherokeeAnimals game) {
 		super(game);
 
-		FontLoader fg = new FontLoader();
+		final FontLoader fg = new FontLoader();
 
 		font = fg.get(fontSize);
 
@@ -90,7 +81,8 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		gotoMainMenu.addCaptureListener(new ClickListener() {
 
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
+					final int button) {
 				game.gameEvent(GameEvent.MainMenu);
 				return true;
 			}
@@ -106,10 +98,20 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	}
 
 	@Override
+	public boolean dpad(final int keyCode) {
+		switch (keyCode) {
+		case Keys.DPAD_CENTER:
+			game.gameEvent(GameEvent.Done);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public void hide() {
 		wall.clear();
 		wall_atlas.dispose();
-		for (Controller controller : Gamepads.getControllers()) {
+		for (final Controller controller : Gamepads.getControllers()) {
 			watcher.disconnected(controller);
 		}
 		Gamepads.clearListeners();
@@ -142,7 +144,7 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	}
 
 	@Override
-	public void render(float delta) {
+	public void render(final float delta) {
 		super.render(delta);
 //		batch.begin();
 //		for (Sprite s : wall) {
@@ -158,7 +160,7 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		positionItems();
 		wall_atlas = Utils.initBackdrop(wall);
 		Gamepads.addListener(watcher);
-		for (Controller c : Gamepads.getControllers()) {
+		for (final Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
 		}
 		final DreamLo lb = new DreamLo(game.prefs);
@@ -170,13 +172,13 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		elapsed_min = elapsed_sec / 60;
 		elapsed_sec -= elapsed_min * 60;
 		if (game.prefs.isLeaderBoardEnabled()) {
-			lb.lb_submit((levelOn + 1) + "", score, correct, "", show_ranking);
+			lb.lb_submit(levelOn + 1 + "", score, correct, "", show_ranking);
 		}
 		updateDisplay();
 	}
 
 	private void updateDisplay() {
-		int midX = (int) (safeZoneSize.width / 2);
+		final int midX = (int) (safeZoneSize.width / 2);
 		msg_accuracy
 				.setText("Level " + (levelOn + 1) + ": " + game.prefs.getLevelAccuracy(game.getLevelOn()) + CORRECT);
 		msg_accuracy.pack();

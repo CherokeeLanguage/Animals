@@ -16,15 +16,15 @@ import com.cherokeelessons.animals.GraduatedIntervalQueue.SortSizeAscendingAlpha
 public class LoadChallenges {
 
 	public static class AudioSet {
-		public final List<FileHandle> audio = new ArrayList<FileHandle>(1);
+		public final List<FileHandle> audio = new ArrayList<>(1);
 	}
 
 	private class CurrChallenges {
-		final public List<String> list = new ArrayList<String>();
+		final public List<String> list = new ArrayList<>();
 	}
 
 	public static class ImageSet {
-		public final List<FileHandle> images = new ArrayList<FileHandle>(11);
+		public final List<FileHandle> images = new ArrayList<>(11);
 	}
 
 	private static final String AUDIO_CHALLENGES = "audio/challenges/";
@@ -37,8 +37,8 @@ public class LoadChallenges {
 	 */
 	private static final int screensPerChallengeSet = 3;
 	final private Map<String, AudioSet> audioDecks;
-	final private Map<Integer, CurrChallenges> cache_curr = new HashMap<Integer, CurrChallenges>();
-	final private Map<Integer, String> cache_levelname = new HashMap<Integer, String>();
+	final private Map<Integer, CurrChallenges> cache_curr = new HashMap<>();
+	final private Map<Integer, String> cache_levelname = new HashMap<>();
 	// final private Map<String, AudioSet> challengeAudio;
 	final private Map<String, ImageSet> challengeImages;
 
@@ -47,112 +47,104 @@ public class LoadChallenges {
 	private boolean testmode = false;
 
 	public LoadChallenges() {
-		List<FileHandle> audio = loadChallengesByAudio();
+		final List<FileHandle> audio = loadChallengesByAudio();
 		matchUpAudioFilesToImages(audio);
 		// challengeAudio = new HashMap<String, AudioSet>();
-		challengeImages = new HashMap<String, ImageSet>();
-		imageDecks = new HashMap<String, ImageSet>();
-		audioDecks = new HashMap<String, AudioSet>();
-		challenges = new ArrayList<String>();
+		challengeImages = new HashMap<>();
+		imageDecks = new HashMap<>();
+		audioDecks = new HashMap<>();
+		challenges = new ArrayList<>();
 
-		for (FileHandle afile : audio) {
-			String name = afile.nameWithoutExtension();
+		for (final FileHandle afile : audio) {
+			final String name = afile.nameWithoutExtension();
 			challenges.add(name);
 			// AudioSet aset = getAudioSetFor(name);
 			// challengeAudio.put(name, aset);
-			ImageSet iset = getImageSetFor(name);
+			final ImageSet iset = getImageSetFor(name);
 			challengeImages.put(name, iset);
 		}
-		Collections.sort(challenges,new SortSizeAscendingAlpha());
+		Collections.sort(challenges, new SortSizeAscendingAlpha());
 	}
 
-	private List<String> calculateSeed(int start, int end) {
-		List<String> seed = new ArrayList<String>();
+	private List<String> calculateSeed(final int start, final int end) {
+		final List<String> seed = new ArrayList<>();
 		for (int ix = start; ix < end; ix++) {
-			int iy = ix % challenges.size();
-			String challenge = challenges.get(iy);
+			final int iy = ix % challenges.size();
+			final String challenge = challenges.get(iy);
 			seed.add(challenge);
 		}
 		if (start > challengesPerChallengeSet) {
 			for (int ix = start - challengesPerChallengeSet; ix < end - challengesPerChallengeSet; ix++) {
-				int iy = ix % challenges.size();
-				String challenge = challenges.get(iy);
+				final int iy = ix % challenges.size();
+				final String challenge = challenges.get(iy);
 				seed.add(challenge);
 			}
 		} else {
 			for (int ix = start; ix < end; ix++) {
-				int iy = ix % challenges.size();
-				String challenge = challenges.get(iy);
+				final int iy = ix % challenges.size();
+				final String challenge = challenges.get(iy);
 				seed.add(challenge);
 			}
 		}
 		return seed;
 	}
 
-	public Set<String> getPreviousChallengesFor(int level) {
-		Set<String> wasBefore = new HashSet<String>();
-		for (int ix = 0; ix < level; ix++) {
-			wasBefore.addAll(getChallengesFor(ix));
-		}
-		return wasBefore;
-	}
-
-	public List<String> getChallengesFor(int level) {
+	public List<String> getChallengesFor(final int level) {
 		if (cache_curr.containsKey(level)) {
-			return new ArrayList<String>(cache_curr.get(level).list);
+			return new ArrayList<>(cache_curr.get(level).list);
 		}
-		final List<String> challengeList = new ArrayList<String>();
-		int challengeSet = level / screensPerChallengeSet + 1;
-		int subSet = level % screensPerChallengeSet;
-		int start = (challengeSet - 1) * challengesPerChallengeSet;
-		int end = start + challengesPerChallengeSet;
-		List<String> seed = calculateSeed(start, end);
+		final List<String> challengeList = new ArrayList<>();
+		final int challengeSet = level / screensPerChallengeSet + 1;
+		final int subSet = level % screensPerChallengeSet;
+		final int start = (challengeSet - 1) * challengesPerChallengeSet;
+		final int end = start + challengesPerChallengeSet;
+		final List<String> seed = calculateSeed(start, end);
 
-		GraduatedIntervalQueue giq = new GraduatedIntervalQueue();
+		final GraduatedIntervalQueue giq = new GraduatedIntervalQueue();
 		giq.setBriefList(true);
 		giq.load(seed);
 
 		challengeList.clear();
-		List<String> list = giq.getIntervalQueue();
-		int split = list.size() / screensPerChallengeSet;
-		int setStart = split * subSet;
-		int nextSet = split * (subSet + 1);
+		final List<String> list = giq.getIntervalQueue();
+		final int split = list.size() / screensPerChallengeSet;
+		final int setStart = split * subSet;
+		final int nextSet = split * (subSet + 1);
 		for (int ix = setStart; ix < nextSet; ix++) {
 			challengeList.add(list.get(ix));
 		}
 		if (testmode) {
 			challengeList.subList(1, challengeList.size()).clear();
 		}
-		CurrChallenges clist = new CurrChallenges();
+		final CurrChallenges clist = new CurrChallenges();
 		clist.list.addAll(challengeList);
 		cache_curr.put(level, clist);
-		return new ArrayList<String>(challengeList);
+		return new ArrayList<>(challengeList);
 	}
 
-	private ImageSet getImageSetFor(String name) {
-		ImageSet set = new ImageSet();
+	private ImageSet getImageSetFor(final String name) {
+		final ImageSet set = new ImageSet();
 		for (int ix = -1; ix < 10; ix++) {
-			String sfx = (ix != -1 ? "_" + ix : "");
-			FileHandle pic = Gdx.files.internal(IMAGES + name + sfx + ".png");
+			final String sfx = ix != -1 ? "_" + ix : "";
+			final FileHandle pic = Gdx.files.internal(IMAGES + name + sfx + ".png");
 			try {
 				if (pic.length() > 0) {
 					set.images.add(pic);
 					continue;
 				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 			}
 		}
 		return set;
 	}
 
-	public String getLevelNameFor(int level) {
+	public String getLevelNameFor(final int level) {
 		if (cache_levelname.containsKey(level)) {
 			return cache_levelname.get(level);
 		}
-		Set<String> wasBefore = getPreviousChallengesFor(level);
-		List<String> now = getChallengesFor(level);
+		final Set<String> wasBefore = getPreviousChallengesFor(level);
+		final List<String> now = getChallengesFor(level);
 		String result = now.get(0);
-		for (String challenge : now) {
+		for (final String challenge : now) {
 			if (!wasBefore.contains(challenge)) {
 				result = challenge;
 				break;
@@ -160,6 +152,14 @@ public class LoadChallenges {
 		}
 		cache_levelname.put(level, result);
 		return result;
+	}
+
+	public Set<String> getPreviousChallengesFor(final int level) {
+		final Set<String> wasBefore = new HashSet<>();
+		for (int ix = 0; ix < level; ix++) {
+			wasBefore.addAll(getChallengesFor(ix));
+		}
+		return wasBefore;
 	}
 
 	public boolean isTestmode() {
@@ -171,7 +171,7 @@ public class LoadChallenges {
 	 */
 	public int levelcount() {
 		int sets = challenges.size() / challengesPerChallengeSet;
-		int partial = challenges.size() % challengesPerChallengeSet;
+		final int partial = challenges.size() % challengesPerChallengeSet;
 		if (partial != 0) {
 			sets++;
 		}
@@ -179,13 +179,13 @@ public class LoadChallenges {
 	}
 
 	private List<FileHandle> loadChallengesByAudio() {
-		String audio_plist = AUDIO_CHALLENGES + "00-plist.txt";
+		final String audio_plist = AUDIO_CHALLENGES + "00-plist.txt";
 		String txt = Gdx.files.internal(audio_plist).readString("UTF-8");
 		String[] plist = txt.split("\n");
 		txt = null;
-		final List<FileHandle> temp = new ArrayList<FileHandle>(plist.length);
-		for (int ix = 0; ix < plist.length; ix++) {
-			String e = plist[ix];
+		final List<FileHandle> temp = new ArrayList<>(plist.length);
+		for (final String element : plist) {
+			String e = element;
 			if (e == null) {
 				continue;
 			}
@@ -200,30 +200,30 @@ public class LoadChallenges {
 				continue;
 			}
 			// trust the plist!
-			FileHandle f = Gdx.files.internal(AUDIO_CHALLENGES + e);
+			final FileHandle f = Gdx.files.internal(AUDIO_CHALLENGES + e);
 			temp.add(f);
 		}
 		plist = null;
 		return temp;
 	}
 
-	private void matchUpAudioFilesToImages(List<FileHandle> challenges) {
-		Iterator<FileHandle> i = challenges.iterator();
+	private void matchUpAudioFilesToImages(final List<FileHandle> challenges) {
+		final Iterator<FileHandle> i = challenges.iterator();
 		while (i.hasNext()) {
-			String name = i.next().nameWithoutExtension();
+			final String name = i.next().nameWithoutExtension();
 			try {
-				FileHandle pic = Gdx.files.internal(IMAGES + name + ".png");
+				final FileHandle pic = Gdx.files.internal(IMAGES + name + ".png");
 				if (pic.length() > 0) {
 					continue;
 				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 			}
 			System.out.println("MISSING PICTURE: '" + name + "'");
 			i.remove();
 		}
 	}
 
-	public FileHandle nextAudio(String name) {
+	public FileHandle nextAudio(final String name) {
 		AudioSet set = audioDecks.get(name);
 		if (set == null) {
 			set = new AudioSet();
@@ -236,7 +236,7 @@ public class LoadChallenges {
 		return set.audio.remove(0);
 	}
 
-	public FileHandle nextImage(String name) {
+	public FileHandle nextImage(final String name) {
 		ImageSet set = imageDecks.get(name);
 		if (set == null) {
 			set = new ImageSet();
@@ -253,13 +253,13 @@ public class LoadChallenges {
 	 * try and force the level cout to be this by auto adjusting
 	 * challengesPerChallengeSet
 	 */
-	public void setLevelCount(int count) {
-		int sets = (count - 1) / screensPerChallengeSet + 1;
+	public void setLevelCount(final int count) {
+		final int sets = (count - 1) / screensPerChallengeSet + 1;
 		challengesPerChallengeSet = (int) Math.ceil((float) challenges.size() / (float) sets);
 		// precalculate and cache this stuff
 		cache_levelname.clear();
 		cache_curr.clear();
-		int levels = levelcount();
+		final int levels = levelcount();
 		for (int ix = 0; ix < levels; ix++) {
 			getLevelNameFor(ix);
 			getPreviousChallengesFor(ix);
@@ -267,7 +267,7 @@ public class LoadChallenges {
 		}
 	}
 
-	public void setTestmode(boolean testmode) {
+	public void setTestmode(final boolean testmode) {
 		this.testmode = testmode;
 	}
 }

@@ -38,63 +38,37 @@ import com.cherokeelessons.common.Utils;
 
 public class ScreenGameplay extends GameScreen implements DpadInterface {
 
-	private float boardElapsed = 0;
-
 	enum WritingMode {
 		Latin, None, Syllabary
 	}
 
-	@Override
-	public boolean dpad(int keyCode) {
-		if (!showSelector) {
-			showSelector = true;
-			hud_showIndicator(true);
-		}
-		switch (keyCode) {
-		case Keys.DPAD_CENTER:
-			hud_select();
-			return true;
-		case Keys.DPAD_DOWN:
-			hud_moveSouth();
-			return true;
-		case Keys.DPAD_LEFT:
-			hud_moveLeft();
-			return true;
-		case Keys.DPAD_RIGHT:
-			hud_moveRight();
-			return true;
-		case Keys.DPAD_UP:
-			hud_moveNorth();
-			return true;
-		}
-		return false;
-	}
+	private float boardElapsed = 0;
 
-	private ViewGameBoard activehud;
+	private final ViewGameBoard activehud;
 
-	private Set<String> alreadySeen = new HashSet<String>();
+	private final Set<String> alreadySeen = new HashSet<>();
 
 	private int badPoints = 0;
+
 	FileHandle button_highlight = Gdx.files.internal("buttons/2610_white.png");
-	private String[] buttonPicture = new String[6];
-	private String[] buttonPictureCopy = new String[buttonPicture.length];
-	private ViewChallengeBoard challengeBoard;
+	private final String[] buttonPicture = new String[6];
+	private final String[] buttonPictureCopy = new String[buttonPicture.length];
+	private final ViewChallengeBoard challengeBoard;
 	private String currentChallenge;
 	private float elapsedTime = 0;
 	private int end;
-
 	private float failsafeTimer = 0;
-	private FileHandle fat_check = Gdx.files.internal("buttons/2714_white.png");
-	private FileHandle fat_x = Gdx.files.internal("buttons/2716_white.png");
-	private ViewGameBoard gameBoard;
 
-	private ViewInGameControls gameControls;
+	private final FileHandle fat_check = Gdx.files.internal("buttons/2714_white.png");
+	private final FileHandle fat_x = Gdx.files.internal("buttons/2716_white.png");
+	private final ViewGameBoard gameBoard;
+	private final ViewInGameControls gameControls;
 
 	private int ip = 0;
 
 	private int item_highlighted = 0;
-	private int markedCorrect;
 
+	private int markedCorrect;
 	private int markedWrong;
 
 	private boolean nextScreen = false;
@@ -104,13 +78,13 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 	ViewProgressBar pbar;
 
 	private boolean repeatAudio = true;
-	private FileHandle[] savedPictureFH = new FileHandle[buttonPicture.length];
 
-	private ViewScoreBoard scoreBoard;
+	private final FileHandle[] savedPictureFH = new FileHandle[buttonPicture.length];
+	private final ViewScoreBoard scoreBoard;
 
 	private int start;
 
-	private float timeLimit = 5;
+	private final float timeLimit = 5;
 
 	private final CtlrGamePlay_Watch watcher;
 
@@ -120,7 +94,19 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 
 	private Texture pause_texture;
 
-	private boolean usingController;
+	private final boolean usingController;
+
+	private Pixmap pause_mask;
+
+	private int bonusPoints = 0;
+
+	private int goodPoints = 0;
+
+	private boolean showSelector = false;
+
+	private boolean doBonus = true;
+
+	final protected Group pauseOverlay = new Group();
 
 	public ScreenGameplay(final CherokeeAnimals game) {
 		super(game);
@@ -150,36 +136,19 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		usingController = Gamepads.getControllers().size != 0;
 	}
 
-	private Pixmap pause_mask;
-
-	@Override
-	public void setPaused(boolean isPaused) {
-		super.setPaused(isPaused);
-		if (isPaused()) {
-			pauseOverlay.getColor().a = .1f;
-			pauseOverlay.setTouchable(Touchable.enabled);
-		} else {
-			pauseOverlay.getColor().a = 0f;
-			pauseOverlay.setTouchable(Touchable.disabled);
-		}
-	}
-
-	private void buttonAsCorrect(int button) {
+	private void buttonAsCorrect(final int button) {
 		buttonPicture[button] = "";
 		gameBoard.setImage(button, fat_check);
 		gameBoard.setColor(button, GameColor.MAIN_TEXT);
 		markedCorrect++;
 	}
 
-	private void buttonAsWrong(int button) {
+	private void buttonAsWrong(final int button) {
 		buttonPicture[button] = "";
 		gameBoard.setImage(button, fat_x);
 		gameBoard.setColor(button, GameColor.FIREBRICK);
 		markedWrong++;
 	}
-
-	private int bonusPoints = 0;
-	private int goodPoints = 0;
 
 	private void checkButton(int button) {
 		if (buttonPicture[button] == null || buttonPicture[button].equals("")) {
@@ -196,10 +165,10 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 			return;
 		}
 		if (doBonus) {
-			double levelBonus = Math.ceil((float) game.getLevelOn() / 3f);
-			double timeRemainingBonus = Math.ceil((5f * (timeLimit - elapsedTime)) / timeLimit);
-			double totalBonus = timeRemainingBonus + levelBonus;
-			int timeBonus = (int) (totalBonus);
+			final double levelBonus = Math.ceil(game.getLevelOn() / 3f);
+			final double timeRemainingBonus = Math.ceil(5f * (timeLimit - elapsedTime) / timeLimit);
+			final double totalBonus = timeRemainingBonus + levelBonus;
+			final int timeBonus = (int) totalBonus;
 			bonusPoints += timeBonus;
 		}
 		buttonAsCorrect(button);
@@ -228,9 +197,61 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		}
 	}
 
+	private void connectClickhandlers() {
+		for (int ix = 0; ix < gameBoard.button_count(); ix++) {
+			final int button = ix;
+			gameBoard.clearListeners(button);
+			gameBoard.addListener(button, new ClickListener() {
+				private final int btn = button;
+
+				@Override
+				public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
+						final int button) {
+					hud_setIndicator(btn);
+					hud_showIndicator(true);
+					hud_select();
+					return true;
+				}
+			});
+		}
+	}
+
+	private void disconnectClickhandlers() {
+		for (int ix = 0; ix < gameBoard.button_count(); ix++) {
+			final int button = ix;
+			gameBoard.clearListeners(button);
+		}
+	}
+
+	@Override
+	public boolean dpad(final int keyCode) {
+		if (!showSelector) {
+			showSelector = true;
+			hud_showIndicator(true);
+		}
+		switch (keyCode) {
+		case Keys.DPAD_CENTER:
+			hud_select();
+			return true;
+		case Keys.DPAD_DOWN:
+			hud_moveSouth();
+			return true;
+		case Keys.DPAD_LEFT:
+			hud_moveLeft();
+			return true;
+		case Keys.DPAD_RIGHT:
+			hud_moveRight();
+			return true;
+		case Keys.DPAD_UP:
+			hud_moveNorth();
+			return true;
+		}
+		return false;
+	}
+
 	private void dropWrongAnswer() {
 		int ix = 0;
-		Random r = new Random();
+		final Random r = new Random();
 		/*
 		 * do we have any wrong answers left to drop?
 		 */
@@ -304,7 +325,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		pause_texture.dispose();
 		pause_mask.dispose();
 		alreadySeen.add(currentChallenge);
-		for (Controller controller : Gamepads.getControllers()) {
+		for (final Controller controller : Gamepads.getControllers()) {
 			watcher.disconnected(controller);
 		}
 		Gamepads.clearListeners();
@@ -397,7 +418,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		checkButton(item_highlighted);
 	}
 
-	private void hud_setIndicator(int button) {
+	private void hud_setIndicator(final int button) {
 		item_highlighted = button;
 	}
 
@@ -405,7 +426,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		hud_showIndicator(false);
 	}
 
-	private void hud_showIndicator(boolean quiet) {
+	private void hud_showIndicator(final boolean quiet) {
 		if (!quiet) {
 			game.sm.playEffect("box_moved");
 		}
@@ -415,20 +436,20 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		activehud.setImage(item_highlighted, button_highlight);
 		activehud.setColor(item_highlighted, GameColor.GOLD2);
 		activehud.setAlpha(item_highlighted, showSelector ? .7f : .0f);
-		Color gold3_50 = new Color(GameColor.GOLD3);
+		final Color gold3_50 = new Color(GameColor.GOLD3);
 		gold3_50.a = .7f;
-		Color gold2_50 = new Color(GameColor.GOLD2);
+		final Color gold2_50 = new Color(GameColor.GOLD2);
 		gold2_50.a = .7f;
-		Action act_gold3 = Actions.color(gold3_50, 1f, Interpolation.sine);
-		Action act_gold2 = Actions.color(gold2_50, 1f, Interpolation.sine);
-		Action act_seq = Actions.sequence(act_gold3, act_gold2);
-		Action act = Actions.forever(act_seq);
+		final Action act_gold3 = Actions.color(gold3_50, 1f, Interpolation.sine);
+		final Action act_gold2 = Actions.color(gold2_50, 1f, Interpolation.sine);
+		final Action act_seq = Actions.sequence(act_gold3, act_gold2);
+		final Action act = Actions.forever(act_seq);
 		if (showSelector) {
 			activehud.addAction(item_highlighted, act);
 		}
 	}
 
-	public void initLevel(int level) {
+	public void initLevel(final int level) {
 		/*
 		 * load up all entries from previous levels as "already seen"
 		 */
@@ -455,23 +476,21 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 	private void levelComplete() {
 		int percent;
 		int totalMarks;
-		int levelOn = game.getLevelOn();
-		int score = scoreBoard.getScore();
+		final int levelOn = game.getLevelOn();
+		final int score = scoreBoard.getScore();
 		nextScreen = false;
 		elapsedTime = 0;
 		totalMarks = markedCorrect + markedWrong;
 		if (totalMarks < 1) {
 			totalMarks = 1;
 		}
-		percent = (100 * markedCorrect) / totalMarks;
+		percent = 100 * markedCorrect / totalMarks;
 		game.prefs.setLevelAccuracy(levelOn, percent);
 		game.prefs.setLevelTime(levelOn, boardElapsed);
 		game.prefs.setLastScore(levelOn, score);
 		game.sm.playEffect("cash_out");
 		game.gameEvent(GameEvent.LevelComplete);
 	}
-
-	private boolean showSelector = false;
 
 	private void loadBoard() {
 		showSelector = false;
@@ -482,10 +501,10 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		Random r;
 		String name;
 		r = new Random();
-		int sz = alreadySeen.size() + 1;
-		String[] pickFrom = alreadySeen.toArray(new String[sz]);
+		final int sz = alreadySeen.size() + 1;
+		final String[] pickFrom = alreadySeen.toArray(new String[sz]);
 		pickFrom[sz - 1] = currentChallenge;
-		Array<String> deck = new Array<String>();
+		final Array<String> deck = new Array<>();
 		int correct = 0;
 		for (ix = 0; ix < buttonPicture.length; ix++) {
 			if (deck.size == 0) {
@@ -505,7 +524,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		 */
 		for (int ix1 = 0; ix1 < buttonPicture.length; ix1++) {
 			if (correct == 0 || r.nextInt(100) == 1) {
-				int slot = r.nextInt(buttonPicture.length);
+				final int slot = r.nextInt(buttonPicture.length);
 				if (buttonPicture[slot].equals(currentChallenge)) {
 					continue;
 				}
@@ -515,14 +534,14 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		}
 		while (alreadySeen.contains(currentChallenge)) {
 			boolean already = false;
-			for (int iy = 0; iy < buttonPicture.length; iy++) {
-				if (buttonPicture[iy].equals(currentChallenge)) {
+			for (final String element : buttonPicture) {
+				if (element.equals(currentChallenge)) {
 					already = true;
 					break;
 				}
 			}
 			if (!already) {
-				int slot = r.nextInt(buttonPicture.length);
+				final int slot = r.nextInt(buttonPicture.length);
 				if (correct == 1 && buttonPicture[slot].equals(currentChallenge)) {
 					continue;
 				}
@@ -547,12 +566,8 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		elapsedTime = 0;
 	}
 
-	private boolean doBonus = true;
-
-	final protected Group pauseOverlay = new Group();
-
 	@Override
-	public void render(float delta) {
+	public void render(final float delta) {
 		super.render(delta);
 
 		gameStage.draw();
@@ -624,7 +639,19 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		updateChallengeBoard();
 	}
 
-	public void setWritingMode(WritingMode writingMode) {
+	@Override
+	public void setPaused(final boolean isPaused) {
+		super.setPaused(isPaused);
+		if (isPaused()) {
+			pauseOverlay.getColor().a = .1f;
+			pauseOverlay.setTouchable(Touchable.enabled);
+		} else {
+			pauseOverlay.getColor().a = 0f;
+			pauseOverlay.setTouchable(Touchable.disabled);
+		}
+	}
+
+	public void setWritingMode(final WritingMode writingMode) {
 		this.writingMode = writingMode;
 	}
 
@@ -635,32 +662,34 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		pause_mask.setColor(1f, 1f, 1f, .7f);
 		pause_mask.fill();
 		pause_texture = new Texture(pause_mask);
-		Image pause_mask_image = new Image(pause_texture);
+		final Image pause_mask_image = new Image(pause_texture);
 		pause_mask_image.pack();
 		pause_mask_image.scaleBy(fullScreenSize.width, fullScreenSize.height);
 		pauseOverlay.addActor(pause_mask_image);
-		LabelStyle continueStyle = new LabelStyle(new FontLoader().get(72), GameColor.MAIN_TEXT);
-		String pauseMsg = usingController ? "Use [MENU] to resume." : "[CONTINUE]";
-		Label toContinue = new Label(pauseMsg, continueStyle);
+		final LabelStyle continueStyle = new LabelStyle(new FontLoader().get(72), GameColor.MAIN_TEXT);
+		final String pauseMsg = usingController ? "Use [MENU] to resume." : "[CONTINUE]";
+		final Label toContinue = new Label(pauseMsg, continueStyle);
 		pauseOverlay.addActor(toContinue);
 		toContinue.pack();
 		toContinue.setX((fullScreenSize.width - toContinue.getWidth()) / 2);
 		toContinue.setY((fullScreenSize.height - toContinue.getHeight()) / 2 + toContinue.getHeight());
 		toContinue.addListener(new ClickListener() {
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
+					final int button) {
 				setPaused(false);
 				return true;
 			}
 		});
-		Label toExit = new Label(usingController ? "Use [BACK] to exit." : "[BACK]", continueStyle);
+		final Label toExit = new Label(usingController ? "Use [BACK] to exit." : "[BACK]", continueStyle);
 		pauseOverlay.addActor(toExit);
 		toExit.pack();
 		toExit.setX((fullScreenSize.width - toExit.getWidth()) / 2);
 		toExit.setY((fullScreenSize.height - toExit.getHeight()) / 2 - toExit.getHeight());
 		toExit.addListener(new ClickListener() {
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
+					final int button) {
 				setPaused(false);
 				game.gameEvent(GameEvent.Done);
 				return true;
@@ -679,7 +708,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 			}
 		}
 		Gamepads.addListener(watcher);
-		for (Controller c : Gamepads.getControllers()) {
+		for (final Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
 		}
 		if (game.isTelevision()) {
@@ -699,31 +728,6 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 				game.gameEvent(GameEvent.Done);
 			}
 		});
-	}
-
-	private void connectClickhandlers() {
-		for (int ix = 0; ix < gameBoard.button_count(); ix++) {
-			final int button = ix;
-			gameBoard.clearListeners(button);
-			gameBoard.addListener(button, new ClickListener() {
-				private int btn = button;
-
-				@Override
-				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-					hud_setIndicator(btn);
-					hud_showIndicator(true);
-					hud_select();
-					return true;
-				}
-			});
-		}
-	}
-
-	private void disconnectClickhandlers() {
-		for (int ix = 0; ix < gameBoard.button_count(); ix++) {
-			final int button = ix;
-			gameBoard.clearListeners(button);
-		}
 	}
 
 	private void showNextBoardCheck() {

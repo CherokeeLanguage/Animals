@@ -15,55 +15,24 @@ import com.cherokeelessons.common.Utils;
 
 public class ScreenCredits extends GameScreen implements DpadInterface {
 
-	public float scrollTime=30f;
-	
+	public float scrollTime = 30f;
+
 	private Attributions creditScroller;
 
 	private Attributions shadow;
 
-	private ControllerAdapter skipCredits = new ControllerAdapter() {
+	private final ControllerAdapter skipCredits = new ControllerAdapter() {
 		@Override
-		public boolean buttonDown(Controller controller, int buttonCode) {
+		public boolean buttonDown(final Controller controller, final int buttonCode) {
 			game.gameEvent(GameEvent.Done);
 			return true;
 		}
 	};
-	@Override
-	public boolean dpad(int keyCode) {
-		if (keyCode!=Input.Keys.DPAD_CENTER) {
-			return false;
-		}
-		game.gameEvent(GameEvent.Done);
-		return true;
-	}
-	final Array<Sprite> wall = new Array<Sprite>();
+	final Array<Sprite> wall = new Array<>();
 	private TextureAtlas wall_atlas;
 
-	public ScreenCredits(CherokeeAnimals game) {
+	public ScreenCredits(final CherokeeAnimals game) {
 		super(game);
-	}
-
-	private void initScreen() {
-		gameStage.clear();
-		
-		shadow = new Attributions(safeZoneSize);
-		shadow.setFontColor(Color.BLACK);
-		shadow.getColor().a = .7f;
-		shadow.setxOffset(2);
-		shadow.setyOffset(-2);
-
-		creditScroller = new Attributions(safeZoneSize);
-		creditScroller.setFontColor(GameColor.MAIN_TEXT);
-
-		wall_atlas=Utils.initBackdrop(wall);
-
-		gameStage.addActor(shadow);
-		gameStage.addActor(creditScroller);
-	}
-
-	@Override
-	public void dispose() {		
-		super.dispose();
 	}
 
 	private void discardResources() {
@@ -75,7 +44,12 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 		shadow = null;
 	}
 
-	public void doScroll(float time) {
+	@Override
+	public void dispose() {
+		super.dispose();
+	}
+
+	public void doScroll(final float time) {
 		creditScroller.init();
 		creditScroller.setOnDone(new Runnable() {
 			@Override
@@ -89,14 +63,41 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 	}
 
 	@Override
+	public boolean dpad(final int keyCode) {
+		if (keyCode != Input.Keys.DPAD_CENTER) {
+			return false;
+		}
+		game.gameEvent(GameEvent.Done);
+		return true;
+	}
+
+	@Override
 	public void hide() {
 		super.hide();
 		Gamepads.clearListeners();
 		discardResources();
 	}
 
+	private void initScreen() {
+		gameStage.clear();
+
+		shadow = new Attributions(safeZoneSize);
+		shadow.setFontColor(Color.BLACK);
+		shadow.getColor().a = .7f;
+		shadow.setxOffset(2);
+		shadow.setyOffset(-2);
+
+		creditScroller = new Attributions(safeZoneSize);
+		creditScroller.setFontColor(GameColor.MAIN_TEXT);
+
+		wall_atlas = Utils.initBackdrop(wall);
+
+		gameStage.addActor(shadow);
+		gameStage.addActor(creditScroller);
+	}
+
 	@Override
-	public void render(float delta) {
+	public void render(final float delta) {
 		super.render(delta);
 //		batch.begin();
 //		for (Sprite s : wall) {
@@ -113,6 +114,5 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 		Gamepads.addListener(skipCredits);
 		doScroll(scrollTime);
 	}
-
 
 }

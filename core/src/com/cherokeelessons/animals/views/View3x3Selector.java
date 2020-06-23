@@ -27,13 +27,13 @@ public class View3x3Selector extends Group {
 		void handleClick(int button);
 	}
 
-	private int baseFontSize = 48;
+	private final int baseFontSize = 48;
 	private int bottomMargin = 0;
 	private int boxMargin = 0;
 
-	private Group buttonGroup;
+	private final Group buttonGroup;
 
-	private Image[] buttons = new Image[9];
+	private final Image[] buttons = new Image[9];
 
 	FontLoader fg;
 
@@ -43,12 +43,14 @@ public class View3x3Selector extends Group {
 
 	final private Rectangle screenSize = new Rectangle();
 
-	private Label titleBox;
-	private LabelStyle titleStyle;
+	private final Label titleBox;
+	private final LabelStyle titleStyle;
 
-	private float topMargin = 5;
+	private final float topMargin = 5;
 
-	public View3x3Selector(Rectangle overscan) {
+	private final Texture[] textureCache = new Texture[buttons.length];
+
+	public View3x3Selector(final Rectangle overscan) {
 		super();
 		screenSize.set(overscan);
 		fg = new FontLoader();
@@ -62,9 +64,13 @@ public class View3x3Selector extends Group {
 		setTitle(" ");
 	}
 
-	public void addAction(int buttonIX, Action action) {
+	public void addAction(int buttonIX, final Action action) {
 		buttonIX %= buttons.length;
 		buttons[buttonIX].addAction(action);
+	}
+
+	public void addListener(final int button, final EventListener clickListener) {
+		buttons[button].addListener(clickListener);
 	}
 
 	public int button_count() {
@@ -74,6 +80,10 @@ public class View3x3Selector extends Group {
 	public void clearActions(int buttonIX) {
 		buttonIX %= buttons.length;
 		buttons[buttonIX].clearActions();
+	}
+
+	public void clearListeners(final int button) {
+		buttons[button].clearListeners();
 	}
 
 	public void focusOn(int buttonIX) {
@@ -110,9 +120,9 @@ public class View3x3Selector extends Group {
 
 		col = buttonIX % perColumn;
 
-		colWidth = ((int) screenSize.width) / perRow;
-		rowHeight = ((int) (screenSize.height - titleStyle.font.getLineHeight()// titleBox.getHeight()
-				- topMargin - bottomMargin)) / perColumn;
+		colWidth = (int) screenSize.width / perRow;
+		rowHeight = (int) (screenSize.height - titleStyle.font.getLineHeight()// titleBox.getHeight()
+				- topMargin - bottomMargin) / perColumn;
 
 		boundingBox = new Rectangle();
 
@@ -133,14 +143,12 @@ public class View3x3Selector extends Group {
 	}
 
 	public Rectangle getRegionBox() {
-		Rectangle boundingBox = new Rectangle();
+		final Rectangle boundingBox = new Rectangle();
 
 		boundingBox.x = getBoundingBox(0).x;
 		boundingBox.y = getBoundingBox(8).y;
-		boundingBox.width = getBoundingBox(8).x + getBoundingBox(8).width
-				- boundingBox.x;
-		boundingBox.height = getBoundingBox(0).y + getBoundingBox(0).height
-				- boundingBox.y;
+		boundingBox.width = getBoundingBox(8).x + getBoundingBox(8).width - boundingBox.x;
+		boundingBox.height = getBoundingBox(0).y + getBoundingBox(0).height - boundingBox.y;
 
 		return boundingBox;
 	}
@@ -153,7 +161,7 @@ public class View3x3Selector extends Group {
 		}
 	}
 
-	private void positionButton(Image button, Rectangle bbox) {
+	private void positionButton(final Image button, final Rectangle bbox) {
 		float scaleX, scaleY;
 		float width, height;
 
@@ -173,8 +181,8 @@ public class View3x3Selector extends Group {
 			scaleSize = bbox.height;
 		}
 
-		scaleX = (float) scaleSize / width;
-		scaleY = (float) scaleSize / height;
+		scaleX = scaleSize / width;
+		scaleY = scaleSize / height;
 
 		if (scaleX > scaleY) {
 			scaleX = scaleY;
@@ -189,8 +197,8 @@ public class View3x3Selector extends Group {
 		button.setScaleY(scaleY);
 	}
 
-	private void resetAttributes(int button) {
-		Image image = buttons[button];
+	private void resetAttributes(final int button) {
+		final Image image = buttons[button];
 		image.clearActions();
 		image.setScale(1, 1);
 		image.setRotation(0);
@@ -200,7 +208,7 @@ public class View3x3Selector extends Group {
 
 	public void scatter() {
 		int ix;
-		Random r = new Random();
+		final Random r = new Random();
 		Image button;
 		float x, y;
 		for (ix = 0; ix < buttons.length; ix++) {
@@ -260,8 +268,7 @@ public class View3x3Selector extends Group {
 				break;
 			}
 			button.addAction(Actions.moveTo(x, y, 2.5f, inter));
-			button.addAction(Actions.rotateBy(360 + 360 * r.nextInt(5), 2.5f,
-					Interpolation.elastic));
+			button.addAction(Actions.rotateBy(360 + 360 * r.nextInt(5), 2.5f, Interpolation.elastic));
 		}
 	}
 
@@ -276,30 +283,28 @@ public class View3x3Selector extends Group {
 		buttons[buttonIX].getColor().a = alpha;
 	}
 
-	public void setBottomMargin(float bottomMargin) {
+	public void setBottomMargin(final float bottomMargin) {
 		this.bottomMargin = (int) bottomMargin;
 	}
 
-	public void setBottomMargin(int bottomMargin) {
+	public void setBottomMargin(final int bottomMargin) {
 		this.bottomMargin = bottomMargin;
 	}
 
-	public void setBoxMargin(int boxMargin) {
+	public void setBoxMargin(final int boxMargin) {
 		this.boxMargin = boxMargin;
 	}
 
-	public void setColor(int buttonIX, Color color) {
+	public void setColor(int buttonIX, final Color color) {
 		buttonIX %= buttons.length;
 		buttons[buttonIX].getColor().set(color);
 	}
 
-	public void setHandler(onClick handler) {
+	public void setHandler(final onClick handler) {
 		this.handler = handler;
 	}
 
-	private Texture[] textureCache = new Texture[buttons.length];
-
-	public void setImage(int buttonIX, FileHandle imageFile) {
+	public void setImage(int buttonIX, final FileHandle imageFile) {
 		Image button;
 		Rectangle bbox;
 		Texture image;
@@ -325,12 +330,12 @@ public class View3x3Selector extends Group {
 		textureCache[buttonIX] = image;
 		image.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		imageRegion = new TextureRegion(image);
-		TextureRegionDrawable trd = new TextureRegionDrawable(imageRegion);
+		final TextureRegionDrawable trd = new TextureRegionDrawable(imageRegion);
 		button.setDrawable(trd);
 		positionButton(button, bbox);
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		float scale = 1;
 
 		titleStyle.font = font;
@@ -346,8 +351,7 @@ public class View3x3Selector extends Group {
 		titleBox.setOriginY(titleStyle.font.getLineHeight() / 2);// titleBox.getHeight()
 																	// / 2);
 		titleBox.setX((screenSize.width - titleBox.getWidth()) / 2);
-		titleBox.setY(screenSize.height - topMargin
-				- titleStyle.font.getLineHeight());// titleBox.getHeight());
+		titleBox.setY(screenSize.height - topMargin - titleStyle.font.getLineHeight());// titleBox.getHeight());
 	}
 
 	public void unFocusOn() {
@@ -357,13 +361,6 @@ public class View3x3Selector extends Group {
 			buttons[ix].setRotation(0);
 			positionButton(buttons[ix], getBoundingBox(ix));
 		}
-	}
-
-	public void clearListeners(int button) {
-		buttons[button].clearListeners();		
-	}
-	public void addListener(int button, EventListener clickListener) {
-		buttons[button].addListener(clickListener);		
 	}
 
 }

@@ -23,21 +23,42 @@ import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Utils;
 
 public class ScreenInstructions extends GameScreen implements DpadInterface {
-	
-	private static final int fontSize=64;
+
+	private static final int fontSize = 64;
 
 	final private Table instructions = new Table();
 
-	private ControllerAdapter exitScreen = new ControllerAdapter() {
+	private final ControllerAdapter exitScreen = new ControllerAdapter() {
 		@Override
-		public boolean buttonDown(Controller controller, int buttonCode) {
+		public boolean buttonDown(final Controller controller, final int buttonCode) {
 			game.gameEvent(GameEvent.Done);
 			return true;
 		}
 	};
-	
+
+	final Array<Sprite> wall = new Array<>();
+
+	private TextureAtlas wall_atlas;
+	private FontLoader fg;
+
+	public ScreenInstructions(final CherokeeAnimals game) {
+		super(game);
+	}
+
+	private void discardResources() {
+		wall_atlas.dispose();
+		wall_atlas = null;
+		instructions.clear();
+		gameStage.clear();
+	}
+
 	@Override
-	public boolean dpad(int keyCode) {
+	public void dispose() {
+		super.dispose();
+	}
+
+	@Override
+	public boolean dpad(final int keyCode) {
 		switch (keyCode) {
 		case Keys.DPAD_CENTER:
 			game.gameEvent(GameEvent.Done);
@@ -46,11 +67,41 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 		return false;
 	}
 
-	final Array<Sprite> wall = new Array<Sprite>();
-	private TextureAtlas wall_atlas;
+	@Override
+	public void hide() {
+		super.hide();
+		Gamepads.clearListeners();
+		discardResources();
+	}
 
-	public ScreenInstructions(CherokeeAnimals game) {
-		super(game);
+	public void init() {
+		fg = new FontLoader();
+
+		final String tmp = Gdx.files.internal("data/instructions.txt").readString("UTF-8");
+		final LabelStyle style = new LabelStyle(fg.get(fontSize), new Color(GameColor.INSTRUCTIONS_TEXT));
+
+		instructions.row();
+		final Label textButton = new Label(tmp, style);
+		textButton.setAlignment(Align.center);
+		textButton.setWrap(true);
+		instructions.add(textButton).center().pad(0).space(0).expand().fill();
+
+		final TextButtonStyle tstyle = new TextButtonStyle();
+		tstyle.font = fg.get(fontSize);
+		tstyle.fontColor = new Color(GameColor.INSTRUCTIONS_TEXT);
+		final TextButton btnExit = new TextButton("[BACK]", tstyle);
+
+		instructions.row();
+		instructions.add(btnExit).center().pad(0).space(0).bottom();
+
+		btnExit.addListener(new ClickListener() {
+			@Override
+			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
+					final int button) {
+				game.gameEvent(GameEvent.Done);
+				return true;
+			}
+		});
 	}
 
 	private void initScreen() {
@@ -62,62 +113,8 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 		instructions.setHeight(safeZoneSize.height);
 	}
 
-	private FontLoader fg;
-			
-
-	public void init() {
-		fg = new FontLoader();
-		
-		String tmp = Gdx.files.internal("data/instructions.txt").readString("UTF-8");
-		LabelStyle style = new LabelStyle(fg.get(fontSize), new Color(GameColor.INSTRUCTIONS_TEXT));
-		
-		instructions.row();
-		Label textButton = new Label(tmp, style);
-		textButton.setAlignment(Align.center);
-		textButton.setWrap(true);
-		instructions.add(textButton).center().pad(0).space(0).expand().fill();
-		
-		TextButtonStyle tstyle = new TextButtonStyle();
-		tstyle.font=fg.get(fontSize);
-		tstyle.fontColor=new Color(GameColor.INSTRUCTIONS_TEXT);
-		TextButton btnExit = new TextButton("[BACK]", tstyle);
-		
-		instructions.row();
-		instructions.add(btnExit).center().pad(0).space(0).bottom();
-		
-		btnExit.addListener(new ClickListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				game.gameEvent(GameEvent.Done);
-				return true;
-			}
-		});
-	}
-
-	
-
 	@Override
-	public void dispose() {
-		super.dispose();
-	}
-
-	private void discardResources() {
-		wall_atlas.dispose();
-		wall_atlas = null;
-		instructions.clear();
-		gameStage.clear();
-	}
-
-	@Override
-	public void hide() {
-		super.hide();
-		Gamepads.clearListeners();
-		discardResources();
-	}
-
-	@Override
-	public void render(float delta) {
+	public void render(final float delta) {
 		super.render(delta);
 //		batch.begin();
 //		for (Sprite s : wall) {

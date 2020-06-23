@@ -17,7 +17,7 @@ import com.cherokeelessons.common.Gamepads;
  * In game controls (pause, exit, mute)
  */
 public class ViewInGameControls extends Group {
-	
+
 	private final String TABLET_INFO;
 	private final String PAUSE_INFO;
 
@@ -27,7 +27,7 @@ public class ViewInGameControls extends Group {
 
 	Vector2 bottomLeft = null;
 
-	private float bottomMargin = 5;
+	private final float bottomMargin = 5;
 
 	Vector2 bottomRight = null;
 
@@ -35,32 +35,33 @@ public class ViewInGameControls extends Group {
 	private Label btn_Pause = null;
 //	private Label btn_Exit = null;
 
-	private int fontSize = 48;
+	private final int fontSize = 48;
 	private LabelStyle labelStyle = null;
 
-	private float sideMargin = 20;
+	private final float sideMargin = 20;
 
 	private Runnable onExit;
 
 	private Runnable onPause;
 
 	private boolean usingController = false;
-	public ViewInGameControls(Rectangle overscan) {
+
+	public ViewInGameControls(final Rectangle overscan) {
 		super();
-		usingController = Gamepads.getControllers().size!=0;
+		usingController = Gamepads.getControllers().size != 0;
 		if (usingController) {
 			TABLET_INFO = "Tap picture(s) matching challenge.";
-			PAUSE_INFO="[PAUSE]";
+			PAUSE_INFO = "[PAUSE]";
 		} else {
 			TABLET_INFO = "Use [DPAD] and [SELECT] to choose.";
-			PAUSE_INFO="Use [MENU] to pause.";
+			PAUSE_INFO = "Use [MENU] to pause.";
 		}
 
 		bottomRight = new Vector2(overscan.width, 0);
 		bottomLeft = new Vector2(0, 0);
 		bottomCenter = new Vector2(overscan.width / 2, 0);
 
-		FontLoader fg = new FontLoader();
+		final FontLoader fg = new FontLoader();
 		bitmapFont = fg.get(fontSize);
 
 		labelStyle = new LabelStyle();
@@ -91,10 +92,11 @@ public class ViewInGameControls extends Group {
 		y = bottomRight.y + bottomMargin;
 		btn_Pause.setX(x);
 		btn_Pause.setY(y);
-		btn_Pause.addListener(new InputListener(){
+		btn_Pause.addListener(new InputListener() {
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				if (onPause!=null) {
+			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
+					final int button) {
+				if (onPause != null) {
 					Gdx.app.postRunnable(onPause);
 				}
 				return true;
@@ -106,7 +108,7 @@ public class ViewInGameControls extends Group {
 		y = bottomCenter.y + bottomMargin;
 		btn_Options.setX(x);
 		btn_Options.setY(y);
-		
+
 //		x = bottomRight.x - btn_Exit.getWidth();
 //		y = bottomRight.y + bottomMargin;
 //		btn_Exit.setX(x);
@@ -122,11 +124,11 @@ public class ViewInGameControls extends Group {
 //		});
 	}
 
-	public void setOnPause(Runnable runnable) {
-		this.onPause=runnable;
+	public void setOnExit(final Runnable runnable) {
+		this.onExit = runnable;
 	}
 
-	public void setOnExit(Runnable runnable) {
-		this.onExit=runnable;
+	public void setOnPause(final Runnable runnable) {
+		this.onPause = runnable;
 	}
 }

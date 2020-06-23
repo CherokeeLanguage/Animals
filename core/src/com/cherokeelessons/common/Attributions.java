@@ -11,12 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
 public class Attributions extends Group {
-	final private Rectangle bbox=new Rectangle();
-	private String[] credits;
+	final private Rectangle bbox = new Rectangle();
+	private final String[] credits;
 
 	private FontLoader fg;
 	private Color fontColor = new Color(Color.BLACK);
-	private int fontSize=88;
+	private final int fontSize = 88;
 	private float maxLineHeight;
 
 	private TextButton[] scrollingCredits;
@@ -25,11 +25,17 @@ public class Attributions extends Group {
 
 	private float yOffset = 0;
 
-	public Attributions(Rectangle screenSize) {
+	private Runnable onDone;
+
+	public Attributions(final Rectangle screenSize) {
 		super();
 		this.bbox.set(screenSize);
-		String tmp = Gdx.files.internal("data/credits.txt").readString("UTF-8");
+		final String tmp = Gdx.files.internal("data/credits.txt").readString("UTF-8");
 		credits = tmp.split("\n");
+	}
+
+	public Runnable getOnDone() {
+		return onDone;
 	}
 
 	public float getxOffset() {
@@ -68,8 +74,9 @@ public class Attributions extends Group {
 			creditLine = new TextButton(credits[ix], style);
 			creditLine.pack();
 			scrollingCredits[ix] = creditLine;
-			if (font.getLineHeight() > maxLineHeight)
+			if (font.getLineHeight() > maxLineHeight) {
 				maxLineHeight = font.getLineHeight();
+			}
 
 		}
 		for (ix = 0; ix < credits.length; ix++) {
@@ -78,8 +85,7 @@ public class Attributions extends Group {
 				continue;
 			}
 			creditLine.setX(xOffset + (bbox.width - creditLine.getWidth()) / 2);
-			creditLine
-					.setY(yOffset + (credits.length - ix - 1) * maxLineHeight);
+			creditLine.setY(yOffset + (credits.length - ix - 1) * maxLineHeight);
 			this.addActor(creditLine);
 		}
 		// store my dimensions
@@ -94,24 +100,14 @@ public class Attributions extends Group {
 		setY(-getHeight());
 	}
 
-	private Runnable onDone;
-	
-	public Runnable getOnDone() {
-		return onDone;
-	}
-
-	public void setOnDone(Runnable onDone) {
-		this.onDone = onDone;
-	}
-
-	public void scroll(float time) {
+	public void scroll(final float time) {
 		reset();
-		SequenceAction seq = Actions.sequence();
+		final SequenceAction seq = Actions.sequence();
 		seq.addAction(Actions.moveTo(0, bbox.height + maxLineHeight * 2, time));
 		seq.addAction(Actions.run(new Runnable() {
 			@Override
 			public void run() {
-				if (onDone!=null) {
+				if (onDone != null) {
 					Gdx.app.postRunnable(onDone);
 				}
 			}
@@ -119,19 +115,22 @@ public class Attributions extends Group {
 		addAction(seq);
 	}
 
-	public void setFontColor(Color color) {
+	public void setFontColor(final Color color) {
 		this.fontColor = color;
 	}
 
-	public void setxOffset(float xOffset) {
+	public void setOnDone(final Runnable onDone) {
+		this.onDone = onDone;
+	}
+
+	public void setxOffset(final float xOffset) {
 		this.xOffset = xOffset;
 	}
 
 	/**
-	 * @param yOffset
-	 *            the yOffset to set
+	 * @param yOffset the yOffset to set
 	 */
-	public void setyOffset(float yOffset) {
+	public void setyOffset(final float yOffset) {
 		this.yOffset = yOffset;
 	}
 }

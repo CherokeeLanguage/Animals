@@ -20,16 +20,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class ViewGameBoard extends Group {
 
-	private Image[] board = new Image[6];
-	private Texture[] textureCache = new Texture[board.length];
-	private int bottomGap = 80;
+	private final Image[] board = new Image[6];
+	private final Texture[] textureCache = new Texture[board.length];
+	private final int bottomGap = 80;
 
-	private int boxMargin = 16;
+	private final int boxMargin = 16;
 
 	final private Rectangle screenSize = new Rectangle();
-	private int topGap = 80;
+	private final int topGap = 80;
 
-	public ViewGameBoard(Rectangle overscan) {
+	public ViewGameBoard(final Rectangle overscan) {
 		super();
 		screenSize.set(overscan);
 		setX(0);
@@ -37,13 +37,13 @@ public class ViewGameBoard extends Group {
 		populateBoard();
 	}
 
-	public void addAction(int buttonIX, Action action) {
+	public void addAction(int buttonIX, final Action action) {
 		buttonIX %= board.length;
 		board[buttonIX].addAction(action);
 	}
 
-	public int button_count() {
-		return board.length;
+	public void addListener(final int ix, final EventListener listener) {
+		board[ix].addListener(listener);
 	}
 
 //	public void click(int ix) {
@@ -60,17 +60,25 @@ public class ViewGameBoard extends Group {
 //		}
 //	}
 
-	public void flyaway(int button) {
+	public int button_count() {
+		return board.length;
+	}
+
+	public void clearListeners(final int ix) {
+		board[ix].clearListeners();
+	}
+
+	public void flyaway(final int button) {
 		board[button].addAction(Actions.scaleTo(0f, 0f, .4f));
 		board[button].addAction(Actions.fadeOut(.3f));
 	}
 
-	public void flytowards(int button) {
+	public void flytowards(final int button) {
 		board[button].addAction(Actions.scaleTo(5f, 5f, .4f));
 		board[button].addAction(Actions.fadeOut(.3f));
 	}
 
-	private Rectangle getBoundingBox(int buttonIX) {
+	private Rectangle getBoundingBox(final int buttonIX) {
 		int row;
 		int col;
 		int colWidth;
@@ -81,12 +89,11 @@ public class ViewGameBoard extends Group {
 		perRow = 3;
 		perColumn = 2;
 
-		row = (button_count() / perRow - 1) - buttonIX / perRow;
+		row = button_count() / perRow - 1 - buttonIX / perRow;
 		col = buttonIX % perRow;
 
-		colWidth = ((int) screenSize.width) / perRow;
-		rowHeight = ((int) (screenSize.height - topGap - bottomGap))
-				/ perColumn;
+		colWidth = (int) screenSize.width / perRow;
+		rowHeight = (int) (screenSize.height - topGap - bottomGap) / perColumn;
 
 		boundingBox = new Rectangle();
 
@@ -107,7 +114,7 @@ public class ViewGameBoard extends Group {
 		}
 	}
 
-	private void positionButton(Image button, Rectangle bbox) {
+	private void positionButton(final Image button, final Rectangle bbox) {
 		float scaleX, scaleY;
 		float width, height;
 
@@ -127,8 +134,8 @@ public class ViewGameBoard extends Group {
 			scaleSize = bbox.height;
 		}
 
-		scaleX = (float) scaleSize / width;
-		scaleY = (float) scaleSize / height;
+		scaleX = scaleSize / width;
+		scaleY = scaleSize / height;
 
 		if (scaleX > scaleY) {
 			scaleX = scaleY;
@@ -143,7 +150,7 @@ public class ViewGameBoard extends Group {
 		button.setScaleY(scaleY);
 	}
 
-	private void resetAttributes(int button) {
+	private void resetAttributes(final int button) {
 		board[button].clearActions();
 		board[button].setScale(1, 1);
 		board[button].getColor().a = 1;
@@ -152,17 +159,17 @@ public class ViewGameBoard extends Group {
 		board[button].setColor(Color.WHITE);
 	}
 
-	public void setAlpha(int button, float alpha) {
+	public void setAlpha(final int button, final float alpha) {
 		board[button].getColor().a = alpha;
 	}
 
-	public void setColor(int button, Color color) {
+	public void setColor(final int button, final Color color) {
 		board[button].setColor(color);
 	}
 
-	public void setImage(int buttonIX, FileHandle imageFile) {
-		Image button = board[buttonIX];
-		Rectangle bbox = getBoundingBox(buttonIX);
+	public void setImage(final int buttonIX, final FileHandle imageFile) {
+		final Image button = board[buttonIX];
+		final Rectangle bbox = getBoundingBox(buttonIX);
 		Texture image;
 		TextureRegion imageRegion;
 		float scaleX, scaleY;
@@ -173,11 +180,11 @@ public class ViewGameBoard extends Group {
 			button.setDrawable(null);
 			return;
 		}
-		if (textureCache[buttonIX]!=null) {
+		if (textureCache[buttonIX] != null) {
 			textureCache[buttonIX].dispose();
 		}
 		image = new Texture(imageFile);
-		textureCache[buttonIX]=image;
+		textureCache[buttonIX] = image;
 		image.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		imageRegion = new TextureRegion(image);
 		scaleX = bbox.width / image.getWidth();
@@ -187,7 +194,7 @@ public class ViewGameBoard extends Group {
 		} else {
 			scaleY = scaleX;
 		}
-		Drawable prev = button.getDrawable();
+		final Drawable prev = button.getDrawable();
 		if (prev != null && prev instanceof TextureRegionDrawable) {
 			button.setDrawable(null);
 		}
@@ -196,11 +203,11 @@ public class ViewGameBoard extends Group {
 		positionButton(button, bbox);
 	}
 
-	public void spin(int button) {
+	public void spin(final int button) {
 		board[button].addAction(Actions.rotateBy(360, 1));
 	}
 
-	public int whichButton(Image actor) {
+	public int whichButton(final Image actor) {
 		int ix;
 		for (ix = 0; ix < board.length; ix++) {
 			if (board[ix].equals(actor)) {
@@ -211,12 +218,5 @@ public class ViewGameBoard extends Group {
 			return -1;
 		}
 		return ix;
-	}
-
-	public void clearListeners(int ix) {
-		board[ix].clearListeners();
-	}
-	public void addListener(int ix, EventListener listener) {
-		board[ix].addListener(listener);		
 	}
 }

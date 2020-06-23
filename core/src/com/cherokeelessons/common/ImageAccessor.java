@@ -24,91 +24,8 @@ public class ImageAccessor implements TweenAccessor<Image> {
 	final public static int ColorBlue = 13;
 	final public static int Alpha = 14;
 
-	@Override
-	public int getValues(Image target, int tweenType, float[] returnValues) {
-		int c = -1;
-		Rectangle rec;
-		Color col;
-		switch (tweenType) {
-		case BoundingRectangle:
-			rec = getBoundingRectangle(target);
-			returnValues[0]=rec.x;
-			returnValues[1]=rec.y;
-			returnValues[2]=rec.width;
-			returnValues[3]=rec.height;
-			c=4;
-			break;
-		case X:
-			returnValues[0]=target.getX();
-			c=1;
-			break;
-		case Y:
-			returnValues[0]=target.getY();
-			c=1;
-			break;
-		case Width:
-			returnValues[0]=target.getWidth();
-			c=1;
-			break;
-		case Height:
-			returnValues[0]=target.getHeight();
-			c=1;
-			break;
-		case OriginX:
-			returnValues[0]=target.getOriginX();
-			c=1;
-			break;
-		case OriginY:
-			returnValues[0]=target.getOriginY();
-			c=1;
-			break;
-		case Rotation:
-			returnValues[0]=target.getRotation();
-			c=1;
-			break;
-		case ScaleX:
-			returnValues[0]=target.getScaleX();
-			c=1;
-			break;
-		case ScaleY:
-			returnValues[0]=target.getScaleY();
-			c=1;
-			break;
-		case Color:
-			col = target.getColor();
-			returnValues[0]=col.r;
-			returnValues[0]=col.g;
-			returnValues[0]=col.b;
-			returnValues[0]=col.a;
-			c=4;
-			break;
-		case ColorRed:
-			col = target.getColor();
-			returnValues[0]=col.r;
-			c=1;
-			break;
-		case ColorGreen:
-			col = target.getColor();
-			returnValues[0]=col.g;
-			c=1;
-			break;
-		case ColorBlue:
-			col = target.getColor();
-			returnValues[0]=col.b;
-			c=1;
-			break;
-		case Alpha:
-			col = target.getColor();
-			returnValues[0]=col.a;
-			c=1;
-			break;
-		default:
-		}
-		return c;
-	}
-
-	private Rectangle getBoundingRectangle(Image target) {
-		Rectangle bounds = new Rectangle();
+	private Rectangle getBoundingRectangle(final Image target) {
+		final Rectangle bounds = new Rectangle();
 		bounds.x = target.getImageX();
 		bounds.y = target.getImageY();
 		bounds.width = target.getImageWidth();
@@ -117,7 +34,90 @@ public class ImageAccessor implements TweenAccessor<Image> {
 	}
 
 	@Override
-	public void setValues(Image target, int tweenType, float[] newValues) {
+	public int getValues(final Image target, final int tweenType, final float[] returnValues) {
+		int c = -1;
+		Rectangle rec;
+		Color col;
+		switch (tweenType) {
+		case BoundingRectangle:
+			rec = getBoundingRectangle(target);
+			returnValues[0] = rec.x;
+			returnValues[1] = rec.y;
+			returnValues[2] = rec.width;
+			returnValues[3] = rec.height;
+			c = 4;
+			break;
+		case X:
+			returnValues[0] = target.getX();
+			c = 1;
+			break;
+		case Y:
+			returnValues[0] = target.getY();
+			c = 1;
+			break;
+		case Width:
+			returnValues[0] = target.getWidth();
+			c = 1;
+			break;
+		case Height:
+			returnValues[0] = target.getHeight();
+			c = 1;
+			break;
+		case OriginX:
+			returnValues[0] = target.getOriginX();
+			c = 1;
+			break;
+		case OriginY:
+			returnValues[0] = target.getOriginY();
+			c = 1;
+			break;
+		case Rotation:
+			returnValues[0] = target.getRotation();
+			c = 1;
+			break;
+		case ScaleX:
+			returnValues[0] = target.getScaleX();
+			c = 1;
+			break;
+		case ScaleY:
+			returnValues[0] = target.getScaleY();
+			c = 1;
+			break;
+		case Color:
+			col = target.getColor();
+			returnValues[0] = col.r;
+			returnValues[0] = col.g;
+			returnValues[0] = col.b;
+			returnValues[0] = col.a;
+			c = 4;
+			break;
+		case ColorRed:
+			col = target.getColor();
+			returnValues[0] = col.r;
+			c = 1;
+			break;
+		case ColorGreen:
+			col = target.getColor();
+			returnValues[0] = col.g;
+			c = 1;
+			break;
+		case ColorBlue:
+			col = target.getColor();
+			returnValues[0] = col.b;
+			c = 1;
+			break;
+		case Alpha:
+			col = target.getColor();
+			returnValues[0] = col.a;
+			c = 1;
+			break;
+		default:
+		}
+		return c;
+	}
+
+	@Override
+	public void setValues(final Image target, final int tweenType, final float[] newValues) {
 		Rectangle rec;
 		float originX;
 		float originY;
@@ -134,22 +134,22 @@ public class ImageAccessor implements TweenAccessor<Image> {
 			break;
 		case Width:
 			rec = getBoundingRectangle(target);
-			rec.width=newValues[0];
+			rec.width = newValues[0];
 			target.setBounds(rec.x, rec.y, rec.width, rec.height);
 			break;
 		case Height:
 			rec = getBoundingRectangle(target);
-			rec.height=newValues[0];
+			rec.height = newValues[0];
 			target.setBounds(rec.x, rec.y, rec.width, rec.height);
 			break;
 		case OriginX:
-			originX=newValues[0];
-			originY=target.getOriginY();
+			originX = newValues[0];
+			originY = target.getOriginY();
 			target.setOrigin(originX, originY);
 			break;
 		case OriginY:
-			originX=target.getOriginX();
-			originY=newValues[0];
+			originX = target.getOriginX();
+			originY = newValues[0];
 			target.setOrigin(originX, originY);
 			break;
 		case Rotation:
@@ -165,23 +165,23 @@ public class ImageAccessor implements TweenAccessor<Image> {
 			target.setColor(newValues[0], newValues[1], newValues[2], newValues[3]);
 			break;
 		case ColorRed:
-			col=target.getColor();
-			col.r=newValues[0];
+			col = target.getColor();
+			col.r = newValues[0];
 			target.setColor(col);
 			break;
 		case ColorGreen:
-			col=target.getColor();
-			col.g=newValues[0];
+			col = target.getColor();
+			col.g = newValues[0];
 			target.setColor(col);
 			break;
 		case ColorBlue:
-			col=target.getColor();
-			col.b=newValues[0];
+			col = target.getColor();
+			col.b = newValues[0];
 			target.setColor(col);
 			break;
 		case Alpha:
-			col=target.getColor();
-			col.a=newValues[0];
+			col = target.getColor();
+			col.a = newValues[0];
 			target.setColor(col);
 			break;
 		default:

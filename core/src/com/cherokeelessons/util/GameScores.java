@@ -12,8 +12,8 @@ public class GameScores {
 		public String tag;
 		public String user;
 		public int levelOn;
-		public boolean isMe=false;
+		public boolean isMe = false;
 	}
 
-	public List<GameScores.GameScore> list = new ArrayList<GameScores.GameScore>();
+	public List<GameScores.GameScore> list = new ArrayList<>();
 }

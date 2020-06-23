@@ -39,7 +39,7 @@ public class DreamLo {
 	/**
 	 * Correctly percent encode for passing as URL component
 	 * {@link http://stackoverflow.com/questions/724043/http-url-address-encoding-in-java}
-	 * 
+	 *
 	 * @param s
 	 * @return
 	 */
@@ -50,13 +50,13 @@ public class DreamLo {
 
 		final StringBuilder sb = new StringBuilder();
 		for (final char c : s.toCharArray()) {
-			if (((c >= 'A') && (c <= 'Z')) //
-					|| ((c >= 'a') && (c <= 'z')) //
-					|| ((c >= '0') && (c <= '9')) //
-					|| (c == '-') //
-					|| (c == '.') //
-					|| (c == '_') //
-					|| (c == '~')) {
+			if (c >= 'A' && c <= 'Z' //
+					|| c >= 'a' && c <= 'z' //
+					|| c >= '0' && c <= '9' //
+					|| c == '-' //
+					|| c == '.' //
+					|| c == '_' //
+					|| c == '~') {
 				sb.append(c);
 				continue;
 			}
@@ -64,17 +64,17 @@ public class DreamLo {
 			byte[] bytes;
 			try {
 				bytes = ("" + c).getBytes("UTF-8");
-			} catch (UnsupportedEncodingException uee) {
+			} catch (final UnsupportedEncodingException uee) {
 				bytes = ("" + c).getBytes();
 			}
 
-			for (byte b : bytes) {
+			for (final byte b : bytes) {
 				sb.append('%');
 
-				int upper = (((int) b) >> 4) & 0xf;
+				final int upper = b >> 4 & 0xf;
 				sb.append(Integer.toHexString(upper).toUpperCase());
 
-				int lower = ((int) b) & 0xf;
+				final int lower = b & 0xf;
 				sb.append(Integer.toHexString(lower).toUpperCase());
 			}
 		}
@@ -85,59 +85,59 @@ public class DreamLo {
 	 * boardId = "animal-slot#-timstamp-random";
 	 */
 	private final Preferences prefs;
-	private HttpResponseListener registeredListener = new HttpResponseListener() {
+	private final HttpResponseListener registeredListener = new HttpResponseListener() {
 		@Override
 		public void cancelled() {
 			registeredListenerPending = false;
 		}
 
 		@Override
-		public void failed(Throwable t) {
+		public void failed(final Throwable t) {
 			registeredListenerPending = false;
 		}
 
 		@Override
-		public void handleHttpResponse(HttpResponse httpResponse) {
+		public void handleHttpResponse(final HttpResponse httpResponse) {
 			registeredListenerPending = false;
 		}
 	};
 
-	private Runnable registerWithBoard = new Runnable() {
+	private final Runnable registerWithBoard = new Runnable() {
 		@Override
 		public void run() {
 			Gdx.app.log(this.getClass().getName(), "DreamLo: registerWithBoard#run");
-			HttpRequest httpRequest = new HttpRequest("GET");
+			final HttpRequest httpRequest = new HttpRequest("GET");
 			httpRequest.setUrl(readUrl + "/pipe");
 			Gdx.app.log(this.getClass().getName(), "DreamLo: '" + httpRequest.getUrl() + "'");
-			HttpResponseListener httpResponseListener = new HttpResponseListener() {
+			final HttpResponseListener httpResponseListener = new HttpResponseListener() {
 				@Override
 				public void cancelled() {
 					Gdx.app.log(this.getClass().getName(), "DreamLo: registerWithBoard: TIMED OUT");
 				}
 
 				@Override
-				public void failed(Throwable t) {
+				public void failed(final Throwable t) {
 					Gdx.app.log(this.getClass().getName(), "DreamLo: registerWithBoard: ", t);
 				}
 
 				@Override
-				public void handleHttpResponse(HttpResponse httpResponse) {
-					String resultAsString = httpResponse.getResultAsString();
+				public void handleHttpResponse(final HttpResponse httpResponse) {
+					final String resultAsString = httpResponse.getResultAsString();
 					Gdx.app.log(this.getClass().getName(), "DreamLo: registerWithBoard: " + resultAsString);
-					String str_scores = resultAsString;
-					String[] scores = str_scores.split("\n");
-					Random r = new Random();
+					final String str_scores = resultAsString;
+					final String[] scores = str_scores.split("\n");
+					final Random r = new Random();
 					int id = 0;
 					tryagain: while (true) {
 						id = r.nextInt(Integer.MAX_VALUE) + 1;
-						for (String score : scores) {
+						for (final String score : scores) {
 							if (score.contains(id + "-")) {
 								continue tryagain;
 							}
 						}
 						break tryagain;
 					}
-					HttpRequest httpRequest = new HttpRequest("GET");
+					final HttpRequest httpRequest = new HttpRequest("GET");
 					httpRequest.setTimeOut(10000);
 					httpRequest.setUrl(writeUrl + "/add/" + id + "-0/0/0/" + encode("ᎢᏤ ᏴᏫ!!!ᎩᎶ ᎢᏤ"));
 					Gdx.net.sendHttpRequest(httpRequest, registeredListener);
@@ -149,20 +149,21 @@ public class DreamLo {
 		}
 	};
 
-	public DreamLo(Preferences prefs) {
+	public DreamLo(final Preferences prefs) {
 		this.prefs = prefs;
 	}
 
 	public void lb_getScores(final Callback<GameScores> callback) {
 		if (!registerWithDreamLoBoard()) {
 			Gdx.app.postRunnable(new Runnable() {
+				@Override
 				public void run() {
 					DreamLo.this.lb_getScores(callback);
 				}
 			});
 			return;
 		}
-		HttpRequest httpRequest = new HttpRequest("GET");
+		final HttpRequest httpRequest = new HttpRequest("GET");
 		httpRequest.setTimeOut(10000);
 		httpRequest.setUrl(readUrl + "/pipe/100");
 		Gdx.net.sendHttpRequest(httpRequest, new HttpResponseListener() {
@@ -173,37 +174,37 @@ public class DreamLo {
 			}
 
 			@Override
-			public void failed(Throwable t) {
+			public void failed(final Throwable t) {
 				Gdx.app.log(this.getClass().getName(), "DreamLo: lb_getScoresFor:", t);
 				Gdx.app.postRunnable(callback.with(new RuntimeException(t)));
 			}
 
 			@Override
-			public void handleHttpResponse(HttpResponse httpResponse) {
-				String myId = prefs.getString(DREAMLO_USERID, "") + "-";
-				List<String> records = new ArrayList<String>(
+			public void handleHttpResponse(final HttpResponse httpResponse) {
+				final String myId = prefs.getString(DREAMLO_USERID, "") + "-";
+				final List<String> records = new ArrayList<>(
 						Arrays.asList(httpResponse.getResultAsString().split("\n")));
 				final GameScores gss = new GameScores();
-				gss.list = new ArrayList<GameScore>();
-				for (String score_record : records) {
+				gss.list = new ArrayList<>();
+				for (final String score_record : records) {
 					if (score_record == null || score_record.length() == 0) {
 						continue;
 					}
 
-					String[] s = score_record.split("\\|");
+					final String[] s = score_record.split("\\|");
 					if (s == null || s.length < INDEX + 1) {
 						continue;
 					}
-					GameScore gs = new GameScore();
+					final GameScore gs = new GameScore();
 					gs.score = StringUtils.defaultString(s[SCORE]).trim();
 					gs.score = StringUtils.reverse(gs.score).replaceAll("(\\d{3})", "$1,");
 					gs.score = StringUtils.reverse(gs.score);
 					gs.score = StringUtils.strip(gs.score, ",");
 					gs.tag = StringUtils.defaultString(s[LABEL]).trim();
-					String dreamLoId = StringUtils.defaultString(s[USERNAME]).trim();
+					final String dreamLoId = StringUtils.defaultString(s[USERNAME]).trim();
 					try {
 						gs.levelOn = Integer.valueOf(StringUtils.substringAfter(dreamLoId, "-"));
-					} catch (NumberFormatException e) {
+					} catch (final NumberFormatException e) {
 						continue;
 					}
 					if (gs.levelOn == 0) {
@@ -218,9 +219,9 @@ public class DreamLo {
 					gs.pctCorrect = StringUtils.strip(gs.pctCorrect, ",");
 					gss.list.add(gs);
 				}
-				Comparator<GameScore> descending = new Comparator<GameScore>() {
+				final Comparator<GameScore> descending = new Comparator<GameScore>() {
 					@Override
-					public int compare(GameScore o1, GameScore o2) {
+					public int compare(final GameScore o1, final GameScore o2) {
 						if (o1 == o2) {
 							return 0;
 						}
@@ -234,12 +235,12 @@ public class DreamLo {
 						int v2;
 						try {
 							v1 = Integer.valueOf(o1.score.replace(",", ""));
-						} catch (NumberFormatException e) {
+						} catch (final NumberFormatException e) {
 							v1 = 0;
 						}
 						try {
 							v2 = Integer.valueOf(o2.score.replace(",", ""));
-						} catch (NumberFormatException e) {
+						} catch (final NumberFormatException e) {
 							v2 = 0;
 						}
 						if (v1 != v2) {
@@ -252,12 +253,12 @@ public class DreamLo {
 						}
 						try {
 							v1 = Integer.valueOf(o1.pctCorrect.replace(",", ""));
-						} catch (NumberFormatException e) {
+						} catch (final NumberFormatException e) {
 							v1 = 0;
 						}
 						try {
 							v2 = Integer.valueOf(o2.pctCorrect.replace(",", ""));
-						} catch (NumberFormatException e) {
+						} catch (final NumberFormatException e) {
 							v2 = 0;
 						}
 						return v2 - v1;
@@ -265,7 +266,7 @@ public class DreamLo {
 				};
 				Collections.sort(gss.list, descending);
 				for (int ix = 0; ix < gss.list.size(); ix++) {
-					GameScore tmp = gss.list.get(ix);
+					final GameScore tmp = gss.list.get(ix);
 					switch (ix + 1) {
 					case 1:
 						tmp.rank = "1st";
@@ -277,7 +278,7 @@ public class DreamLo {
 						tmp.rank = "3rd";
 						break;
 					default:
-						tmp.rank = (ix + 1) + "th";
+						tmp.rank = ix + 1 + "th";
 						break;
 					}
 				}
@@ -297,9 +298,9 @@ public class DreamLo {
 			});
 			return;
 		}
-		HttpRequest httpRequest = new HttpRequest("GET");
+		final HttpRequest httpRequest = new HttpRequest("GET");
 		httpRequest.setTimeOut(10000);
-		String url = writeUrl + "/add/" + prefs.getString(DREAMLO_USERID, "") + "-" + boardId + "/" + score + "/"
+		final String url = writeUrl + "/add/" + prefs.getString(DREAMLO_USERID, "") + "-" + boardId + "/" + score + "/"
 				+ timeElapsed + "/" + encode(label);
 		httpRequest.setUrl(url);
 		Gdx.net.sendHttpRequest(httpRequest, new HttpResponseListener() {
@@ -310,13 +311,13 @@ public class DreamLo {
 			}
 
 			@Override
-			public void failed(Throwable t) {
+			public void failed(final Throwable t) {
 				Gdx.app.log(this.getClass().getName(), "DreamLo: lb_submit", t);
 				Gdx.app.postRunnable(callback.with(new RuntimeException(t)));
 			}
 
 			@Override
-			public void handleHttpResponse(HttpResponse httpResponse) {
+			public void handleHttpResponse(final HttpResponse httpResponse) {
 				Gdx.app.postRunnable(callback.withNull());
 			}
 		});

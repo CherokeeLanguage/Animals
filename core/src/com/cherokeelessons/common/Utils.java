@@ -19,20 +19,54 @@ import com.cherokeelessons.util.StringUtils;
 
 public class Utils {
 
-	public Utils() {
+	private static Map<String, String> syllabaryMap = null;
+
+	public static String asLatin(String raw_text) {
+		if (raw_text == null) {
+			return null;
+		}
+		raw_text = raw_text.replace("-", "");
+		String text = raw_text.substring(0, 1).toUpperCase();
+		if (raw_text.length() > 1) {
+			text += raw_text.substring(1);
+		}
+		return text;
 	}
 
-	public static TextureAtlas initBackdrop(Array<Sprite> wall) {
-		TextureAtlas wall_atlas;
-		IntBuffer buf = BufferUtils.newIntBuffer(16);
+	public static String asSyllabary(String string) {
+		if (StringUtils.isBlank(string)) {
+			return string;
+		}
+		string = invertSyllabary(string);
+		string = string.replaceAll("[^Ꭰ-Ᏼ ]", "");
+		return string;
+	}
+
+	public static int getPackSize() {
+		final IntBuffer buf = BufferUtils.newIntBuffer(16);
 		Gdx.gl.glGetIntegerv(GL20.GL_MAX_TEXTURE_SIZE, buf);
 		int packSize = buf.get();
-		if (packSize > 1024)
+		if (packSize > 1024) {
 			packSize = 1024;
+		}
+		if (packSize == 0) {
+			packSize = 512;
+		}
+		return packSize;
+	}
+
+	public static TextureAtlas initBackdrop(final Array<Sprite> wall) {
+		TextureAtlas wall_atlas;
+		final IntBuffer buf = BufferUtils.newIntBuffer(16);
+		Gdx.gl.glGetIntegerv(GL20.GL_MAX_TEXTURE_SIZE, buf);
+		int packSize = buf.get();
+		if (packSize > 1024) {
+			packSize = 1024;
+		}
 		wall.clear();
-		PixmapPacker pack = new PixmapPacker(packSize, packSize, Format.RGBA8888, 2, true);
+		final PixmapPacker pack = new PixmapPacker(packSize, packSize, Format.RGBA8888, 2, true);
 		for (int i = 0; i < 32; i++) {
-			Pixmap image = new Pixmap(Gdx.files.internal("images/backdrops/p_" + i + "_dsci2549.png"));
+			final Pixmap image = new Pixmap(Gdx.files.internal("images/backdrops/p_" + i + "_dsci2549.png"));
 			pack.pack(i + "X", image);
 		}
 		wall_atlas = pack.generateTextureAtlas(TextureFilter.Linear, TextureFilter.Linear, false);
@@ -45,11 +79,11 @@ public class Utils {
 			py = 0;
 			Sprite i = null;
 			for (int y = 0; y < columns; y++) {
-				int z = columns - (y + 1);
-				int p = z * perRow + x;
+				final int z = columns - (y + 1);
+				final int p = z * perRow + x;
 				final AtlasRegion piece = wall_atlas.findRegion(p + "X");
 				i = new Sprite(piece, 0, 0, piece.getRegionWidth(), piece.getRegionHeight());
-				if (y==0) {
+				if (y == 0) {
 					px += i.getWidth();
 				}
 				i.setX(px);
@@ -62,27 +96,10 @@ public class Utils {
 		return wall_atlas;
 	}
 
-	public static int getPackSize() {
-		IntBuffer buf = BufferUtils.newIntBuffer(16);
-		Gdx.gl.glGetIntegerv(GL20.GL_MAX_TEXTURE_SIZE, buf);
-		int packSize = buf.get();
-		if (packSize > 1024)
-			packSize = 1024;
-		if (packSize == 0) {
-			packSize = 512;
-		}
-		return packSize;
+	public static void initTranslationMap() {
+		syllabaryMap = translationMap();
 	}
-	
-	public static String asSyllabary(String string) {
-		if (StringUtils.isBlank(string)) {
-			return string;
-		}
-		string = invertSyllabary(string);
-		string = string.replaceAll("[^Ꭰ-Ᏼ ]", "");
-		return string;
-	}
-	
+
 	private static String invertSyllabary(String string) {
 		String newString = "";
 		String key = "";
@@ -117,19 +134,15 @@ public class Utils {
 		}
 		return newString;
 	}
-	
-	private static Map<String, String> syllabaryMap = null;
-	public static void initTranslationMap(){
-		syllabaryMap = translationMap();
-	}
+
 	private static Map<String, String> translationMap() {
 		int ix = 0;
 		String letter;
 		String prefix;
 		char chrStart = 'Ꭰ';
-		String[] vowels = new String[6];
+		final String[] vowels = new String[6];
 
-		HashMap<String, String> syllabary2latin = new HashMap<String, String>();
+		final HashMap<String, String> syllabary2latin = new HashMap<>();
 
 		vowels[0] = "a";
 		vowels[1] = "e";
@@ -311,16 +324,7 @@ public class Utils {
 		return syllabary2latin;
 	}
 
-	public static String asLatin(String raw_text) {
-		if (raw_text==null) {
-			return null;
-		}
-		raw_text=raw_text.replace("-", "");
-		String text=raw_text.substring(0, 1).toUpperCase();
-		if (raw_text.length()>1) {
-			text += raw_text.substring(1);
-		}
-		return text;
+	public Utils() {
 	}
 
 }

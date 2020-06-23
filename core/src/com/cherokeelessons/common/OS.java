@@ -3,7 +3,7 @@ package com.cherokeelessons.common;
 import java.lang.reflect.Field;
 
 public class OS {
-	public static enum Platform {
+	public enum Platform {
 		Android, Linux, Mac, Other, Ouya, Solaris, Unix, Windows;
 	}
 
@@ -18,13 +18,13 @@ public class OS {
 				 */
 				String device = null;
 				try {
-					Class<?> buildClass = Class.forName("android.os.Build");
-					Field deviceField = buildClass.getDeclaredField("DEVICE");
-					Object o = deviceField.get(null);
+					final Class<?> buildClass = Class.forName("android.os.Build");
+					final Field deviceField = buildClass.getDeclaredField("DEVICE");
+					final Object o = deviceField.get(null);
 					if (o != null) {
 						device = o.toString().toLowerCase();
 					}
-				} catch (Exception e) {
+				} catch (final Exception e) {
 				}
 				if (device != null) {
 					if (device.contains("ouya")) {
@@ -47,8 +47,7 @@ public class OS {
 				platform = Platform.Mac;
 				break;
 			}
-			if (name.contains("nix") || name.contains("nux")
-					|| name.contains("aix")) {
+			if (name.contains("nix") || name.contains("nux") || name.contains("aix")) {
 				platform = Platform.Unix;
 				break;
 			}

@@ -39,28 +39,18 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 	final private float interval = 2.5f;
 	private Label lbl_exitInfo;
 	private View3x3Selector pictureChallenge;
-	
-	@Override
-	public boolean dpad(int keyCode) {
-		switch (keyCode) {
-		case Keys.DPAD_CENTER:
-			doSkipTraining();
-			return true;
-		}
-		return false;
-	}
-	
-	private ControllerAdapter skipTraining = new ControllerAdapter() { 
+
+	private final ControllerAdapter skipTraining = new ControllerAdapter() {
 		@Override
-		public boolean buttonDown(Controller controller, int buttonCode) {
+		public boolean buttonDown(final Controller controller, final int buttonCode) {
 			doSkipTraining();
 			return true;
 		}
 	};
 
-	private GamepadAdapter<ScreenTrainer> watcher = new GamepadAdapter<ScreenTrainer>(this) {
+	private final GamepadAdapter<ScreenTrainer> watcher = new GamepadAdapter<ScreenTrainer>(this) {
 		@Override
-		public ControllerListener factoryControllerListener(GamepadMap map, ScreenTrainer menu) {
+		public ControllerListener factoryControllerListener(final GamepadMap map, final ScreenTrainer menu) {
 			return skipTraining;
 		}
 	};
@@ -69,9 +59,9 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 
 	public ScreenTrainer(final CherokeeAnimals game) {
 		super(game);
-		FontLoader fg = new FontLoader();
+		final FontLoader fg = new FontLoader();
 		BitmapFont font;
-		Integer fontSize = 48;
+		final Integer fontSize = 48;
 
 		font = fg.getFixed(fontSize);
 
@@ -79,7 +69,6 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 		buttonStyle.font = font;
 		buttonStyle.fontColor = GameColor.MAIN_TEXT;
 
-		
 		String textSkip;
 		if (game.isTelevision() || watcher.hasControllers()) {
 			textSkip = "[FIRE] or [ENTER] to skip.";
@@ -91,10 +80,10 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 		lbl_exitInfo.setX(safeZoneSize.width - lbl_exitInfo.getWidth());
 		lbl_exitInfo.setY(safeZoneSize.height - lbl_exitInfo.getHeight());
 		lbl_exitInfo.pack();
-		lbl_exitInfo.addListener(new ClickListener(){
+		lbl_exitInfo.addListener(new ClickListener() {
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
+			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
+					final int button) {
 				game.gameEvent(GameEvent.Done);
 				return true;
 			}
@@ -111,7 +100,7 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 		gameStage.addActor(pictureChallenge);
 		gameStage.addActor(lbl_exitInfo);
 
-		alreadyShown = new HashSet<FileHandle>();
+		alreadyShown = new HashSet<>();
 	}
 
 	private void doSkipTraining() {
@@ -123,8 +112,18 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 	}
 
 	@Override
+	public boolean dpad(final int keyCode) {
+		switch (keyCode) {
+		case Keys.DPAD_CENTER:
+			doSkipTraining();
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public void hide() {
-		for (Controller controller : Gamepads.getControllers()) {
+		for (final Controller controller : Gamepads.getControllers()) {
 			watcher.disconnected(controller);
 		}
 		Gamepads.clearListeners();
@@ -140,7 +139,7 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 	}
 
 	@Override
-	public void render(float delta) {
+	public void render(final float delta) {
 		super.render(delta);
 		gameStage.draw();
 		if (doNextPic) {
@@ -157,9 +156,7 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 		if (game.sm.isChallengePlaying(currentChallenge)) {
 			return;
 		}
-		if (currentIX == 3
-				&& game.prefs.getTrainingMode()
-						.equals(TrainingMode.Brief)) {
+		if (currentIX == 3 && game.prefs.getTrainingMode().equals(TrainingMode.Brief)) {
 			doSkipTraining();
 		}
 		if (currentIX == 9) {
@@ -205,7 +202,7 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 		gameStage.getRoot().setX(safeZoneSize.x);
 		gameStage.getRoot().setY(safeZoneSize.y);
 		Gamepads.addListener(watcher);
-		for (Controller c : Gamepads.getControllers()) {
+		for (final Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
 		}
 	}

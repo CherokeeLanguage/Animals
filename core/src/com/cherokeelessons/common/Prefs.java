@@ -11,15 +11,15 @@ import com.cherokeelessons.animals.enums.TrainingMode;
 
 public class Prefs implements com.badlogic.gdx.Preferences {
 
-	public static enum Setting {
+	public enum Setting {
 		ChallengeAudio, ChallengeMode, EffectsVolume, LevelAccuracy, //
 		LevelTime, MasterVolume, MusicVolume, TrainingMode, UUID, //
 		LeaderBoardEnabled, LevelScore
 	}
 
-	private com.badlogic.gdx.Preferences prefs;
+	private final com.badlogic.gdx.Preferences prefs;
 
-	public Prefs(ApplicationListener app) {
+	public Prefs(final ApplicationListener app) {
 		prefs = Gdx.app.getPreferences(app.getClass().getCanonicalName());
 	}
 
@@ -29,7 +29,7 @@ public class Prefs implements com.badlogic.gdx.Preferences {
 	}
 
 	@Override
-	public boolean contains(String key) {
+	public boolean contains(final String key) {
 		return prefs.contains(key);
 	}
 
@@ -44,80 +44,47 @@ public class Prefs implements com.badlogic.gdx.Preferences {
 	}
 
 	@Override
-	public boolean getBoolean(String key) {
+	public boolean getBoolean(final String key) {
 		return prefs.getBoolean(key);
 	}
 
 	@Override
-	public boolean getBoolean(String key, boolean defValue) {
+	public boolean getBoolean(final String key, final boolean defValue) {
 		return prefs.getBoolean(key, defValue);
 	}
 
 	public boolean getChallengeAudio() {
-		String key = Setting.ChallengeAudio.name();
+		final String key = Setting.ChallengeAudio.name();
 		boolean m = true;
 		try {
 			m = prefs.getBoolean(key, true);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			prefs.putBoolean(key, true);
 			prefs.flush();
 		}
 		return m;
 	}
 
-	public boolean isLeaderBoardEnabled() {
-		boolean enabled = true;
-		String key = Setting.LeaderBoardEnabled.name();
-		try {
-			enabled = prefs.getBoolean(key, true);
-		} catch (Exception e) {
-			prefs.putBoolean(key, true);
-			prefs.flush();
-		}
-		return enabled;
-	}
-
-	public void setLeaderBoard(boolean enabled) {
-		String key = Setting.LeaderBoardEnabled.name();
-		prefs.putBoolean(key, true);
-		prefs.flush();
-	}
-
 	public ChallengeWordMode getChallengeMode() {
 		ChallengeWordMode mode = ChallengeWordMode.Syllabary;
-		String key = Setting.ChallengeMode.name();
+		final String key = Setting.ChallengeMode.name();
 		try {
-			String m = prefs.getString(key, mode.name());
+			final String m = prefs.getString(key, mode.name());
 			mode = ChallengeWordMode.valueOf(m);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			prefs.putString(key, mode.name());
 			prefs.flush();
 		}
 		return mode;
 	}
-	
-	public int getLastScore(int level) {
-		String key = Setting.LevelScore.name() + "_";
-		if (level < 10) {
-			key += "0";
-		}
-		key += level;
-		try {
-			return prefs.getInteger(key, 0);
-		} catch (Exception e) {
-			prefs.putInteger(key, 0);
-			prefs.flush();
-		}
-		return 0;
-	}
 
 	public SoundEffectVolume getEffectsVolume() {
-		String key = Setting.EffectsVolume.name();
+		final String key = Setting.EffectsVolume.name();
 		SoundEffectVolume vol = SoundEffectVolume.Low;
 		try {
-			String tmp = prefs.getString(key, vol.name());
+			final String tmp = prefs.getString(key, vol.name());
 			vol = SoundEffectVolume.valueOf(tmp);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			prefs.putString(key, vol.name());
 			prefs.flush();
 		}
@@ -125,34 +92,50 @@ public class Prefs implements com.badlogic.gdx.Preferences {
 	}
 
 	@Override
-	public float getFloat(String key) {
+	public float getFloat(final String key) {
 		return prefs.getFloat(key);
 	}
 
 	@Override
-	public float getFloat(String key, float defValue) {
+	public float getFloat(final String key, final float defValue) {
 		return prefs.getFloat(key, defValue);
 	}
 
 	@Override
-	public int getInteger(String key) {
+	public int getInteger(final String key) {
 		return prefs.getInteger(key);
 	}
 
 	@Override
-	public int getInteger(String key, int defValue) {
+	public int getInteger(final String key, final int defValue) {
 		return prefs.getInteger(key, defValue);
 	}
 
-	public int getLevelAccuracy(int level) {
+	public int getLastScore(final int level) {
+		String key = Setting.LevelScore.name() + "_";
+		if (level < 10) {
+			key += "0";
+		}
+		key += level;
+		try {
+			return prefs.getInteger(key, 0);
+		} catch (final Exception e) {
+			prefs.putInteger(key, 0);
+			prefs.flush();
+		}
+		return 0;
+	}
+
+	public int getLevelAccuracy(final int level) {
 		int acc = 0;
 		String key = Setting.LevelAccuracy.name() + "_";
-		if (level < 10)
+		if (level < 10) {
 			key += "0";
+		}
 		key += level;
 		try {
 			acc = prefs.getInteger(key, acc);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			prefs.putInteger(key, acc);
 			prefs.flush();
 		}
@@ -162,15 +145,16 @@ public class Prefs implements com.badlogic.gdx.Preferences {
 		return acc;
 	}
 
-	public long getLevelTime(int level) {
+	public long getLevelTime(final int level) {
 		long ms = 24 * 60 * 60 * 1000;
 		String key = Setting.LevelTime.name() + "_";
-		if (level < 10)
+		if (level < 10) {
 			key += "0";
+		}
 		key += level;
 		try {
 			ms = prefs.getLong(key, ms);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			prefs.putLong(key, ms);
 			prefs.flush();
 		}
@@ -181,21 +165,21 @@ public class Prefs implements com.badlogic.gdx.Preferences {
 	}
 
 	@Override
-	public long getLong(String key) {
+	public long getLong(final String key) {
 		return prefs.getLong(key);
 	}
 
 	@Override
-	public long getLong(String key, long defValue) {
+	public long getLong(final String key, final long defValue) {
 		return prefs.getLong(key, defValue);
 	}
 
 	public int getMasterVolume() {
-		String key = Setting.MasterVolume.name();
+		final String key = Setting.MasterVolume.name();
 		int vol = 70;
 		try {
 			vol = prefs.getInteger(key, vol);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			prefs.putInteger(key, vol);
 			prefs.flush();
 		}
@@ -206,11 +190,11 @@ public class Prefs implements com.badlogic.gdx.Preferences {
 	}
 
 	public int getMusicVolume() {
-		String key = Setting.MusicVolume.name();
+		final String key = Setting.MusicVolume.name();
 		int vol = 30;
 		try {
 			vol = prefs.getInteger(key, vol);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			prefs.putInteger(key, vol);
 			prefs.flush();
 		}
@@ -221,22 +205,22 @@ public class Prefs implements com.badlogic.gdx.Preferences {
 	}
 
 	@Override
-	public String getString(String key) {
+	public String getString(final String key) {
 		return prefs.getString(key);
 	}
 
 	@Override
-	public String getString(String key, String defValue) {
+	public String getString(final String key, final String defValue) {
 		return prefs.getString(key, defValue);
 	}
 
 	public TrainingMode getTrainingMode() {
-		String key = Setting.TrainingMode.name();
+		final String key = Setting.TrainingMode.name();
 		TrainingMode mode = TrainingMode.Brief;
 		try {
-			String tmp = prefs.getString(key, mode.name());
+			final String tmp = prefs.getString(key, mode.name());
 			mode = TrainingMode.valueOf(tmp);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			prefs.putString(key, mode.name());
 			prefs.flush();
 		}
@@ -245,93 +229,82 @@ public class Prefs implements com.badlogic.gdx.Preferences {
 
 	public String getUuid() {
 		String uuid = null;
-		String key = Setting.UUID.name();
+		final String key = Setting.UUID.name();
 		try {
 			uuid = prefs.getString(key, "");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			prefs.putString(key, uuid);
 			prefs.flush();
 		}
 		return uuid;
 	}
 
+	public boolean isLeaderBoardEnabled() {
+		boolean enabled = true;
+		final String key = Setting.LeaderBoardEnabled.name();
+		try {
+			enabled = prefs.getBoolean(key, true);
+		} catch (final Exception e) {
+			prefs.putBoolean(key, true);
+			prefs.flush();
+		}
+		return enabled;
+	}
+
 	@Override
-	public Preferences put(Map<String, ?> vals) {
+	public Preferences put(final Map<String, ?> vals) {
 		return prefs.put(vals);
 	}
 
 	@Override
-	public Preferences putBoolean(String key, boolean val) {
+	public Preferences putBoolean(final String key, final boolean val) {
 		return prefs.putBoolean(key, val);
 	}
 
 	@Override
-	public Preferences putFloat(String key, float val) {
+	public Preferences putFloat(final String key, final float val) {
 		return prefs.putFloat(key, val);
 	}
 
 	@Override
-	public Preferences putInteger(String key, int val) {
+	public Preferences putInteger(final String key, final int val) {
 		return prefs.putInteger(key, val);
 	}
 
 	@Override
-	public Preferences putLong(String key, long val) {
+	public Preferences putLong(final String key, final long val) {
 		return prefs.putLong(key, val);
 	}
 
 	@Override
-	public Preferences putString(String key, String val) {
+	public Preferences putString(final String key, final String val) {
 		return prefs.putString(key, val);
 	}
 
 	@Override
-	public void remove(String key) {
+	public void remove(final String key) {
 		prefs.remove(key);
 	}
 
-	public void setChallengeAudio(boolean on) {
-		String key = Setting.ChallengeAudio.name();
+	public void setChallengeAudio(final boolean on) {
+		final String key = Setting.ChallengeAudio.name();
 		prefs.putBoolean(key, on);
 		prefs.flush();
 	}
 
-	public void setChallengeMode(ChallengeWordMode mode) {
-		String key = Setting.ChallengeMode.name();
+	public void setChallengeMode(final ChallengeWordMode mode) {
+		final String key = Setting.ChallengeMode.name();
 		prefs.putString(key, mode.name());
 		prefs.flush();
 	}
 
-	public void setEffectsVolume(SoundEffectVolume vol) {
-		String key = Setting.EffectsVolume.name();
+	public void setEffectsVolume(final SoundEffectVolume vol) {
+		final String key = Setting.EffectsVolume.name();
 		prefs.putString(key, vol.name());
 		prefs.flush();
 	}
 
-	public void setLevelAccuracy(int level, int acc) {
-		String key = Setting.LevelAccuracy.name() + "_";
-		if (level < 10)
-			key += "0";
-		key += level;
-		prefs.putInteger(key, acc);
-		prefs.flush();
-	}
-
-	public void setLevelTime(int level, long ms) {
-		String key = Setting.LevelTime.name() + "_";
-		if (level < 10)
-			key += "0";
-		key += level;
-		prefs.putLong(key, ms);
-		prefs.flush();
-	}
-
-	public void setLevelTime(int level, float sec) {
-		long ms = (long) (sec * 1000f);
-		setLevelTime(level, ms);
-	}
-	
-	public void setLastScore(int level, int score) {
+	public void setLastScore(final int level, final int score) {
 		String key = Setting.LevelScore.name() + "_";
 		if (level < 10) {
 			key += "0";
@@ -341,26 +314,57 @@ public class Prefs implements com.badlogic.gdx.Preferences {
 		prefs.flush();
 	}
 
-	public void setMasterVolume(int vol) {
-		String key = Setting.MasterVolume.name();
+	public void setLeaderBoard(final boolean enabled) {
+		final String key = Setting.LeaderBoardEnabled.name();
+		prefs.putBoolean(key, true);
+		prefs.flush();
+	}
+
+	public void setLevelAccuracy(final int level, final int acc) {
+		String key = Setting.LevelAccuracy.name() + "_";
+		if (level < 10) {
+			key += "0";
+		}
+		key += level;
+		prefs.putInteger(key, acc);
+		prefs.flush();
+	}
+
+	public void setLevelTime(final int level, final float sec) {
+		final long ms = (long) (sec * 1000f);
+		setLevelTime(level, ms);
+	}
+
+	public void setLevelTime(final int level, final long ms) {
+		String key = Setting.LevelTime.name() + "_";
+		if (level < 10) {
+			key += "0";
+		}
+		key += level;
+		prefs.putLong(key, ms);
+		prefs.flush();
+	}
+
+	public void setMasterVolume(final int vol) {
+		final String key = Setting.MasterVolume.name();
 		prefs.putInteger(key, vol);
 		prefs.flush();
 	}
 
-	public void setMusicVolume(int vol) {
-		String key = Setting.MusicVolume.name();
+	public void setMusicVolume(final int vol) {
+		final String key = Setting.MusicVolume.name();
 		prefs.putInteger(key, vol);
 		prefs.flush();
 	}
 
-	public void setTrainingMode(TrainingMode mode) {
-		String key = Setting.TrainingMode.name();
+	public void setTrainingMode(final TrainingMode mode) {
+		final String key = Setting.TrainingMode.name();
 		prefs.putString(key, mode.name());
 		prefs.flush();
 	}
 
-	public void setUuid(String uuid) {
-		String key = Setting.UUID.name();
+	public void setUuid(final String uuid) {
+		final String key = Setting.UUID.name();
 		prefs.putString(key, uuid);
 		prefs.flush();
 	}

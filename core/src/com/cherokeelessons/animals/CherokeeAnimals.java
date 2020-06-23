@@ -20,52 +20,15 @@ import com.cherokeelessons.util.DreamLo;
 import aurelienribon.tweenengine.Tween;
 
 public class CherokeeAnimals implements ApplicationListener, TvDetector {
-	
+
 	public Prefs prefs;
 	public TextureAtlas images_atlas;
-
-	public CherokeeAnimals() {
-		/**
-		 * Assume *not* a TV unless set otherwise.
-		 */
-		tvDetector = new TvDetector() {
-			@Override
-			public boolean isTelevision() {
-				return false;
-			}
-		};
-	}
 
 	public SoundManager sm;
 
 	public FontLoader fg;
 
 	public MusicPlayer music;
-
-	@Override
-	public void create() {
-		
-		Gdx.input.setCatchKey(Input.Keys.BACK, true);
-		Gdx.input.setCatchKey(Input.Keys.MENU, true);
-
-		prefs = new Prefs(this);
-		
-		Gdx.app.log(this.getClass().getName(), "DreamLo: "+new DreamLo(prefs).registerWithDreamLoBoard());
-		
-		Tween.registerAccessor(GameMusic.class, new MusicAccessor());
-		Tween.registerAccessor(Image.class, new ImageAccessor());
-
-		sm = new SoundManager(prefs);
-		fg = new FontLoader();
-
-		gameEvent(GameEvent.libGdx);
-		
-		music = new MusicPlayer();
-		music.loadUsingPlist();
-		float masterVolume = ((float)prefs.getMasterVolume())/100f;
-		float musicVolume = ((float)prefs.getMusicVolume())/100f;
-		music.setVolume(masterVolume*musicVolume);
-	}
 
 	protected float elapsed = 0;
 
@@ -85,23 +48,36 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 
 	private ScreenCredits screenCredits;
 
-	public void gameEvent(final GameEvent gameEvent) {
-		Gdx.app.log(this.getClass().getName(), "gameEvent: "+gameEvent.name());
-		gameEvent(new GameEventMessage(gameEvent));
-	}
-	
-	public void gameEvent(final GameEventMessage event) {
-		Gdx.app.log(this.getClass().getName(), "gameEventMessage: "+event.getEvent().name());
-		Gdx.app.postRunnable(new Runnable() {
+	protected GameScreen screen;
+
+	final Array<GameScreen> prevScreen = new Array<>();
+
+	private int levelOn = 1;
+
+	private int levels = 1;
+	public LoadChallenges challenges;
+
+	public String activeChallenge;
+
+	private TvDetector tvDetector;
+
+	private Boolean _isTelevision;
+
+	public CherokeeAnimals() {
+		/**
+		 * Assume *not* a TV unless set otherwise.
+		 */
+		tvDetector = new TvDetector() {
 			@Override
-			public void run() {
-				_gameEvent(event);
+			public boolean isTelevision() {
+				return false;
 			}
-		});
+		};
 	}
-	//@Subscribe
-	private void _gameEvent(GameEventMessage event) {
-		GameScreen activeScreen = getScreen();
+
+	// @Subscribe
+	private void _gameEvent(final GameEventMessage event) {
+		final GameScreen activeScreen = getScreen();
 		switch (event.getEvent()) {
 		case ShowLeaderBoard:
 			setScreen(new ScreenHighScores(this));
@@ -110,11 +86,11 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 			setScreen(new ScreenPoweredBy(this));
 			break;
 		case Done:
-			if (activeScreen==null) {
+			if (activeScreen == null) {
 				break;
 			}
 			if (activeScreen instanceof ScreenMainMenu) {
-				((ScreenMainMenu)activeScreen).maybeQuit();
+				((ScreenMainMenu) activeScreen).maybeQuit();
 				break;
 			}
 			if (activeScreen instanceof ScreenPoweredBy) {
@@ -141,7 +117,7 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 			if (screenGameplay != null) {
 				screenGameplay.dispose();
 			}
-			screenGameplay=new ScreenGameplay(this);
+			screenGameplay = new ScreenGameplay(this);
 			screenGameplay.initLevel(levelOn);
 			setScreen(screenGameplay);
 			break;
@@ -172,7 +148,7 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 			setScreen(screenInstructions, false);
 			break;
 		case Menu:
-			if (activeScreen==null) {
+			if (activeScreen == null) {
 				break;
 			}
 			if (activeScreen instanceof ScreenLevelComplete) {
@@ -185,16 +161,16 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 				break;
 			}
 			if (activeScreen instanceof ScreenGameplay) {
-				ScreenGameplay sg = ((ScreenGameplay)activeScreen);
+				final ScreenGameplay sg = (ScreenGameplay) activeScreen;
 				sg.setPaused(!sg.isPaused());
-				Gdx.app.log("PAUSED: ",Boolean.toString(sg.isPaused()));
+				Gdx.app.log("PAUSED: ", Boolean.toString(sg.isPaused()));
 				break;
 			}
 			if (screenOptions == null) {
 				screenOptions = new ScreenOptionsMenu(this);
 			}
 			setScreen(screenOptions, false);
-			break;		
+			break;
 		case QuitGame:
 			setScreen(new ScreenQuit(this), false);
 			Gdx.app.exit();
@@ -210,7 +186,30 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 		}
 	}
 
-	protected GameScreen screen;
+	@Override
+	public void create() {
+
+		Gdx.input.setCatchKey(Input.Keys.BACK, true);
+		Gdx.input.setCatchKey(Input.Keys.MENU, true);
+
+		prefs = new Prefs(this);
+
+		Gdx.app.log(this.getClass().getName(), "DreamLo: " + new DreamLo(prefs).registerWithDreamLoBoard());
+
+		Tween.registerAccessor(GameMusic.class, new MusicAccessor());
+		Tween.registerAccessor(Image.class, new ImageAccessor());
+
+		sm = new SoundManager(prefs);
+		fg = new FontLoader();
+
+		gameEvent(GameEvent.libGdx);
+
+		music = new MusicPlayer();
+		music.loadUsingPlist();
+		final float masterVolume = prefs.getMasterVolume() / 100f;
+		final float musicVolume = prefs.getMusicVolume() / 100f;
+		music.setVolume(masterVolume * musicVolume);
+	}
 
 	@Override
 	public void dispose() {
@@ -218,102 +217,38 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 			screen.hide();
 			screen = null;
 		}
-		if (music !=null) {
+		if (music != null) {
 			music.pause();
 			music.dispose();
 			music = null;
 		}
 	}
 
-	@Override
-	public void pause() {
-		if (screen != null) {
-			screen.pause();
-		}
+	public void gameEvent(final GameEvent gameEvent) {
+		Gdx.app.log(this.getClass().getName(), "gameEvent: " + gameEvent.name());
+		gameEvent(new GameEventMessage(gameEvent));
 	}
 
-	@Override
-	public void resume() {
-		if (screen != null) {
-			screen.resume();
-		}
-	}
-
-	@Override
-	public void render() {
-		if (screen != null) {
-			screen.render(Gdx.graphics.getDeltaTime());
-		}
-	}
-
-	protected void log(String message) {
-		Gdx.app.log(this.getClass().getName(), message);
-	}
-	
-	@Override
-	public void resize(int width, int height) {
-		log("app resize: "+width+"x"+height);
-		if (screen != null) {
-			screen.resize(width, height);
-		}
-	}
-
-	/**
-	 * Sets the current screen. {@link Screen#hide()} is called on any old
-	 * screen, and {@link Screen#show()} is called on the new screen, if any.
-	 * 
-	 * @param screen
-	 *            may be {@code null}
-	 */
-	public void setScreen(GameScreen screen) {
-		setScreen(screen, true);
-		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-	}
-
-	public void recordScreen(GameScreen screen) {
-		if (screen == null) {
-			return;
-		}
-		prevScreen.add(screen);
-	}
-
-	public void removeFromHistory(GameScreen screen) {
-		if (screen == null) {
-			return;
-		}
-		for (int ix = 0; ix < prevScreen.size; ix++) {
-			if (prevScreen.get(ix).equals(screen)) {
-				prevScreen.removeIndex(ix);
-				ix--;
+	public void gameEvent(final GameEventMessage event) {
+		Gdx.app.log(this.getClass().getName(), "gameEventMessage: " + event.getEvent().name());
+		Gdx.app.postRunnable(new Runnable() {
+			@Override
+			public void run() {
+				_gameEvent(event);
 			}
-		}
+		});
 	}
 
-	public void setScreen(GameScreen newScreen, boolean keepHistory) {
-		if (this.screen != null) {
-			this.screen.hide();
-		}
-		this.screen = newScreen;
-		if (this.screen != null) {
-			removeFromHistory(this.screen);
-			if (keepHistory) {
-				recordScreen(this.screen);
-			}
-			this.screen.show();
-		}
+	public int getLevelOn() {
+		return levelOn;
 	}
 
-	final Array<GameScreen> prevScreen = new Array<GameScreen>();
+	public int getLevels() {
+		return levels;
+	}
 
-	public void goPrevScreen() {
-		if (this.screen != null) {
-			if (this.screen.equals(prevScreen.peek())) {
-				prevScreen.pop();
-			}
-		}
-		if (prevScreen.size > 0) {
-			setScreen(prevScreen.peek());
-		}
+	public int getMinPercent() {
+		return 80;
 	}
 
 	public GameScreen getPrevScreen() {
@@ -328,46 +263,111 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 		return screen;
 	}
 
-	private int levelOn = 1;
-
-	private int levels = 1;
-
-	public LoadChallenges challenges;
-
-	public String activeChallenge;
-
-	private TvDetector tvDetector;
-
-	public void setLevels(int levelcount) {
-		levels = levelcount;
+	public void goPrevScreen() {
+		if (this.screen != null) {
+			if (this.screen.equals(prevScreen.peek())) {
+				prevScreen.pop();
+			}
+		}
+		if (prevScreen.size > 0) {
+			setScreen(prevScreen.peek());
+		}
 	}
 
-	public int getLevels() {
-		return levels;
-	}
-
-	public int getMinPercent() {
-		return 80;
-	}
-
-	public int getLevelOn() {
-		return levelOn;
-	}
-
-	public void setLevelOn(int levelOn) {
-		this.levelOn = levelOn;
-	}
-
-	public void setIsTelevisionDetector(TvDetector detector) {
-		this.tvDetector = detector;
-	}
-	
-	private Boolean _isTelevision;
 	@Override
 	public boolean isTelevision() {
-		if (_isTelevision==null) {
+		if (_isTelevision == null) {
 			_isTelevision = this.tvDetector.isTelevision();
 		}
 		return _isTelevision;
+	}
+
+	protected void log(final String message) {
+		Gdx.app.log(this.getClass().getName(), message);
+	}
+
+	@Override
+	public void pause() {
+		if (screen != null) {
+			screen.pause();
+		}
+	}
+
+	public void recordScreen(final GameScreen scrn) {
+		if (scrn == null) {
+			return;
+		}
+		prevScreen.add(scrn);
+	}
+
+	public void removeFromHistory(final GameScreen scrn) {
+		if (scrn == null) {
+			return;
+		}
+		for (int ix = 0; ix < prevScreen.size; ix++) {
+			if (prevScreen.get(ix).equals(scrn)) {
+				prevScreen.removeIndex(ix);
+				ix--;
+			}
+		}
+	}
+
+	@Override
+	public void render() {
+		if (screen != null) {
+			screen.render(Gdx.graphics.getDeltaTime());
+		}
+	}
+
+	@Override
+	public void resize(final int width, final int height) {
+		log("app resize: " + width + "x" + height);
+		if (screen != null) {
+			screen.resize(width, height);
+		}
+	}
+
+	@Override
+	public void resume() {
+		if (screen != null) {
+			screen.resume();
+		}
+	}
+
+	public void setIsTelevisionDetector(final TvDetector detector) {
+		this.tvDetector = detector;
+	}
+
+	public void setLevelOn(final int levelOn) {
+		this.levelOn = levelOn;
+	}
+
+	public void setLevels(final int levelcount) {
+		levels = levelcount;
+	}
+
+	/**
+	 * Sets the current screen. {@link Screen#hide()} is called on any old screen,
+	 * and {@link Screen#show()} is called on the new screen, if any.
+	 *
+	 * @param screen may be {@code null}
+	 */
+	public void setScreen(final GameScreen screen) {
+		setScreen(screen, true);
+		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+	}
+
+	public void setScreen(final GameScreen newScreen, final boolean keepHistory) {
+		if (this.screen != null) {
+			this.screen.hide();
+		}
+		this.screen = newScreen;
+		if (this.screen != null) {
+			removeFromHistory(this.screen);
+			if (keepHistory) {
+				recordScreen(this.screen);
+			}
+			this.screen.show();
+		}
 	}
 }

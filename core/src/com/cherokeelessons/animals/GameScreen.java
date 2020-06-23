@@ -35,17 +35,7 @@ public abstract class GameScreen implements Screen {
 
 	private boolean isPaused = false;
 
-	public boolean isPaused() {
-		return isPaused;
-	}
-
-	public void setPaused(boolean isPaused) {
-		this.isPaused = isPaused;
-	}
-
-	protected void log(String message) {
-		Gdx.app.log(this.getClass().getName(), message);
-	}
+	protected int o_pad = 200;
 
 	public GameScreen(final CherokeeAnimals game) {
 		this.game = game;
@@ -65,7 +55,7 @@ public abstract class GameScreen implements Screen {
 
 		gameStage = new Stage() {
 			@Override
-			public boolean keyDown(int keyCode) {
+			public boolean keyDown(final int keyCode) {
 				if (keyCode == Input.Keys.ESCAPE) {
 					game.gameEvent(GameEvent.Done);
 					return true;
@@ -89,28 +79,8 @@ public abstract class GameScreen implements Screen {
 				return super.keyDown(keyCode);
 			}
 		};
-	    gameStage.setViewport(getFitViewport(gameStage.getCamera()));
+		gameStage.setViewport(getFitViewport(gameStage.getCamera()));
 		gameStage.getRoot().setTouchable(Touchable.enabled);
-	}
-
-	private boolean mapToGamepad(int keyCode) {
-		if (!(this instanceof DpadInterface)) {
-			return false;
-		}
-		DpadInterface dpad = (DpadInterface) this;
-		switch (keyCode) {
-		case Input.Keys.DPAD_CENTER:
-		case Input.Keys.DPAD_DOWN:
-		case Input.Keys.DPAD_LEFT:
-		case Input.Keys.DPAD_RIGHT:
-		case Input.Keys.DPAD_UP:
-			return dpad.dpad(keyCode);
-		case Input.Keys.ENTER:
-		case Input.Keys.NUMPAD_5:
-			return dpad.dpad(Input.Keys.DPAD_CENTER);
-		default:
-		}
-		return false;
 	}
 
 	protected void clearScreen() {
@@ -132,16 +102,16 @@ public abstract class GameScreen implements Screen {
 		disconnectInputProcessor();
 		tmanager.killAll();
 		gameStage.clear();
-		//batch.dispose();
+		// batch.dispose();
 	}
 
-	protected int o_pad = 200;
-
 	protected void drawOverscan() {
-		if (!isShowOverscan())
+		if (!isShowOverscan()) {
 			return;
-		if (tv_box == null)
+		}
+		if (tv_box == null) {
 			return;
+		}
 		tv_box.setProjectionMatrix(gameStage.getCamera().combined);
 		tv_box.setColor(GameColor.FIREBRICK);
 		tv_box.begin(ShapeType.Filled);
@@ -150,6 +120,14 @@ public abstract class GameScreen implements Screen {
 		tv_box.rect(-o_pad, -o_pad, safeZoneSize.x + o_pad, fullScreenSize.height + o_pad);
 		tv_box.rect(safeZoneSize.width + safeZoneSize.x, 0, safeZoneSize.x + o_pad, fullScreenSize.height);
 		tv_box.end();
+	}
+
+	public FitViewport getFitViewport(final Camera camera) {
+		final Rectangle surrounds = DisplaySize._1080p.size();
+		final FitViewport fitViewport = new FitViewport(surrounds.width, surrounds.height, camera);
+		fitViewport.update((int) surrounds.width, (int) surrounds.height, true);
+		log("Camera Size: " + (int) surrounds.getWidth() + "x" + (int) surrounds.getHeight());
+		return fitViewport;
 	}
 
 	@Override
@@ -163,8 +141,36 @@ public abstract class GameScreen implements Screen {
 		tmanager.pause();
 	}
 
+	public boolean isPaused() {
+		return isPaused;
+	}
+
 	public boolean isShowOverscan() {
 		return showOverscan;
+	}
+
+	protected void log(final String message) {
+		Gdx.app.log(this.getClass().getName(), message);
+	}
+
+	private boolean mapToGamepad(final int keyCode) {
+		if (!(this instanceof DpadInterface)) {
+			return false;
+		}
+		final DpadInterface dpad = (DpadInterface) this;
+		switch (keyCode) {
+		case Input.Keys.DPAD_CENTER:
+		case Input.Keys.DPAD_DOWN:
+		case Input.Keys.DPAD_LEFT:
+		case Input.Keys.DPAD_RIGHT:
+		case Input.Keys.DPAD_UP:
+			return dpad.dpad(keyCode);
+		case Input.Keys.ENTER:
+		case Input.Keys.NUMPAD_5:
+			return dpad.dpad(Input.Keys.DPAD_CENTER);
+		default:
+		}
+		return false;
 	}
 
 	@Override
@@ -178,7 +184,7 @@ public abstract class GameScreen implements Screen {
 	}
 
 	@Override
-	public void render(float delta) {
+	public void render(final float delta) {
 		if (!isPaused) {
 			gameStage.act(delta);
 			tmanager.update(delta);
@@ -189,13 +195,13 @@ public abstract class GameScreen implements Screen {
 			drawOverscan();
 		}
 	}
-	
+
 	@Override
 	public void resize(final int width, final int height) {
 		gameStage.setViewport(getFitViewport(gameStage.getCamera()));
 		gameStage.getViewport().update(width, height);
 	}
-	
+
 	@Override
 	public void resume() {
 //		if (game.musicPlayer != null) {
@@ -209,7 +215,11 @@ public abstract class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(gameStage);
 	}
 
-	public void setShowOverscan(boolean showscreenSize) {
+	public void setPaused(final boolean isPaused) {
+		this.isPaused = isPaused;
+	}
+
+	public void setShowOverscan(final boolean showscreenSize) {
 		this.showOverscan = showscreenSize;
 	}
 
@@ -217,13 +227,5 @@ public abstract class GameScreen implements Screen {
 	public void show() {
 		Gdx.input.setInputProcessor(gameStage);
 		tv_box = new ShapeRenderer();
-	}
-	
-	public FitViewport getFitViewport(final Camera camera) {
-		final Rectangle surrounds = DisplaySize._1080p.size();
-		final FitViewport fitViewport = new FitViewport(surrounds.width, surrounds.height, camera);
-		fitViewport.update((int) surrounds.width, (int) surrounds.height, true);
-		log("Camera Size: " + (int) surrounds.getWidth() + "x" + (int) surrounds.getHeight());
-		return fitViewport;
 	}
 }

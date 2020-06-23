@@ -25,24 +25,24 @@ public class ViewScoreBoard extends Group {
 
 	private float elapsedTime = 0;
 
-	private int fontSize = 96;
+	private final int fontSize = 96;
 	private int prevDisplayScore = -1;
 
 	private int score = -1;
 
 	private Label scoreBox = null;
 
-	private float sideMargin = 15;
-	private SoundManager sm;
+	private final float sideMargin = 15;
+	private final SoundManager sm;
 
-	private float topMargin = 11 + 7;
+	private final float topMargin = 11 + 7;
 
 	public Action updateScoreBoardAction = new Action() {
 
 		private float tickGap = .2f;
 
 		@Override
-		public boolean act(float delta) {
+		public boolean act(final float delta) {
 			float deltaScore;
 			float jumpBy;
 
@@ -59,14 +59,14 @@ public class ViewScoreBoard extends Group {
 			deltaScore = score - displayScore;
 			if (deltaScore > 0) {
 				// do partial additive operation
-				jumpBy = (deltaScore / 3);
+				jumpBy = deltaScore / 3;
 				if (jumpBy < 1) {
 					jumpBy = 1;
 				}
 				soundGood();
 			} else {
 				// do partial subtractive operation
-				jumpBy = (deltaScore / 2);
+				jumpBy = deltaScore / 2;
 				if (jumpBy > -1) {
 					jumpBy = -1;
 				}
@@ -80,14 +80,14 @@ public class ViewScoreBoard extends Group {
 
 	// public Group viewGroup = null;
 
-	public ViewScoreBoard(Rectangle overscan, SoundManager sm) {
+	public ViewScoreBoard(final Rectangle overscan, final SoundManager sm) {
 		super();
 		// String glyphs="0123456789";
 		// String glyphs2=" +%-";
 		bbox.set(overscan);
 		this.sm = sm;
 
-		FontLoader fg = new FontLoader();
+		final FontLoader fg = new FontLoader();
 		bitmapFont = fg.get(fontSize);// ;fg.genFixedNumbers(fontSize);
 		boxStyle = new LabelStyle(bitmapFont, GameColor.MAIN_TEXT);
 		scoreBox = new Label("", boxStyle);
@@ -101,7 +101,7 @@ public class ViewScoreBoard extends Group {
 
 	}
 
-	public void changeScoreBy(int points) {
+	public void changeScoreBy(final int points) {
 		this.score += points;
 		return;
 	}
@@ -125,7 +125,7 @@ public class ViewScoreBoard extends Group {
 		updateScoreDisplay();
 	}
 
-	public void setScore(int score) {
+	public void setScore(final int score) {
 		this.score = score;
 	}
 

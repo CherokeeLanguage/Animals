@@ -25,30 +25,12 @@ import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Utils;
 
 public class ScreenMainMenu extends GameScreen implements DpadInterface {
-	
-	@Override
-	public boolean dpad(int keyCode) {
-		switch (keyCode) {
-		case Keys.DPAD_CENTER:
-			hud_select();
-			return true;
-		case Keys.DPAD_DOWN:
-			hud_moveSouth();
-			return true;
-		case Keys.DPAD_UP:
-			hud_moveNorth();
-			return true;
-		}
-		return false;
-	}
-	
-	public static final String INDICATOR = "images/indicators/da-gi-si_2.png";
-	public static final float INDI_SCALE=.45f; 
+
 	private static class MenuLabel extends Label {
 
 		private Runnable menu_action = null;
 
-		public MenuLabel(CharSequence text, LabelStyle style) {
+		public MenuLabel(final CharSequence text, final LabelStyle style) {
 			super(text, style);
 		}
 
@@ -58,25 +40,28 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 			}
 		}
 
-		public void setRun(Runnable listener) {
+		public void setRun(final Runnable listener) {
 			menu_action = listener;
 		}
 	}
 
+	public static final String INDICATOR = "images/indicators/da-gi-si_2.png";
+	public static final float INDI_SCALE = .45f;
 	private static final String GAME_TITLE = "ᎠᏂᏣᎳᎩ ᎡᎿᎢ!";
+
 	private static final String NEW_GAME = "New Game - ᎢᏤ ᏗᏁᎶᏗᎢ";
 	private static final String LEADERS = "High Scores - ᏬᏍᏓ ᏗᏎᏍᏗ";
 	private static final String INSTRUCTIONS = "Instructions - ᏗᏕᏲᏗ";
 	private static final String OPTIONS = "Options - ᎠᏑᏰᏍᏗᎢ";
 	private static final String CREDITS = "About - ᎢᎸᏢ";
 	private static final String QUIT = "Quit - ᎠᏑᎶᎪᏍᏗ";
-
-	private Array<MenuLabel> btns = new Array<MenuLabel>();
+	private final Array<MenuLabel> btns = new Array<>();
 
 	private Texture indicator;
 
-	private Image left_indicator = new Image();
-	private Runnable newGame = new Runnable() {
+	private final Image left_indicator = new Image();
+
+	private final Runnable newGame = new Runnable() {
 		@Override
 		public void run() {
 			game.music.pause();
@@ -85,22 +70,21 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		}
 	};
 	public int optionsButton;
-	private Runnable performQuit = new Runnable() {
+	private final Runnable performQuit = new Runnable() {
 		@Override
 		public void run() {
 			game.sm.playEffect("menu-click");
 			game.gameEvent(GameEvent.QuitGame);
-			Gdx.app.exit();			
+			Gdx.app.exit();
 		}
 	};
-
 	final public int quitButton;
 
-	private Image right_indicator = new Image();
+	private final Image right_indicator = new Image();
 
 	private int selected_btn = 0;
 
-	private Runnable showOptions = new Runnable() {
+	private final Runnable showOptions = new Runnable() {
 		@Override
 		public void run() {
 			game.sm.playEffect("menu-click");
@@ -108,44 +92,43 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		}
 	};
 
-	private final Array<Sprite> wall = new Array<Sprite>();
-	private TextureAtlas wall_atlas;
+	private final Array<Sprite> wall = new Array<>();
 
-	final private CtlrMainMenu_Watch watcher = new CtlrMainMenu_Watch(
-			this);
-	private Runnable showInstructions=new Runnable() {
+	private TextureAtlas wall_atlas;
+	final private CtlrMainMenu_Watch watcher = new CtlrMainMenu_Watch(this);
+
+	private final Runnable showInstructions = new Runnable() {
 		@Override
 		public void run() {
 			game.sm.playEffect("menu-click");
-			game.gameEvent(GameEvent.ShowInstructions);			
+			game.gameEvent(GameEvent.ShowInstructions);
 		}
 	};
-	private Runnable showCredits=new Runnable() {
+	private final Runnable showCredits = new Runnable() {
 		@Override
 		public void run() {
 			game.sm.playEffect("menu-click");
 			game.gameEvent(GameEvent.ShowCredits);
 		}
 	};
-	private Runnable showLeaderBoard=new Runnable() {
+	private final Runnable showLeaderBoard = new Runnable() {
 		@Override
 		public void run() {
 			game.sm.playEffect("menu-click");
 			game.gameEvent(GameEvent.ShowLeaderBoard);
 		}
 	};
-	
 
-	public ScreenMainMenu(CherokeeAnimals game) {
+	public ScreenMainMenu(final CherokeeAnimals game) {
 		super(game);
-		
+
 		float currentY;
-		float linesOfText = 6;
-		float skipAmount = fullScreenSize.height / (linesOfText);
-		int fontSize = 96;
+		final float linesOfText = 6;
+		float skipAmount = fullScreenSize.height / linesOfText;
+		final int fontSize = 96;
 		float graphicsHeight = 0;
 		float emptyHeight = 0;
-		FontLoader fg = new FontLoader();
+		final FontLoader fg = new FontLoader();
 
 		BitmapFont bmFont;
 		bmFont = fg.get(fontSize);
@@ -153,7 +136,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		BitmapFont hsFont;
 		hsFont = fg.getFixed(fontSize / 2);
 
-		Color textColor = GameColor.MAIN_TEXT;
+		final Color textColor = GameColor.MAIN_TEXT;
 
 		MenuLabel titleText = null;
 		LabelStyle titleStyle = null;
@@ -185,29 +168,24 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		btn_Quit = new MenuLabel(QUIT, buttonStyle);
 
 		/*
-		 * calculate needed empty gap between menu items for even up to down
-		 * spacing
+		 * calculate needed empty gap between menu items for even up to down spacing
 		 */
 
-		graphicsHeight = titleText.getHeight() + btn_NewGame.getHeight()
-				+ btn_Options.getHeight() + btn_Quit.getHeight() + btn_Instructions.getHeight()
-				+ btn_Credits.getHeight() + btn_Leaders.getHeight();
+		graphicsHeight = titleText.getHeight() + btn_NewGame.getHeight() + btn_Options.getHeight()
+				+ btn_Quit.getHeight() + btn_Instructions.getHeight() + btn_Credits.getHeight()
+				+ btn_Leaders.getHeight();
 		emptyHeight = fullScreenSize.height - graphicsHeight;
 		skipAmount = emptyHeight / (linesOfText + 1);
 
 		/*
 		 * center each line
 		 */
-		titleText
-				.setX(((fullScreenSize.width - titleText.getWidth()) / 2));
-		btn_NewGame.setX((fullScreenSize.width - btn_NewGame.getWidth())
-				/ 2);
-		btn_Leaders.setX((fullScreenSize.width-btn_Leaders.getWidth())/2);
-		btn_Instructions.setX((fullScreenSize.width - btn_Instructions.getWidth())/2);
-		btn_Options.setX((fullScreenSize.width - btn_Options.getWidth())
-				/ 2);
-		btn_Credits.setX((fullScreenSize.width - btn_Credits.getWidth())
-				/ 2);
+		titleText.setX((fullScreenSize.width - titleText.getWidth()) / 2);
+		btn_NewGame.setX((fullScreenSize.width - btn_NewGame.getWidth()) / 2);
+		btn_Leaders.setX((fullScreenSize.width - btn_Leaders.getWidth()) / 2);
+		btn_Instructions.setX((fullScreenSize.width - btn_Instructions.getWidth()) / 2);
+		btn_Options.setX((fullScreenSize.width - btn_Options.getWidth()) / 2);
+		btn_Credits.setX((fullScreenSize.width - btn_Credits.getWidth()) / 2);
 		btn_Quit.setX((fullScreenSize.width - btn_Quit.getWidth()) / 2);
 
 		/*
@@ -216,25 +194,25 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		// start at top of screen
 		currentY = fullScreenSize.height;
 		// subtract empty gap + line height before placement
-		currentY -= (titleText.getHeight() + skipAmount);
+		currentY -= titleText.getHeight() + skipAmount;
 		titleText.setY(currentY);
 
-		currentY -= (btn_NewGame.getHeight() + skipAmount);
+		currentY -= btn_NewGame.getHeight() + skipAmount;
 		btn_NewGame.setY(currentY);
-		
-		currentY -= (btn_Leaders.getHeight() + skipAmount);
+
+		currentY -= btn_Leaders.getHeight() + skipAmount;
 		btn_Leaders.setY(currentY);
-		
-		currentY -= (btn_Instructions.getHeight() + skipAmount);
+
+		currentY -= btn_Instructions.getHeight() + skipAmount;
 		btn_Instructions.setY(currentY);
 
-		currentY -= (btn_Options.getHeight() + skipAmount);
+		currentY -= btn_Options.getHeight() + skipAmount;
 		btn_Options.setY(currentY);
-		
-		currentY -= (btn_Options.getHeight() + skipAmount);
+
+		currentY -= btn_Options.getHeight() + skipAmount;
 		btn_Credits.setY(currentY);
 
-		currentY -= (btn_Quit.getHeight() + skipAmount);
+		currentY -= btn_Quit.getHeight() + skipAmount;
 		btn_Quit.setY(currentY);
 
 		/*
@@ -248,21 +226,19 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		btns.add(btn_Credits);
 		quitButton = btns.size;
 		btns.add(btn_Quit);
-		
+
 		/*
 		 * connect touch handlers
 		 */
-		for (int ix=0; ix<btns.size; ix++) {
-			MenuLabel menuItem = btns.get(ix);
-			Gdx.app.log(this.getClass().getName(), "touch handlers: "+menuItem.getText());
-			final int button = ix;
+		for (int ix = 0; ix < btns.size; ix++) {
+			final MenuLabel menuItem = btns.get(ix);
+			Gdx.app.log(this.getClass().getName(), "touch handlers: " + menuItem.getText());
 			menuItem.pack();
 			menuItem.setTouchable(Touchable.enabled);
-			menuItem.addListener(new InputListener(){
-				private int btn = button;				
+			menuItem.addListener(new InputListener() {
 				@Override
-				public boolean touchDown(InputEvent event, float ix, float emptyHeight,
-						int pointer, int button) {
+				public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
+						final int btn) {
 					highlight_button(btn, true);
 					hud_select();
 					return true;
@@ -290,21 +266,35 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		gameStage.addActor(btn_Options);
 		gameStage.addActor(btn_Credits);
 		gameStage.addActor(btn_Quit);
-		
+
 		gameStage.addActor(left_indicator);
 		gameStage.addActor(right_indicator);
 
-		wall_atlas=Utils.initBackdrop(wall);
+		wall_atlas = Utils.initBackdrop(wall);
 	}
-	
+
 	@Override
 	public void dispose() {
 		wall_atlas.dispose();
 		super.dispose();
 	}
 
-	public void hud_select() {
-		btns.get(selected_btn).doRun();
+	@Override
+	public boolean dpad(final int keyCode) {
+		switch (keyCode) {
+		case Keys.DPAD_CENTER:
+			hud_select();
+			return true;
+		case Keys.DPAD_DOWN:
+			hud_moveSouth();
+			return true;
+		case Keys.DPAD_UP:
+			hud_moveNorth();
+			return true;
+		default:
+			break;
+		}
+		return false;
 	}
 
 	public int getSelected_btn() {
@@ -313,7 +303,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 
 	@Override
 	public void hide() {
-		for (Controller controller : Gamepads.getControllers()) {
+		for (final Controller controller : Gamepads.getControllers()) {
 			watcher.disconnected(controller);
 		}
 		Gamepads.clearListeners();
@@ -322,34 +312,25 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		super.hide();
 	}
 
-	private void highlight_button(int button, boolean quiet) {
-		selected_btn=button;
-		highlight_button(quiet);
-	}
-	
 	private void highlight_button() {
 		highlight_button(false);
 	}
-	
-	private void highlight_button(boolean quiet) {
+
+	private void highlight_button(final boolean quiet) {
 		if (!quiet) {
 			game.sm.playEffect("box_moved");
 		}
-		MenuLabel label = btns.get(selected_btn);
-		float left = label.getX();
-		float bottom = label.getY();
-		float right = label.getX() + label.getWidth();
-		left_indicator.setPosition(left - left_indicator.getWidth() + 20 ,
-				bottom);
+		final MenuLabel label = btns.get(selected_btn);
+		final float left = label.getX();
+		final float bottom = label.getY();
+		final float right = label.getX() + label.getWidth();
+		left_indicator.setPosition(left - left_indicator.getWidth() + 20, bottom);
 		right_indicator.setPosition(right - 20, bottom);
 	}
 
-	public void hud_moveSouth() {
-		selected_btn++;
-		if (selected_btn >= btns.size) {
-			selected_btn = 0;
-		}
-		highlight_button();
+	private void highlight_button(final int button, final boolean quiet) {
+		selected_btn = button;
+		highlight_button(quiet);
 	}
 
 	public void hud_moveNorth() {
@@ -360,19 +341,40 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		highlight_button();
 	}
 
+	public void hud_moveSouth() {
+		selected_btn++;
+		if (selected_btn >= btns.size) {
+			selected_btn = 0;
+		}
+		highlight_button();
+	}
+
+	public void hud_select() {
+		btns.get(selected_btn).doRun();
+	}
+
+	public void maybeQuit() {
+		if (selected_btn == quitButton) {
+			Gdx.app.postRunnable(performQuit);
+			return;
+		}
+		selected_btn = quitButton;
+		highlight_button();
+	}
+
 	@Override
-	public void render(float delta) {
+	public void render(final float delta) {
 		super.render(delta);
 	}
-	
+
 	@Override
 	public void show() {
 		super.show();
-		float masterVolume = ((float)game.prefs.getMasterVolume())/100f;
-		float musicVolume = ((float)game.prefs.getMusicVolume())/100f;
-		game.music.play(masterVolume*musicVolume);
+		final float masterVolume = game.prefs.getMasterVolume() / 100f;
+		final float musicVolume = game.prefs.getMusicVolume() / 100f;
+		game.music.play(masterVolume * musicVolume);
 		Gamepads.addListener(watcher);
-		for (Controller c : Gamepads.getControllers()) {
+		for (final Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
 		}
 
@@ -384,28 +386,19 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 
 		left_indicator.setDrawable(temp);
 		left_indicator.pack();
-		
+
 		right_indicator.setDrawable(temp);
 		right_indicator.pack();
-		
+
 		left_indicator.setOrigin(0, 0);
-		left_indicator.setOrigin(left_indicator.getWidth()/2, 0);
+		left_indicator.setOrigin(left_indicator.getWidth() / 2, 0);
 		left_indicator.setScaleX(INDI_SCALE);
 		left_indicator.setScaleY(INDI_SCALE);
-		
-		right_indicator.setOrigin(right_indicator.getWidth()/2, 0);
+
+		right_indicator.setOrigin(right_indicator.getWidth() / 2, 0);
 		right_indicator.setScaleX(-INDI_SCALE);
 		right_indicator.setScaleY(INDI_SCALE);
 
-		highlight_button();
-	}
-
-	public void maybeQuit() {
-		if (selected_btn==quitButton) {
-			Gdx.app.postRunnable(performQuit);
-			return;
-		}
-		selected_btn=quitButton;
 		highlight_button();
 	}
 }

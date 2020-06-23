@@ -1,7 +1,7 @@
 package com.cherokeelessons.animals;
 
 public class ScreenQuit extends GameScreen {
-	public ScreenQuit(CherokeeAnimals game) {
+	public ScreenQuit(final CherokeeAnimals game) {
 		super(game);
 	}
 }

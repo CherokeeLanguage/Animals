@@ -16,35 +16,13 @@ public class MusicPlayer {
 	private int activeSong = 0;
 	private Music m = null;
 
-	public MusicPlayer() {
-		am = new AssetManager();
-	}
+	private final List<String> songs = new ArrayList<>();
 
-	public void pause() {
-		if (m != null) {
-			m.pause();
-		}
-	}
-
-	public void resume() {
-		if (m != null) {
-			m.play();
-		}
-	}
-
-	public void setVolume(float f) {
-		volume = f;
-		if (m!=null) {
-			m.setVolume(volume);
-		}
-	}
-
-	private final List<String> songs = new ArrayList<String>();
-	private OnCompletionListener nextSong = new OnCompletionListener() {
+	private final OnCompletionListener nextSong = new OnCompletionListener() {
 		@Override
-		public void onCompletion(Music music) {
-			activeSong = ((activeSong + 1) % songs.size());
-			if (activeSong==0) {
+		public void onCompletion(final Music music) {
+			activeSong = (activeSong + 1) % songs.size();
+			if (activeSong == 0) {
 				Collections.shuffle(songs);
 			}
 			play(volume);
@@ -53,8 +31,23 @@ public class MusicPlayer {
 
 	private float volume = 1f;
 
+	public MusicPlayer() {
+		am = new AssetManager();
+	}
+
+	public void dispose() {
+		if (m != null) {
+			m.stop();
+			m = null;
+		}
+		if (am != null) {
+			am.clear();
+			am.dispose();
+		}
+	}
+
 	public void loadUsingPlist() {
-		String songsPlist = Gdx.files.internal("music/00-plist.txt").readString("UTF-8");
+		final String songsPlist = Gdx.files.internal("music/00-plist.txt").readString("UTF-8");
 		songs.clear();
 		songs.addAll(Arrays.asList(songsPlist.split("\n")));
 		Collections.shuffle(songs);
@@ -67,7 +60,13 @@ public class MusicPlayer {
 		}
 	}
 
-	public void play(float f) {
+	public void pause() {
+		if (m != null) {
+			m.pause();
+		}
+	}
+
+	public void play(final float f) {
 		volume = f;
 		if (m != null && m.isPlaying()) {
 			m.setVolume(volume);
@@ -86,14 +85,16 @@ public class MusicPlayer {
 		m.play();
 	}
 
-	public void dispose() {
-		if (m!=null) {
-			m.stop();
-			m=null;
+	public void resume() {
+		if (m != null) {
+			m.play();
 		}
-		if (am!=null) {
-			am.clear();
-			am.dispose();
+	}
+
+	public void setVolume(final float f) {
+		volume = f;
+		if (m != null) {
+			m.setVolume(volume);
 		}
 	}
 }

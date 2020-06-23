@@ -4,7 +4,7 @@ public abstract class Callback<T> {
 	public Callback() {
 	}
 
-	public void error(Exception exception) {
+	public void error(final Exception exception) {
 		exception.printStackTrace();
 		System.err.flush();
 	}
@@ -27,7 +27,7 @@ public abstract class Callback<T> {
 				Callback.this.success(data);
 			}
 		};
-	};
+	}
 
 	public Runnable withNull() {
 		return new Runnable() {

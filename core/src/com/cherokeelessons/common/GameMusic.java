@@ -4,62 +4,10 @@ import com.badlogic.gdx.audio.Music;
 
 public class GameMusic implements Music {
 
-	private Music music;
+	private final Music music;
 
-	public GameMusic(Music m) {
+	public GameMusic(final Music m) {
 		music = m;
-	}
-
-	@Override
-	public void play() {
-		music.play();
-	}
-
-	@Override
-	public void pause() {
-		music.pause();
-
-	}
-
-	@Override
-	public void stop() {
-		music.stop();
-	}
-
-	@Override
-	public boolean isPlaying() {
-		return music.isPlaying();
-	}
-
-	@Override
-	public void setLooping(boolean isLooping) {
-		music.setLooping(isLooping);
-	}
-
-	@Override
-	public boolean isLooping() {
-		return music.isLooping();
-	}
-
-	@Override
-	public void setVolume(float volume) {
-		music.setVolume(volume);
-	}
-
-	@Override
-	public float getVolume() {
-		return music.getVolume();
-	}
-
-	@Override
-	public void setPan(float pan, float volume) {
-		music.setPan(pan, volume);
-
-	}
-
-	@Override
-	public float getPosition() {
-		return music.getPosition();
 	}
 
 	@Override
@@ -69,14 +17,66 @@ public class GameMusic implements Music {
 	}
 
 	@Override
-	public void setOnCompletionListener(OnCompletionListener listener) {
+	public float getPosition() {
+		return music.getPosition();
+	}
+
+	@Override
+	public float getVolume() {
+		return music.getVolume();
+	}
+
+	@Override
+	public boolean isLooping() {
+		return music.isLooping();
+	}
+
+	@Override
+	public boolean isPlaying() {
+		return music.isPlaying();
+	}
+
+	@Override
+	public void pause() {
+		music.pause();
+
+	}
+
+	@Override
+	public void play() {
+		music.play();
+	}
+
+	@Override
+	public void setLooping(final boolean isLooping) {
+		music.setLooping(isLooping);
+	}
+
+	@Override
+	public void setOnCompletionListener(final OnCompletionListener listener) {
 		music.setOnCompletionListener(listener);
 
 	}
 
 	@Override
-	public void setPosition(float position) {
+	public void setPan(final float pan, final float volume) {
+		music.setPan(pan, volume);
+
+	}
+
+	@Override
+	public void setPosition(final float position) {
 		music.setPosition(position);
+	}
+
+	@Override
+	public void setVolume(final float volume) {
+		music.setVolume(volume);
+	}
+
+	@Override
+	public void stop() {
+		music.stop();
 	}
 
 }

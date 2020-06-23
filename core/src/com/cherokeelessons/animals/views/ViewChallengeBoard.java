@@ -18,16 +18,16 @@ public class ViewChallengeBoard extends Group {
 	private Label displayText = null;
 	private BitmapFont font;
 
-	private FontLoader fontGen;
+	private final FontLoader fontGen;
 	private int fontSize = 96;
 
 	final private Rectangle screenSize = new Rectangle();
-	private int sideMargin = 15;
+	private final int sideMargin = 15;
 
-	private int topMargin = 18 + 7;
+	private final int topMargin = 18 + 7;
 
 	// private Group viewGroup=null;
-	public ViewChallengeBoard(Rectangle screenSize) {
+	public ViewChallengeBoard(final Rectangle screenSize) {
 		super();
 
 		this.screenSize.set(screenSize);
@@ -50,20 +50,18 @@ public class ViewChallengeBoard extends Group {
 	// return viewGroup;
 	// }
 
-	public void setDisplayText(String text) {
+	public void setDisplayText(final String text) {
 		displayText.setText(text);
 		displayText.pack();
 		displayText.setX(sideMargin);
-		displayText.setY(screenSize.height - topMargin
-				- displayText.getHeight());
+		displayText.setY(screenSize.height - topMargin - displayText.getHeight());
 	}
 
 	/**
-	 * @param fontSize
-	 *            the fontSize to set
+	 * @param fontSize the fontSize to set
 	 */
-	public void setFontSize(int fontSize) {
-		FontLoader fg = new FontLoader();
+	public void setFontSize(final int fontSize) {
+		final FontLoader fg = new FontLoader();
 		this.fontSize = fontSize;
 		font = fg.get(fontSize);
 		displayStyle.font = font;
