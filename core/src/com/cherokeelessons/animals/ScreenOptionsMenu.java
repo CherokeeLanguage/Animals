@@ -100,8 +100,6 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 	private final Color textColor;
 
-	final Array<Sprite> wall = new Array<>();
-
 	private TextureAtlas wall_atlas;
 
 	final private CtlrOptions_Watch watcher = new CtlrOptions_Watch(this);
@@ -469,7 +467,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	public void show() {
 		super.show();
 		update_btn_resetStatistics();
-		wall_atlas = Utils.initBackdrop(wall);
+		wall_atlas = Utils.initBackdrop();
 
 		indicator = new Texture(INDICATOR);
 		indicator.setFilter(TextureFilter.Linear, TextureFilter.Linear);

@@ -92,8 +92,6 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		}
 	};
 
-	private final Array<Sprite> wall = new Array<>();
-
 	private TextureAtlas wall_atlas;
 	final private CtlrMainMenu_Watch watcher = new CtlrMainMenu_Watch(this);
 
@@ -270,7 +268,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		gameStage.addActor(left_indicator);
 		gameStage.addActor(right_indicator);
 
-		wall_atlas = Utils.initBackdrop(wall);
+		wall_atlas = Utils.initBackdrop();
 	}
 
 	@Override

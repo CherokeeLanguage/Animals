@@ -36,8 +36,6 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 		}
 	};
 
-	final Array<Sprite> wall = new Array<>();
-
 	private TextureAtlas wall_atlas;
 	private FontLoader fg;
 
@@ -107,7 +105,7 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 	private void initScreen() {
 		gameStage.clear();
 		gameStage.addActor(instructions);
-		wall_atlas = Utils.initBackdrop(wall);
+		wall_atlas = Utils.initBackdrop();
 		init();
 		instructions.setWidth(safeZoneSize.width);
 		instructions.setHeight(safeZoneSize.height);

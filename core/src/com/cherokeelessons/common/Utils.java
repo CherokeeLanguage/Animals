@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.cherokeelessons.util.StringUtils;
@@ -55,21 +56,18 @@ public class Utils {
 		return packSize;
 	}
 
-	public static TextureAtlas initBackdrop(final Array<Sprite> wall) {
-		TextureAtlas wall_atlas;
+	public static TextureAtlas initBackdrop() {
+		final Array<Image> wall = new Array<>();
 		final IntBuffer buf = BufferUtils.newIntBuffer(16);
 		Gdx.gl.glGetIntegerv(GL20.GL_MAX_TEXTURE_SIZE, buf);
-		int packSize = buf.get();
-		if (packSize > 1024) {
-			packSize = 1024;
-		}
+		final int packSize = Utils.getPackSize();
 		wall.clear();
 		final PixmapPacker pack = new PixmapPacker(packSize, packSize, Format.RGBA8888, 2, true);
 		for (int i = 0; i < 32; i++) {
 			final Pixmap image = new Pixmap(Gdx.files.internal("images/backdrops/p_" + i + "_dsci2549.png"));
 			pack.pack(i + "X", image);
 		}
-		wall_atlas = pack.generateTextureAtlas(TextureFilter.Linear, TextureFilter.Linear, false);
+		final TextureAtlas wall_atlas = pack.generateTextureAtlas(TextureFilter.Linear, TextureFilter.Linear, false);
 
 		int px = 0;
 		int py = 0;
@@ -77,20 +75,20 @@ public class Utils {
 		final int columns = 4;
 		for (int x = 0; x < perRow; x++) {
 			py = 0;
-			Sprite i = null;
+			Image i = null;
 			for (int y = 0; y < columns; y++) {
 				final int z = columns - (y + 1);
 				final int p = z * perRow + x;
 				final AtlasRegion piece = wall_atlas.findRegion(p + "X");
-				i = new Sprite(piece, 0, 0, piece.getRegionWidth(), piece.getRegionHeight());
-				if (y == 0) {
-					px += i.getWidth();
-				}
+				i = new Image(piece);
 				i.setX(px);
 				i.setY(py);
 				i.setColor(1f, 1f, 1f, 0.35f);
 				py += i.getHeight();
 				wall.add(i);
+			}
+			if (i!=null) {
+				px += i.getWidth();
 			}
 		}
 		return wall_atlas;

@@ -39,8 +39,6 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	private Label msg_elasped_time;
 	private LabelStyle tbStyle;
 
-	final Array<Sprite> wall = new Array<>();
-
 	private TextureAtlas wall_atlas;
 
 	final private CtlrLevelComplete_Watch watcher = new CtlrLevelComplete_Watch(this);
@@ -109,7 +107,6 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 
 	@Override
 	public void hide() {
-		wall.clear();
 		wall_atlas.dispose();
 		for (final Controller controller : Gamepads.getControllers()) {
 			watcher.disconnected(controller);
@@ -158,7 +155,7 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	public void show() {
 		super.show();
 		positionItems();
-		wall_atlas = Utils.initBackdrop(wall);
+		wall_atlas = Utils.initBackdrop();
 		Gamepads.addListener(watcher);
 		for (final Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);

@@ -28,7 +28,6 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 			return true;
 		}
 	};
-	final Array<Sprite> wall = new Array<>();
 	private TextureAtlas wall_atlas;
 
 	public ScreenCredits(final CherokeeAnimals game) {
@@ -89,8 +88,6 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 
 		creditScroller = new Attributions(safeZoneSize);
 		creditScroller.setFontColor(GameColor.MAIN_TEXT);
-
-		wall_atlas = Utils.initBackdrop(wall);
 
 		gameStage.addActor(shadow);
 		gameStage.addActor(creditScroller);

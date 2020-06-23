@@ -74,7 +74,7 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 
 	public ScreenHighScores(final CherokeeAnimals game) {
 		super(game);
-		wall_atlas = Utils.initBackdrop(wall);
+		wall_atlas = Utils.initBackdrop();
 	}
 
 	@Override
