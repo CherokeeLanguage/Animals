@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.animals.enums.GameEvent;
+import com.cherokeelessons.common.BackdropData;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
@@ -92,7 +94,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		}
 	};
 
-	private TextureAtlas wall_atlas;
+	private BackdropData backdrop;
 	final private CtlrMainMenu_Watch watcher = new CtlrMainMenu_Watch(this);
 
 	private final Runnable showInstructions = new Runnable() {
@@ -268,12 +270,19 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		gameStage.addActor(left_indicator);
 		gameStage.addActor(right_indicator);
 
-		wall_atlas = Utils.initBackdrop();
+		backdrop = Utils.initBackdrop();
+		Group backdropGroup = new Group();
+		for (Image image: backdrop.getImages()) {
+			backdropGroup.addActor(image);
+		}
+		gameStage.addActor(backdropGroup);
+		backdropGroup.setSize(gameStage.getWidth(), gameStage.getHeight());
+		backdropGroup.setZIndex(0);
 	}
 
 	@Override
 	public void dispose() {
-		wall_atlas.dispose();
+		backdrop.dispose();
 		super.dispose();
 	}
 

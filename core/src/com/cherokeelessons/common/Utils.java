@@ -56,7 +56,7 @@ public class Utils {
 		return packSize;
 	}
 
-	public static TextureAtlas initBackdrop() {
+	public static BackdropData initBackdrop() {
 		final Array<Image> wall = new Array<>();
 		final IntBuffer buf = BufferUtils.newIntBuffer(16);
 		Gdx.gl.glGetIntegerv(GL20.GL_MAX_TEXTURE_SIZE, buf);
@@ -91,7 +91,10 @@ public class Utils {
 				px += i.getWidth();
 			}
 		}
-		return wall_atlas;
+		BackdropData data = new BackdropData();
+		data.setImages(wall);
+		data.setTextureAtlas(wall_atlas);
+		return data;
 	}
 
 	public static void initTranslationMap() {

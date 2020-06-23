@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.animals.enums.GameEvent;
+import com.cherokeelessons.common.BackdropData;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Utils;
@@ -30,9 +31,8 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 	private ScrollPane scroll;
 
 	private Table scrolltable;
-	private final Array<Sprite> wall = new Array<>();
 
-	private final TextureAtlas wall_atlas;
+	private final BackdropData wall_atlas;
 
 	private final CtlrHighScores_Watch watcher = new CtlrHighScores_Watch(this);
 

@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.animals.enums.GameEvent;
+import com.cherokeelessons.common.BackdropData;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
@@ -39,7 +40,7 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	private Label msg_elasped_time;
 	private LabelStyle tbStyle;
 
-	private TextureAtlas wall_atlas;
+	private BackdropData wall_atlas;
 
 	final private CtlrLevelComplete_Watch watcher = new CtlrLevelComplete_Watch(this);
 

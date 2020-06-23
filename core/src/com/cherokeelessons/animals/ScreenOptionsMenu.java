@@ -23,6 +23,7 @@ import com.cherokeelessons.animals.enums.ChallengeWordMode;
 import com.cherokeelessons.animals.enums.GameEvent;
 import com.cherokeelessons.animals.enums.SoundEffectVolume;
 import com.cherokeelessons.animals.enums.TrainingMode;
+import com.cherokeelessons.common.BackdropData;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
@@ -100,7 +101,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 	private final Color textColor;
 
-	private TextureAtlas wall_atlas;
+	private BackdropData wall_atlas;
 
 	final private CtlrOptions_Watch watcher = new CtlrOptions_Watch(this);
 
