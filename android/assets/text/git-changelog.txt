@@ -1,0 +1,68 @@
+2020-06-23 [904f9e8]: (HEAD -> master, origin/master) Add README with content.
+2020-06-23 [6dd1207]: Create README2.md
+2020-06-23 [b311956]: (tag: 2020-06-23-reparent) Reparent.
+2020-06-22 [28df975]: begin effort to remove the misbehaving sprite batch
+2020-06-22 [7e75674]: (tag: 2020-06-22-initial-public-code) get basic project operational with latest Gradle and latest libGDX
+2020-06-21 [d14b5f8]: Implement Google recommended steps for detecting TV mode.
+2020-06-21 [0096077]: fix icon for tv
+2020-06-21 [4bc865f]: Potential NPE fixes.
+2020-06-21 [5aaafb0]: artwork updates
+2020-06-21 [ab2d46d]: icon fix for android
+2016-08-18 [bace091]: plist fixes
+2016-08-18 [4834911]: version bump
+2016-08-18 [ef9cd70]: desktop is puking with wav's, switch to mp3
+2016-08-17 [03fedfd]: more applecons
+2016-08-17 [1e348fb]: artwork folder rearrange
+2016-08-17 [43e2497]: version bump
+2016-08-17 [d228cbf]: update graphics from libgdx stock
+2016-08-17 [f8bc2ee]: ogg => wav
+2016-08-17 [91e75ce]: aaa
+2016-08-16 [0ae7c04]: ios
+2016-08-16 [2b534a9]: robovm version fix
+2016-08-16 [7d3c51b]: use release, not snapshot, for robovm
+2016-08-16 [7389a02]: volume fixes
+2016-08-16 [739c437]: volume fixes
+2016-08-16 [8b47be0]: bump libgdx version switch to robovm fork
+2016-08-16 [4862fbd]: version bump
+2016-08-16 [3da4349]: create new screen game play each game
+2016-08-16 [a2e092f]: numbering comma fix
+2016-08-16 [8831a3d]: misc control and display fixes
+2016-08-16 [2c99e3f]: andoid tv and if controller detected as being used always show dpad selection box
+2016-08-15 [a8e2afe]: version bump
+2016-08-15 [d9a0d6c]: fix score submit
+2016-08-15 [9548a11]: indicate we should be operational on AndroidTv's
+2016-08-15 [ad4cab2]: version bump
+2016-08-15 [919f196]: hide gamepad selector until gamepad is in use
+2016-08-15 [9a075d8]: no music on game-play screens changed what fields we are using for dreamlo fixed credits to reflect only the one song
+2016-08-15 [496d731]: only have music for main menu
+2016-08-15 [096894a]: leaderboard column ordering change
+2016-08-15 [ba02519]: repackage
+2016-08-15 [7ee9a79]: repackage
+2016-08-15 [4dbc9d1]: switch to score/level/accuracy for leaderboard ordering
+2016-05-01 [f7e2b79]: remove leanback
+2016-05-01 [ae1696b]: add leanback compat lib
+2016-05-01 [76ae37c]: launcher icons
+2016-05-01 [5c14d7f]: initial operational as tablet/tv
+2016-05-01 [cc9141c]: import tween engine as source tree to stop fucking with jars in folders
+2016-05-01 [028dc39]: partial dpad suport enabled
+2016-05-01 [bcc00b8]: keys
+2016-05-01 [2ef0e1b]: android lint evilness
+2016-05-01 [095238c]: android tv
+2016-05-01 [ffc542b]: android version
+2016-05-01 [b96a03e]: android versioning
+2016-05-01 [16cf25a]: icons fix
+2016-05-01 [8be863f]: functioning!
+2016-04-30 [8fc7425]: leaderboard + lots of adjustments
+2016-04-29 [c016d90]: fonts fixed up and displays fixed up and syllabary displays and dreamlo added - not complete
+2016-04-29 [809d766]: almost resurrected from the dead
+2016-04-29 [ed739af]: initial music playing. initial display of main menu. initial use of pre-composed bitmap fonts
+2016-04-28 [d6526bb]: "get the red out"
+2016-04-27 [e29a121]: initial changes to match newer GDX
+2016-04-27 [9733f67]: switch to Esperanto Animals source code to retrofit back as Cherokee Animals.
+2016-04-27 [5ae46b1]: switch to Esperanto Animals source code to retrofit back as Cherokee Animals.
+2016-04-27 [7c3999b]: fonts switch out
+2016-04-20 [09df2fe]: gradual updatings
+2016-04-19 [84c5078]: font madness
+2016-04-19 [bbb04c7]: imports cleanup
+2016-04-18 [c18da96]: initial working version sans controllers and sans otf fonts
+2016-04-18 [fcb972e]: initial repo setup
