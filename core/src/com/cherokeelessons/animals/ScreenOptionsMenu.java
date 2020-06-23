@@ -396,7 +396,9 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 			watcher.disconnected(controller);
 		}
 		Gamepads.clearListeners();
-		wall_atlas.dispose();
+		if (wall_atlas!=null) {
+			wall_atlas.dispose();
+		}
 		wall_atlas = null;
 		indicator.dispose();
 		indicator = null;

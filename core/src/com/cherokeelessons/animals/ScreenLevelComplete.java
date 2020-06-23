@@ -108,7 +108,9 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 
 	@Override
 	public void hide() {
-		wall_atlas.dispose();
+		if (wall_atlas!=null) {
+			wall_atlas.dispose();
+		}
 		for (final Controller controller : Gamepads.getControllers()) {
 			watcher.disconnected(controller);
 		}

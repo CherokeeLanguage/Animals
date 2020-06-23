@@ -79,7 +79,9 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 
 	@Override
 	public void dispose() {
-		wall_atlas.dispose();
+		if (wall_atlas!=null) {
+			wall_atlas.dispose();
+		}
 		super.dispose();
 	}
 

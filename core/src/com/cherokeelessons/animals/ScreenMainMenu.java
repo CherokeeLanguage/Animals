@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -124,7 +122,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 
 		float currentY;
 		final float linesOfText = 6;
-		float skipAmount = fullScreenSize.height / linesOfText;
+		float skipAmount = safeZoneSize.height / linesOfText;
 		final int fontSize = 96;
 		float graphicsHeight = 0;
 		float emptyHeight = 0;
@@ -174,7 +172,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		graphicsHeight = titleText.getHeight() + btn_NewGame.getHeight() + btn_Options.getHeight()
 				+ btn_Quit.getHeight() + btn_Instructions.getHeight() + btn_Credits.getHeight()
 				+ btn_Leaders.getHeight();
-		emptyHeight = fullScreenSize.height - graphicsHeight;
+		emptyHeight = safeZoneSize.height - graphicsHeight;
 		skipAmount = emptyHeight / (linesOfText + 1);
 
 		/*
@@ -191,8 +189,8 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		/*
 		 * position each one equal distant based on screen height
 		 */
-		// start at top of screen
-		currentY = fullScreenSize.height;
+		// start at top of safe zone area
+		currentY = fullScreenSize.height - safeZoneSize.y;
 		// subtract empty gap + line height before placement
 		currentY -= titleText.getHeight() + skipAmount;
 		titleText.setY(currentY);
@@ -232,6 +230,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		 */
 		for (int ix = 0; ix < btns.size; ix++) {
 			final MenuLabel menuItem = btns.get(ix);
+			final int selectedButton = ix;
 			Gdx.app.log(this.getClass().getName(), "touch handlers: " + menuItem.getText());
 			menuItem.pack();
 			menuItem.setTouchable(Touchable.enabled);
@@ -239,7 +238,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 				@Override
 				public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
 						final int btn) {
-					highlight_button(btn, true);
+					highlight_button(selectedButton, true);
 					hud_select();
 					return true;
 				}

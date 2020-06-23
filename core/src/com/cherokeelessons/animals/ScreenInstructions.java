@@ -45,7 +45,9 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 	}
 
 	private void discardResources() {
-		wall_atlas.dispose();
+		if (wall_atlas!=null) {
+			wall_atlas.dispose();
+		}
 		wall_atlas = null;
 		instructions.clear();
 		gameStage.clear();

@@ -35,7 +35,9 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 	}
 
 	private void discardResources() {
-		wall_atlas.dispose();
+		if (wall_atlas!=null) {
+			wall_atlas.dispose();
+		}
 		wall_atlas = null;
 		creditScroller.clear();
 		creditScroller = null;
