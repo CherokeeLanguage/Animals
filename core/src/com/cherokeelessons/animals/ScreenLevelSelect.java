@@ -468,7 +468,6 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 	@Override
 	public void render(final float delta) {
 		super.render(delta);
-		gameStage.draw();
 	}
 
 	@Override

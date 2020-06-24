@@ -58,8 +58,6 @@ public class Utils {
 
 	public static BackdropData initBackdrop() {
 		final Array<Image> wall = new Array<>();
-		final IntBuffer buf = BufferUtils.newIntBuffer(16);
-		Gdx.gl.glGetIntegerv(GL20.GL_MAX_TEXTURE_SIZE, buf);
 		final int packSize = Utils.getPackSize();
 		wall.clear();
 		final PixmapPacker pack = new PixmapPacker(packSize, packSize, Format.RGBA8888, 2, true);
@@ -67,7 +65,7 @@ public class Utils {
 			final Pixmap image = new Pixmap(Gdx.files.internal("images/backdrops/p_" + i + "_dsci2549.png"));
 			pack.pack(i + "X", image);
 		}
-		final TextureAtlas wall_atlas = pack.generateTextureAtlas(TextureFilter.Linear, TextureFilter.Linear, false);
+		final TextureAtlas atlas = pack.generateTextureAtlas(TextureFilter.Linear, TextureFilter.Linear, false);
 
 		int px = 0;
 		int py = 0;
@@ -79,11 +77,10 @@ public class Utils {
 			for (int y = 0; y < columns; y++) {
 				final int z = columns - (y + 1);
 				final int p = z * perRow + x;
-				final AtlasRegion piece = wall_atlas.findRegion(p + "X");
+				final AtlasRegion piece = atlas.findRegion(p + "X");
 				i = new Image(piece);
 				i.setX(px);
 				i.setY(py);
-				i.setColor(1f, 1f, 1f, 0.35f);
 				py += i.getHeight();
 				wall.add(i);
 			}
@@ -93,7 +90,7 @@ public class Utils {
 		}
 		BackdropData data = new BackdropData();
 		data.setImages(wall);
-		data.setTextureAtlas(wall_atlas);
+		data.setTextureAtlas(atlas);
 		return data;
 	}
 

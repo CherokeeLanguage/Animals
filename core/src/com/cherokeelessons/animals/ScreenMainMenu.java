@@ -277,11 +277,14 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		gameStage.addActor(backdropGroup);
 		backdropGroup.setSize(gameStage.getWidth(), gameStage.getHeight());
 		backdropGroup.setZIndex(0);
+		backdropGroup.setColor(1f, 1f, 1f, 0.35f);
 	}
 
 	@Override
 	public void dispose() {
-		backdrop.dispose();
+		if (backdrop!=null) {
+			backdrop.dispose();
+		}
 		super.dispose();
 	}
 

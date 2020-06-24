@@ -3,13 +3,12 @@ package com.cherokeelessons.animals;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.animals.enums.GameEvent;
 import com.cherokeelessons.common.BackdropData;
 import com.cherokeelessons.common.FontLoader;
@@ -146,19 +145,12 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	@Override
 	public void render(final float delta) {
 		super.render(delta);
-//		batch.begin();
-//		for (Sprite s : wall) {
-//			s.draw(batch);
-//		}
-//		batch.end();
-		gameStage.draw();
 	}
 
 	@Override
 	public void show() {
 		super.show();
 		positionItems();
-		wall_atlas = Utils.initBackdrop();
 		Gamepads.addListener(watcher);
 		for (final Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
@@ -175,6 +167,15 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 			lb.lb_submit(levelOn + 1 + "", score, correct, "", show_ranking);
 		}
 		updateDisplay();
+		wall_atlas = Utils.initBackdrop();
+		Group backdropGroup = new Group();
+		for (Image image: wall_atlas.getImages()) {
+			backdropGroup.addActor(image);
+		}
+		gameStage.addActor(backdropGroup);
+		backdropGroup.setSize(gameStage.getWidth(), gameStage.getHeight());
+		backdropGroup.setZIndex(0);
+		backdropGroup.setColor(1f, 1f, 1f, 0.35f);
 	}
 
 	private void updateDisplay() {

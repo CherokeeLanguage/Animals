@@ -570,8 +570,6 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 	public void render(final float delta) {
 		super.render(delta);
 
-		gameStage.draw();
-
 		if (isPaused()) {
 			pauseOverlay.getColor().a = 1f;
 			return;

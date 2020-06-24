@@ -141,7 +141,6 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 	@Override
 	public void render(final float delta) {
 		super.render(delta);
-		gameStage.draw();
 		if (doNextPic) {
 			loadNextPic();
 			pictureChallenge.focusOn(currentIX - 1);

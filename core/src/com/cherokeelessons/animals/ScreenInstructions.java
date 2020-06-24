@@ -7,7 +7,9 @@ import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -108,7 +110,6 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 	private void initScreen() {
 		gameStage.clear();
 		gameStage.addActor(instructions);
-		wall_atlas = Utils.initBackdrop();
 		init();
 		instructions.setWidth(safeZoneSize.width);
 		instructions.setHeight(safeZoneSize.height);
@@ -117,12 +118,6 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 	@Override
 	public void render(final float delta) {
 		super.render(delta);
-//		batch.begin();
-//		for (Sprite s : wall) {
-//			s.draw(batch);
-//		}
-//		batch.end();
-		gameStage.draw();
 	}
 
 	@Override
@@ -130,6 +125,15 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 		super.show();
 		initScreen();
 		Gamepads.addListener(exitScreen);
+		wall_atlas = Utils.initBackdrop();
+		Group backdropGroup = new Group();
+		for (Image image: wall_atlas.getImages()) {
+			backdropGroup.addActor(image);
+		}
+		gameStage.addActor(backdropGroup);
+		backdropGroup.setSize(gameStage.getWidth(), gameStage.getHeight());
+		backdropGroup.setZIndex(0);
+		backdropGroup.setColor(1f, 1f, 1f, 0.35f);
 	}
 
 }

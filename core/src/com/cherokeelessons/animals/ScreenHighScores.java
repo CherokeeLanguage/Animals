@@ -5,8 +5,10 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -32,7 +34,7 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 
 	private Table scrolltable;
 
-	private final BackdropData wall_atlas;
+	private BackdropData wall_atlas;
 
 	private final CtlrHighScores_Watch watcher = new CtlrHighScores_Watch(this);
 
@@ -74,7 +76,6 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 
 	public ScreenHighScores(final CherokeeAnimals game) {
 		super(game);
-		wall_atlas = Utils.initBackdrop();
 	}
 
 	@Override
@@ -122,13 +123,6 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 	@Override
 	public void render(final float delta) {
 		super.render(delta);
-		gameStage.act(delta);
-//		batch.begin();
-//		for (Sprite s : wall) {
-//			s.draw(batch);
-//		}
-//		batch.end();
-		gameStage.draw();
 	}
 
 	@Override
@@ -168,5 +162,14 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 		gameStage.addActor(container);
 		gameStage.setScrollFocus(scroll);
 		lb.lb_getScores(showScores);
+		wall_atlas = Utils.initBackdrop();
+		Group backdropGroup = new Group();
+		for (Image image: wall_atlas.getImages()) {
+			backdropGroup.addActor(image);
+		}
+		gameStage.addActor(backdropGroup);
+		backdropGroup.setSize(gameStage.getWidth(), gameStage.getHeight());
+		backdropGroup.setZIndex(0);
+		backdropGroup.setColor(1f, 1f, 1f, 0.35f);
 	}
 }

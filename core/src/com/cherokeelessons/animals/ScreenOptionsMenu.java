@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -442,12 +443,6 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	@Override
 	public void render(final float delta) {
 		super.render(delta);
-//		batch.begin();
-//		for (Sprite s : wall) {
-//			s.draw(batch);
-//		}
-//		batch.end();
-		gameStage.draw();
 	}
 
 	private void resetMusicVolume() {
@@ -470,7 +465,6 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	public void show() {
 		super.show();
 		update_btn_resetStatistics();
-		wall_atlas = Utils.initBackdrop();
 
 		indicator = new Texture(INDICATOR);
 		indicator.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -524,6 +518,16 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 				}
 			});
 		}
+		
+		wall_atlas = Utils.initBackdrop();
+		Group backdropGroup = new Group();
+		for (Image image: wall_atlas.getImages()) {
+			backdropGroup.addActor(image);
+		}
+		gameStage.addActor(backdropGroup);
+		backdropGroup.setSize(gameStage.getWidth(), gameStage.getHeight());
+		backdropGroup.setZIndex(0);
+		backdropGroup.setColor(1f, 1f, 1f, 0.35f);
 	}
 
 	public void soundEffects() {

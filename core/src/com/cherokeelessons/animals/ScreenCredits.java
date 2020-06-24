@@ -4,11 +4,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.cherokeelessons.animals.enums.GameEvent;
 import com.cherokeelessons.common.Attributions;
+import com.cherokeelessons.common.BackdropData;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Utils;
@@ -28,17 +28,17 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 			return true;
 		}
 	};
-	private TextureAtlas wall_atlas;
+	private BackdropData backdrop;
 
 	public ScreenCredits(final CherokeeAnimals game) {
 		super(game);
 	}
 
 	private void discardResources() {
-		if (wall_atlas!=null) {
-			wall_atlas.dispose();
+		if (backdrop!=null) {
+			backdrop.dispose();
 		}
-		wall_atlas = null;
+		backdrop = null;
 		creditScroller.clear();
 		creditScroller = null;
 		shadow.clear();
@@ -47,6 +47,7 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 
 	@Override
 	public void dispose() {
+		discardResources();
 		super.dispose();
 	}
 
@@ -82,23 +83,31 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 	private void initScreen() {
 		gameStage.clear();
 
-		shadow = new Attributions(safeZoneSize);
+		shadow = new Attributions(fullScreenSize);
 		shadow.setFontColor(Color.BLACK);
 		shadow.getColor().a = .7f;
 		shadow.setxOffset(2);
 		shadow.setyOffset(-2);
 
-		creditScroller = new Attributions(safeZoneSize);
+		creditScroller = new Attributions(fullScreenSize);
 		creditScroller.setFontColor(GameColor.MAIN_TEXT);
 
 		gameStage.addActor(shadow);
 		gameStage.addActor(creditScroller);
+		backdrop = Utils.initBackdrop();
+		Group backdropGroup = new Group();
+		for (Image image: backdrop.getImages()) {
+			backdropGroup.addActor(image);
+		}
+		gameStage.addActor(backdropGroup);
+		backdropGroup.setSize(gameStage.getWidth(), gameStage.getHeight());
+		backdropGroup.setZIndex(0);
+		backdropGroup.setColor(1f, 1f, 1f, 0.35f);
 	}
 
 	@Override
 	public void render(final float delta) {
 		super.render(delta);
-		gameStage.draw();
 	}
 
 	@Override
