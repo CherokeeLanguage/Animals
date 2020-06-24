@@ -191,8 +191,8 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 		loading.addAction(Actions.alpha(1f, .25f));
 		float y;
 		float x;
-		x = (fullScreenSize.width - loading.getWidth()) / 2;
-		y = (fullScreenSize.height - loading.getHeight()) / 2;
+		x = (fullZoneBox.width - loading.getWidth()) / 2;
+		y = (fullZoneBox.height - loading.getHeight()) / 2;
 		loading.setPosition(x, y);
 		gameStage.addActor(loading);
 

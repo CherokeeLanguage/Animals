@@ -32,13 +32,14 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 
 	public ScreenCredits(final CherokeeAnimals game) {
 		super(game);
+		initScreen();
 	}
 
 	private void discardResources() {
-		if (backdrop!=null) {
+		if (backdrop != null) {
 			backdrop.dispose();
+			backdrop = null;
 		}
-		backdrop = null;
 		creditScroller.clear();
 		creditScroller = null;
 		shadow.clear();
@@ -52,7 +53,6 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 	}
 
 	public void doScroll(final float time) {
-		creditScroller.init();
 		creditScroller.setOnDone(new Runnable() {
 			@Override
 			public void run() {
@@ -60,7 +60,6 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 			}
 		});
 		creditScroller.scroll(time);
-		shadow.init();
 		shadow.scroll(time);
 	}
 
@@ -77,26 +76,23 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 	public void hide() {
 		super.hide();
 		Gamepads.clearListeners();
-		discardResources();
 	}
 
 	private void initScreen() {
-		gameStage.clear();
-
-		shadow = new Attributions(fullScreenSize);
+		shadow = new Attributions(gameStage.getWidth(), gameStage.getHeight());
 		shadow.setFontColor(Color.BLACK);
 		shadow.getColor().a = .7f;
 		shadow.setxOffset(2);
 		shadow.setyOffset(-2);
 
-		creditScroller = new Attributions(fullScreenSize);
+		creditScroller = new Attributions(gameStage.getWidth(), gameStage.getHeight());
 		creditScroller.setFontColor(GameColor.MAIN_TEXT);
 
 		gameStage.addActor(shadow);
 		gameStage.addActor(creditScroller);
 		backdrop = Utils.initBackdrop();
 		Group backdropGroup = new Group();
-		for (Image image: backdrop.getImages()) {
+		for (Image image : backdrop.getImages()) {
 			backdropGroup.addActor(image);
 		}
 		gameStage.addActor(backdropGroup);
@@ -113,7 +109,6 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 	@Override
 	public void show() {
 		super.show();
-		initScreen();
 		Gamepads.addListener(skipCredits);
 		doScroll(scrollTime);
 	}

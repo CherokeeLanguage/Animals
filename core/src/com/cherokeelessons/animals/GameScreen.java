@@ -23,11 +23,11 @@ public abstract class GameScreen implements Screen {
 	protected TweenManager tmanager;
 	protected AssetManager assets;
 	protected CherokeeAnimals game = null;
-	public Rectangle fullScreenSize = new Rectangle();
+	public Rectangle fullZoneBox = new Rectangle();
 	protected boolean showOverscan = false;
 	private ShapeRenderer tv_box = null;
 
-	final protected Rectangle safeZoneSize;
+	final protected Rectangle safeZoneBox;
 	final protected Color clearColor;
 //	protected Batch batch;
 
@@ -46,8 +46,8 @@ public abstract class GameScreen implements Screen {
 
 		assets = new AssetManager();
 
-		safeZoneSize = DisplaySize._1080p.overscansize();
-		fullScreenSize = DisplaySize._1080p.size();
+		safeZoneBox = DisplaySize._1080p.overscansize();
+		fullZoneBox = DisplaySize._1080p.size();
 
 		clearColor = new Color(Color.WHITE);
 
@@ -79,7 +79,8 @@ public abstract class GameScreen implements Screen {
 				return super.keyDown(keyCode);
 			}
 		};
-		gameStage.setViewport(getFitViewport(gameStage.getCamera()));
+		//force resize to ensure *camera* is set correctly
+		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		gameStage.getRoot().setTouchable(Touchable.enabled);
 	}
 
@@ -102,7 +103,6 @@ public abstract class GameScreen implements Screen {
 		disconnectInputProcessor();
 		tmanager.killAll();
 		gameStage.clear();
-		// batch.dispose();
 	}
 
 	protected void drawOverscan() {
@@ -115,10 +115,10 @@ public abstract class GameScreen implements Screen {
 		tv_box.setProjectionMatrix(gameStage.getCamera().combined);
 		tv_box.setColor(GameColor.FIREBRICK);
 		tv_box.begin(ShapeType.Filled);
-		tv_box.rect(-o_pad, -o_pad, fullScreenSize.width + o_pad, safeZoneSize.y + o_pad);
-		tv_box.rect(-o_pad, safeZoneSize.height + safeZoneSize.y, fullScreenSize.width + o_pad, safeZoneSize.y + o_pad);
-		tv_box.rect(-o_pad, -o_pad, safeZoneSize.x + o_pad, fullScreenSize.height + o_pad);
-		tv_box.rect(safeZoneSize.width + safeZoneSize.x, 0, safeZoneSize.x + o_pad, fullScreenSize.height);
+		tv_box.rect(-o_pad, -o_pad, fullZoneBox.width + o_pad, safeZoneBox.y + o_pad);
+		tv_box.rect(-o_pad, safeZoneBox.height + safeZoneBox.y, fullZoneBox.width + o_pad, safeZoneBox.y + o_pad);
+		tv_box.rect(-o_pad, -o_pad, safeZoneBox.x + o_pad, fullZoneBox.height + o_pad);
+		tv_box.rect(safeZoneBox.width + safeZoneBox.x, 0, safeZoneBox.x + o_pad, fullZoneBox.height);
 		tv_box.end();
 	}
 

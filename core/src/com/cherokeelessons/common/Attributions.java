@@ -9,17 +9,17 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.utils.Array;
 
 public class Attributions extends Group {
-	final private Rectangle bbox = new Rectangle();
 	private final String[] credits;
 
-	private FontLoader fg;
+	private final FontLoader fg;
 	private Color fontColor = new Color(Color.BLACK);
 	private final int fontSize = 88;
 	private float maxLineHeight;
 
-	private TextButton[] scrollingCredits;
+	private final Array<TextButton> scrollingCredits;
 
 	private float xOffset = 0;
 
@@ -27,11 +27,16 @@ public class Attributions extends Group {
 
 	private Runnable onDone;
 
-	public Attributions(final Rectangle screenSize) {
+	private final float stageWidth;
+	private final float stageHeight;
+	public Attributions(final float stageWidth, final float stageHeight) {
 		super();
-		this.bbox.set(screenSize);
+		this.stageWidth=stageWidth;
+		this.stageHeight=stageHeight;
 		final String tmp = Gdx.files.internal("data/credits.txt").readString("UTF-8");
 		credits = tmp.split("\n");
+		fg = new FontLoader();
+		scrollingCredits = new Array<>(credits.length);
 	}
 
 	public Runnable getOnDone() {
@@ -49,13 +54,6 @@ public class Attributions extends Group {
 		return yOffset;
 	}
 
-	public void init() {
-		fg = new FontLoader();
-		scrollingCredits = new TextButton[credits.length];
-		populateCreditDisplay();
-
-	}
-
 	private void populateCreditDisplay() {
 		int ix = 0;
 		BitmapFont font;
@@ -64,8 +62,8 @@ public class Attributions extends Group {
 		TextButtonStyle style;
 		font = fg.get(fontSize);
 		for (ix = 0; ix < credits.length; ix++) {
-			if (credits[ix].length() < 1) {
-				scrollingCredits[ix] = null;
+			if (credits[ix].isEmpty()) {
+				scrollingCredits.add(null);
 				continue;
 			}
 			style = new TextButtonStyle();
@@ -73,37 +71,39 @@ public class Attributions extends Group {
 			style.fontColor = new Color(fontColor);
 			creditLine = new TextButton(credits[ix], style);
 			creditLine.pack();
-			scrollingCredits[ix] = creditLine;
+			scrollingCredits.add(creditLine);
 			if (font.getLineHeight() > maxLineHeight) {
 				maxLineHeight = font.getLineHeight();
 			}
 
 		}
 		for (ix = 0; ix < credits.length; ix++) {
-			creditLine = scrollingCredits[ix];
+			creditLine = scrollingCredits.get(ix);
 			if (creditLine == null) {
 				continue;
 			}
-			creditLine.setX(xOffset + (bbox.width - creditLine.getWidth()) / 2);
+			creditLine.setX(xOffset + (stageWidth - creditLine.getWidth()) / 2);
 			creditLine.setY(yOffset + (credits.length - ix - 1) * maxLineHeight);
 			this.addActor(creditLine);
 		}
-		// store my dimensions
-		setWidth(bbox.width);
+		// store my new calculated size
+		setWidth(stageWidth);
 		setHeight(maxLineHeight * credits.length);
-		reset();
 	}
 
 	public void reset() {
-		// move myself below screen
+		// populate text
+		populateCreditDisplay();
+		// clear out enay prior pending actions
 		clearActions();
+		// move myself below screen
 		setY(-getHeight());
 	}
 
 	public void scroll(final float time) {
 		reset();
 		final SequenceAction seq = Actions.sequence();
-		seq.addAction(Actions.moveTo(0, bbox.height + maxLineHeight * 2, time));
+		seq.addAction(Actions.moveTo(0, stageHeight + maxLineHeight * 2, time));
 		seq.addAction(Actions.run(new Runnable() {
 			@Override
 			public void run() {

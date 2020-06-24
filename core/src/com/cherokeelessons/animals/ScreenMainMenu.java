@@ -122,7 +122,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 
 		float currentY;
 		final float linesOfText = 6;
-		float skipAmount = safeZoneSize.height / linesOfText;
+		float skipAmount = safeZoneBox.height / linesOfText;
 		final int fontSize = 96;
 		float graphicsHeight = 0;
 		float emptyHeight = 0;
@@ -172,25 +172,25 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		graphicsHeight = titleText.getHeight() + btn_NewGame.getHeight() + btn_Options.getHeight()
 				+ btn_Quit.getHeight() + btn_Instructions.getHeight() + btn_Credits.getHeight()
 				+ btn_Leaders.getHeight();
-		emptyHeight = safeZoneSize.height - graphicsHeight;
+		emptyHeight = safeZoneBox.height - graphicsHeight;
 		skipAmount = emptyHeight / (linesOfText + 1);
 
 		/*
 		 * center each line
 		 */
-		titleText.setX((fullScreenSize.width - titleText.getWidth()) / 2);
-		btn_NewGame.setX((fullScreenSize.width - btn_NewGame.getWidth()) / 2);
-		btn_Leaders.setX((fullScreenSize.width - btn_Leaders.getWidth()) / 2);
-		btn_Instructions.setX((fullScreenSize.width - btn_Instructions.getWidth()) / 2);
-		btn_Options.setX((fullScreenSize.width - btn_Options.getWidth()) / 2);
-		btn_Credits.setX((fullScreenSize.width - btn_Credits.getWidth()) / 2);
-		btn_Quit.setX((fullScreenSize.width - btn_Quit.getWidth()) / 2);
+		titleText.setX((fullZoneBox.width - titleText.getWidth()) / 2);
+		btn_NewGame.setX((fullZoneBox.width - btn_NewGame.getWidth()) / 2);
+		btn_Leaders.setX((fullZoneBox.width - btn_Leaders.getWidth()) / 2);
+		btn_Instructions.setX((fullZoneBox.width - btn_Instructions.getWidth()) / 2);
+		btn_Options.setX((fullZoneBox.width - btn_Options.getWidth()) / 2);
+		btn_Credits.setX((fullZoneBox.width - btn_Credits.getWidth()) / 2);
+		btn_Quit.setX((fullZoneBox.width - btn_Quit.getWidth()) / 2);
 
 		/*
 		 * position each one equal distant based on screen height
 		 */
 		// start at top of safe zone area
-		currentY = fullScreenSize.height - safeZoneSize.y;
+		currentY = fullZoneBox.height - safeZoneBox.y;
 		// subtract empty gap + line height before placement
 		currentY -= titleText.getHeight() + skipAmount;
 		titleText.setY(currentY);

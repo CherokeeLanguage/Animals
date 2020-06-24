@@ -111,8 +111,8 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 		gameStage.clear();
 		gameStage.addActor(instructions);
 		init();
-		instructions.setWidth(safeZoneSize.width);
-		instructions.setHeight(safeZoneSize.height);
+		instructions.setWidth(safeZoneBox.width);
+		instructions.setHeight(safeZoneBox.height);
 	}
 
 	@Override

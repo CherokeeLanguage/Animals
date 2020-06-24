@@ -112,12 +112,12 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		super(game);
 		watcher = new CtlrGamePlay_Watch(this);
 
-		pbar = new ViewProgressBar(safeZoneSize);
-		scoreBoard = new ViewScoreBoard(safeZoneSize, game.sm);
-		gameControls = new ViewInGameControls(safeZoneSize);
-		gameBoard = new ViewGameBoard(safeZoneSize);
-		challengeBoard = new ViewChallengeBoard(safeZoneSize);
-		activehud = new ViewGameBoard(safeZoneSize);
+		pbar = new ViewProgressBar(safeZoneBox);
+		scoreBoard = new ViewScoreBoard(safeZoneBox, game.sm);
+		gameControls = new ViewInGameControls(safeZoneBox);
+		gameBoard = new ViewGameBoard(safeZoneBox);
+		challengeBoard = new ViewChallengeBoard(safeZoneBox);
+		activehud = new ViewGameBoard(safeZoneBox);
 		activehud.setTouchable(Touchable.disabled);
 
 		gameStage.addActor(pbar);
@@ -128,8 +128,8 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		gameStage.addActor(challengeBoard);
 		gameStage.addActor(pauseOverlay);
 
-		pauseOverlay.setX(-safeZoneSize.x);
-		pauseOverlay.setY(-safeZoneSize.y);
+		pauseOverlay.setX(-safeZoneBox.x);
+		pauseOverlay.setY(-safeZoneBox.y);
 
 		setPaused(false);
 
@@ -662,15 +662,15 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		pause_texture = new Texture(pause_mask);
 		final Image pause_mask_image = new Image(pause_texture);
 		pause_mask_image.pack();
-		pause_mask_image.scaleBy(fullScreenSize.width, fullScreenSize.height);
+		pause_mask_image.scaleBy(fullZoneBox.width, fullZoneBox.height);
 		pauseOverlay.addActor(pause_mask_image);
 		final LabelStyle continueStyle = new LabelStyle(new FontLoader().get(72), GameColor.MAIN_TEXT);
 		final String pauseMsg = usingController ? "Use [MENU] to resume." : "[CONTINUE]";
 		final Label toContinue = new Label(pauseMsg, continueStyle);
 		pauseOverlay.addActor(toContinue);
 		toContinue.pack();
-		toContinue.setX((fullScreenSize.width - toContinue.getWidth()) / 2);
-		toContinue.setY((fullScreenSize.height - toContinue.getHeight()) / 2 + toContinue.getHeight());
+		toContinue.setX((fullZoneBox.width - toContinue.getWidth()) / 2);
+		toContinue.setY((fullZoneBox.height - toContinue.getHeight()) / 2 + toContinue.getHeight());
 		toContinue.addListener(new ClickListener() {
 			@Override
 			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
@@ -682,8 +682,8 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		final Label toExit = new Label(usingController ? "Use [BACK] to exit." : "[BACK]", continueStyle);
 		pauseOverlay.addActor(toExit);
 		toExit.pack();
-		toExit.setX((fullScreenSize.width - toExit.getWidth()) / 2);
-		toExit.setY((fullScreenSize.height - toExit.getHeight()) / 2 - toExit.getHeight());
+		toExit.setX((fullZoneBox.width - toExit.getWidth()) / 2);
+		toExit.setY((fullZoneBox.height - toExit.getHeight()) / 2 - toExit.getHeight());
 		toExit.addListener(new ClickListener() {
 			@Override
 			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
