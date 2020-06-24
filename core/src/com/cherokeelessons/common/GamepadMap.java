@@ -29,7 +29,7 @@ import com.badlogic.gdx.Input;
  * EH.. the Nvidia controller reports the LTRIGGER also as BRAKE (axis 23) and
  * RTRIGGER as GAS (axis 22)
  *
- * @author mjoyner
+ * @author mConrad
  * @version 0.0.2
  *
  *          Public Domain
