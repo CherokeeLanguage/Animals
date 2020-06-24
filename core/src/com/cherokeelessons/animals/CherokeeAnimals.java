@@ -320,7 +320,7 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 	}
 
 	@Override
-	public void resize(final int width, final int height) {
+	public void resize(int width, int height) {
 		log("app resize: " + width + "x" + height);
 		if (screen != null) {
 			screen.resize(width, height);

@@ -7,11 +7,13 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.cherokeelessons.animals.enums.GameEvent;
 import com.cherokeelessons.common.DisplaySize;
@@ -197,9 +199,17 @@ public abstract class GameScreen implements Screen {
 	}
 
 	@Override
-	public void resize(final int width, final int height) {
-		gameStage.setViewport(getFitViewport(gameStage.getCamera()));
-		gameStage.getViewport().update(width, height);
+	public void resize(int width, int height) {
+		log("screen resize: " + width + "x" + height);
+		/*
+		 * do the actual resize
+		 */
+		Camera camera = gameStage.getCamera();
+		if ((game.isTelevision()) && camera instanceof OrthographicCamera) {
+			((OrthographicCamera)camera).zoom=1.15f;
+		}
+		gameStage.setViewport(getFitViewport(camera));
+		gameStage.getViewport().update(width, height, true);
 	}
 
 	@Override

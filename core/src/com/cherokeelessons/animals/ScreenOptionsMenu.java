@@ -92,7 +92,6 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 	private float lineHeight = 0;
 
-	private final float offset = 0;
 	private final Integer optionItemSize = 88;
 	public int optionsButton;
 
@@ -102,7 +101,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 	private final Color textColor;
 
-	private BackdropData wall_atlas;
+	private BackdropData backdrop;
 
 	final private CtlrOptions_Watch watcher = new CtlrOptions_Watch(this);
 
@@ -135,7 +134,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		displayLine = 0;
 		lbl_instructions = new MenuLabel(TAB_INSTRUCT, instructStyle);
 		lbl_instructions.pack();
-		lbl_instructions.setX((safeZoneBox.width - lbl_instructions.getWidth()) / 2);
+		lbl_instructions.setX((fullZoneBox.width - lbl_instructions.getWidth()) / 2);
 		lbl_instructions.menu_action_east = new Runnable() {
 			@Override
 			public void run() {
@@ -156,7 +155,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		btn_masterVolume = new MenuLabel(getVolumeLabel(100), buttonStyle);
 		btn_masterVolume.setTouchable(Touchable.enabled);
 		btn_masterVolume.pack();
-		btn_masterVolume.setX((safeZoneBox.width - btn_masterVolume.getWidth()) / 2);
+		btn_masterVolume.setX((fullZoneBox.width - btn_masterVolume.getWidth()) / 2);
 		btn_masterVolume.setY(getBaseLine(displayLine++));
 
 		btn_masterVolume.setText(getVolumeLabel(prefs.getMasterVolume()));
@@ -194,7 +193,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		btn_musicVolume = new MenuLabel(getMusicLabel(100), buttonStyle);
 		btn_musicVolume.setTouchable(Touchable.enabled);
 		btn_musicVolume.pack();
-		btn_musicVolume.setX((safeZoneBox.width - btn_musicVolume.getWidth()) / 2);
+		btn_musicVolume.setX((fullZoneBox.width - btn_musicVolume.getWidth()) / 2);
 		btn_musicVolume.setY(getBaseLine(displayLine++));
 		btn_musicVolume.setText(getMusicLabel(prefs.getMusicVolume()));
 		btn_musicVolume.menu_action_east = new Runnable() {
@@ -316,10 +315,10 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 	private void calculateBaseLines(final float bottomMargin) {
 		int ix;
-		lineHeight = (safeZoneBox.height - bottomMargin) / baseLines.length;
+		lineHeight = (fullZoneBox.height - bottomMargin) / baseLines.length;
 		for (ix = 0; ix < baseLines.length; ix++) {
 			baseLines[ix] = (float) Math
-					.ceil(bottomMargin + ix * lineHeight + offset + (lineHeight - font.getLineHeight()) / 2);
+					.ceil(bottomMargin + ix * lineHeight + (lineHeight - font.getLineHeight()) / 2);
 		}
 	}
 
@@ -397,10 +396,10 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 			watcher.disconnected(controller);
 		}
 		Gamepads.clearListeners();
-		if (wall_atlas!=null) {
-			wall_atlas.dispose();
+		if (backdrop!=null) {
+			backdrop.dispose();
+			backdrop = null;
 		}
-		wall_atlas = null;
 		indicator.dispose();
 		indicator = null;
 		super.hide();
@@ -519,9 +518,9 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 			});
 		}
 		
-		wall_atlas = Utils.initBackdrop();
+		backdrop = Utils.initBackdrop();
 		Group backdropGroup = new Group();
-		for (Image image: wall_atlas.getImages()) {
+		for (Image image: backdrop.getImages()) {
 			backdropGroup.addActor(image);
 		}
 		gameStage.addActor(backdropGroup);
@@ -572,7 +571,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	private void update_btn_resetStatistics(final String msg) {
 		btn_resetStatistics.setText(msg);
 		btn_resetStatistics.pack();
-		btn_resetStatistics.setX((safeZoneBox.width - btn_resetStatistics.getWidth()) / 2);
+		btn_resetStatistics.setX((fullZoneBox.width - btn_resetStatistics.getWidth()) / 2);
 	}
 
 	private void updateChallengeModeDisplay() {
@@ -586,8 +585,8 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 		btn_challengeSoundMode.pack();
 		btn_challengeWordMode.pack();
-		btn_challengeSoundMode.setX((safeZoneBox.width - btn_challengeSoundMode.getWidth()) / 2);
-		btn_challengeWordMode.setX((safeZoneBox.width - btn_challengeWordMode.getWidth()) / 2);
+		btn_challengeSoundMode.setX((fullZoneBox.width - btn_challengeSoundMode.getWidth()) / 2);
+		btn_challengeWordMode.setX((fullZoneBox.width - btn_challengeWordMode.getWidth()) / 2);
 	}
 
 	public void updateInstructions() {
@@ -597,21 +596,21 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 			lbl_instructions.setText(TAB_INSTRUCT);
 		}
 		lbl_instructions.pack();
-		lbl_instructions.setX((safeZoneBox.width - lbl_instructions.getWidth()) / 2);
+		lbl_instructions.setX((fullZoneBox.width - lbl_instructions.getWidth()) / 2);
 	}
 
 	private void updateSoundEffectsDisplay() {
 
 		btn_soundEffects.setText("Sound Effects: " + prefs.getEffectsVolume().name());
 		btn_soundEffects.pack();
-		btn_soundEffects.setX((safeZoneBox.width - btn_soundEffects.getWidth()) / 2);
+		btn_soundEffects.setX((fullZoneBox.width - btn_soundEffects.getWidth()) / 2);
 	}
 
 	private void updateTrainingScreenDisplay() {
 
 		btn_trainingScreen.setText("Training Mode: " + prefs.getTrainingMode().name());
 		btn_trainingScreen.pack();
-		btn_trainingScreen.setX((safeZoneBox.width - btn_trainingScreen.getWidth()) / 2);
+		btn_trainingScreen.setX((fullZoneBox.width - btn_trainingScreen.getWidth()) / 2);
 	}
 
 	public void wordMode() {

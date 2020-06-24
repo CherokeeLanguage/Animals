@@ -77,8 +77,8 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 		}
 		lbl_exitInfo = new Label(textSkip, buttonStyle);
 		lbl_exitInfo.setTouchable(Touchable.enabled);
-		lbl_exitInfo.setX(safeZoneBox.width - lbl_exitInfo.getWidth());
-		lbl_exitInfo.setY(safeZoneBox.height - lbl_exitInfo.getHeight());
+		lbl_exitInfo.setX(fullZoneBox.width - lbl_exitInfo.getWidth());
+		lbl_exitInfo.setY(fullZoneBox.height - lbl_exitInfo.getHeight());
 		lbl_exitInfo.pack();
 		lbl_exitInfo.addListener(new ClickListener() {
 			@Override
@@ -89,11 +89,11 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 			}
 		});
 
-		pictureChallenge = new View3x3Selector(safeZoneBox);
+		pictureChallenge = new View3x3Selector(fullZoneBox);
 		pictureChallenge.setBoxMargin(4);
 		pictureChallenge.setTitle("TRAINING");
 
-		writtenChallenge = new ViewChallengeBoard(safeZoneBox);
+		writtenChallenge = new ViewChallengeBoard(fullZoneBox);
 		writtenChallenge.setDisplayText("New Challenge");
 
 		gameStage.addActor(writtenChallenge);
@@ -198,8 +198,8 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 			reset();
 		}
 		updateChallengeBoard();
-		gameStage.getRoot().setX(safeZoneBox.x);
-		gameStage.getRoot().setY(safeZoneBox.y);
+		gameStage.getRoot().setX(fullZoneBox.x);
+		gameStage.getRoot().setY(fullZoneBox.y);
 		Gamepads.addListener(watcher);
 		for (final Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);

@@ -112,12 +112,12 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		super(game);
 		watcher = new CtlrGamePlay_Watch(this);
 
-		pbar = new ViewProgressBar(safeZoneBox);
-		scoreBoard = new ViewScoreBoard(safeZoneBox, game.sm);
-		gameControls = new ViewInGameControls(safeZoneBox);
-		gameBoard = new ViewGameBoard(safeZoneBox);
-		challengeBoard = new ViewChallengeBoard(safeZoneBox);
-		activehud = new ViewGameBoard(safeZoneBox);
+		pbar = new ViewProgressBar(fullZoneBox);
+		scoreBoard = new ViewScoreBoard(fullZoneBox, game.sm);
+		gameControls = new ViewInGameControls(fullZoneBox);
+		gameBoard = new ViewGameBoard(fullZoneBox);
+		challengeBoard = new ViewChallengeBoard(fullZoneBox);
+		activehud = new ViewGameBoard(fullZoneBox);
 		activehud.setTouchable(Touchable.disabled);
 
 		gameStage.addActor(pbar);
@@ -128,8 +128,8 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 		gameStage.addActor(challengeBoard);
 		gameStage.addActor(pauseOverlay);
 
-		pauseOverlay.setX(-safeZoneBox.x);
-		pauseOverlay.setY(-safeZoneBox.y);
+		pauseOverlay.setX(-fullZoneBox.x);
+		pauseOverlay.setY(-fullZoneBox.y);
 
 		setPaused(false);
 
