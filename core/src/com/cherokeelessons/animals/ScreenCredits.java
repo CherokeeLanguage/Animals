@@ -79,13 +79,13 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 	}
 
 	private void initScreen() {
-		shadow = new Attributions(gameStage.getWidth(), gameStage.getHeight());
+		shadow = new Attributions(fullZoneBox.width, fullZoneBox.height);
 		shadow.setFontColor(Color.BLACK);
-		shadow.getColor().a = .7f;
-		shadow.setxOffset(2);
-		shadow.setyOffset(-2);
+		shadow.getColor().a = .65f;
+		shadow.setxOffset(4);
+		shadow.setyOffset(-4);
 
-		creditScroller = new Attributions(gameStage.getWidth(), gameStage.getHeight());
+		creditScroller = new Attributions(fullZoneBox.width, fullZoneBox.height);
 		creditScroller.setFontColor(GameColor.MAIN_TEXT);
 
 		gameStage.addActor(shadow);
