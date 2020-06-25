@@ -2,7 +2,6 @@ package com.cherokeelessons.animals;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
@@ -30,7 +29,6 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 		return false;
 	}
 	
-	private static final String STARTUP_SND = "audio/effects/startup.mp3";
 	private static final int DesiredLevels = 18;
 	private final String i_am_thinking = "ᎦᏓᏅᏖᎭ ...";
 	private TextureAtlas ta;
@@ -46,17 +44,12 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 
 	boolean levelSet = false;
 	boolean fontsPrecalc = false;
-	private boolean backgroundMusicStarted = false;
 	private boolean syllabaryMapInit = false;
-	private Music m;
 	private AssetManager am;
 	private float elapsed = 0f;
 	private final ControllerAdapter ca = new ControllerAdapter() {
 		@Override
 		public boolean buttonDown(final Controller controller, final int buttonIndex) {
-			if (m != null && m.isPlaying()) {
-				m.stop();
-			}
 			return true;
 		}
 	};
@@ -68,9 +61,6 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 
 	@Override
 	public boolean dpad(final int keyCode) {
-		if (!done) {
-			m.stop();
-		}
 		Gdx.app.log("DPAD: ", keyCode + "");
 		return true;
 	}
@@ -80,9 +70,7 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 		for (final Controller c : Controllers.getControllers()) {
 			c.removeListener(this.ca);
 		}
-		m.stop();
 		am.clear();
-		m = null;
 		am = null;
 		ta.dispose();
 		super.hide();
@@ -111,14 +99,6 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 	@Override
 	public void render(final float delta) {
 		super.render(delta);
-		if (!backgroundMusicStarted) {
-			backgroundMusicStarted = true;
-			m.setLooping(false);
-			m.setVolume(.4f);
-			m.play();
-			elapsed = 0f;
-			return;
-		}
 		if (!game.sm.preloadDone()) {
 			return;
 		}
@@ -136,6 +116,7 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 				game.challenges.setTestmode(false);
 			} finally {
 				game.prefs.putBoolean("testmode", game.challenges.isTestmode());
+				game.prefs.flush();
 			}
 			return;
 		}
@@ -145,10 +126,7 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 			game.setLevels(game.challenges.levelcount());
 			return;
 		}
-		if (!done && m.isPlaying() && Gdx.input.isTouched()) {
-			m.stop();
-		}
-		if (!done && !m.isPlaying()) {
+		if (!done) {
 			done = true;
 			loading.addAction(Actions.fadeOut(1f));
 			loading.addAction(Actions.delay(1.25f, Actions.run(new Runnable() {
@@ -159,17 +137,7 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 			})));
 
 		}
-		// failsafe in case music never correctly shows as completed
 		elapsed += delta;
-		if (!done && elapsed > 18f) {
-			done = true;
-			Gdx.app.postRunnable(new Runnable() {
-				@Override
-				public void run() {
-					game.gameEvent(GameEvent.Done);
-				}
-			});
-		}
 	}
 
 	@Override
@@ -204,9 +172,7 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 			am.clear();
 		}
 		am = new AssetManager();
-		am.load(STARTUP_SND, Music.class);
 		am.finishLoading();
-		m = am.get(STARTUP_SND, Music.class);
 		super.show();
 	}
 }
