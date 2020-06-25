@@ -57,18 +57,17 @@ public class Utils {
 		return packSize;
 	}
 
-	public static BackdropData backdrop(CherokeeAnimals game) {
-		if (_backdropData==null) {
-			_backdropData=initBackdrop();
-			Group backdropGroup = _backdropData.getGroup();
-			backdropGroup.setOrigin(DisplaySize._1080p.size().width/2, DisplaySize._1080p.size().height/2);
-			backdropGroup.setSize(DisplaySize._1080p.size().width, DisplaySize._1080p.size().height);
-			backdropGroup.setColor(1f, 1f, 1f, 0.35f);
-		}
+	public static BackdropData backdrop() {
+		BackdropData _backdropData;
+		_backdropData=initBackdrop();
+		Group backdropGroup = _backdropData.getGroup();
+		backdropGroup.setOrigin(DisplaySize._1080p.size().width/2, DisplaySize._1080p.size().height/2);
+		backdropGroup.setSize(DisplaySize._1080p.size().width, DisplaySize._1080p.size().height);
+		backdropGroup.setColor(1f, 1f, 1f, 0.35f);
 		_backdropData.getGroup().setScale(1.21f);
 		return _backdropData;
 	}
-	private static BackdropData _backdropData;
+	
 	private static BackdropData initBackdrop() {
 		final Array<Image> wall = new Array<>();
 		final int packSize = Utils.getPackSize();

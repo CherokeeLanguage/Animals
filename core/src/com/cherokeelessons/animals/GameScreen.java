@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.cherokeelessons.animals.enums.GameEvent;
+import com.cherokeelessons.common.BackdropData;
 import com.cherokeelessons.common.DisplaySize;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Utils;
@@ -134,6 +135,7 @@ public abstract class GameScreen implements Screen {
 		return fitViewport;
 	}
 
+	private BackdropData backdrop;
 	@Override
 	public void hide() {
 		Gdx.app.log(this.getClass().getName(), "hide");
@@ -143,6 +145,10 @@ public abstract class GameScreen implements Screen {
 			tv_box = null;
 		}
 		tmanager.pause();
+		if (backdrop!=null) {
+			backdrop.getGroup().remove();
+			backdrop.dispose();
+		}
 	}
 
 	public boolean isPaused() {
@@ -240,7 +246,8 @@ public abstract class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(gameStage);
 		tv_box = new ShapeRenderer();
 		if (useBackdrop()) {
-			Group backdropGroup = Utils.backdrop(game).getGroup();
+			backdrop = Utils.backdrop();
+			Group backdropGroup = backdrop.getGroup();
 			gameStage.addActor(backdropGroup);
 			backdropGroup.setZIndex(0);
 		}
