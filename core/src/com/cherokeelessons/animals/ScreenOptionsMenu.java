@@ -1,6 +1,5 @@
 package com.cherokeelessons.animals;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.PovDirection;
@@ -12,10 +11,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.animals.enums.ChallengeWordMode;
 import com.cherokeelessons.animals.enums.GameEvent;
@@ -35,37 +34,24 @@ import com.cherokeelessons.common.Prefs;
 
 public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	
+	private static final String PRESS_A_RESET = "Pressing [A] or [Select] will reset your progress";
+
+	private static final String PRESS_A = "Press [A] or [Select] to cycle through options";
+
+	private static final String LEFT_OR_RIGHT = "Move left for [-] | Move right for [+]";
+
 	@Override
 	protected boolean useBackdrop() {
 		return true;
-	}
-
-	private static class MenuLabel extends Label {
-
-		private Runnable menu_action_east = null;
-		private Runnable menu_action_west = null;
-
-		public MenuLabel(final CharSequence text, final LabelStyle style) {
-			super(text, style);
-		}
-
-		public void doRun(final PovDirection direction) {
-			if (menu_action_east != null && direction.equals(PovDirection.east)) {
-				Gdx.app.postRunnable(menu_action_east);
-				return;
-			}
-			if (menu_action_west != null && direction.equals(PovDirection.west)) {
-				Gdx.app.postRunnable(menu_action_west);
-				return;
-			}
-		}
 	}
 
 	private static final String INDICATOR = ScreenMainMenu.INDICATOR;
 
 	private static int idx_volume = 0;
 
-	private static final String TAB_INSTRUCT = "[BACK]";
+	private String touchscreenInstructions() {
+		return game.isTelevision()?"":"[BACK]";
+	}
 
 	private static final float INDI_SCALE = ScreenMainMenu.INDI_SCALE;
 
@@ -131,7 +117,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		instructStyle.fontColor = textColor;
 
 		displayLine = 0;
-		lbl_instructions = new MenuLabel(TAB_INSTRUCT, instructStyle);
+		lbl_instructions = new MenuLabel(touchscreenInstructions(), instructStyle, "Press [A] or [Back] to exit");
 		lbl_instructions.pack();
 		lbl_instructions.setX((fullZoneBox.width - lbl_instructions.getWidth()) / 2);
 		lbl_instructions.menu_action_east = new Runnable() {
@@ -151,7 +137,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		calculateBaseLines(optionsHeight*1.1f);
 
 		// start off with 100% volume level for width calculations
-		btn_masterVolume = new MenuLabel(getVolumeLabel(100), buttonStyle);
+		btn_masterVolume = new MenuLabel(getVolumeLabel(100), buttonStyle, LEFT_OR_RIGHT);
 		btn_masterVolume.setTouchable(Touchable.enabled);
 		btn_masterVolume.pack();
 		btn_masterVolume.setX((fullZoneBox.width - btn_masterVolume.getWidth()) / 2);
@@ -188,7 +174,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 		};
 		
-		btn_zoom = new MenuLabel(getZoomLabel(game.zoom()), buttonStyle);
+		btn_zoom = new MenuLabel(getZoomLabel(game.zoom()), buttonStyle, LEFT_OR_RIGHT);
 		btn_zoom.setTouchable(Touchable.enabled);
 		btn_zoom.pack();
 		btn_zoom.setX((fullZoneBox.width - btn_zoom.getWidth()) / 2);
@@ -211,7 +197,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		};
 		
 		// start off with 100% volume level for width calculations
-		btn_musicVolume = new MenuLabel(getMusicLabel(100), buttonStyle);
+		btn_musicVolume = new MenuLabel(getMusicLabel(100), buttonStyle, LEFT_OR_RIGHT);
 		btn_musicVolume.setTouchable(Touchable.enabled);
 		btn_musicVolume.pack();
 		btn_musicVolume.setX((fullZoneBox.width - btn_musicVolume.getWidth()) / 2);
@@ -246,7 +232,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 			}
 		};
 
-		btn_challengeSoundMode = new MenuLabel("", buttonStyle);
+		btn_challengeSoundMode = new MenuLabel("", buttonStyle, PRESS_A);
 		btn_challengeSoundMode.setY(getBaseLine(displayLine++));
 		btn_challengeSoundMode.setTouchable(Touchable.enabled);
 		btn_challengeSoundMode.menu_action_east = new Runnable() {
@@ -260,7 +246,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		};
 		btn_challengeSoundMode.menu_action_west = btn_challengeSoundMode.menu_action_east;
 
-		btn_challengeWordMode = new MenuLabel("", buttonStyle);
+		btn_challengeWordMode = new MenuLabel("", buttonStyle, PRESS_A);
 		btn_challengeWordMode.setY(getBaseLine(displayLine++));
 		btn_challengeWordMode.menu_action_east = new Runnable() {
 			@Override
@@ -272,7 +258,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		btn_challengeWordMode.menu_action_west = btn_challengeWordMode.menu_action_east;
 		updateChallengeModeDisplay();
 
-		btn_soundEffects = new MenuLabel("", buttonStyle);
+		btn_soundEffects = new MenuLabel("", buttonStyle, PRESS_A);
 		btn_soundEffects.setY(getBaseLine(displayLine++));
 		btn_soundEffects.menu_action_east = new Runnable() {
 			@Override
@@ -284,7 +270,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		btn_soundEffects.menu_action_west = btn_soundEffects.menu_action_east;
 		updateSoundEffectsDisplay();
 
-		btn_trainingScreen = new MenuLabel("", buttonStyle);
+		btn_trainingScreen = new MenuLabel("", buttonStyle, PRESS_A);
 		btn_trainingScreen.setY(getBaseLine(displayLine++));
 		btn_trainingScreen.menu_action_east = new Runnable() {
 			@Override
@@ -298,7 +284,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		
 		btn_zoom.setY(getBaseLine(displayLine++));
 
-		btn_resetStatistics = new MenuLabel("", buttonStyle);
+		btn_resetStatistics = new MenuLabel("", buttonStyle, PRESS_A_RESET);
 		btn_resetStatistics.setY(getBaseLine(displayLine++));
 		btn_resetStatistics.menu_action_east = new Runnable() {
 			@Override
@@ -449,6 +435,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		final float right = label.getX() + label.getWidth();
 		left_indicator.setPosition(left - left_indicator.getWidth() + 20, bottom);
 		right_indicator.setPosition(right - 20, bottom);
+		updateInstructions();
 	}
 
 	public void hud_moveNorth() {
@@ -457,7 +444,6 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 			selected_btn = btns.size - 1;
 		}
 		highlight_button();
-		updateInstructions();
 	}
 
 	public void hud_moveSouth() {
@@ -466,7 +452,6 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 			selected_btn = 0;
 		}
 		highlight_button();
-		updateInstructions();
 	}
 
 	@Override
@@ -535,7 +520,6 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 						final int button) {
 					selected_btn = _button;
 					highlight_button(true);
-					updateInstructions();
 					final float w = event.getListenerActor().getWidth();
 					if (x / w >= .5f) {
 						doMenuItem(PovDirection.east);
@@ -611,10 +595,11 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	}
 
 	public void updateInstructions() {
-		if (selected_btn == idx_volume || selected_btn == idx_music) {
-			lbl_instructions.setText(TAB_INSTRUCT);
+		final MenuLabel label = btns.get(selected_btn);
+		if (game.isTelevision()) {
+			lbl_instructions.setText(label.getInstructions());
 		} else {
-			lbl_instructions.setText(TAB_INSTRUCT);
+			lbl_instructions.setText(touchscreenInstructions());
 		}
 		lbl_instructions.pack();
 		lbl_instructions.setX((fullZoneBox.width - lbl_instructions.getWidth()) / 2);

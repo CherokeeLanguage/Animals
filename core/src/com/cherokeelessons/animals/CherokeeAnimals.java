@@ -279,6 +279,9 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 	public boolean isTelevision() {
 		if (_isTelevision == null) {
 			_isTelevision = this.tvDetector.isTelevision();
+			if (prefs.getBoolean("force-television-mode", false)) {
+				_isTelevision = true;
+			}
 		}
 		return _isTelevision;
 	}
