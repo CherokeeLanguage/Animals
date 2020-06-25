@@ -12,7 +12,6 @@ import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.util.Callback;
-import com.cherokeelessons.util.DreamLo;
 import com.cherokeelessons.util.StringUtils;
 
 public class ScreenLevelComplete extends GameScreen implements DpadInterface {
@@ -150,7 +149,6 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		for (final Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
 		}
-		final DreamLo lb = new DreamLo(game.prefs);
 		levelOn = game.getLevelOn();
 		score = game.prefs.getLastScore(levelOn);
 		correct = game.prefs.getLevelAccuracy(levelOn);
@@ -158,9 +156,6 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		elapsed_sec = elapsed / 1000l;
 		elapsed_min = elapsed_sec / 60;
 		elapsed_sec -= elapsed_min * 60;
-		if (game.prefs.isLeaderBoardEnabled()) {
-			lb.lb_submit(levelOn + 1 + "", score, correct, "", show_ranking);
-		}
 		updateDisplay();
 		super.show();
 	}

@@ -3,7 +3,6 @@ package com.cherokeelessons.animals;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -11,12 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.cherokeelessons.animals.enums.GameEvent;
-import com.cherokeelessons.common.BackdropData;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
-import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.util.Callback;
-import com.cherokeelessons.util.DreamLo;
 import com.cherokeelessons.util.GameScores;
 import com.cherokeelessons.util.GameScores.GameScore;
 
@@ -141,7 +137,6 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 				return true;
 			}
 		});
-		final DreamLo lb = new DreamLo(game.prefs);
 		container = new Table();
 		container.setWidth(fullZoneBox.width);
 		container.setHeight(fullZoneBox.height);
@@ -156,7 +151,6 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 		container.add(exit).right();
 		gameStage.addActor(container);
 		gameStage.setScrollFocus(scroll);
-		lb.lb_getScores(showScores);
 		super.show();
 	}
 }

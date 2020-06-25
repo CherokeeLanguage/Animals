@@ -16,7 +16,6 @@ import com.cherokeelessons.common.ImageAccessor;
 import com.cherokeelessons.common.MusicAccessor;
 import com.cherokeelessons.common.Prefs;
 import com.cherokeelessons.common.SoundManager;
-import com.cherokeelessons.util.DreamLo;
 
 import aurelienribon.tweenengine.Tween;
 
@@ -194,8 +193,6 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 		Gdx.input.setCatchKey(Input.Keys.MENU, true);
 
 		prefs = new Prefs(this);
-
-		Gdx.app.log(this.getClass().getName(), "DreamLo: " + new DreamLo(prefs).registerWithDreamLoBoard());
 
 		Tween.registerAccessor(GameMusic.class, new MusicAccessor());
 		Tween.registerAccessor(Image.class, new ImageAccessor());
