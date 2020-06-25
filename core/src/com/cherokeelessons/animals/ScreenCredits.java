@@ -4,16 +4,17 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.cherokeelessons.animals.enums.GameEvent;
 import com.cherokeelessons.common.Attributions;
-import com.cherokeelessons.common.BackdropData;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
-import com.cherokeelessons.common.Utils;
 
 public class ScreenCredits extends GameScreen implements DpadInterface {
+	
+	@Override
+	protected boolean useBackdrop() {
+		return true;
+	}
 
 	public float scrollTime = 30f;
 
@@ -28,7 +29,6 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 			return true;
 		}
 	};
-	private BackdropData backdrop;
 
 	public ScreenCredits(final CherokeeAnimals game) {
 		super(game);
@@ -36,10 +36,6 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 	}
 
 	private void discardResources() {
-		if (backdrop != null) {
-			backdrop.dispose();
-			backdrop = null;
-		}
 		creditScroller.clear();
 		creditScroller = null;
 		shadow.clear();
@@ -90,15 +86,6 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 
 		gameStage.addActor(shadow);
 		gameStage.addActor(creditScroller);
-		backdrop = Utils.initBackdrop();
-		Group backdropGroup = new Group();
-		for (Image image : backdrop.getImages()) {
-			backdropGroup.addActor(image);
-		}
-		gameStage.addActor(backdropGroup);
-		backdropGroup.setSize(gameStage.getWidth(), gameStage.getHeight());
-		backdropGroup.setZIndex(0);
-		backdropGroup.setColor(1f, 1f, 1f, 0.35f);
 	}
 
 	@Override
@@ -108,9 +95,9 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 
 	@Override
 	public void show() {
-		super.show();
 		Gamepads.addListener(skipCredits);
 		doScroll(scrollTime);
+		super.show();
 	}
 
 }

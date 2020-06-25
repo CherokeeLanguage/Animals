@@ -11,17 +11,19 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.cherokeelessons.animals.enums.GameEvent;
 import com.cherokeelessons.common.DisplaySize;
 import com.cherokeelessons.common.GameColor;
+import com.cherokeelessons.common.Utils;
 
 import aurelienribon.tweenengine.TweenManager;
 
 public abstract class GameScreen implements Screen {
+	
 	protected TweenManager tmanager;
 	protected AssetManager assets;
 	protected CherokeeAnimals game = null;
@@ -205,8 +207,8 @@ public abstract class GameScreen implements Screen {
 		 * do the actual resize
 		 */
 		Camera camera = gameStage.getCamera();
-		if ((game.isTelevision()) && camera instanceof OrthographicCamera) {
-			((OrthographicCamera)camera).zoom=1.15f;
+		if (camera instanceof OrthographicCamera) {
+			((OrthographicCamera)camera).zoom=game.zoom()/100f;
 		}
 		gameStage.setViewport(getFitViewport(camera));
 		gameStage.getViewport().update(width, height, true);
@@ -237,5 +239,12 @@ public abstract class GameScreen implements Screen {
 	public void show() {
 		Gdx.input.setInputProcessor(gameStage);
 		tv_box = new ShapeRenderer();
+		if (useBackdrop()) {
+			Group backdropGroup = Utils.backdrop(game).getGroup();
+			gameStage.addActor(backdropGroup);
+			backdropGroup.setZIndex(0);
+		}
 	}
+	
+	protected abstract boolean useBackdrop();
 }

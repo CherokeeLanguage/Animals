@@ -26,6 +26,11 @@ import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Utils;
 
 public class ScreenInstructions extends GameScreen implements DpadInterface {
+	
+	@Override
+	protected boolean useBackdrop() {
+		return true;
+	}
 
 	private static final int fontSize = 64;
 
@@ -122,18 +127,9 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 
 	@Override
 	public void show() {
-		super.show();
 		initScreen();
 		Gamepads.addListener(exitScreen);
-		wall_atlas = Utils.initBackdrop();
-		Group backdropGroup = new Group();
-		for (Image image: wall_atlas.getImages()) {
-			backdropGroup.addActor(image);
-		}
-		gameStage.addActor(backdropGroup);
-		backdropGroup.setSize(gameStage.getWidth(), gameStage.getHeight());
-		backdropGroup.setZIndex(0);
-		backdropGroup.setColor(1f, 1f, 1f, 0.35f);
+		super.show();
 	}
 
 }

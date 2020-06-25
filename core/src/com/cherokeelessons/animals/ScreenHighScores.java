@@ -3,17 +3,13 @@ package com.cherokeelessons.animals;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.animals.enums.GameEvent;
 import com.cherokeelessons.common.BackdropData;
 import com.cherokeelessons.common.GameColor;
@@ -25,6 +21,11 @@ import com.cherokeelessons.util.GameScores;
 import com.cherokeelessons.util.GameScores.GameScore;
 
 public class ScreenHighScores extends GameScreen implements DpadInterface {
+	
+	@Override
+	protected boolean useBackdrop() {
+		return true;
+	}
 
 	private static final int FONTSIZE = 64;
 	public static final String[] ranks = { "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th",
@@ -33,8 +34,6 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 	private ScrollPane scroll;
 
 	private Table scrolltable;
-
-	private BackdropData wall_atlas;
 
 	private final CtlrHighScores_Watch watcher = new CtlrHighScores_Watch(this);
 
@@ -80,9 +79,6 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 
 	@Override
 	public void dispose() {
-		if (wall_atlas!=null) {
-			wall_atlas.dispose();
-		}
 		super.dispose();
 	}
 
@@ -127,7 +123,6 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 
 	@Override
 	public void show() {
-		super.show();
 		Gamepads.addListener(watcher);
 		for (final Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
@@ -162,14 +157,6 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 		gameStage.addActor(container);
 		gameStage.setScrollFocus(scroll);
 		lb.lb_getScores(showScores);
-		wall_atlas = Utils.initBackdrop();
-		Group backdropGroup = new Group();
-		for (Image image: wall_atlas.getImages()) {
-			backdropGroup.addActor(image);
-		}
-		gameStage.addActor(backdropGroup);
-		backdropGroup.setSize(gameStage.getWidth(), gameStage.getHeight());
-		backdropGroup.setZIndex(0);
-		backdropGroup.setColor(1f, 1f, 1f, 0.35f);
+		super.show();
 	}
 }

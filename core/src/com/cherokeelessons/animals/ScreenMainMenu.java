@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.animals.enums.GameEvent;
-import com.cherokeelessons.common.BackdropData;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
@@ -26,6 +25,11 @@ import com.cherokeelessons.common.Utils;
 
 public class ScreenMainMenu extends GameScreen implements DpadInterface {
 
+	@Override
+	protected boolean useBackdrop() {
+		return true;
+	}
+	
 	private static class MenuLabel extends Label {
 
 		private Runnable menu_action = null;
@@ -92,7 +96,6 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		}
 	};
 
-	private BackdropData backdrop;
 	final private CtlrMainMenu_Watch watcher = new CtlrMainMenu_Watch(this);
 
 	private final Runnable showInstructions = new Runnable() {
@@ -268,23 +271,10 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 
 		gameStage.addActor(left_indicator);
 		gameStage.addActor(right_indicator);
-
-		backdrop = Utils.initBackdrop();
-		Group backdropGroup = new Group();
-		for (Image image: backdrop.getImages()) {
-			backdropGroup.addActor(image);
-		}
-		gameStage.addActor(backdropGroup);
-		backdropGroup.setSize(gameStage.getWidth(), gameStage.getHeight());
-		backdropGroup.setZIndex(0);
-		backdropGroup.setColor(1f, 1f, 1f, 0.35f);
 	}
 
 	@Override
 	public void dispose() {
-		if (backdrop!=null) {
-			backdrop.dispose();
-		}
 		super.dispose();
 	}
 
@@ -378,7 +368,6 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 
 	@Override
 	public void show() {
-		super.show();
 		final float masterVolume = game.prefs.getMasterVolume() / 100f;
 		final float musicVolume = game.prefs.getMusicVolume() / 100f;
 		game.music.play(masterVolume * musicVolume);
@@ -409,5 +398,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		right_indicator.setScaleY(INDI_SCALE);
 
 		highlight_button();
+		
+		super.show();
 	}
 }

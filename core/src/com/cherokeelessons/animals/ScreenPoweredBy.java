@@ -28,6 +28,11 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 
 public class ScreenPoweredBy extends GameScreen {
+	
+	@Override
+	protected boolean useBackdrop() {
+		return false;
+	}
 
 	private final Array<Image> logo = new Array<>();
 

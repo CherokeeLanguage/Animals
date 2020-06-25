@@ -16,7 +16,7 @@ public class Attributions extends Group {
 
 	private final FontLoader fg;
 	private Color fontColor = new Color(Color.BLACK);
-	private final int fontSize = 74;
+	private final int fontSize = 88;
 	private float maxLineHeight;
 
 	private final Array<TextButton> scrollingCredits;

@@ -1,6 +1,7 @@
 package com.cherokeelessons.common;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.utils.Disposable;
 public class BackdropData implements Disposable {
 	private TextureAtlas textureAtlas;
 	private Array<Image> images;
+	private final Group group = new Group();
 	public TextureAtlas getTextureAtlas() {
 		return textureAtlas;
 	}
@@ -30,5 +32,8 @@ public class BackdropData implements Disposable {
 		if (textureAtlas!=null) {
 			textureAtlas.dispose();
 		}
+	}
+	public Group getGroup() {
+		return group;
 	}
 }

@@ -10,12 +10,13 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.BufferUtils;
+import com.cherokeelessons.animals.CherokeeAnimals;
 import com.cherokeelessons.util.StringUtils;
 
 public class Utils {
@@ -56,7 +57,19 @@ public class Utils {
 		return packSize;
 	}
 
-	public static BackdropData initBackdrop() {
+	public static BackdropData backdrop(CherokeeAnimals game) {
+		if (_backdropData==null) {
+			_backdropData=initBackdrop();
+			Group backdropGroup = _backdropData.getGroup();
+			backdropGroup.setOrigin(DisplaySize._1080p.size().width/2, DisplaySize._1080p.size().height/2);
+			backdropGroup.setSize(DisplaySize._1080p.size().width, DisplaySize._1080p.size().height);
+			backdropGroup.setColor(1f, 1f, 1f, 0.35f);
+		}
+		_backdropData.getGroup().setScale(1.21f);
+		return _backdropData;
+	}
+	private static BackdropData _backdropData;
+	private static BackdropData initBackdrop() {
 		final Array<Image> wall = new Array<>();
 		final int packSize = Utils.getPackSize();
 		wall.clear();
@@ -91,6 +104,9 @@ public class Utils {
 		BackdropData data = new BackdropData();
 		data.setImages(wall);
 		data.setTextureAtlas(atlas);
+		for (Image image: data.getImages()) {
+			data.getGroup().addActor(image);
+		}
 		return data;
 	}
 

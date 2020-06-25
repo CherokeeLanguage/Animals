@@ -193,7 +193,6 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 
 	@Override
 	public void show() {
-		super.show();
 		if (!currentChallenge.equals(game.activeChallenge)) {
 			reset();
 		}
@@ -204,6 +203,7 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 		for (final Controller c : Gamepads.getControllers()) {
 			watcher.connected(c);
 		}
+		super.show();
 	}
 
 	private void updateChallengeBoard() {
@@ -215,10 +215,16 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 		case Syllabary:
 			challenge = Utils.asSyllabary(currentChallenge);
 			break;
+		case None:
 		default:
 			challenge = "";
 			break;
 		}
 		writtenChallenge.setDisplayText(challenge);
+	}
+
+	@Override
+	protected boolean useBackdrop() {
+		return false;
 	}
 }

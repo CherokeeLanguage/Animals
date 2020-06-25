@@ -3,23 +3,24 @@ package com.cherokeelessons.animals;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.cherokeelessons.animals.enums.GameEvent;
-import com.cherokeelessons.common.BackdropData;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
-import com.cherokeelessons.common.Utils;
 import com.cherokeelessons.util.Callback;
 import com.cherokeelessons.util.DreamLo;
 import com.cherokeelessons.util.StringUtils;
 
 public class ScreenLevelComplete extends GameScreen implements DpadInterface {
+	
+	@Override
+	protected boolean useBackdrop() {
+		return false;
+	}
 
 	private static final String SCORE = "SCORE: ";
 
@@ -38,8 +39,6 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	public int optionsButton;
 	private Label msg_elasped_time;
 	private LabelStyle tbStyle;
-
-	private BackdropData wall_atlas;
 
 	final private CtlrLevelComplete_Watch watcher = new CtlrLevelComplete_Watch(this);
 
@@ -107,9 +106,6 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 
 	@Override
 	public void hide() {
-		if (wall_atlas!=null) {
-			wall_atlas.dispose();
-		}
 		for (final Controller controller : Gamepads.getControllers()) {
 			watcher.disconnected(controller);
 		}
@@ -149,7 +145,6 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 
 	@Override
 	public void show() {
-		super.show();
 		positionItems();
 		Gamepads.addListener(watcher);
 		for (final Controller c : Gamepads.getControllers()) {
@@ -167,15 +162,7 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 			lb.lb_submit(levelOn + 1 + "", score, correct, "", show_ranking);
 		}
 		updateDisplay();
-		wall_atlas = Utils.initBackdrop();
-		Group backdropGroup = new Group();
-		for (Image image: wall_atlas.getImages()) {
-			backdropGroup.addActor(image);
-		}
-		gameStage.addActor(backdropGroup);
-		backdropGroup.setSize(gameStage.getWidth(), gameStage.getHeight());
-		backdropGroup.setZIndex(0);
-		backdropGroup.setColor(1f, 1f, 1f, 0.35f);
+		super.show();
 	}
 
 	private void updateDisplay() {

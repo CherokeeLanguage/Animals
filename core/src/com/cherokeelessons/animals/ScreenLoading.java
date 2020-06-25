@@ -25,6 +25,11 @@ import com.cherokeelessons.common.Utils;
 
 public class ScreenLoading extends GameScreen implements DpadInterface {
 
+	@Override
+	protected boolean useBackdrop() {
+		return false;
+	}
+	
 	private static final String STARTUP_SND = "audio/effects/startup.mp3";
 	private static final int DesiredLevels = 18;
 	private final String i_am_thinking = "ᎦᏓᏅᏖᎭ ...";
@@ -169,7 +174,6 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 
 	@Override
 	public void show() {
-		super.show();
 		for (final Controller c : Controllers.getControllers()) {
 			c.addListener(this.ca);
 		}
@@ -203,5 +207,6 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 		am.load(STARTUP_SND, Music.class);
 		am.finishLoading();
 		m = am.get(STARTUP_SND, Music.class);
+		super.show();
 	}
 }

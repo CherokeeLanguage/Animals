@@ -8,10 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -24,12 +21,10 @@ import com.cherokeelessons.animals.enums.ChallengeWordMode;
 import com.cherokeelessons.animals.enums.GameEvent;
 import com.cherokeelessons.animals.enums.SoundEffectVolume;
 import com.cherokeelessons.animals.enums.TrainingMode;
-import com.cherokeelessons.common.BackdropData;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Prefs;
-import com.cherokeelessons.common.Utils;
 
 /**
  * Orientation (Landscape, Portrait) Master Game Volume (0% - 100%) Sound Word
@@ -39,6 +34,11 @@ import com.cherokeelessons.common.Utils;
  */
 
 public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
+	
+	@Override
+	protected boolean useBackdrop() {
+		return true;
+	}
 
 	private static class MenuLabel extends Label {
 
@@ -77,8 +77,11 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	private final MenuLabel btn_resetStatistics;
 	private final MenuLabel btn_soundEffects;
 	private final MenuLabel btn_trainingScreen;
+	
+	private final MenuLabel btn_zoom;
 	private final MenuLabel btn_musicVolume;
 	private final MenuLabel btn_masterVolume;
+	
 	private final Array<MenuLabel> btns = new Array<>();
 
 	private final LabelStyle buttonStyle;
@@ -90,9 +93,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 	private final Image left_indicator = new Image();
 
-	private float lineHeight = 0;
-
-	private final Integer optionItemSize = 88;
+	private final Integer optionItemSize = 74;
 	public int optionsButton;
 
 	private final Image right_indicator = new Image();
@@ -100,8 +101,6 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	private int selected_btn = 0;
 
 	private final Color textColor;
-
-	private BackdropData backdrop;
 
 	final private CtlrOptions_Watch watcher = new CtlrOptions_Watch(this);
 
@@ -112,7 +111,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		super(_game);
 		prefs = game.prefs;
 
-		baseLines_cnt = 7;
+		baseLines_cnt = 8;
 		baseLines = new float[baseLines_cnt];
 
 		int displayLine;
@@ -149,7 +148,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		};
 
 		final float optionsHeight = lbl_instructions.getHeight();
-		calculateBaseLines(optionsHeight);
+		calculateBaseLines(optionsHeight*1.1f);
 
 		// start off with 100% volume level for width calculations
 		btn_masterVolume = new MenuLabel(getVolumeLabel(100), buttonStyle);
@@ -188,7 +187,29 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 			}
 
 		};
-
+		
+		btn_zoom = new MenuLabel(getZoomLabel(game.zoom()), buttonStyle);
+		btn_zoom.setTouchable(Touchable.enabled);
+		btn_zoom.pack();
+		btn_zoom.setX((fullZoneBox.width - btn_zoom.getWidth()) / 2);
+		
+		btn_zoom.menu_action_east = new Runnable() {
+			@Override
+			public void run() {
+				game.zoomInc();
+				game.resize();
+				btn_zoom.setText(getZoomLabel(game.zoom()));
+			}
+		};
+		btn_zoom.menu_action_west = new Runnable() {
+			@Override
+			public void run() {
+				game.zoomDec();
+				game.resize();
+				btn_zoom.setText(getZoomLabel(game.zoom()));
+			}
+		};
+		
 		// start off with 100% volume level for width calculations
 		btn_musicVolume = new MenuLabel(getMusicLabel(100), buttonStyle);
 		btn_musicVolume.setTouchable(Touchable.enabled);
@@ -274,6 +295,8 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		};
 		btn_trainingScreen.menu_action_west = btn_trainingScreen.menu_action_east;
 		updateTrainingScreenDisplay();
+		
+		btn_zoom.setY(getBaseLine(displayLine++));
 
 		btn_resetStatistics = new MenuLabel("", buttonStyle);
 		btn_resetStatistics.setY(getBaseLine(displayLine++));
@@ -288,6 +311,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		update_btn_resetStatistics();
 
 		btns.add(btn_resetStatistics);
+		btns.add(btn_zoom);
 		btns.add(btn_trainingScreen);
 		btns.add(btn_soundEffects);
 		btns.add(btn_challengeWordMode);
@@ -301,6 +325,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		gameStage.clear();
 		// gameStage.addActor(btn_aboutProgram);
 		gameStage.addActor(btn_resetStatistics);
+		gameStage.addActor(btn_zoom);
 		gameStage.addActor(btn_trainingScreen);
 		gameStage.addActor(btn_soundEffects);
 		gameStage.addActor(btn_challengeWordMode);
@@ -313,12 +338,21 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		gameStage.addActor(right_indicator);
 	}
 
+	private CharSequence getZoomLabel(int zoom) {
+		String newText = "[-] TV Zoom Out: ";
+		newText = newText + ((Integer) zoom).toString() + "%";
+		newText += " [+]";
+		return newText;
+	}
+
 	private void calculateBaseLines(final float bottomMargin) {
-		int ix;
+		float
 		lineHeight = (fullZoneBox.height - bottomMargin) / baseLines.length;
-		for (ix = 0; ix < baseLines.length; ix++) {
-			baseLines[ix] = (float) Math
-					.ceil(bottomMargin + ix * lineHeight + (lineHeight - font.getLineHeight()) / 2);
+		for (int ix = 0; ix < baseLines.length; ix++) {
+			baseLines[ix] = bottomMargin + ix * lineHeight + (lineHeight - font.getLineHeight()) / 2f;
+		}
+		for (float bl: baseLines) {
+			log("baseline: "+bl);
 		}
 	}
 
@@ -396,10 +430,6 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 			watcher.disconnected(controller);
 		}
 		Gamepads.clearListeners();
-		if (backdrop!=null) {
-			backdrop.dispose();
-			backdrop = null;
-		}
 		indicator.dispose();
 		indicator = null;
 		super.hide();
@@ -462,7 +492,6 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 	@Override
 	public void show() {
-		super.show();
 		update_btn_resetStatistics();
 
 		indicator = new Texture(INDICATOR);
@@ -518,15 +547,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 			});
 		}
 		
-		backdrop = Utils.initBackdrop();
-		Group backdropGroup = new Group();
-		for (Image image: backdrop.getImages()) {
-			backdropGroup.addActor(image);
-		}
-		gameStage.addActor(backdropGroup);
-		backdropGroup.setSize(gameStage.getWidth(), gameStage.getHeight());
-		backdropGroup.setZIndex(0);
-		backdropGroup.setColor(1f, 1f, 1f, 0.35f);
+		super.show();
 	}
 
 	public void soundEffects() {

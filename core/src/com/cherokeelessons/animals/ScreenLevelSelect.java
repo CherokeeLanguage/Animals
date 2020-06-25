@@ -24,6 +24,11 @@ import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
 
 public class ScreenLevelSelect extends GameScreen implements DpadInterface {
+	
+	@Override
+	protected boolean useBackdrop() {
+		return false;
+	}
 
 	private static final String TAB_PANEL1_TEXT = "[Tap Here to Show Levels 10-18]";
 	private static final String TAB_PANEL2_TEXT = "[Tap Here to Show Levels 1-9]";
@@ -472,7 +477,6 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 
 	@Override
 	public void show() {
-		super.show();
 		showLevelPercents();
 		showEnabledLevels();
 		showLevelImages();
@@ -487,6 +491,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 			showSelector = true;
 		}
 		hud_showIndicator();
+		super.show();
 	}
 
 	private void showEnabledLevels() {

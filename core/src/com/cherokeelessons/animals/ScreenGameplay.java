@@ -37,6 +37,11 @@ import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Utils;
 
 public class ScreenGameplay extends GameScreen implements DpadInterface {
+	
+	@Override
+	protected boolean useBackdrop() {
+		return false;
+	}
 
 	enum WritingMode {
 		Latin, None, Syllabary
@@ -655,7 +660,6 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 
 	@Override
 	public void show() {
-		super.show();
 		pause_mask = new Pixmap(1, 1, Format.RGBA8888);
 		pause_mask.setColor(1f, 1f, 1f, .7f);
 		pause_mask.fill();
@@ -726,6 +730,7 @@ public class ScreenGameplay extends GameScreen implements DpadInterface {
 				game.gameEvent(GameEvent.Done);
 			}
 		});
+		super.show();
 	}
 
 	private void showNextBoardCheck() {

@@ -2,6 +2,7 @@ package com.cherokeelessons.animals;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -319,6 +320,11 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 		}
 	}
 
+	public void resize() {
+		Graphics graphics = Gdx.app.getGraphics();
+		resize(graphics.getWidth(), graphics.getHeight());
+	}
+	
 	@Override
 	public void resize(int width, int height) {
 		log("app resize: " + width + "x" + height);
@@ -369,5 +375,19 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 			}
 			this.screen.show();
 		}
+	}
+	
+	public int zoom() {
+		return prefs.getInteger("zoom", isTelevision()?107:100);
+	}
+	
+	public void zoomInc() {
+		prefs.putInteger("zoom", Math.min(zoom()+1, 120));
+		prefs.flush();
+	}
+	
+	public void zoomDec() {
+		prefs.putInteger("zoom", Math.max(zoom()-1, 100));
+		prefs.flush();
 	}
 }
