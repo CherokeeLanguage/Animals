@@ -1,10 +1,28 @@
-2020-06-23 [4295c40]: (HEAD -> master) Implement automatic version bump, tag, and release build process.
+2020-06-25 [eef24a2]: (HEAD -> master, origin/master) Android TV!
+2020-06-25 [34ae397]: Remove DreamLo High Score connection. It's stopped working correctly.
+2020-06-25 [8b766f1]: tv instructions for options screen
+2020-06-25 [2c1a585]: simplify loading screen
+2020-06-25 [4f7daa6]: Android tries to cache private static class data. Stop it!
+2020-06-24 [c411329]: Tv Zoom Out
+2020-06-24 [e4093b6]: updates in prep for tv mode implementation
+2020-06-24 [ed54cd6]: Changed name.
+2020-06-24 [6ee9d77]: Change font size for attributions so it fits in TV safe zone.
+2020-06-24 [14a5139]: Fix regression causing camera not to be set correctly on screen init.
+2020-06-23 [775e0b9]: Don't draw stage only once per render loop!
+2020-06-23 [67ea618]: main menu fixes and prevent NPE on backdrop dispose
+2020-06-23 [1057a2b]: Restored backdrop on main menu
+2020-06-23 [a8f87ce]: backdrop code fixes
+2020-06-23 [052abcc]: General clean up.
+2020-06-23 [e73943c]: "Powered By" now displays correctly via the main game stage.
+2020-06-23 [59c8924]: (tag: 5.07) Bump version for release build.
+2020-06-23 [79e18f3]: Update git changelog.
+2020-06-23 [4295c40]: Implement automatic version bump, tag, and release build process.
 2020-06-23 [1bac630]: Update git changelog.
-2020-06-23 [904f9e8]: (origin/master) Add README with content.
+2020-06-23 [904f9e8]: Add README with content.
 2020-06-23 [6dd1207]: Create README2.md
-2020-06-23 [b311956]: (tag: 2020-06-23-reparent) Reparent.
+2020-06-23 [b311956]: (tag: dev-2020-06-32-reparent) Reparent.
 2020-06-22 [28df975]: begin effort to remove the misbehaving sprite batch
-2020-06-22 [7e75674]: (tag: 2020-06-22-initial-public-code) get basic project operational with latest Gradle and latest libGDX
+2020-06-22 [7e75674]: (tag: dev-2020-06-22-initial-public-code) get basic project operational with latest Gradle and latest libGDX
 2020-06-21 [d14b5f8]: Implement Google recommended steps for detecting TV mode.
 2020-06-21 [0096077]: fix icon for tv
 2020-06-21 [4bc865f]: Potential NPE fixes.
