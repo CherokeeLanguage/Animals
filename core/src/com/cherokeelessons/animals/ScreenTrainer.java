@@ -24,7 +24,7 @@ import com.cherokeelessons.common.GamepadMap;
 import com.cherokeelessons.common.Gamepads;
 import com.cherokeelessons.common.Utils;
 
-public class ScreenTrainer extends GameScreen implements DpadInterface {
+public class ScreenTrainer extends GameScreen {
 
 	private Set<FileHandle> alreadyShown;
 
@@ -50,7 +50,7 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 
 	private final GamepadAdapter<ScreenTrainer> watcher = new GamepadAdapter<ScreenTrainer>(this) {
 		@Override
-		public ControllerListener factoryControllerListener(final GamepadMap map, final ScreenTrainer menu) {
+		public ControllerListener factoryControllerListener(final GamepadMap map, final ScreenTrainer menu1) {
 			return skipTraining;
 		}
 	};
@@ -71,7 +71,7 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 
 		String textSkip;
 		if (game.isTelevision() || watcher.hasControllers()) {
-			textSkip = "[FIRE] or [ENTER] to skip.";
+			textSkip = "Press[A] or [Select] to skip";
 		} else {
 			textSkip = "[SKIP]";
 		}
@@ -84,7 +84,7 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 			@Override
 			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
 					final int button) {
-				game.gameEvent(GameEvent.Done);
+				game.gameEvent(GameEvent.EXIT_SCREEN);
 				return true;
 			}
 		});
@@ -117,6 +117,8 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 		case Keys.DPAD_CENTER:
 			doSkipTraining();
 			return true;
+		default:
+			break;
 		}
 		return false;
 	}
@@ -170,7 +172,7 @@ public class ScreenTrainer extends GameScreen implements DpadInterface {
 			return;
 		}
 		if (currentIX == 10) {
-			game.gameEvent(GameEvent.Done);
+			game.gameEvent(GameEvent.EXIT_SCREEN);
 			return;
 		}
 		game.sm.playChallenge(currentChallenge);

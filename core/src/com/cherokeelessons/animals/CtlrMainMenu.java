@@ -61,7 +61,7 @@ public class CtlrMainMenu implements ControllerListener {
 				break bswitch;
 			}
 			if (buttonCode == map.BUTTON_MENU) {
-				menu.game.gameEvent(GameEvent.Menu);
+				menu.game.gameEvent(GameEvent.EXIT_SCREEN);
 				break bswitch;
 			}
 			if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {

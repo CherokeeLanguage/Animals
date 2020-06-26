@@ -12,7 +12,6 @@ public class CtlrGamePlay_Watch extends ControllerAdapter {
 
 	final private static Array<CtlrGamePlay> listeners = new Array<>();
 
-	GamepadMap map_ouya = new GamepadMap(Model.Ouya);
 	GamepadMap map_xbox = new GamepadMap(Model.Xbox);
 
 	private final ScreenGameplay menu;
@@ -26,12 +25,6 @@ public class CtlrGamePlay_Watch extends ControllerAdapter {
 		super.connected(controller);
 		final String name = controller.getName().toLowerCase();
 		CtlrGamePlay listener;
-		if (name.contains("ouya")) {
-			listener = new CtlrGamePlay(map_ouya, menu);
-			controller.addListener(listener);
-			listeners.add(listener);
-			return;
-		}
 		if (name.contains("xbox") || name.contains("x-box") || name.contains("360")) {
 			listener = new CtlrGamePlay(map_xbox, menu);
 			controller.addListener(listener);

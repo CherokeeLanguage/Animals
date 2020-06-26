@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
-import com.cherokeelessons.common.Gamepads;
 
 /*
  * In game controls (pause, exit, mute)
@@ -33,28 +32,22 @@ public class ViewInGameControls extends Group {
 
 	private Label btn_Options = null;
 	private Label btn_Pause = null;
-//	private Label btn_Exit = null;
 
 	private final int fontSize = 48;
 	private LabelStyle labelStyle = null;
 
 	private final float sideMargin = 20;
 
-	private Runnable onExit;
-
 	private Runnable onPause;
 
-	private boolean usingController = false;
-
-	public ViewInGameControls(final Rectangle overscan) {
+	public ViewInGameControls(final Rectangle overscan, boolean tv) {
 		super();
-		usingController = Gamepads.getControllers().size != 0;
-		if (usingController) {
+		if (tv) {
+			TABLET_INFO = "Press [A] or [Select] to choose";
+			PAUSE_INFO = "Press [Y] or [Back] to pause";
+		} else {
 			TABLET_INFO = "Tap picture(s) matching challenge.";
 			PAUSE_INFO = "[PAUSE]";
-		} else {
-			TABLET_INFO = "Use [DPAD] and [SELECT] to choose.";
-			PAUSE_INFO = "Use [MENU] to pause.";
 		}
 
 		bottomRight = new Vector2(overscan.width, 0);
@@ -83,7 +76,6 @@ public class ViewInGameControls extends Group {
 
 		btn_Options.pack();
 		btn_Pause.pack();
-//		btn_Exit.pack();
 
 		/*
 		 * layout: left, center, right
@@ -94,7 +86,7 @@ public class ViewInGameControls extends Group {
 		btn_Pause.setY(y);
 		btn_Pause.addListener(new InputListener() {
 			@Override
-			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
+			public boolean touchDown(final InputEvent event, final float x1, final float y1, final int pointer,
 					final int button) {
 				if (onPause != null) {
 					Gdx.app.postRunnable(onPause);
@@ -103,29 +95,10 @@ public class ViewInGameControls extends Group {
 			}
 		});
 
-//		x = bottomCenter.x - btn_Options.getWidth() / 2;
 		x = bottomRight.x - btn_Options.getWidth();
 		y = bottomCenter.y + bottomMargin;
 		btn_Options.setX(x);
 		btn_Options.setY(y);
-
-//		x = bottomRight.x - btn_Exit.getWidth();
-//		y = bottomRight.y + bottomMargin;
-//		btn_Exit.setX(x);
-//		btn_Exit.setY(y);
-//		btn_Exit.addListener(new InputListener(){
-//			@Override
-//			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//				if (onExit!=null) {
-//					Gdx.app.postRunnable(onExit);
-//				}
-//				return true;
-//			}
-//		});
-	}
-
-	public void setOnExit(final Runnable runnable) {
-		this.onExit = runnable;
 	}
 
 	public void setOnPause(final Runnable runnable) {

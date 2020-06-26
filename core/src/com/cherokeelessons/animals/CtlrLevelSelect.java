@@ -71,7 +71,7 @@ public class CtlrLevelSelect implements ControllerListener {
 	@Override
 	public boolean buttonDown(final Controller controller, final int buttonCode) {
 		if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
-			menu.game.gameEvent(GameEvent.MainMenu);
+			menu.game.gameEvent(GameEvent.MAIN);
 			return true;
 		}
 		if (buttonCode == map.BUTTON_Y) {
@@ -84,10 +84,6 @@ public class CtlrLevelSelect implements ControllerListener {
 		}
 		if (buttonCode == map.BUTTON_A) {
 			menu.hud_select();
-			return true;
-		}
-		if (buttonCode == map.BUTTON_MENU) {
-			menu.game.gameEvent(GameEvent.Menu);
 			return true;
 		}
 		if (buttonCode == map.BUTTON_DPAD_UP) {

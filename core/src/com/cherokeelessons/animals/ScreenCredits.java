@@ -9,7 +9,7 @@ import com.cherokeelessons.common.Attributions;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
 
-public class ScreenCredits extends GameScreen implements DpadInterface {
+public class ScreenCredits extends GameScreen {
 	
 	@Override
 	protected boolean useBackdrop() {
@@ -25,7 +25,7 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 	private final ControllerAdapter skipCredits = new ControllerAdapter() {
 		@Override
 		public boolean buttonDown(final Controller controller, final int buttonCode) {
-			game.gameEvent(GameEvent.Done);
+			game.gameEvent(GameEvent.EXIT_SCREEN);
 			return true;
 		}
 	};
@@ -52,7 +52,7 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 		creditScroller.setOnDone(new Runnable() {
 			@Override
 			public void run() {
-				game.gameEvent(GameEvent.Done);
+				game.gameEvent(GameEvent.EXIT_SCREEN);
 			}
 		});
 		creditScroller.scroll(time);
@@ -64,7 +64,7 @@ public class ScreenCredits extends GameScreen implements DpadInterface {
 		if (keyCode != Input.Keys.DPAD_CENTER) {
 			return false;
 		}
-		game.gameEvent(GameEvent.Done);
+		game.gameEvent(GameEvent.EXIT_SCREEN);
 		return true;
 	}
 

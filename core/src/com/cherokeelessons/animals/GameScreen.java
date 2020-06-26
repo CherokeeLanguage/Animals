@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -23,7 +24,9 @@ import com.cherokeelessons.common.Utils;
 
 import aurelienribon.tweenengine.TweenManager;
 
-public abstract class GameScreen implements Screen {
+public abstract class GameScreen implements Screen, DpadInterface {
+	
+	protected ControllerAdapter gamepad;
 	
 	protected TweenManager tmanager;
 	protected AssetManager assets;
@@ -62,19 +65,11 @@ public abstract class GameScreen implements Screen {
 			@Override
 			public boolean keyDown(final int keyCode) {
 				if (keyCode == Input.Keys.ESCAPE) {
-					game.gameEvent(GameEvent.Done);
+					game.gameEvent(GameEvent.EXIT_SCREEN);
 					return true;
 				}
 				if (keyCode == Input.Keys.BACK) {
-					game.gameEvent(GameEvent.Done);
-					return true;
-				}
-				if (keyCode == Input.Keys.MENU) {
-					game.gameEvent(GameEvent.Menu);
-					return true;
-				}
-				if (keyCode == Input.Keys.F1) {
-					game.gameEvent(GameEvent.Menu);
+					game.gameEvent(GameEvent.EXIT_SCREEN);
 					return true;
 				}
 				if (mapToGamepad(keyCode)) {
@@ -163,21 +158,20 @@ public abstract class GameScreen implements Screen {
 		Gdx.app.log(this.getClass().getName(), message);
 	}
 
-	private boolean mapToGamepad(final int keyCode) {
-		if (!(this instanceof DpadInterface)) {
-			return false;
-		}
-		final DpadInterface dpad = (DpadInterface) this;
+	protected boolean mapToGamepad(final int keyCode) {
 		switch (keyCode) {
 		case Input.Keys.DPAD_CENTER:
 		case Input.Keys.DPAD_DOWN:
 		case Input.Keys.DPAD_LEFT:
 		case Input.Keys.DPAD_RIGHT:
 		case Input.Keys.DPAD_UP:
-			return dpad.dpad(keyCode);
+			if (isPaused()) {
+				return false;
+			}
+			return dpad(keyCode);
 		case Input.Keys.ENTER:
 		case Input.Keys.NUMPAD_5:
-			return dpad.dpad(Input.Keys.DPAD_CENTER);
+			return dpad(Input.Keys.DPAD_CENTER);
 		default:
 		}
 		return false;
@@ -185,11 +179,6 @@ public abstract class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
-//		if (game.musicPlayer != null) {
-//			if (!Gdx.app.getType().equals(ApplicationType.Desktop)) {
-//				game.musicPlayer.pause();
-//			}
-//		}
 		disconnectInputProcessor();
 	}
 

@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -21,9 +20,8 @@ import com.cherokeelessons.animals.enums.GameEvent;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
-import com.cherokeelessons.common.Utils;
 
-public class ScreenMainMenu extends GameScreen implements DpadInterface {
+public class ScreenMainMenu extends GameScreen {
 
 	@Override
 	protected boolean useBackdrop() {
@@ -54,6 +52,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 	private static final String GAME_TITLE = "ᎠᏂᏣᎳᎩ ᎡᎿᎢ!";
 
 	private static final String NEW_GAME = "New Game - ᎢᏤ ᏗᏁᎶᏗᎢ";
+	@SuppressWarnings("unused")
 	private static final String LEADERS = "High Scores - ᏬᏍᏓ ᏗᏎᏍᏗ";
 	private static final String INSTRUCTIONS = "Instructions - ᏗᏕᏲᏗ";
 	private static final String OPTIONS = "Options - ᎠᏑᏰᏍᏗᎢ";
@@ -70,7 +69,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		public void run() {
 			game.music.pause();
 			game.sm.playEffect("menu-click");
-			game.gameEvent(GameEvent.NewGame);
+			game.gameEvent(GameEvent.NEW_GAME);
 		}
 	};
 	public int optionsButton;
@@ -78,7 +77,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		@Override
 		public void run() {
 			game.sm.playEffect("menu-click");
-			game.gameEvent(GameEvent.QuitGame);
+			game.gameEvent(GameEvent.QUIT);
 			Gdx.app.exit();
 		}
 	};
@@ -92,7 +91,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		@Override
 		public void run() {
 			game.sm.playEffect("menu-click");
-			game.gameEvent(GameEvent.Menu);
+			game.gameEvent(GameEvent.SETTINGS);
 		}
 	};
 
@@ -102,21 +101,22 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		@Override
 		public void run() {
 			game.sm.playEffect("menu-click");
-			game.gameEvent(GameEvent.ShowInstructions);
+			game.gameEvent(GameEvent.INSTRUCTIONS);
 		}
 	};
 	private final Runnable showCredits = new Runnable() {
 		@Override
 		public void run() {
 			game.sm.playEffect("menu-click");
-			game.gameEvent(GameEvent.ShowCredits);
+			game.gameEvent(GameEvent.CREDITS);
 		}
 	};
+	@SuppressWarnings("unused")
 	private final Runnable showLeaderBoard = new Runnable() {
 		@Override
 		public void run() {
 			game.sm.playEffect("menu-click");
-			game.gameEvent(GameEvent.ShowLeaderBoard);
+			game.gameEvent(GameEvent.LEADER_BOARD);
 		}
 	};
 
@@ -145,7 +145,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 
 		MenuLabel btn_NewGame = null;
 		MenuLabel btn_Instructions = null;
-		MenuLabel btn_Leaders = null;
+//		MenuLabel btn_Leaders = null;
 		MenuLabel btn_Options = null;
 		MenuLabel btn_Credits = null;
 		MenuLabel btn_Quit = null;
@@ -163,7 +163,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 
 		btn_NewGame = new MenuLabel(NEW_GAME, buttonStyle);
 		btn_Instructions = new MenuLabel(INSTRUCTIONS, buttonStyle);
-		btn_Leaders = new MenuLabel(LEADERS, buttonStyle);
+//		btn_Leaders = new MenuLabel(LEADERS, buttonStyle);
 		btn_Options = new MenuLabel(OPTIONS, buttonStyle);
 		btn_Credits = new MenuLabel(CREDITS, buttonStyle);
 		btn_Quit = new MenuLabel(QUIT, buttonStyle);
@@ -173,8 +173,8 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		 */
 
 		graphicsHeight = titleText.getHeight() + btn_NewGame.getHeight() + btn_Options.getHeight()
-				+ btn_Quit.getHeight() + btn_Instructions.getHeight() + btn_Credits.getHeight()
-				+ btn_Leaders.getHeight();
+				+ btn_Quit.getHeight() + btn_Instructions.getHeight() + btn_Credits.getHeight();
+//				+ btn_Leaders.getHeight();
 		emptyHeight = safeZoneBox.height - graphicsHeight;
 		skipAmount = emptyHeight / (linesOfText + 1);
 
@@ -183,7 +183,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		 */
 		titleText.setX((fullZoneBox.width - titleText.getWidth()) / 2);
 		btn_NewGame.setX((fullZoneBox.width - btn_NewGame.getWidth()) / 2);
-		btn_Leaders.setX((fullZoneBox.width - btn_Leaders.getWidth()) / 2);
+//		btn_Leaders.setX((fullZoneBox.width - btn_Leaders.getWidth()) / 2);
 		btn_Instructions.setX((fullZoneBox.width - btn_Instructions.getWidth()) / 2);
 		btn_Options.setX((fullZoneBox.width - btn_Options.getWidth()) / 2);
 		btn_Credits.setX((fullZoneBox.width - btn_Credits.getWidth()) / 2);
@@ -201,8 +201,8 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		currentY -= btn_NewGame.getHeight() + skipAmount;
 		btn_NewGame.setY(currentY);
 
-		currentY -= btn_Leaders.getHeight() + skipAmount;
-		btn_Leaders.setY(currentY);
+//		currentY -= btn_Leaders.getHeight() + skipAmount;
+//		btn_Leaders.setY(currentY);
 
 		currentY -= btn_Instructions.getHeight() + skipAmount;
 		btn_Instructions.setY(currentY);
@@ -220,7 +220,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		 * add buttons to buttons menu array
 		 */
 		btns.add(btn_NewGame);
-		btns.add(btn_Leaders);
+//		btns.add(btn_Leaders);
 		btns.add(btn_Instructions);
 		optionsButton = btns.size;
 		btns.add(btn_Options);
@@ -252,7 +252,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		 * register click handlers
 		 */
 		btn_NewGame.setRun(newGame);
-		btn_Leaders.setRun(showLeaderBoard);
+//		btn_Leaders.setRun(showLeaderBoard);
 		btn_Quit.setRun(performQuit);
 		btn_Options.setRun(showOptions);
 		btn_Credits.setRun(showCredits);
@@ -263,7 +263,7 @@ public class ScreenMainMenu extends GameScreen implements DpadInterface {
 		 */
 		gameStage.addActor(titleText);
 		gameStage.addActor(btn_NewGame);
-		gameStage.addActor(btn_Leaders);
+//		gameStage.addActor(btn_Leaders);
 		gameStage.addActor(btn_Instructions);
 		gameStage.addActor(btn_Options);
 		gameStage.addActor(btn_Credits);

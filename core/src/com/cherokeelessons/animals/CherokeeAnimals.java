@@ -79,13 +79,13 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 	private void _gameEvent(final GameEventMessage event) {
 		final GameScreen activeScreen = getScreen();
 		switch (event.getEvent()) {
-		case ShowLeaderBoard:
+		case LEADER_BOARD:
 			setScreen(new ScreenHighScores(this));
 			break;
-		case libGdx:
+		case POWERED_BY:
 			setScreen(new ScreenPoweredBy(this));
 			break;
-		case Done:
+		case EXIT_SCREEN:
 			if (activeScreen == null) {
 				break;
 			}
@@ -98,22 +98,29 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 				break;
 			}
 			if (activeScreen instanceof ScreenLoading) {
-				gameEvent(GameEvent.MainMenu);
+				gameEvent(GameEvent.MAIN);
 				break;
 			}
 			if (activeScreen instanceof ScreenLevelComplete) {
-				gameEvent(GameEvent.MainMenu);
+				gameEvent(GameEvent.MAIN);
 				break;
+			}
+			if (activeScreen instanceof ScreenGameplay) {
+				final ScreenGameplay sg = (ScreenGameplay) activeScreen;
+				if (!sg.isPaused()) {
+					sg.setPaused(true);
+					break;
+				}
 			}
 			goPrevScreen();
 			break;
-		case NewGame:
+		case NEW_GAME:
 			if (screenLevelSelect == null) {
 				screenLevelSelect = new ScreenLevelSelect(this);
 			}
 			setScreen(screenLevelSelect, false);// no history
 			break;
-		case ShowGameBoard:
+		case GAMEBOARD:
 			if (screenGameplay != null) {
 				screenGameplay.dispose();
 			}
@@ -121,65 +128,47 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 			screenGameplay.initLevel(levelOn);
 			setScreen(screenGameplay);
 			break;
-		case Training:
+		case TRAIN:
 			if (screenTrainer == null) {
 				screenTrainer = new ScreenTrainer(this);
 			}
 			setScreen(screenTrainer, false);// no history
 			break;
-		case LevelComplete:
+		case BOARD_COMPLETE:
 			if (screenLevelComplete == null) {
 				screenLevelComplete = new ScreenLevelComplete(this);
 			}
 			setScreen(screenLevelComplete, false);// no history
 			break;
-		case MainMenu:
+		case MAIN:
 			if (screenMainMenu == null) {
 				screenMainMenu = new ScreenMainMenu(this);
 			}
 			setScreen(screenMainMenu);
 			break;
-		case NoEvent:
+		case NO_EVENT:
 			break;
-		case ShowInstructions:
+		case INSTRUCTIONS:
 			if (screenInstructions == null) {
 				screenInstructions = new ScreenInstructions(this);
 			}
 			setScreen(screenInstructions, false);
 			break;
-		case Menu:
-			if (activeScreen == null) {
-				break;
-			}
-			if (activeScreen instanceof ScreenLevelComplete) {
-				break;
-			}
-			if (activeScreen instanceof ScreenPoweredBy) {
-				break;
-			}
-			if (activeScreen instanceof ScreenLoading) {
-				break;
-			}
-			if (activeScreen instanceof ScreenGameplay) {
-				final ScreenGameplay sg = (ScreenGameplay) activeScreen;
-				sg.setPaused(!sg.isPaused());
-				Gdx.app.log("PAUSED: ", Boolean.toString(sg.isPaused()));
-				break;
-			}
-			if (screenOptions == null) {
-				screenOptions = new ScreenOptionsMenu(this);
-			}
-			setScreen(screenOptions, false);
-			break;
-		case QuitGame:
+		case QUIT:
 			setScreen(new ScreenQuit(this), false);
 			Gdx.app.exit();
 			break;
-		case ShowCredits:
+		case CREDITS:
 			if (screenCredits == null) {
 				screenCredits = new ScreenCredits(this);
 			}
 			setScreen(screenCredits, false);
+			break;
+		case SETTINGS:
+			if (screenOptions == null) {
+				screenOptions = new ScreenOptionsMenu(this);
+			}
+			setScreen(screenOptions, false);
 			break;
 		default:
 			System.out.println("Event: " + event.getEvent().name());
@@ -200,7 +189,7 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 		sm = new SoundManager(prefs);
 		fg = new FontLoader();
 
-		gameEvent(GameEvent.libGdx);
+		gameEvent(GameEvent.POWERED_BY);
 
 		music = new MusicPlayer();
 		music.loadUsingPlist();

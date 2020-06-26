@@ -77,22 +77,16 @@ public class CtlrGamePlay implements ControllerListener {
 
 	@Override
 	public boolean buttonDown(final Controller controller, final int buttonCode) {
+		Gdx.app.log(this.getClass().toGenericString(), "button down: "+buttonCode);
 		if (gameboard.isPaused()) {
 			if (buttonCode == map.BUTTON_A) {
 				gameboard.setPaused(false);
 				return true;
 			}
 			if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
-				gameboard.game.gameEvent(GameEvent.Done);
+				gameboard.game.gameEvent(GameEvent.EXIT_SCREEN);
 				return true;
 			}
-			if (buttonCode == map.BUTTON_MENU) {
-				gameboard.setPaused(false);
-			}
-			return true;
-		}
-		if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
-			gameboard.game.gameEvent(GameEvent.Done);
 			return true;
 		}
 		if (buttonCode == map.BUTTON_Y) {
@@ -105,9 +99,6 @@ public class CtlrGamePlay implements ControllerListener {
 		if (buttonCode == map.BUTTON_A) {
 			gameboard.hud_select();
 			return true;
-		}
-		if (buttonCode == map.BUTTON_MENU) {
-			gameboard.game.gameEvent(GameEvent.Menu);
 		}
 		if (buttonCode == map.BUTTON_DPAD_UP) {
 			return povMoved(controller, 0, PovDirection.north);
@@ -159,6 +150,11 @@ public class CtlrGamePlay implements ControllerListener {
 		case west:
 			gameboard.hud_moveLeft();
 			break;
+		case center:
+		case northEast:
+		case northWest:
+		case southEast:
+		case southWest:
 		default:
 			break;
 		}

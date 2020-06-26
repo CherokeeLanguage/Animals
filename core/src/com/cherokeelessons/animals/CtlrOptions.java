@@ -76,11 +76,11 @@ public class CtlrOptions implements ControllerListener {
 	@Override
 	public boolean buttonDown(final Controller controller, final int buttonCode) {
 		if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
-			menu.game.gameEvent(GameEvent.Done);
+			menu.game.gameEvent(GameEvent.EXIT_SCREEN);
 			return true;
 		}
 		if (buttonCode == map.BUTTON_MENU) {
-			menu.game.gameEvent(GameEvent.Done);
+			menu.game.gameEvent(GameEvent.EXIT_SCREEN);
 		}
 		if (buttonCode == map.BUTTON_DPAD_UP) {
 			return povMoved(controller, 0, PovDirection.north);

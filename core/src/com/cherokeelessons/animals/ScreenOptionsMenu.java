@@ -123,13 +123,13 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		lbl_instructions.menu_action_east = new Runnable() {
 			@Override
 			public void run() {
-				game.gameEvent(GameEvent.Done);
+				game.gameEvent(GameEvent.EXIT_SCREEN);
 			}
 		};
 		lbl_instructions.menu_action_west = new Runnable() {
 			@Override
 			public void run() {
-				game.gameEvent(GameEvent.Done);
+				game.gameEvent(GameEvent.EXIT_SCREEN);
 			}
 		};
 
@@ -407,7 +407,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 	public void goBack() {
 		game.sm.playEffect("menu-click");
-		game.gameEvent(GameEvent.Done);
+		game.gameEvent(GameEvent.EXIT_SCREEN);
 	}
 
 	@Override

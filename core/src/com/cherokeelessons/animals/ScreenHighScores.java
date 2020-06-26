@@ -82,7 +82,7 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 	public boolean dpad(final int keyCode) {
 		switch (keyCode) {
 		case Keys.DPAD_CENTER:
-			game.gameEvent(GameEvent.Done);
+			game.gameEvent(GameEvent.EXIT_SCREEN);
 			return true;
 		case Keys.DPAD_DOWN:
 			hud_moveSouth();
@@ -126,14 +126,18 @@ public class ScreenHighScores extends GameScreen implements DpadInterface {
 		final LabelStyle lstyle = new LabelStyle();
 		lstyle.font = game.fg.get(FONTSIZE);
 		lstyle.fontColor = GameColor.MAIN_TEXT;
-		String textExit;
-		textExit = "[BACK]";
+		final String textExit;
+		if (game.isTelevision()) {
+			textExit = "Press [A] or [Select] to exit";
+		} else {
+			textExit = "[BACK]";
+		}
 		final Label exit = new Label(textExit, lstyle);
 		exit.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
 					final int button) {
-				game.gameEvent(GameEvent.Done);
+				game.gameEvent(GameEvent.EXIT_SCREEN);
 				return true;
 			}
 		});

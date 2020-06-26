@@ -77,19 +77,16 @@ public class CtlrLevelComplete implements ControllerListener {
 	@Override
 	public boolean buttonDown(final Controller controller, final int buttonCode) {
 		if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
-			menu.game.gameEvent(GameEvent.MainMenu);
+			menu.game.gameEvent(GameEvent.MAIN);
 			return true;
 		}
 		if (buttonCode == map.BUTTON_X) {
-			menu.game.gameEvent(GameEvent.ShowGameBoard);
+			menu.game.gameEvent(GameEvent.GAMEBOARD);
 			return true;
 		}
 		if (buttonCode == map.BUTTON_A) {
-			menu.game.gameEvent(GameEvent.NewGame);
+			menu.game.gameEvent(GameEvent.NEW_GAME);
 			return true;
-		}
-		if (buttonCode == map.BUTTON_MENU) {
-			menu.game.gameEvent(GameEvent.Menu);
 		}
 		if (buttonCode == map.BUTTON_DPAD_UP) {
 			return povMoved(controller, 0, PovDirection.north);

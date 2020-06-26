@@ -8,4 +8,9 @@ public class ScreenQuit extends GameScreen {
 	protected boolean useBackdrop() {
 		return false;
 	}
+	@Override
+	public boolean dpad(int keyCode) {
+		//ignore
+		return false;
+	}
 }

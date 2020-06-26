@@ -30,11 +30,11 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		return false;
 	}
 
-	private static final String TAB_PANEL1_TEXT = "[Tap Here to Show Levels 10-18]";
-	private static final String TAB_PANEL2_TEXT = "[Tap Here to Show Levels 1-9]";
+	private static final String TAB_PANEL1_TEXT = "[Tap to Show Levels 10-18]";
+	private static final String TAB_PANEL2_TEXT = "[Tap to Show Levels 1-9]";
 
-	private static final String TV_PANEL1_TEXT = "[Move Right to Show Levels 10-18]";
-	private static final String TV_PANEL2_TEXT = "[Move Left to Show Levels 1-9]";
+	private static final String TV_PANEL1_TEXT = "Move Right to Show Levels 10-18";
+	private static final String TV_PANEL2_TEXT = "Move Left to Show Levels 1-9";
 
 	private int activeHud = 0;
 
@@ -73,7 +73,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 			startGameLevel(level + 9);
 		}
 	};
-	private final String tab_title_unlocked = "This level is unlocked. Tap to play.";
+	private final String tab_title_unlocked = "This level is unlocked.";
 
 	private final String tab_title_locked = "This level is locked until you get at least " + minPercentAdvance
 			+ "%+ on the previous level.";
@@ -169,15 +169,16 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		selectViewOverlay[1].setHandler(startAtLevel_10_to_18);
 
 		selectViewHUD = new View3x3Selector[panelCount];
+		
 		selectViewHUD[0] = new View3x3Selector(fullZoneBox);
 		selectViewHUD[0].setTouchable(Touchable.disabled);
-		selectViewHUD[0].setTitle(tab_title_unlocked);
+		selectViewHUD[0].setTitle(unlockedText());
 		selectViewHUD[0].setBottomMargin(bottomMargin);
 		selectViewHUD[0].setHandler(startAtLevel_1_to_9);
 
 		selectViewHUD[1] = new View3x3Selector(fullZoneBox);
 		selectViewHUD[1].setTouchable(Touchable.disabled);
-		selectViewHUD[1].setTitle(tab_title_unlocked);
+		selectViewHUD[1].setTitle(unlockedText());
 		selectViewHUD[1].setBottomMargin(bottomMargin);
 		selectViewHUD[1].setHandler(startAtLevel_10_to_18);
 
@@ -275,6 +276,8 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		case Keys.DPAD_UP:
 			hud_moveNorth();
 			return true;
+		default:
+			break;
 		}
 		return false;
 	}
@@ -442,9 +445,14 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 				selectViewHUD[activeHud].setTitle(tab_title_locked);
 				break;
 			}
-			selectViewHUD[activeHud].setTitle(tab_title_unlocked);
+			selectViewHUD[activeHud].setTitle(unlockedText());
 			break;
 		} while (false);
+	}
+
+	private String unlockedText() {
+		String unlockedTxt = tab_title_unlocked + (game.isTelevision()?" Press [A] or [Select] to play":" Tap to play");
+		return unlockedTxt;
 	}
 
 	private boolean isLevelUnlocked(final int level) {
@@ -580,6 +588,6 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 			return;
 		}
 		game.setLevelOn(level);
-		game.gameEvent(GameEvent.ShowGameBoard);
+		game.gameEvent(GameEvent.GAMEBOARD);
 	}
 }

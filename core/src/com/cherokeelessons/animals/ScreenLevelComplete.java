@@ -11,7 +11,6 @@ import com.cherokeelessons.animals.enums.GameEvent;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
-import com.cherokeelessons.util.Callback;
 import com.cherokeelessons.util.StringUtils;
 
 public class ScreenLevelComplete extends GameScreen implements DpadInterface {
@@ -26,7 +25,9 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	private static final String COMPLETE = "Complete!";
 	private static final String CORRECT = "% Correct!";
 	private static final String LEVEL = "Level";
-	private static final String TABLET_MAIN = "[BACK]";
+	private final String exitInstructions() {
+		return game.isTelevision()?"Press [A] or [Select] to exit":"[BACK]";
+	}
 	private BitmapFont font;
 
 	private final int fontSize = 88;
@@ -42,16 +43,9 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	final private CtlrLevelComplete_Watch watcher = new CtlrLevelComplete_Watch(this);
 
 	private int levelOn;
-	private int correct;
 	private long elapsed;
 	private long elapsed_sec;
 	private long elapsed_min;
-	private final Callback<Void> show_ranking = new Callback<Void>() {
-		@Override
-		public void success(final Void result) {
-			// updateRanking(score);
-		}
-	};
 	private int score;
 
 	public ScreenLevelComplete(final CherokeeAnimals game) {
@@ -73,13 +67,13 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		tbStyle.font = font;
 		tbStyle.fontColor = GameColor.MAIN_TEXT;
 
-		gotoMainMenu = new Label(TABLET_MAIN, tbStyle);
+		gotoMainMenu = new Label(exitInstructions(), tbStyle);
 		gotoMainMenu.addCaptureListener(new ClickListener() {
 
 			@Override
 			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
 					final int button) {
-				game.gameEvent(GameEvent.MainMenu);
+				game.gameEvent(GameEvent.MAIN);
 				return true;
 			}
 
@@ -97,8 +91,10 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 	public boolean dpad(final int keyCode) {
 		switch (keyCode) {
 		case Keys.DPAD_CENTER:
-			game.gameEvent(GameEvent.Done);
+			game.gameEvent(GameEvent.EXIT_SCREEN);
 			return true;
+		default:
+			break;
 		}
 		return false;
 	}
@@ -151,7 +147,6 @@ public class ScreenLevelComplete extends GameScreen implements DpadInterface {
 		}
 		levelOn = game.getLevelOn();
 		score = game.prefs.getLastScore(levelOn);
-		correct = game.prefs.getLevelAccuracy(levelOn);
 		elapsed = game.prefs.getLevelTime(levelOn);
 		elapsed_sec = elapsed / 1000l;
 		elapsed_min = elapsed_sec / 60;

@@ -1,0 +1,7 @@
+-Instructions-
+
+After starting a new game and selecting a level you will be presented with a training screen. It will show a new challenge and sound its name out several times.
+
+You will then see a game board and hear an audio challenge. Select all matching pictures on the game board by moving the select square around using your gamepad or your remote's dpad and then pressing [A] or [Select].
+
+You must get 80% or better on each level before you are allowed to advance to the next level.

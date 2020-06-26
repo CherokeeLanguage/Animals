@@ -46,7 +46,6 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 	boolean fontsPrecalc = false;
 	private boolean syllabaryMapInit = false;
 	private AssetManager am;
-	private float elapsed = 0f;
 	private final ControllerAdapter ca = new ControllerAdapter() {
 		@Override
 		public boolean buttonDown(final Controller controller, final int buttonIndex) {
@@ -132,12 +131,11 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 			loading.addAction(Actions.delay(1.25f, Actions.run(new Runnable() {
 				@Override
 				public void run() {
-					game.gameEvent(GameEvent.Done);
+					game.gameEvent(GameEvent.EXIT_SCREEN);
 				}
 			})));
 
 		}
-		elapsed += delta;
 	}
 
 	@Override

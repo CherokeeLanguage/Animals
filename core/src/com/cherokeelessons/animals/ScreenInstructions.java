@@ -4,12 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -17,13 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.animals.enums.GameEvent;
 import com.cherokeelessons.common.BackdropData;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
-import com.cherokeelessons.common.Utils;
 
 public class ScreenInstructions extends GameScreen implements DpadInterface {
 	
@@ -39,7 +34,7 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 	private final ControllerAdapter exitScreen = new ControllerAdapter() {
 		@Override
 		public boolean buttonDown(final Controller controller, final int buttonCode) {
-			game.gameEvent(GameEvent.Done);
+			game.gameEvent(GameEvent.EXIT_SCREEN);
 			return true;
 		}
 	};
@@ -69,8 +64,10 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 	public boolean dpad(final int keyCode) {
 		switch (keyCode) {
 		case Keys.DPAD_CENTER:
-			game.gameEvent(GameEvent.Done);
+			game.gameEvent(GameEvent.EXIT_SCREEN);
 			return true;
+		default:
+			break;
 		}
 		return false;
 	}
@@ -85,7 +82,8 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 	public void init() {
 		fg = new FontLoader();
 
-		final String tmp = Gdx.files.internal("data/instructions.txt").readString("UTF-8");
+		FileHandle instructionsFileHandle = Gdx.files.internal(game.isTelevision()?"data/instructions-tv.txt":"data/instructions.txt");
+		final String tmp = instructionsFileHandle.readString("UTF-8");
 		final LabelStyle style = new LabelStyle(fg.get(fontSize), new Color(GameColor.INSTRUCTIONS_TEXT));
 
 		instructions.row();
@@ -97,7 +95,7 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 		final TextButtonStyle tstyle = new TextButtonStyle();
 		tstyle.font = fg.get(fontSize);
 		tstyle.fontColor = new Color(GameColor.INSTRUCTIONS_TEXT);
-		final TextButton btnExit = new TextButton("[BACK]", tstyle);
+		final TextButton btnExit = new TextButton(game.isTelevision()?"Press [A] or [Select] to exit":"[BACK]", tstyle);
 
 		instructions.row();
 		instructions.add(btnExit).center().pad(0).space(0).bottom();
@@ -106,7 +104,7 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 			@Override
 			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
 					final int button) {
-				game.gameEvent(GameEvent.Done);
+				game.gameEvent(GameEvent.EXIT_SCREEN);
 				return true;
 			}
 		});

@@ -40,7 +40,7 @@ public class ScreenPoweredBy extends GameScreen {
 	private final ControllerAdapter skipScreen = new ControllerAdapter() {
 		@Override
 		public boolean buttonDown(final Controller controller, final int buttonCode) {
-			game.gameEvent(GameEvent.Done);
+			game.gameEvent(GameEvent.EXIT_SCREEN);
 			return true;
 		}
 	};
@@ -54,7 +54,7 @@ public class ScreenPoweredBy extends GameScreen {
 			if (type != TweenCallback.COMPLETE) {
 				return;
 			}
-			game.gameEvent(GameEvent.Done);
+			game.gameEvent(GameEvent.EXIT_SCREEN);
 			audio.stop();
 		}
 	};
@@ -173,5 +173,11 @@ public class ScreenPoweredBy extends GameScreen {
 		super.show();
 		init();
 		Gamepads.addListener(skipScreen);
+	}
+
+	@Override
+	public boolean dpad(int keyCode) {
+		//ignore
+		return false;
 	}
 }

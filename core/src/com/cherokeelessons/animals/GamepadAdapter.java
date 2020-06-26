@@ -28,12 +28,6 @@ public abstract class GamepadAdapter<S extends Screen> extends ControllerAdapter
 		super.connected(controller);
 		final String name = controller.getName().toLowerCase();
 		ControllerListener listener;
-		if (name.contains("ouya")) {
-			listener = factoryControllerListener(map_ouya, menu);
-			controller.addListener(listener);
-			listeners.add(listener);
-			return;
-		}
 		if (name.contains("xbox") || name.contains("x-box") || name.contains("360")) {
 			listener = factoryControllerListener(map_xbox, menu);
 			controller.addListener(listener);

@@ -3,7 +3,7 @@ package com.cherokeelessons.common;
 import com.cherokeelessons.animals.enums.GameEvent;
 
 public class GameEventMessage {
-	private GameEvent message = GameEvent.NoEvent;
+	private GameEvent message = GameEvent.NO_EVENT;
 
 	public GameEventMessage() {
 	}
