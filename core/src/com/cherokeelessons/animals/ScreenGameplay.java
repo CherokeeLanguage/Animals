@@ -675,7 +675,7 @@ public class ScreenGameplay extends GameScreen {
 		pause_mask_image.scaleBy(fullZoneBox.width, fullZoneBox.height);
 		pauseOverlay.addActor(pause_mask_image);
 		final LabelStyle continueStyle = new LabelStyle(new FontLoader().get(72), GameColor.MAIN_TEXT);
-		final String pauseMsg = game.isTelevision() ? "Press [A] or [Select] to resume" : "[CONTINUE]";
+		final String pauseMsg = game.isTelevision() ? "Press [A] or [Select] to resume" : "[RESUME]";
 		final Label toContinue = new Label(pauseMsg, continueStyle);
 		pauseOverlay.addActor(toContinue);
 		toContinue.pack();
@@ -689,7 +689,7 @@ public class ScreenGameplay extends GameScreen {
 				return true;
 			}
 		});
-		final Label toExit = new Label(game.isTelevision() ? "Press [B] or [Back] to exit" : "[BACK]", continueStyle);
+		final Label toExit = new Label(game.isTelevision() ? "Press [B] or [Back] to exit" : "[EXIT]", continueStyle);
 		pauseOverlay.addActor(toExit);
 		toExit.pack();
 		toExit.setX((fullZoneBox.width - toExit.getWidth()) / 2);
@@ -698,7 +698,6 @@ public class ScreenGameplay extends GameScreen {
 			@Override
 			public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer,
 					final int button) {
-				setPaused(false);
 				game.gameEvent(GameEvent.EXIT_SCREEN);
 				return true;
 			}

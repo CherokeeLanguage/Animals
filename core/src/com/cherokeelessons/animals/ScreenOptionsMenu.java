@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.animals.enums.ChallengeWordMode;
 import com.cherokeelessons.animals.enums.GameEvent;
@@ -32,7 +31,7 @@ import com.cherokeelessons.common.Prefs;
  * (Software Used, Fonts Used, etc)
  */
 
-public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
+public class ScreenOptionsMenu extends GameScreen {
 	
 	private static final String PRESS_A_RESET = "Pressing [A] or [Select] will reset your progress";
 
@@ -46,8 +45,6 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	}
 
 	private static final String INDICATOR = ScreenMainMenu.INDICATOR;
-
-	private static int idx_volume = 0;
 
 	private String touchscreenInstructions() {
 		return game.isTelevision()?"":"[BACK]";
@@ -90,7 +87,6 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 
 	final private CtlrOptions_Watch watcher = new CtlrOptions_Watch(this);
 
-	private final int idx_music;
 	final private Prefs prefs;
 
 	public ScreenOptionsMenu(final CherokeeAnimals _game) {
@@ -302,9 +298,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		btns.add(btn_soundEffects);
 		btns.add(btn_challengeWordMode);
 		btns.add(btn_challengeSoundMode);
-		idx_music = btns.size;
 		btns.add(btn_musicVolume);
-		idx_volume = btns.size;
 		btns.add(btn_masterVolume);
 		btns.add(lbl_instructions);
 
@@ -325,7 +319,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	}
 
 	private CharSequence getZoomLabel(int zoom) {
-		String newText = "[-] TV Zoom Out: ";
+		String newText = "[-] Zoom Out: ";
 		newText = newText + ((Integer) zoom).toString() + "%";
 		newText += " [+]";
 		return newText;
@@ -364,6 +358,8 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		case Keys.DPAD_UP:
 			hud_moveNorth();
 			return true;
+		default:
+			break;
 		}
 		return false;
 	}
@@ -554,7 +550,6 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	}
 
 	public void trainingScreen() {
-
 		switch (prefs.getTrainingMode()) {
 		case Brief:
 			prefs.setTrainingMode(TrainingMode.Long);
@@ -562,6 +557,7 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 		case Long:
 			prefs.setTrainingMode(TrainingMode.Off);
 			break;
+		case Off:
 		default:
 			prefs.setTrainingMode(TrainingMode.Brief);
 		}
@@ -580,7 +576,6 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	}
 
 	private void updateChallengeModeDisplay() {
-
 		if (prefs.getChallengeAudio()) {
 			btn_challengeSoundMode.setText("Challenge Audio: ON");
 		} else {
@@ -606,21 +601,18 @@ public class ScreenOptionsMenu extends GameScreen implements DpadInterface {
 	}
 
 	private void updateSoundEffectsDisplay() {
-
 		btn_soundEffects.setText("Sound Effects: " + prefs.getEffectsVolume().name());
 		btn_soundEffects.pack();
 		btn_soundEffects.setX((fullZoneBox.width - btn_soundEffects.getWidth()) / 2);
 	}
 
 	private void updateTrainingScreenDisplay() {
-
 		btn_trainingScreen.setText("Training Mode: " + prefs.getTrainingMode().name());
 		btn_trainingScreen.pack();
 		btn_trainingScreen.setX((fullZoneBox.width - btn_trainingScreen.getWidth()) / 2);
 	}
 
 	public void wordMode() {
-
 		switch (prefs.getChallengeMode()) {
 		case Latin:
 			prefs.setChallengeMode(ChallengeWordMode.Syllabary);
