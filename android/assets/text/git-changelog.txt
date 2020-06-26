@@ -1,4 +1,8 @@
-2020-06-25 [eef24a2]: (HEAD -> master, origin/master) Android TV!
+2020-06-26 [e6232d3]: (HEAD -> master, origin/master) updated screenshots
+2020-06-26 [27545da]: fix bug with exit on gameplay. options zoom text change.
+2020-06-25 [c4fbeeb]: (tag: 5.08) Bump version for release build.
+2020-06-25 [79c78e1]: Update git changelog.
+2020-06-25 [eef24a2]: Android TV!
 2020-06-25 [34ae397]: Remove DreamLo High Score connection. It's stopped working correctly.
 2020-06-25 [8b766f1]: tv instructions for options screen
 2020-06-25 [2c1a585]: simplify loading screen
