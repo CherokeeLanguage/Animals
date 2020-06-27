@@ -18,7 +18,7 @@ android {
     }
     defaultConfig {
         applicationId "com.cherokeelessons.vocab.animals.one"
-        minSdkVersion 8
+        minSdkVersion 14
         targetSdkVersion 29
         versionCode Integer.valueOf(version.replace(".",""))
         versionName version
