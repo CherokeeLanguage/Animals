@@ -1,4 +1,7 @@
-2020-07-02 [c4b1ae0]: (HEAD -> master) xxx
+2020-07-02 [8d21c72]: (HEAD -> master) use correct min sdk version in build file
+2020-07-02 [1fb20fc]: (tag: 5.10) Bump version for release build.
+2020-07-02 [f9d974a]: Update git changelog.
+2020-07-02 [c4b1ae0]: xxx
 2020-07-02 [cdf81c9]: xxx
 2020-07-02 [ebe3b39]: (origin/master) FireTV
 2020-07-02 [dd041f3]: Fix issue with not handling "Select" on remote to resume game play.
