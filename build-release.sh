@@ -21,6 +21,11 @@ fi
 ./gradlew desktop:dist || exit 1
 ./gradlew android:assembleRelease || exit 1
 
+#Make sure we have an up-to-date git log in the text folder as "git-changelog.txt"
+git log --simplify-merges --pretty=format:"%ad [%h]:%d %s" --abbrev-commit --date=short > android/assets/text/git-changelog.txt
+git add android/assets/text/git-changelog.txt
+git commit android/assets/text/git-changelog.txt -m "Update git changelog." || true
+
 if ! git diff-index --quiet HEAD --; then
     git status
     echo
@@ -28,11 +33,6 @@ if ! git diff-index --quiet HEAD --; then
     echo
     exit -1
 fi
-
-#Make sure we have an up-to-date git log in the text folder as "git-changelog.txt"
-git log --simplify-merges --pretty=format:"%ad [%h]:%d %s" --abbrev-commit --date=short > android/assets/text/git-changelog.txt
-git add android/assets/text/git-changelog.txt
-git commit android/assets/text/git-changelog.txt -m "Update git changelog." || true
 
 version=$(head -n1 version)
 version=$(($version + 1 ))
