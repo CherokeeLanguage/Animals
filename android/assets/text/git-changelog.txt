@@ -1,4 +1,13 @@
-2020-06-26 [e6232d3]: (HEAD -> master, origin/master) updated screenshots
+2020-07-02 [c4b1ae0]: (HEAD -> master) xxx
+2020-07-02 [cdf81c9]: xxx
+2020-07-02 [ebe3b39]: (origin/master) FireTV
+2020-07-02 [dd041f3]: Fix issue with not handling "Select" on remote to resume game play.
+2020-07-02 [1bae753]: Update build release script.
+2020-06-26 [992399f]: store graphics
+2020-06-26 [f621a21]: bump mininum android version
+2020-06-26 [63d567c]: (tag: 5.09) Bump version for release build.
+2020-06-26 [741d823]: Update git changelog.
+2020-06-26 [e6232d3]: updated screenshots
 2020-06-26 [27545da]: fix bug with exit on gameplay. options zoom text change.
 2020-06-25 [c4fbeeb]: (tag: 5.08) Bump version for release build.
 2020-06-25 [79c78e1]: Update git changelog.
