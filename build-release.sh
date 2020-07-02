@@ -10,7 +10,7 @@ cd "$(dirname "$0")"
 if ! git diff-index --quiet HEAD --; then
     git status
     echo
-    echo "PENDING CHANGES NOT COMMITTED - ABORTING [post deck rebuild]"
+    echo "PENDING CHANGES NOT COMMITTED - ABORTING [prebuild check]"
     echo
     exit -1
 fi
