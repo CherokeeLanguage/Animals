@@ -84,6 +84,7 @@ public class CtlrGamePlay implements ControllerListener {
 				return true;
 			}
 			if (buttonCode == map.BUTTON_BACK || buttonCode == map.BUTTON_B) {
+				gameboard.setPaused(false);
 				gameboard.game.gameEvent(GameEvent.EXIT_SCREEN);
 				return true;
 			}

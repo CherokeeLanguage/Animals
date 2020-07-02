@@ -160,7 +160,6 @@ public abstract class GameScreen implements Screen, DpadInterface {
 
 	protected boolean mapToGamepad(final int keyCode) {
 		switch (keyCode) {
-		case Input.Keys.DPAD_CENTER:
 		case Input.Keys.DPAD_DOWN:
 		case Input.Keys.DPAD_LEFT:
 		case Input.Keys.DPAD_RIGHT:
@@ -169,6 +168,7 @@ public abstract class GameScreen implements Screen, DpadInterface {
 				return false;
 			}
 			return dpad(keyCode);
+		case Input.Keys.DPAD_CENTER:
 		case Input.Keys.ENTER:
 		case Input.Keys.NUMPAD_5:
 			return dpad(Input.Keys.DPAD_CENTER);

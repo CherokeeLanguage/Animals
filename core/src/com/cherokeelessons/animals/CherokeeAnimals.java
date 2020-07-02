@@ -179,7 +179,7 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 	public void create() {
 
 		Gdx.input.setCatchKey(Input.Keys.BACK, true);
-		Gdx.input.setCatchKey(Input.Keys.MENU, true);
+		Gdx.input.setCatchKey(Input.Keys.MENU, false);
 
 		prefs = new Prefs(this);
 
