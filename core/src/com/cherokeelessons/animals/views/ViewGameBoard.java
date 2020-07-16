@@ -162,6 +162,10 @@ public class ViewGameBoard extends Group {
 	public void setAlpha(final int button, final float alpha) {
 		board[button].getColor().a = alpha;
 	}
+	
+	public Image getActiveHudButton(final int button) {
+		return board[button];
+	}
 
 	public void setColor(final int button, final Color color) {
 		board[button].setColor(color);

@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -24,7 +25,7 @@ import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Gamepads;
 
 public class ScreenLevelSelect extends GameScreen implements DpadInterface {
-	
+
 	@Override
 	protected boolean useBackdrop() {
 		return false;
@@ -169,7 +170,7 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		selectViewOverlay[1].setHandler(startAtLevel_10_to_18);
 
 		selectViewHUD = new View3x3Selector[panelCount];
-		
+
 		selectViewHUD[0] = new View3x3Selector(fullZoneBox);
 		selectViewHUD[0].setTouchable(Touchable.disabled);
 		selectViewHUD[0].setTitle(unlockedText());
@@ -426,32 +427,31 @@ public class ScreenLevelSelect extends GameScreen implements DpadInterface {
 		final View3x3Selector activehud = selectViewHUD[activeHud];
 		hud_clearIndicator();
 		activehud.setImage(level_highlighted, button_highlight);
-		activehud.setColor(level_highlighted, GameColor.GOLD2);
-		activehud.setAlpha(level_highlighted, showSelector ? .7f : .0f);
 		final Color gold3_50 = new Color(GameColor.GOLD3);
 		gold3_50.a = .7f;
 		final Color gold2_50 = new Color(GameColor.GOLD2);
-		gold2_50.a = .7f;
-		final Action act_gold3 = Actions.color(gold3_50, 1f, Interpolation.sine);
-		final Action act_gold2 = Actions.color(gold2_50, 1f, Interpolation.sine);
-		final Action act_seq = Actions.sequence(act_gold3, act_gold2);
-		final Action act = Actions.forever(act_seq);
+		gold2_50.a = .1f;
+		activehud.setColor(level_highlighted, gold2_50);
+		activehud.setAlpha(level_highlighted, 0f);
 		if (showSelector) {
+			activehud.setAlpha(level_highlighted, 0.7f);
+			final Action act_gold3 = Actions.color(gold3_50, 0.7f, Interpolation.smoother);
+			final Action act_gold2 = Actions.color(gold2_50, 0.7f, Interpolation.smoother);
+			final Action act_seq = Actions.sequence(act_gold2, act_gold3);
+			final Action act = Actions.forever(act_seq);
 			activehud.addAction(level_highlighted, act);
 		}
 		final int level = activeHud * activehud.button_count() + level_highlighted;
-		do {
-			if (!isLevelUnlocked(level)) {
-				selectViewHUD[activeHud].setTitle(tab_title_locked);
-				break;
-			}
+		if (!isLevelUnlocked(level)) {
+			selectViewHUD[activeHud].setTitle(tab_title_locked);
+		} else {
 			selectViewHUD[activeHud].setTitle(unlockedText());
-			break;
-		} while (false);
+		}
 	}
 
 	private String unlockedText() {
-		String unlockedTxt = tab_title_unlocked + (game.isTelevision()?" Press [A] or [Select] to play":" Tap to play");
+		String unlockedTxt = tab_title_unlocked
+				+ (game.isTelevision() ? " Press [A] or [Select] to play" : " Tap to play");
 		return unlockedTxt;
 	}
 

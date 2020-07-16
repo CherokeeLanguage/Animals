@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -441,21 +442,22 @@ public class ScreenGameplay extends GameScreen {
 		if (!quiet) {
 			game.sm.playEffect("box_moved");
 		}
-
-		hud_clearIndicator();
-
-		activehud.setImage(item_highlighted, button_highlight);
-		activehud.setColor(item_highlighted, GameColor.GOLD2);
-		activehud.setAlpha(item_highlighted, showSelector ? .7f : .0f);
-		final Color gold3_50 = new Color(GameColor.GOLD3);
-		gold3_50.a = .7f;
-		final Color gold2_50 = new Color(GameColor.GOLD2);
-		gold2_50.a = .7f;
-		final Action act_gold3 = Actions.color(gold3_50, 1f, Interpolation.sine);
-		final Action act_gold2 = Actions.color(gold2_50, 1f, Interpolation.sine);
-		final Action act_seq = Actions.sequence(act_gold3, act_gold2);
-		final Action act = Actions.forever(act_seq);
+		
 		if (showSelector) {
+			hud_clearIndicator();
+			activehud.setImage(item_highlighted, button_highlight);
+			final Color gold3_50 = new Color(GameColor.GOLD3);
+			gold3_50.a = .7f;
+			final Color gold2_50 = new Color(GameColor.GOLD2);
+			gold2_50.a = .1f;
+			activehud.setColor(item_highlighted, gold2_50);
+			activehud.setAlpha(item_highlighted, 0f);
+			activehud.setAlpha(item_highlighted, 0.7f);
+			final Action act_gold3 = Actions.color(gold3_50, 0.7f, Interpolation.smoother);
+			final Action act_gold2 = Actions.color(gold2_50, 0.7f, Interpolation.smoother);
+			final Action act_seq = Actions.sequence(act_gold2, act_gold3);
+			final Action act = Actions.forever(act_seq);
+			
 			activehud.addAction(item_highlighted, act);
 		}
 	}
@@ -582,9 +584,10 @@ public class ScreenGameplay extends GameScreen {
 		super.render(delta);
 
 		if (isPaused()) {
-			pauseOverlay.getColor().a = 1f;
+			pauseOverlay.getColor().a = 0.9f;
 			return;
 		}
+		
 		// total time board elapsed includes challenge sounding times
 		boardElapsed += delta;
 
