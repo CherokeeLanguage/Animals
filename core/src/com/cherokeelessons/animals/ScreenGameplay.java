@@ -90,7 +90,7 @@ public class ScreenGameplay extends GameScreen {
 
 	private int start;
 
-	private final float timeLimit = 5;
+	private static final float TIME_LIMIT = 10;
 
 	private WritingMode writingMode;
 
@@ -167,7 +167,7 @@ public class ScreenGameplay extends GameScreen {
 		}
 		if (doBonus) {
 			final double levelBonus = Math.ceil(game.getLevelOn() / 3f);
-			final double timeRemainingBonus = Math.ceil(5f * (timeLimit - elapsedTime) / timeLimit);
+			final double timeRemainingBonus = Math.ceil(5f * (TIME_LIMIT - elapsedTime) / TIME_LIMIT);
 			final double totalBonus = timeRemainingBonus + levelBonus;
 			final int timeBonus = (int) totalBonus;
 			bonusPoints += timeBonus;
@@ -620,14 +620,14 @@ public class ScreenGameplay extends GameScreen {
 			return;
 		}
 
-		if (elapsedTime > timeLimit) {
+		if (elapsedTime > TIME_LIMIT) {
 			doBonus = false;
 			elapsedTime = 0;
 			tooMuchTimePassed();
 			pbar.setProgress1(0f);
 			return;
 		}
-		pbar.setProgress1(elapsedTime / timeLimit);
+		pbar.setProgress1(elapsedTime / TIME_LIMIT);
 	}
 
 	@Override
