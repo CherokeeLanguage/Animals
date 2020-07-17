@@ -83,11 +83,6 @@ e-la-qua_3.png
 e-la-qua_4.png
 e-la-qua_5.png
 e-la-qua.png
-e-tli_0.png
-e-tli_1.png
-e-tli_2.png
-e-tli_3.png
-e-tli.png
 ge-mi-li_0.png
 ge-mi-li_1.png
 ge-mi-li_2.png
@@ -135,11 +130,6 @@ i-na-ge-i_3.png
 i-na-ge-i_4.png
 i-na-ge-i_5.png
 i-na-ge-i.png
-i-no-li_0.png
-i-no-li_1.png
-i-no-li_2.png
-i-no-li_3.png
-i-no-li.png
 ju-la-s-gi_0.png
 ju-la-s-gi.png
 ju-li-s-da-na-li_0.png
@@ -266,9 +256,6 @@ ti-na_1.png
 ti-na_2.png
 ti-na_3.png
 ti-na.png
-ti-ne-qua_0.png
-ti-ne-qua_1.png
-ti-ne-qua.png
 ti-yo-ha-li_0.png
 ti-yo-ha-li_1.png
 ti-yo-ha-li_2.png

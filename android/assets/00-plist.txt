@@ -53,6 +53,7 @@
 ./buttons/002d_gold3.png
 ./data/credits.txt
 ./data/instructions.txt
+./data/instructions-tv.txt
 ./00-make-all-plist.sh
 ./audio/effects/howa.mp3
 ./audio/effects/bark.mp3
@@ -88,7 +89,6 @@
 ./audio/challenges/ki-yu-ga.mp3
 ./audio/challenges/ju-li-s-da-na-li.mp3
 ./audio/challenges/we-sa.mp3
-./audio/challenges/ti-ne-qua.mp3
 ./audio/challenges/ka-ma-ma.mp3
 ./audio/challenges/ge-mi-li.mp3
 ./audio/challenges/u-ni-gu-gu.mp3
@@ -98,7 +98,6 @@
 ./audio/challenges/nv-da.mp3
 ./audio/challenges/ti-na.mp3
 ./audio/challenges/ta-la-du.mp3
-./audio/challenges/i-no-li.mp3
 ./audio/challenges/u-no-de-na.mp3
 ./audio/challenges/wa-le-la.mp3
 ./audio/challenges/u-ga-te-na.mp3
@@ -141,7 +140,6 @@
 ./audio/challenges/yo-na.mp3
 ./audio/challenges/ti-yo-ha-li.mp3
 ./audio/challenges/te-ga.mp3
-./audio/challenges/e-tli.mp3
 ./audio/challenges/tlv-de-gwa.mp3
 ./audio/challenges/su-li.mp3
 ./audio/challenges/u-na-je-tsi-s-di.mp3
@@ -154,6 +152,7 @@
 ./icon/icon16.png
 ./text/adjectives-chr.txt
 ./text/animals-chr.txt
+./text/git-changelog.txt
 ./9patch/block_blue.png
 ./9patch/block_red.png
 ./9patch/block_brown.png
@@ -201,6 +200,7 @@
 ./libgdx/1080p_24.png
 ./libgdx/1080p_17.png
 ./music/musix-wild-perspective.mp3
+./.~lock.espeak.tsv#
 ./images/indicators/Padlock-red.png
 ./images/indicators/da-gi-si_2.png
 ./images/backdrops/p_24_dsci2536.png
@@ -492,7 +492,6 @@
 ./images/challenges/nv-da_1.png
 ./images/challenges/a-ji-lv-s-gi_0.png
 ./images/challenges/tv-ga.png
-./images/challenges/i-no-li_1.png
 ./images/challenges/yo-na_7.png
 ./images/challenges/si-qua_4.png
 ./images/challenges/i-na-da_7.png
@@ -546,7 +545,6 @@
 ./images/challenges/tsu-la_1.png
 ./images/challenges/ju-li-s-da-na-li_0.png
 ./images/challenges/dla-nu-si_0.png
-./images/challenges/ti-ne-qua.png
 ./images/challenges/ka-nu-na_1.png
 ./images/challenges/tlv-da-tsi_6.png
 ./images/challenges/tlv-de-gwa_0.png
@@ -581,12 +579,10 @@
 ./images/challenges/tsu-we-tsi_1.png
 ./images/challenges/ya-ni-sa_1.png
 ./images/challenges/u-no-de-na_0.png
-./images/challenges/e-tli.png
 ./images/challenges/dla-me-ha.png
 ./images/challenges/wa-ya_4.png
 ./images/challenges/yo-na_2.png
 ./images/challenges/wa-du-li-si_0.png
-./images/challenges/ti-ne-qua_1.png
 ./images/challenges/do-sv-da-li_0.png
 ./images/challenges/ka-ma-ma.png
 ./images/challenges/u-gu-gu_0.png
@@ -651,7 +647,6 @@
 ./images/challenges/wa-so-hla.png
 ./images/challenges/we-sa_6.png
 ./images/challenges/a-wi_5.png
-./images/challenges/e-tli_0.png
 ./images/challenges/tlv-da-tsi_3.png
 ./images/challenges/a-wi_2.png
 ./images/challenges/so-gwi-li- -di-ni-le-nv-hi-da_1.png
@@ -720,7 +715,6 @@
 ./images/challenges/dla-me-ha_1.png
 ./images/challenges/i-na-da_5.png
 ./images/challenges/dla-me-ha_0.png
-./images/challenges/e-tli_3.png
 ./images/challenges/ju-ni-li-s-da-na-li.png
 ./images/challenges/u-na-je-tsi-s-di.png
 ./images/challenges/gi-tli.png
@@ -752,7 +746,6 @@
 ./images/challenges/ka-ma-ma_0.png
 ./images/challenges/a-ni_4.png
 ./images/challenges/do-sv-da-li.png
-./images/challenges/i-no-li.png
 ./images/challenges/ka-wo-nu_4.png
 ./images/challenges/tsu-we-tsi_2.png
 ./images/challenges/ju-li-s-da-na-li_1.png
@@ -773,7 +766,6 @@
 ./images/challenges/a-ji-lv-s-gi_1.png
 ./images/challenges/wo-yi_0.png
 ./images/challenges/sa-lo-li_7.png
-./images/challenges/i-no-li_0.png
 ./images/challenges/u-we-tsi_3.png
 ./images/challenges/te-wa_2.png
 ./images/challenges/wa-lo-si.png
@@ -809,7 +801,6 @@
 ./images/challenges/sa-sa_0.png
 ./images/challenges/ka-na-ji-s-de-ji_2.png
 ./images/challenges/a-ji-lv-s-gi_3.png
-./images/challenges/e-tli_1.png
 ./images/challenges/su-li_0.png
 ./images/challenges/e-la-qua_5.png
 ./images/challenges/ka-wo-nu.png
@@ -846,7 +837,6 @@
 ./images/challenges/u-we-tsi.png
 ./images/challenges/ka-na-ne-s-gi_0.png
 ./images/challenges/i-na-ge-i_2.png
-./images/challenges/i-no-li_2.png
 ./images/challenges/wa-lo-si_5.png
 ./images/challenges/ka-ma-ma_1.png
 ./images/challenges/a-wi_8.png
@@ -856,19 +846,17 @@
 ./images/challenges/we-sa_4.png
 ./images/challenges/do-sv-da-li_3.png
 ./images/challenges/gv-he_0.png
-./images/challenges/e-tli_2.png
 ./images/challenges/tsu-we-tsi.png
 ./images/challenges/gi-tli_9.png
 ./images/challenges/so-qui-li_1.png
 ./images/challenges/u-no-de-na_3.png
 ./images/challenges/nv-da_2.png
 ./images/challenges/a-ni-ji-lv-s-gi_5.png
-./images/challenges/i-no-li_3.png
 ./images/challenges/ta-la-du_0.png
 ./images/challenges/di-li_0.png
 ./images/challenges/yo-na_8.png
 ./images/challenges/a-wi.png
-./images/challenges/ti-ne-qua_0.png
 ./images/challenges/tsu-la_0.png
 ./images/challenges/kv-hli_0.png
 ./images/challenges/e-la-qua_0.png
+./espeak.tsv

@@ -12,7 +12,6 @@ do-sa.mp3
 do-sv-da-li.mp3
 do-ya.mp3
 e-la-qua.mp3
-e-tli.mp3
 ge-mi-li.mp3
 gi-tli.mp3
 go-ga.mp3
@@ -20,7 +19,6 @@ gv-he.mp3
 gv-na.mp3
 i-na-da.mp3
 i-na-ge-i.mp3
-i-no-li.mp3
 ju-la-s-gi.mp3
 ju-li-s-da-na-li.mp3
 ju-ni-li-s-da-na-li.mp3
@@ -45,7 +43,6 @@ ta-wo-di.mp3
 te-ga.mp3
 te-wa.mp3
 ti-na.mp3
-ti-ne-qua.mp3
 ti-yo-ha-li.mp3
 tlv-da-tsi.mp3
 tlv-de-gwa.mp3
