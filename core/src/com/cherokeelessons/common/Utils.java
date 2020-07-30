@@ -22,12 +22,18 @@ import com.cherokeelessons.util.StringUtils;
 public class Utils {
 
 	private static Map<String, String> syllabaryMap = null;
+	private static Map<String, String> chrMapping;
+	private static Map<String, String> latinMapping;
 
 	public static String asLatin(String raw_text) {
-		if (raw_text == null) {
-			return null;
+		if (StringUtils.isBlank(raw_text)) {
+			return raw_text;
 		}
-		raw_text = raw_text.replace("-", "");
+		if (latinMapping.containsKey(raw_text)) {
+			raw_text = latinMapping.get(raw_text);
+		} else {
+			raw_text = raw_text.replace("-", "");
+		}
 		String text = raw_text.substring(0, 1).toUpperCase();
 		if (raw_text.length() > 1) {
 			text += raw_text.substring(1);
@@ -38,6 +44,9 @@ public class Utils {
 	public static String asSyllabary(String string) {
 		if (StringUtils.isBlank(string)) {
 			return string;
+		}
+		if (chrMapping.containsKey(string)) {
+			return chrMapping.get(string);
 		}
 		string = invertSyllabary(string);
 		string = string.replaceAll("[^Ꭰ-Ᏼ ]", "");
@@ -339,5 +348,15 @@ public class Utils {
 
 	public Utils() {
 	}
+
+	public static void setFileChrMapping(Map<String, String> loadChrMapping) {
+		chrMapping = loadChrMapping;
+		
+	}
+	
+	public static void setFileLatinMapping(Map<String, String> loadLatinMapping) {
+		latinMapping = loadLatinMapping;
+	}
+
 
 }

@@ -12,6 +12,7 @@ import java.util.Set;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.cherokeelessons.animals.GraduatedIntervalQueue.SortSizeAscendingAlpha;
+import com.cherokeelessons.common.Utils;
 
 public class LoadChallenges {
 
@@ -28,6 +29,7 @@ public class LoadChallenges {
 	}
 
 	private static final String AUDIO_CHALLENGES = "audio/challenges/";
+	private static final String NAME_MAPPINGS_FILE = "espeak.tsv";
 
 	private static int challengesPerChallengeSet = 7;
 	private static final String IMAGES = "images/challenges/";
@@ -47,6 +49,8 @@ public class LoadChallenges {
 	private boolean testmode = false;
 
 	public LoadChallenges() {
+		Utils.setFileChrMapping(loadChrMapping());
+		Utils.setFileLatinMapping(loadLatinMapping());
 		final List<FileHandle> audio = loadChallengesByAudio();
 		matchUpAudioFilesToImages(audio);
 		// challengeAudio = new HashMap<String, AudioSet>();
@@ -65,6 +69,45 @@ public class LoadChallenges {
 		}
 		Collections.sort(challenges, new SortSizeAscendingAlpha());
 	}
+
+	private Map<String, String> loadChrMapping() {
+		Map<String, String> map = new HashMap<String, String>();
+		String txt = Gdx.files.internal(NAME_MAPPINGS_FILE).readString("UTF-8");
+		String lines[] = txt.split("\n");
+		for (String line: lines) {
+			String[] fields = line.split("\t");
+			if (fields==null || fields.length<3) {
+				continue;
+			}
+			String nameWithoutExtension = Gdx.files.internal(fields[2].trim()).nameWithoutExtension();
+			map.put(nameWithoutExtension, fields[0].trim().replaceAll("(?i)[^Ꭰ-Ᏼ ]", ""));
+		}
+		return map;
+	}
+	
+	private Map<String, String> loadLatinMapping() {
+		Map<String, String> map = new HashMap<String, String>();
+		String txt = Gdx.files.internal(NAME_MAPPINGS_FILE).readString("UTF-8");
+		String lines[] = txt.split("\n");
+		for (String line: lines) {
+			String[] fields = line.split("\t");
+			if (fields==null || fields.length<3) {
+				continue;
+			}
+			String nameWithoutExtension = Gdx.files.internal(fields[2].trim()).nameWithoutExtension();
+			String latin = fields[1].trim().toLowerCase();
+			latin = latin.replace("ạ", "a");
+			latin = latin.replace("ẹ", "e");
+			latin = latin.replace("ị", "i");
+			latin = latin.replace("ọ", "o");
+			latin = latin.replace("ụ", "u");
+			latin = latin.replace("ṿ", "v");
+			latin = latin.replaceAll("(?i)[^a-z ]", "");
+			map.put(nameWithoutExtension, latin);
+		}
+		return map;
+	}
+
 
 	private List<String> calculateSeed(final int start, final int end) {
 		final List<String> seed = new ArrayList<>();
