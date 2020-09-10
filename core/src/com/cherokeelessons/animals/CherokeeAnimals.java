@@ -6,18 +6,12 @@ import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.animals.enums.GameEvent;
 import com.cherokeelessons.common.FontLoader;
 import com.cherokeelessons.common.GameEventMessage;
-import com.cherokeelessons.common.GameMusic;
-import com.cherokeelessons.common.ImageAccessor;
-import com.cherokeelessons.common.MusicAccessor;
 import com.cherokeelessons.common.Prefs;
 import com.cherokeelessons.common.SoundManager;
-
-import aurelienribon.tweenengine.Tween;
 
 public class CherokeeAnimals implements ApplicationListener, TvDetector {
 
@@ -182,9 +176,6 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 		Gdx.input.setCatchKey(Input.Keys.MENU, false);
 
 		prefs = new Prefs(this);
-
-		Tween.registerAccessor(GameMusic.class, new MusicAccessor());
-		Tween.registerAccessor(Image.class, new ImageAccessor());
 
 		sm = new SoundManager(prefs);
 		fg = new FontLoader();

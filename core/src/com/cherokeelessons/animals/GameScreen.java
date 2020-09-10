@@ -22,13 +22,10 @@ import com.cherokeelessons.common.DisplaySize;
 import com.cherokeelessons.common.GameColor;
 import com.cherokeelessons.common.Utils;
 
-import aurelienribon.tweenengine.TweenManager;
-
 public abstract class GameScreen implements Screen, DpadInterface {
 	
 	protected ControllerAdapter gamepad;
 	
-	protected TweenManager tmanager;
 	protected AssetManager assets;
 	protected CherokeeAnimals game = null;
 	public Rectangle fullZoneBox = new Rectangle();
@@ -58,8 +55,6 @@ public abstract class GameScreen implements Screen, DpadInterface {
 		fullZoneBox = DisplaySize._1080p.size();
 
 		clearColor = new Color(Color.WHITE);
-
-		tmanager = new TweenManager();
 
 		gameStage = new Stage() {
 			@Override
@@ -101,7 +96,6 @@ public abstract class GameScreen implements Screen, DpadInterface {
 	@Override
 	public void dispose() {
 		disconnectInputProcessor();
-		tmanager.killAll();
 		gameStage.clear();
 	}
 
@@ -139,7 +133,6 @@ public abstract class GameScreen implements Screen, DpadInterface {
 			tv_box.dispose();
 			tv_box = null;
 		}
-		tmanager.pause();
 		if (backdrop!=null) {
 			backdrop.getGroup().remove();
 			backdrop.dispose();
@@ -186,7 +179,6 @@ public abstract class GameScreen implements Screen, DpadInterface {
 	public void render(final float delta) {
 		if (!isPaused) {
 			gameStage.act(delta);
-			tmanager.update(delta);
 		}
 		clearScreen();
 		gameStage.draw();
@@ -218,7 +210,6 @@ public abstract class GameScreen implements Screen, DpadInterface {
 //						.setVolume((float) game.prefs.getMasterVolume() * (float) game.prefs.getMusicVolume() / 10000f);
 //			}
 //		}
-		tmanager.resume();
 		Gdx.input.setInputProcessor(gameStage);
 	}
 

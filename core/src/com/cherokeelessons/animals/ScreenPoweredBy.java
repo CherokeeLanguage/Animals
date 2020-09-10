@@ -1,5 +1,8 @@
 package com.cherokeelessons.animals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
@@ -12,22 +15,20 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.cherokeelessons.animals.enums.GameEvent;
 import com.cherokeelessons.common.DisplaySize;
 import com.cherokeelessons.common.GameMusic;
 import com.cherokeelessons.common.Gamepads;
-import com.cherokeelessons.common.ImageAccessor;
-import com.cherokeelessons.common.MusicAccessor;
 import com.cherokeelessons.common.Utils;
 
-import aurelienribon.tweenengine.BaseTween;
-import aurelienribon.tweenengine.Timeline;
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
-
-public class ScreenPoweredBy extends GameScreen {
+public class ScreenPoweredBy<E> extends GameScreen {
 	
 	@Override
 	protected boolean useBackdrop() {
@@ -48,12 +49,9 @@ public class ScreenPoweredBy extends GameScreen {
 	long start = 0;
 	private TextureAtlas ta;
 
-	private final TweenCallback logoDone = new TweenCallback() {
+	private final Runnable logoDone = new Runnable() {
 		@Override
-		public void onEvent(final int type, final BaseTween<?> source) {
-			if (type != TweenCallback.COMPLETE) {
-				return;
-			}
+		public void run() {
 			game.gameEvent(GameEvent.EXIT_SCREEN);
 			audio.stop();
 		}
@@ -135,32 +133,64 @@ public class ScreenPoweredBy extends GameScreen {
 		logobox.getCenter(center);
 		for (int ix = 0; ix < logo.size; ix++) {
 			final Image lImagePart = logo.get(ix);
-			final Timeline tl = Timeline.createSequence();
 			lImagePart.setScale(scaleXY);
 			lImagePart.setX(lImagePart.getX() * scaleXY + offsetX);
 			lImagePart.setY(lImagePart.getY() * scaleXY + offsetY);
 			lImagePart.setColor(1f, 1f, 1f, 0f);
 
-			tl.pushPause(1f);
-			tl.push(Tween.to(lImagePart, ImageAccessor.Alpha, 4f).target(1f));
-			tl.pushPause(4f);
-			tl.push(Tween.to(lImagePart, ImageAccessor.Alpha, 2f).target(0f));
-			tl.pushPause(1f);
-			tl.start(tmanager);
-
+			List<Action> actions = new ArrayList<Action>();
+			actions.add(Actions.delay(1f));
+			actions.add(Actions.alpha(1f, 4f));
+			actions.add(Actions.delay(4f));
+			actions.add(Actions.alpha(0f, 2f));
+			actions.add(Actions.delay(1f));
+			SequenceAction sequence = Actions.sequence(actions.toArray(new Action[0]));
+			lImagePart.addAction(sequence);
+			
 			if (ix == 0) {
-				final Timeline al = Timeline.createSequence();
-				al.pushPause(1f);
-				al.push(Tween.to(audio, MusicAccessor.Volume, 4f).target(.7f));
-				al.pushPause(4f);
-				al.push(Tween.to(audio, MusicAccessor.Volume, 2f).target(0f));
-				al.setCallback(logoDone);
-				al.pushPause(1f);
-				al.start(tmanager);
+				Actor audioActor = new Actor();
+				
+				List<Action> audioActions = new ArrayList<Action>();
+				audioActions.add(Actions.delay(1f));
+				audioActions.add(new AudioVolumeAction(audio, 1f, 4f));
+				audioActions.add(Actions.delay(4f));
+				audioActions.add(new AudioVolumeAction(audio, 0f, 2f));
+				audioActions.add(Actions.delay(1f));
+				audioActions.add(Actions.run(logoDone));
+				SequenceAction audioSequence = Actions.sequence(audioActions.toArray(new Action[0]));
+				audioActor.addAction(audioSequence);
+				
+				gameStage.addActor(audioActor);
 			}
 		}
 
 		audio.play();
+	}
+	
+	public static class AudioVolumeAction extends TemporalAction {
+		private final GameMusic music;
+		private final float endVolume;
+		private float startVolume;
+		public AudioVolumeAction(GameMusic music, float volume, float duration) {
+			super(duration);
+			this.music=music;
+			this.endVolume = volume;
+		}
+		@Override
+		protected void begin() {
+			super.begin();
+			startVolume = music.getVolume();
+		}
+		@Override
+		protected void end() {
+			super.end();
+			music.setVolume(endVolume);
+		}
+		@Override
+		protected void update(float percent) {
+			float volume = (endVolume-startVolume)*percent+startVolume;
+			music.setVolume(volume);
+		}
 	}
 
 	@Override
