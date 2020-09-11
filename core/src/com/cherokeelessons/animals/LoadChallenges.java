@@ -29,7 +29,7 @@ public class LoadChallenges {
 	}
 
 	private static final String AUDIO_CHALLENGES = "audio/challenges/";
-	private static final String NAME_MAPPINGS_FILE = "espeak.tsv";
+	private static final String NAME_MAPPINGS_FILE = "espeak.txt";
 
 	private static int challengesPerChallengeSet = 7;
 	private static final String IMAGES = "images/challenges/";
@@ -75,7 +75,7 @@ public class LoadChallenges {
 		String txt = Gdx.files.internal(NAME_MAPPINGS_FILE).readString("UTF-8");
 		String lines[] = txt.split("\n");
 		for (String line: lines) {
-			String[] fields = line.split("\t");
+			String[] fields = line.split("\\|");
 			if (fields==null || fields.length<3) {
 				continue;
 			}
