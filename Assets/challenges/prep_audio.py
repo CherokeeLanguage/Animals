@@ -57,8 +57,6 @@ def get_mp3_lookup(base_dir: str) -> dict[str, list[str]]:
                             filename = lookup[fields[2]]
                             syl[lookup_key].append(filename)
                         ix += 1
-    print(syl.keys())
-    print(len(syl.keys()))
     return syl
 
 
