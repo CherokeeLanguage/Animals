@@ -24,7 +24,9 @@ fi
 #Make sure we have an up-to-date git log in the text folder as "git-changelog.txt"
 git log --simplify-merges --pretty=format:"%ad [%h]:%d %s" --abbrev-commit --date=short > android/assets/text/git-changelog.txt
 
-git diff-index --quiet HEAD --; s=$?
+git diff-index --quiet HEAD --
+s=$?
+echo "$s"
 if [ $s != 0 ]; then
     git status
     echo
