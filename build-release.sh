@@ -24,7 +24,8 @@ fi
 #Make sure we have an up-to-date git log in the text folder as "git-changelog.txt"
 git log --simplify-merges --pretty=format:"%ad [%h]:%d %s" --abbrev-commit --date=short > android/assets/text/git-changelog.txt
 
-if ! git diff-index --quiet HEAD --; then
+git diff-index --quiet HEAD --; s=$?
+if [ $s != 0 ]; then
     git status
     echo
     echo "PENDING CHANGES NOT COMMITTED - ABORTING [post project test full rebuild]"
