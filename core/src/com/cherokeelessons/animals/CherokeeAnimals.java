@@ -177,7 +177,7 @@ public class CherokeeAnimals implements ApplicationListener, TvDetector {
 
 		prefs = new Prefs(this);
 
-		sm = new SoundManager(prefs);
+		sm = new SoundManager(this);
 		fg = new FontLoader();
 
 		gameEvent(GameEvent.POWERED_BY);

@@ -44,8 +44,6 @@ public class GraduatedIntervalQueue {
 	public static final class SortSizeAscendingAlpha implements Comparator<String> {
 		@Override
 		public int compare(String o1, String o2) {
-			o1 = Utils.asSyllabary(o1);
-			o2 = Utils.asSyllabary(o2);
 			if (o1.length() < o2.length()) {
 				return -1;
 			}

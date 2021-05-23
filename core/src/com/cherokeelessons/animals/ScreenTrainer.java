@@ -215,7 +215,7 @@ public class ScreenTrainer extends GameScreen {
 			challenge = Utils.asLatin(currentChallenge);
 			break;
 		case Syllabary:
-			challenge = Utils.asSyllabary(currentChallenge);
+			challenge = currentChallenge;
 			break;
 		case None:
 		default:

@@ -44,7 +44,6 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 
 	boolean levelSet = false;
 	boolean fontsPrecalc = false;
-	private boolean syllabaryMapInit = false;
 	private AssetManager am;
 	private final ControllerAdapter ca = new ControllerAdapter() {
 		@Override
@@ -99,11 +98,6 @@ public class ScreenLoading extends GameScreen implements DpadInterface {
 	public void render(final float delta) {
 		super.render(delta);
 		if (!game.sm.preloadDone()) {
-			return;
-		}
-		if (!syllabaryMapInit) {
-			Utils.initTranslationMap();
-			syllabaryMapInit = true;
 			return;
 		}
 		if (!challengesLoaded) {

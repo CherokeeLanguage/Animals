@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -28,11 +28,13 @@ public class LoadChallenges {
 		public final List<FileHandle> images = new ArrayList<>(11);
 	}
 
-	private static final String AUDIO_CHALLENGES = "audio/challenges/";
-	private static final String NAME_MAPPINGS_FILE = "espeak.txt";
+	private static final String AUDIO_DIR = "audio/challenges/";
+	private static final String IMAGE_DIR = "images/challenges/";
+
+	private static final String AUDIO_MAPPING_FILE = "text/challenge-audio.txt";
+	private static final String IMAGE_MAPPING_FILE = "text/challenge-images.txt";
 
 	private static int challengesPerChallengeSet = 7;
-	private static final String IMAGES = "images/challenges/";
 
 	/*
 	 * how many screens to split each challenge queue across
@@ -41,73 +43,114 @@ public class LoadChallenges {
 	final private Map<String, AudioSet> audioDecks;
 	final private Map<Integer, CurrChallenges> cache_curr = new HashMap<>();
 	final private Map<Integer, String> cache_levelname = new HashMap<>();
-	// final private Map<String, AudioSet> challengeAudio;
-	final private Map<String, ImageSet> challengeImages;
 
 	final private List<String> challenges;
 	final private Map<String, ImageSet> imageDecks;
 	private boolean testmode = false;
 
 	public LoadChallenges() {
-		Utils.setFileChrMapping(loadChrMapping());
-		Utils.setFileLatinMapping(loadLatinMapping());
-		final List<FileHandle> audio = loadChallengesByAudio();
-		matchUpAudioFilesToImages(audio);
-		// challengeAudio = new HashMap<String, AudioSet>();
-		challengeImages = new HashMap<>();
+		Utils.setChallengeLookup(loadChallengeLookupTexts());
+		
 		imageDecks = new HashMap<>();
 		audioDecks = new HashMap<>();
-		challenges = new ArrayList<>();
-
-		for (final FileHandle afile : audio) {
-			final String name = afile.nameWithoutExtension();
-			challenges.add(name);
-			// AudioSet aset = getAudioSetFor(name);
-			// challengeAudio.put(name, aset);
-			final ImageSet iset = getImageSetFor(name);
-			challengeImages.put(name, iset);
-		}
+		
+		challenges = new ArrayList<>(Utils.lookup.challenges);
+		
 		Collections.sort(challenges, new SortSizeAscendingAlpha());
 	}
 
-	private Map<String, String> loadChrMapping() {
-		Map<String, String> map = new HashMap<String, String>();
-		String txt = Gdx.files.internal(NAME_MAPPINGS_FILE).readString("UTF-8");
-		String lines[] = txt.split("\n");
-		for (String line: lines) {
+	private ChallengeLookup loadChallengeLookupTexts() {
+		ChallengeLookup lookup = new ChallengeLookup();
+		
+		Set<String> audioChallenges = new HashSet<>();
+		Set<String> imageChallenges = new HashSet<>();
+		
+		String audioTxt = Gdx.files.internal(AUDIO_MAPPING_FILE).readString("UTF-8");
+		String lines[] = audioTxt.split("\n");
+		for (String line : lines) {
+			line = line.trim();
+			if (line.startsWith("#")) {
+				continue;
+			}
+			if (line.isEmpty()) {
+				continue;
+			}
 			String[] fields = line.split("\\|");
-			if (fields==null || fields.length<3) {
+			if (fields == null || fields.length < 4) {
 				continue;
 			}
-			String nameWithoutExtension = Gdx.files.internal(fields[2].trim()).nameWithoutExtension();
-			map.put(nameWithoutExtension, fields[0].trim().replaceAll("(?i)[^Ꭰ-Ᏼ ]", ""));
-		}
-		return map;
-	}
-	
-	private Map<String, String> loadLatinMapping() {
-		Map<String, String> map = new HashMap<String, String>();
-		String txt = Gdx.files.internal(NAME_MAPPINGS_FILE).readString("UTF-8");
-		String lines[] = txt.split("\n");
-		for (String line: lines) {
-			String[] fields = line.split("\t");
-			if (fields==null || fields.length<3) {
+			String syllabary = fields[0].trim();
+			String pronounce = fields[1].trim();
+			String latin = fields[2].trim();
+			String mp3List = fields[3].trim();
+			String[] mp3s = mp3List.split(";");
+			if (mp3s == null || mp3s.length == 0) {
+				System.err.println("BAD ENTRY: " + line);
 				continue;
 			}
-			String nameWithoutExtension = Gdx.files.internal(fields[2].trim()).nameWithoutExtension();
-			String latin = fields[1].trim().toLowerCase();
-			latin = latin.replace("ạ", "a");
-			latin = latin.replace("ẹ", "e");
-			latin = latin.replace("ị", "i");
-			latin = latin.replace("ọ", "o");
-			latin = latin.replace("ụ", "u");
-			latin = latin.replace("ṿ", "v");
-			latin = latin.replaceAll("(?i)[^a-z ]", "");
-			map.put(nameWithoutExtension, latin);
+			audioChallenges.add(syllabary);
+			lookup.challenges.add(syllabary);
+			lookup.pronounce.put(syllabary, pronounce);
+			lookup.latin.put(syllabary, latin);
+			lookup.audio.put(syllabary, new TreeSet<String>());
+			for (String mp3 : mp3s) {
+				mp3 = mp3.trim();
+				if (mp3.isEmpty()) {
+					continue;
+				}
+				lookup.audio.get(syllabary).add(mp3);
+			}
 		}
-		return map;
+		String imagesTxt = Gdx.files.internal(IMAGE_MAPPING_FILE).readString("UTF-8");
+		lines = imagesTxt.split("\n");
+		for (String line : lines) {
+			line = line.trim();
+			if (line.startsWith("#")) {
+				continue;
+			}
+			if (line.isEmpty()) {
+				continue;
+			}
+			String[] fields = line.split("\\|");
+			if (fields == null || fields.length < 4) {
+				continue;
+			}
+			String syllabary = fields[0].trim();
+			String imageList = fields[3].trim();
+			String[] images = imageList.split(";");
+			if (images == null || images.length == 0) {
+				System.err.println("BAD ENTRY: " + line);
+				continue;
+			}
+			imageChallenges.add(syllabary);
+			lookup.images.put(syllabary, new TreeSet<String>());
+			for (String image : images) {
+				image = image.trim();
+				if (image.isEmpty()) {
+					continue;
+				}
+				lookup.images.get(syllabary).add(image);
+			}
+		}
+		for (String audioChallenge: audioChallenges) {
+			if (!imageChallenges.contains(audioChallenge)) {
+				lookup.challenges.remove(audioChallenge);
+				lookup.audio.remove(audioChallenge);
+				System.err.println("No image for audio challenge "+audioChallenge);
+				System.err.flush();
+			}
+		}
+		for (String imageChallenge: imageChallenges) {
+			if (!audioChallenges.contains(imageChallenge)) {
+				lookup.challenges.remove(imageChallenge);
+				lookup.images.remove(imageChallenge);
+				System.err.println("No audio for image challenge "+imageChallenge);
+				System.err.flush();
+			}
+		}
+		System.out.println(lookup.challenges.size()+" challenges loaded.");
+		return lookup;
 	}
-
 
 	private List<String> calculateSeed(final int start, final int end) {
 		final List<String> seed = new ArrayList<>();
@@ -164,22 +207,6 @@ public class LoadChallenges {
 		return new ArrayList<>(challengeList);
 	}
 
-	private ImageSet getImageSetFor(final String name) {
-		final ImageSet set = new ImageSet();
-		for (int ix = -1; ix < 10; ix++) {
-			final String sfx = ix != -1 ? "_" + ix : "";
-			final FileHandle pic = Gdx.files.internal(IMAGES + name + sfx + ".png");
-			try {
-				if (pic.length() > 0) {
-					set.images.add(pic);
-					continue;
-				}
-			} catch (final Exception e) {
-			}
-		}
-		return set;
-	}
-
 	public String getLevelNameFor(final int level) {
 		if (cache_levelname.containsKey(level)) {
 			return cache_levelname.get(level);
@@ -221,79 +248,42 @@ public class LoadChallenges {
 		return sets * screensPerChallengeSet;
 	}
 
-	private List<FileHandle> loadChallengesByAudio() {
-		final String audio_plist = AUDIO_CHALLENGES + "00-plist.txt";
-		String txt = Gdx.files.internal(audio_plist).readString("UTF-8");
-		String[] plist = txt.split("\n");
-		txt = null;
-		final List<FileHandle> temp = new ArrayList<>(plist.length);
-		for (final String element : plist) {
-			String e = element;
-			if (e == null) {
-				continue;
-			}
-			e = e.trim();
-			if (e.length() == 0) {
-				continue;
-			}
-			if (e.contains("plist")) {
-				continue;
-			}
-			if (e.contains("_")) {
-				continue;
-			}
-			// trust the plist!
-			final FileHandle f = Gdx.files.internal(AUDIO_CHALLENGES + e);
-			temp.add(f);
-		}
-		plist = null;
-		return temp;
-	}
-
-	private void matchUpAudioFilesToImages(final List<FileHandle> challenges) {
-		final Iterator<FileHandle> i = challenges.iterator();
-		while (i.hasNext()) {
-			final String name = i.next().nameWithoutExtension();
-			try {
-				final FileHandle pic = Gdx.files.internal(IMAGES + name + ".png");
-				if (pic.length() > 0) {
-					continue;
-				}
-			} catch (final Exception e) {
-			}
-			System.out.println("MISSING PICTURE: '" + name + "'");
-			i.remove();
-		}
-	}
-
-	public FileHandle nextAudio(final String name) {
-		AudioSet set = audioDecks.get(name);
+	public FileHandle nextAudio(final String syllabary) {
+		AudioSet set = audioDecks.get(syllabary);
 		if (set == null) {
 			set = new AudioSet();
-			audioDecks.put(name, set);
+			audioDecks.put(syllabary, set);
 		}
 		if (set.audio.size() == 0) {
-			set.audio.addAll(challengeImages.get(name).images);
+			for (String file: Utils.lookup.audio.get(syllabary)) {
+				FileHandle fh = Gdx.files.internal(AUDIO_DIR).child(file); 
+				set.audio.add(fh);
+			}
 			Collections.shuffle(set.audio);
 		}
 		return set.audio.remove(0);
 	}
 
-	public FileHandle nextImage(final String name) {
-		ImageSet set = imageDecks.get(name);
+	public FileHandle nextImage(final String syllabary) {
+		System.out.println("nextImage: "+syllabary);
+		ImageSet set = imageDecks.get(syllabary);
 		if (set == null) {
 			set = new ImageSet();
-			imageDecks.put(name, set);
+			imageDecks.put(syllabary, set);
 		}
 		if (set.images.size() == 0) {
-			set.images.addAll(challengeImages.get(name).images);
+			for (String file: Utils.lookup.images.get(syllabary)) {
+				System.out.println(" - image file: "+file);
+				FileHandle fh = Gdx.files.internal(IMAGE_DIR).child(file); 
+				set.images.add(fh);
+			}
 			Collections.shuffle(set.images);
 		}
 		return set.images.remove(0);
 	}
 
-	/*
-	 * try and force the level cout to be this by auto adjusting
+	/**
+	 * try and force the level count to be this by auto adjusting
 	 * challengesPerChallengeSet
 	 */
 	public void setLevelCount(final int count) {

@@ -7,10 +7,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
+import com.cherokeelessons.animals.CherokeeAnimals;
 
 public class SoundManager {
 
-	final private HashMap<String, FileHandle> audioFiles = new HashMap<>();
 	private boolean challengeEnabled = true;
 
 	final private HashMap<String, Music> challenges = new HashMap<>();
@@ -21,15 +21,12 @@ public class SoundManager {
 
 	final private HashMap<String, FileHandle> validEffects = new HashMap<>();
 	private final Prefs prefs;
-
-	public SoundManager(final Prefs prefs) {
-		this.prefs = prefs;
+	protected CherokeeAnimals game = null;
+	
+	public SoundManager(CherokeeAnimals game) {
+		this.game = game;
+		this.prefs = game.prefs;
 		loadEffectNames();
-		loadChallengeNames();
-	}
-
-	public HashMap<String, FileHandle> getChallengeAudioList() {
-		return audioFiles;
 	}
 
 	public float getChallengeVolume() {
@@ -76,8 +73,8 @@ public class SoundManager {
 		if (challenges.containsKey(challenge)) {
 			return;
 		}
-		if (!audioFiles.containsKey(challenge)) {
-			System.out.println("NO FILEHANDLE: " + challenge);
+		if (!Utils.lookup.challenges.contains(challenge)) {
+			System.out.println("BAD AUDIO CHALLENGE: " + challenge);
 			return;
 		}
 		/*
@@ -91,31 +88,11 @@ public class SoundManager {
 			challenges.clear();
 		}
 		try {
-			fh = audioFiles.get(challenge);
+			fh = game.challenges.nextAudio(challenge);
 			msc = Gdx.audio.newMusic(fh);
 			challenges.put(challenge, msc);
 		} catch (final Exception e) {
 			e.printStackTrace();
-		}
-	}
-
-	private void loadChallengeNames() {
-		FileHandle fh;
-		int ix;
-
-		final String t1 = Gdx.files.internal("audio/challenges/00-plist.txt").readString("UTF-8");
-		final String[] dirListing = t1.split("\n");
-		for (ix = 0; ix < dirListing.length; ix++) {
-			fh = Gdx.files.internal("audio/challenges/" + dirListing[ix]);
-			long length;
-			try {
-				length = fh.length();
-			} catch (final Exception e) {
-				length = 0;
-			}
-			if (length > 0) {
-				audioFiles.put(fh.nameWithoutExtension(), fh);
-			}
 		}
 	}
 
