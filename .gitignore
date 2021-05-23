@@ -63,3 +63,4 @@ build/
 ## OS Specific
 .DS_Store
 /rejected-challenges/
+/android/assets/text/git-changelog.txt
