@@ -1,0 +1,157 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://fonts/script-192-b.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scenes/menu/play-button.gd" type="Script" id=2]
+[ext_resource path="res://scenes/menu/exit-button.gd" type="Script" id=3]
+[ext_resource path="res://fonts/script-64.tres" type="DynamicFont" id=4]
+[ext_resource path="res://scenes/menu/version.gd" type="Script" id=6]
+[ext_resource path="res://assets/backgrounds/dsci2549.png" type="Texture" id=7]
+[ext_resource path="res://scenes/menu/godot-version.gd" type="Script" id=8]
+[ext_resource path="res://ui-nodes/UI_Button.tscn" type="PackedScene" id=9]
+
+[node name="Menu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Backgrop" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 7 )
+expand = true
+stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FadeOverlay" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 1, 1, 0.627451 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VerticalLayout" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator" type="VSeparator" parent="VerticalLayout"]
+margin_right = 1920.0
+margin_bottom = 35.0
+size_flags_vertical = 3
+
+[node name="CenteredTitle" type="CenterContainer" parent="VerticalLayout"]
+margin_top = 43.0
+margin_right = 1920.0
+margin_bottom = 236.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="VerticalLayout/CenteredTitle"]
+margin_left = 363.0
+margin_right = 1556.0
+margin_bottom = 193.0
+custom_colors/font_color = Color( 0, 0.501961, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "ᎠᏂᏣᎳᎩ ᎡᎿᎢ!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator4" type="VSeparator" parent="VerticalLayout"]
+margin_top = 244.0
+margin_right = 1920.0
+margin_bottom = 279.0
+size_flags_vertical = 3
+
+[node name="CenteredMenu" type="CenterContainer" parent="VerticalLayout"]
+margin_top = 287.0
+margin_right = 1920.0
+margin_bottom = 1036.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VerticalLayout/CenteredMenu"]
+margin_left = 230.0
+margin_right = 1690.0
+margin_bottom = 749.0
+custom_constants/separation = 16
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayButton" parent="VerticalLayout/CenteredMenu/VBoxContainer" instance=ExtResource( 9 )]
+focus_neighbour_bottom = NodePath("")
+focus_next = NodePath("")
+text = "New Game - ᎢᏤ ᏗᏁᎶᏗᎢ"
+script = ExtResource( 2 )
+
+[node name="Instructions" parent="VerticalLayout/CenteredMenu/VBoxContainer" instance=ExtResource( 9 )]
+margin_top = 153.0
+margin_bottom = 290.0
+focus_neighbour_bottom = NodePath("")
+focus_next = NodePath("")
+text = "Instructions - ᏗᏕᏲᏗ"
+script = null
+
+[node name="Options" parent="VerticalLayout/CenteredMenu/VBoxContainer" instance=ExtResource( 9 )]
+margin_top = 306.0
+margin_bottom = 443.0
+focus_neighbour_bottom = NodePath("")
+focus_next = NodePath("")
+text = "Options - ᎠᏑᏰᏍᏗᎢ"
+script = null
+
+[node name="About" parent="VerticalLayout/CenteredMenu/VBoxContainer" instance=ExtResource( 9 )]
+margin_top = 459.0
+margin_bottom = 596.0
+focus_neighbour_bottom = NodePath("")
+focus_next = NodePath("")
+text = "About - ᎢᎸᏢ"
+script = null
+
+[node name="ExitButton" parent="VerticalLayout/CenteredMenu/VBoxContainer" instance=ExtResource( 9 )]
+margin_top = 612.0
+margin_bottom = 749.0
+focus_neighbour_bottom = NodePath("")
+focus_next = NodePath("")
+text = "Quit - ᎠᏑᎶᎪᏍᏗ"
+script = ExtResource( 3 )
+
+[node name="VSeparator3" type="VSeparator" parent="VerticalLayout"]
+margin_top = 1044.0
+margin_right = 1920.0
+margin_bottom = 1080.0
+size_flags_vertical = 3
+
+[node name="Version" type="VBoxContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -124.0
+margin_right = 436.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameVersion" type="Label" parent="Version"]
+margin_right = 436.0
+margin_bottom = 58.0
+custom_colors/font_color = Color( 0, 0.501961, 0, 1 )
+custom_fonts/font = ExtResource( 4 )
+text = "<x.y.z>"
+script = ExtResource( 6 )
+
+[node name="GodotVersion" type="Label" parent="Version"]
+margin_top = 66.0
+margin_right = 436.0
+margin_bottom = 124.0
+custom_colors/font_color = Color( 0, 0.501961, 0, 1 )
+custom_fonts/font = ExtResource( 4 )
+text = "<GodotVersion>"
+script = ExtResource( 8 )
