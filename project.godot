@@ -11,7 +11,17 @@ config_version=4
 [application]
 
 config/name="Animals"
+run/main_scene="res://scenes/main.tscn"
 config/icon="res://icon.png"
+
+[global]
+
+font=false
+
+[gui]
+
+theme/use_hidpi=true
+theme/custom="res://themes/main_theme.tres"
 
 [physics]
 
