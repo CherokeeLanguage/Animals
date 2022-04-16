@@ -24,15 +24,14 @@ def get_png_lookup(base_dir: str) -> dict[str, list[str]]:
     imgs: dict[str, list[str]] = {}
     filenames: list[str]
     for (dirpath, dirnames, filenames) in os.walk(base_dir):
-        lookup: dict[str, str] = {}
         filename: str
         filenames.sort()
         for filename in filenames:
             if not filename.endswith(".png"):
                 continue
             filename = filename[:-4]
-            if "_" in filename:
-                rix = filename.rindex("_")
+            if "-" in filename:
+                rix = filename.rindex("-")
                 key = filename[:rix]
             else:
                 key = filename
@@ -43,7 +42,6 @@ def get_png_lookup(base_dir: str) -> dict[str, list[str]]:
 
 
 def get_syl_lookup(base_dir: str) -> dict[str, str]:
-    import unicodedata as ud
     syl_map: dict[str, str] = dict()
     with open(os.path.join(base_dir, "selected.txt")) as f:
         line: str
@@ -52,12 +50,44 @@ def get_syl_lookup(base_dir: str) -> dict[str, str]:
             if len(fields) < 3:
                 continue
             syl: str = fields[0].replace(".", "").strip()
-            pron: str = fields[1].replace(".", "").strip()
-            latin: str = re.sub("[^a-z :]", "", ud.normalize("NFD", pron))
             file: str = fields[2]
             if "." in file:
                 file = file[:file.rindex(".")]
-            syl_map[file] = syl + "|" + pron + "|" + latin
+            syl_map[file] = syl
+    return syl_map
+
+
+def get_pron_lookup(base_dir: str) -> dict[str, str]:
+    syl_map: dict[str, str] = dict()
+    with open(os.path.join(base_dir, "selected.txt")) as f:
+        line: str
+        for line in f:
+            fields: list[str] = line.split("|")
+            if len(fields) < 3:
+                continue
+            pron: str = fields[1].replace(".", "").strip()
+            file: str = fields[2]
+            if "." in file:
+                file = file[:file.rindex(".")]
+            syl_map[file] = pron
+    return syl_map
+
+
+def get_latin_lookup(base_dir: str) -> dict[str, str]:
+    import unicodedata as ud
+    syl_map: dict[str, str] = dict()
+    with open(os.path.join(base_dir, "selected.txt")) as f:
+        line: str
+        for line in f:
+            fields: list[str] = line.split("|")
+            if len(fields) < 3:
+                continue
+            pron: str = fields[1].replace(".", "").strip()
+            latin: str = re.sub("[^a-z :]", "", ud.normalize("NFC", pron))
+            file: str = fields[2]
+            if "." in file:
+                file = file[:file.rindex(".")]
+            syl_map[file] = latin
     return syl_map
 
 
@@ -65,26 +95,27 @@ if __name__ == "__main__":
     target_size: tuple[int, int] = (256, 256)
 
     base_dir: str = os.path.dirname(os.path.realpath(__file__))
-    android_assets: str = os.path.join(base_dir, "..", "..", "android", "assets")
-    android_pictures: str = os.path.join(android_assets, "images", "challenges")
-    android_audio: str = os.path.join(android_assets, "audio", "challenges")
 
-    dest_script = os.path.join(android_assets, "text", "challenge-images.txt")
+    godot_assets: str = os.path.join(base_dir, "..", "..", "assets")
+    godot_pictures: str = os.path.join(godot_assets, "challenges", "images")
+    godot_text: str = os.path.join("..", "..", "classes")
+    dest_script: str = os.path.join(godot_text, "ChallengeImages.gd")
 
     pngs: dict[str, list[str]] = get_png_lookup(os.path.join(base_dir, "pictures"))
     syl_map: dict[str, str] = get_syl_lookup(base_dir)
 
-    rmtree(android_pictures, ignore_errors=True)
-    os.makedirs(android_pictures, exist_ok=True)
+    rmtree(godot_pictures, ignore_errors=True)
+    os.makedirs(godot_pictures, exist_ok=True)
+    os.makedirs(godot_text, exist_ok=True)
 
-    for png in get_pngs(base_dir):
-        dest_image: str = os.path.join(android_pictures, os.path.basename(png))
-        png: Image.Image = Image.open(png).convert("RGBA")
+    for png_file in get_pngs(base_dir):
+        dest_image: str = os.path.join(godot_pictures, os.path.basename(png_file))
+        png: Image.Image = Image.open(png_file).convert("RGBA")
         png = png.crop(png.getbbox())
-        background: Image.Image = Image.new("RGBA", png.size, "#ffffff00")
-        background.paste(png, (0, 0), png)
-        png = background
-        png = ImageOps.pad(png, target_size, method=Image.LANCZOS, color="#ffffff00", centering=(0.5, 0.5))
+        background: Image.Image = Image.new("RGBA", png.size, "#ffffffff")
+        # background.paste(png, (0, 0), png)
+        background.alpha_composite(png)
+        png = ImageOps.pad(background, target_size, method=Image.LANCZOS, color="#ffffffff", centering=(0.5, 0.5))
         png.save(dest_image)
 
     lines: list[str] = list()
@@ -96,26 +127,47 @@ if __name__ == "__main__":
             line += syl_map[challenge.replace(" ", "_")]
         else:
             line += challenge
-        line += "|"
+        line = "\"" + line + "\"" + ": ["
         first_entry: bool = True
         for mp3 in pngs[challenge]:
             if first_entry:
                 first_entry = False
             else:
-                line += ";"
-            line += mp3
-        # line += "\n"
+                line += ", "
+            line += "\"" + mp3 + "\""
+        line += "]"
         lines.append(line)
     lines.sort()
 
+    pronunciations: dict[str, str] = get_pron_lookup(base_dir)
+
     with open(dest_script, "w") as f:
+        f.write("extends Node\n")
+        f.write("\n")
+        f.write("class_name ChallengeImages")
+        f.write("\n")
         f.write(f"# GENERATED BY {os.path.basename(__file__)}.\n")
         f.write("# DO NOT HAND EDIT THIS FILE.\n")
         f.write(f"# {len(pngs):,} Entries")
         f.write("\n")
+
+        f.write("const pronounce: Dictionary = {\n")
+
+        for key in pronunciations.keys():
+            val = pronunciations[key]
+
+        f.write("\n}\n")
+        f.write("\n")
+        f.write("const pngs: Dictionary = {\n")
+        first: bool = True
         for line in lines:
+            if first:
+                first = False
+            else:
+                f.write(",\n")
+            f.write("    ")
             f.write(line)
-            f.write("\n")
+        f.write("\n}\n")
         f.write("# EOF\n")
 
     print("DONE")
