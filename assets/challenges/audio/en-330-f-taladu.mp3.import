@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-330-f-taladu.mp3-919e25a20ea5aa122c4e6ef30a824a34.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-330-f-taladu.mp3"
+dest_files=[ "res://.import/en-330-f-taladu.mp3-919e25a20ea5aa122c4e6ef30a824a34.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-341-f-walosi.mp3-ea946f9a848a61d23f9fe47d7054edf0.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-341-f-walosi.mp3"
+dest_files=[ "res://.import/en-341-f-walosi.mp3-ea946f9a848a61d23f9fe47d7054edf0.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

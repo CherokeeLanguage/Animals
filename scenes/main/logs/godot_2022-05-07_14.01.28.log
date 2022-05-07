@@ -1,0 +1,14 @@
+Godot Engine v3.4.4.stable.official.419e713a2 - https://godotengine.org
+OpenGL ES 3.0 Renderer: NVIDIA GeForce RTX 3090/PCIe/SSE2
+OpenGL ES Batching: ON
+ 
+ERROR: Condition "err" is true. Returned: err
+   at: load_source_code (modules/gdscript/gdscript.cpp:787) - Condition "err" is true. Returned: err
+ERROR: Cannot load source code from file 'res://scenes/main/scenes.gd'.
+   at: load (modules/gdscript/gdscript.cpp:2184) - Condition "err != OK" is true. Returned: RES()
+ERROR: Failed loading resource: res://scenes/main/scenes.gd. Make sure resources have been imported by opening the project in the editor at least once.
+   at: _load (core/io/resource_loader.cpp:270) - Condition "found" is true. Returned: RES()
+SCRIPT ERROR: Parse Error: Can't preload resource at path: res://scenes/main/scenes.gd
+   at: GDScript::reload (res://main.gd:32) - Parse Error: Can't preload resource at path: res://scenes/main/scenes.gd
+ERROR: Method failed. Returning: ERR_PARSE_ERROR
+   at: reload (modules/gdscript/gdscript.cpp:577) - Method failed. Returning: ERR_PARSE_ERROR

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-333-f-sogwili.mp3-dc736036e619a6b7449d67a8c15693a7.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-333-f-sogwili.mp3"
+dest_files=[ "res://.import/en-333-f-sogwili.mp3-dc736036e619a6b7449d67a8c15693a7.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

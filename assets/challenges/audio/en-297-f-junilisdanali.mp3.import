@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-297-f-junilisdanali.mp3-a7614c1869f5f3f0a49bb6c3136a640e.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-297-f-junilisdanali.mp3"
+dest_files=[ "res://.import/en-297-f-junilisdanali.mp3-a7614c1869f5f3f0a49bb6c3136a640e.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

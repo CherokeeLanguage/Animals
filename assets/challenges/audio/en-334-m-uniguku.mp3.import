@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-334-m-uniguku.mp3-47ac8741df5b94a6b3bf42f7096afd8f.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-334-m-uniguku.mp3"
+dest_files=[ "res://.import/en-334-m-uniguku.mp3-47ac8741df5b94a6b3bf42f7096afd8f.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

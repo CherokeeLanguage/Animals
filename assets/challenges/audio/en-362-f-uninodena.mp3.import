@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-362-f-uninodena.mp3-d419ca1a745179a4955128b3cfcd5437.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-362-f-uninodena.mp3"
+dest_files=[ "res://.import/en-362-f-uninodena.mp3-d419ca1a745179a4955128b3cfcd5437.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

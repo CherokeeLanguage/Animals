@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-300-f-koga.mp3-ac6ffc9f2075a198e3feb93562e0055a.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-300-f-koga.mp3"
+dest_files=[ "res://.import/en-300-f-koga.mp3-ac6ffc9f2075a198e3feb93562e0055a.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

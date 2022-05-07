@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-339-f-inoli.mp3-c8fbac57abbf9a745fa3df07e48cd0df.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-339-f-inoli.mp3"
+dest_files=[ "res://.import/en-339-f-inoli.mp3-c8fbac57abbf9a745fa3df07e48cd0df.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

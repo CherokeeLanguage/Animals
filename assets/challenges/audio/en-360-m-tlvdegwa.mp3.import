@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-360-m-tlvdegwa.mp3-34912d1dd65ee25a75fe0a22a9037bb4.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-360-m-tlvdegwa.mp3"
+dest_files=[ "res://.import/en-360-m-tlvdegwa.mp3-34912d1dd65ee25a75fe0a22a9037bb4.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

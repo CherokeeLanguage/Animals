@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-334-m-ogana.mp3-74faf824622ea0acb79fee958948b9ef.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-334-m-ogana.mp3"
+dest_files=[ "res://.import/en-334-m-ogana.mp3-74faf824622ea0acb79fee958948b9ef.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

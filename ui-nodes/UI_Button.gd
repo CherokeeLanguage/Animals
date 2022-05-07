@@ -1,10 +1,8 @@
 extends Button
 
+class_name UI_Button
 
 func _ready():
-	# needed for gamepads to work
-	grab_focus()
-
-
-func _on_Button_pressed():
+	# grab_focus()
 	pass
+

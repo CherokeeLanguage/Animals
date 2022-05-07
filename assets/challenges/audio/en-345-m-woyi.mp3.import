@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-345-m-woyi.mp3-b2d1d2ed35f20995e914601ed3b14774.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-345-m-woyi.mp3"
+dest_files=[ "res://.import/en-345-m-woyi.mp3-b2d1d2ed35f20995e914601ed3b14774.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

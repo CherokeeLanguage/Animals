@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-360-m-tinegwa.mp3-ef90878c77ddc8c7a3044a70bd9c85be.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-360-m-tinegwa.mp3"
+dest_files=[ "res://.import/en-360-m-tinegwa.mp3-ef90878c77ddc8c7a3044a70bd9c85be.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

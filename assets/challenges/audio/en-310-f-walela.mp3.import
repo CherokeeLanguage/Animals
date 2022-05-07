@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-310-f-walela.mp3-488018ae3b7211c265e98ae69a74ebb8.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-310-f-walela.mp3"
+dest_files=[ "res://.import/en-310-f-walela.mp3-488018ae3b7211c265e98ae69a74ebb8.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

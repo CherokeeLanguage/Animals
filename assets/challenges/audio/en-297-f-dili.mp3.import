@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-297-f-dili.mp3-f83768a31f35e8f899705b47371f4e37.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-297-f-dili.mp3"
+dest_files=[ "res://.import/en-297-f-dili.mp3-f83768a31f35e8f899705b47371f4e37.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

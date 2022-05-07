@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-294-f-wasohla.mp3-ca466358d64c1715e14c606af405b2d4.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-294-f-wasohla.mp3"
+dest_files=[ "res://.import/en-294-f-wasohla.mp3-ca466358d64c1715e14c606af405b2d4.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

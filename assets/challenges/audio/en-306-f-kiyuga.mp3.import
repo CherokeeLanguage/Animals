@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-306-f-kiyuga.mp3-23f9c5b014fd969b23a2d3a8f68db858.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-306-f-kiyuga.mp3"
+dest_files=[ "res://.import/en-306-f-kiyuga.mp3-23f9c5b014fd969b23a2d3a8f68db858.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

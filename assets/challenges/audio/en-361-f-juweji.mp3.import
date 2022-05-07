@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-361-f-juweji.mp3-ab1139edafa57776eb529d35d9b7382b.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-361-f-juweji.mp3"
+dest_files=[ "res://.import/en-361-f-juweji.mp3-ab1139edafa57776eb529d35d9b7382b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

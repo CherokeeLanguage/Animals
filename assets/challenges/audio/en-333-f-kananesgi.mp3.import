@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-333-f-kananesgi.mp3-3717fb133d20e3cc01e0db7582f86516.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-333-f-kananesgi.mp3"
+dest_files=[ "res://.import/en-333-f-kananesgi.mp3-3717fb133d20e3cc01e0db7582f86516.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-339-f-ajilvsgi.mp3-8af85759f3dd1d9cfb25a214aa08834b.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-339-f-ajilvsgi.mp3"
+dest_files=[ "res://.import/en-339-f-ajilvsgi.mp3-8af85759f3dd1d9cfb25a214aa08834b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-299-f-kanajisdeji.mp3-f19c860c9bdd1c21d255279a5665d7c3.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-299-f-kanajisdeji.mp3"
+dest_files=[ "res://.import/en-299-f-kanajisdeji.mp3-f19c860c9bdd1c21d255279a5665d7c3.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

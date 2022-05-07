@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-362-f-jiyo.mp3-a9831c31f4b21e1ea42dc96ae1e0e4b3.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-362-f-jiyo.mp3"
+dest_files=[ "res://.import/en-362-f-jiyo.mp3-a9831c31f4b21e1ea42dc96ae1e0e4b3.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

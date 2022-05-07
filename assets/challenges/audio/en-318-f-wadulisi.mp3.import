@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-318-f-wadulisi.mp3-88534e9cdd2d06148ba5ca196595e9ce.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-318-f-wadulisi.mp3"
+dest_files=[ "res://.import/en-318-f-wadulisi.mp3-88534e9cdd2d06148ba5ca196595e9ce.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

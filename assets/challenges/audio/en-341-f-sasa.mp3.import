@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-341-f-sasa.mp3-3ec7cc3276e01bafff136ef40aadd4fa.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-341-f-sasa.mp3"
+dest_files=[ "res://.import/en-341-f-sasa.mp3-3ec7cc3276e01bafff136ef40aadd4fa.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

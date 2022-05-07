@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-301-f-kanuna.mp3-706a2881bbddd3823960eae55d5f7b1f.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-301-f-kanuna.mp3"
+dest_files=[ "res://.import/en-301-f-kanuna.mp3-706a2881bbddd3823960eae55d5f7b1f.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-310-f-gvna.mp3-1dc92b07c07fe3629d7c16467a3f5b2d.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-310-f-gvna.mp3"
+dest_files=[ "res://.import/en-310-f-gvna.mp3-1dc92b07c07fe3629d7c16467a3f5b2d.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

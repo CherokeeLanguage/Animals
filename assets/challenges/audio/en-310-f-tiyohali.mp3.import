@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-310-f-tiyohali.mp3-d114a53ea503b61a954953792ac6444c.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-310-f-tiyohali.mp3"
+dest_files=[ "res://.import/en-310-f-tiyohali.mp3-d114a53ea503b61a954953792ac6444c.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

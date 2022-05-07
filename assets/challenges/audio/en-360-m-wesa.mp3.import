@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-360-m-wesa.mp3-5b49e0bc0847475dea2d4fcd0b1bbe3d.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-360-m-wesa.mp3"
+dest_files=[ "res://.import/en-360-m-wesa.mp3-5b49e0bc0847475dea2d4fcd0b1bbe3d.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

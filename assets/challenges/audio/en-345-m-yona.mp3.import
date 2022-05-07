@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-345-m-yona.mp3-a09f6cb5ec630d6fe74012487c2eec32.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-345-m-yona.mp3"
+dest_files=[ "res://.import/en-345-m-yona.mp3-a09f6cb5ec630d6fe74012487c2eec32.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

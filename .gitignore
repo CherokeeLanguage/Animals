@@ -65,3 +65,4 @@ build/
 /rejected-challenges/
 /android/assets/text/git-changelog.txt
 .import/
+export_presets.cfg

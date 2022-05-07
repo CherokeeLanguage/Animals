@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-333-f-uguku.mp3-e74dff2bfb945a3ebe12483a313b7e30.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-333-f-uguku.mp3"
+dest_files=[ "res://.import/en-333-f-uguku.mp3-e74dff2bfb945a3ebe12483a313b7e30.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

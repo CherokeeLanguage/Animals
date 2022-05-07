@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-333-f-ani.mp3-34517842a0d8d32d559cb7eed57813db.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-333-f-ani.mp3"
+dest_files=[ "res://.import/en-333-f-ani.mp3-34517842a0d8d32d559cb7eed57813db.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

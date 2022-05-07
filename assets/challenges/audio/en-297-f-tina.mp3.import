@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-297-f-tina.mp3-b6c6db11159162de90304c38a292ff66.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-297-f-tina.mp3"
+dest_files=[ "res://.import/en-297-f-tina.mp3-b6c6db11159162de90304c38a292ff66.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

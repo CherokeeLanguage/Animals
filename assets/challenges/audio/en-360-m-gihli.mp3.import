@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/en-360-m-gihli.mp3-1ed83afc3ba9abd6940bda47d0a76102.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/en-360-m-gihli.mp3"
+dest_files=[ "res://.import/en-360-m-gihli.mp3-1ed83afc3ba9abd6940bda47d0a76102.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
