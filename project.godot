@@ -10,11 +10,6 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
-"class": "ChallengeData",
-"language": "GDScript",
-"path": "res://classes/ChallengeData.gd"
-}, {
-"base": "Node",
 "class": "Main",
 "language": "GDScript",
 "path": "res://scenes/main/main.gd"
@@ -23,6 +18,11 @@ _global_script_classes=[ {
 "class": "Scenes",
 "language": "GDScript",
 "path": "res://scenes/main/scenes.gd"
+}, {
+"base": "AudioStreamPlayer",
+"class": "SmartAudioStream",
+"language": "GDScript",
+"path": "res://addons/smart_audio_stream/SmartAudioStream.gd"
 }, {
 "base": "CanvasLayer",
 "class": "Transition",
@@ -40,9 +40,9 @@ _global_script_classes=[ {
 "path": "res://scenes/menu/about_scene.gd"
 } ]
 _global_script_class_icons={
-"ChallengeData": "",
 "Main": "",
 "Scenes": "",
+"SmartAudioStream": "",
 "Transition": "",
 "UI_Button": "",
 "about_scene": ""
@@ -62,6 +62,9 @@ config/version="6.0.0"
 [autoload]
 
 Game="*res://autoload/game.gd"
+ChallengeData="*res://classes/ChallengeData.gd"
+WrongAudio="*res://scenes/WrongAudio.tscn"
+EffectAudio="*res://scenes/EffectAudio.tscn"
 
 [compression]
 
@@ -77,10 +80,21 @@ window/dpi/allow_hidpi=true
 window/stretch/mode="2d"
 window/stretch/aspect="expand"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/smart_audio_stream/plugin.cfg" )
+
 [gui]
 
 theme/use_hidpi=true
 theme/custom="res://themes/main_theme.tres"
+
+[importer_defaults]
+
+mp3={
+"loop": false,
+"loop_offset": 0
+}
 
 [input]
 

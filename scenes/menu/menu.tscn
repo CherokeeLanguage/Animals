@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://fonts/script-128-b.tres" type="DynamicFont" id=1]
 [ext_resource path="res://scenes/menu/play-button.gd" type="Script" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://scenes/menu/instructions.gd" type="Script" id=11]
 [ext_resource path="res://scenes/menu/options.gd" type="Script" id=12]
 [ext_resource path="res://scenes/menu/about.gd" type="Script" id=13]
+[ext_resource path="res://scenes/menu/MenuMusic.gd" type="Script" id=14]
 
 [node name="Menu" type="Control"]
 anchor_right = 1.0
@@ -75,7 +76,6 @@ __meta__ = {
 
 [node name="PlayButton" parent="VerticalLayout/CenteredMenu/VBoxContainer" instance=ExtResource( 9 )]
 margin_right = 1247.0
-margin_bottom = 142.0
 focus_neighbour_bottom = NodePath("")
 focus_next = NodePath("")
 text = "New Game - ᎢᏤ ᏗᏁᎶᏗᎢ"
@@ -152,9 +152,12 @@ script = ExtResource( 8 )
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
 autoplay = true
+bus = "Music"
+script = ExtResource( 14 )
 
 [connection signal="pressed" from="VerticalLayout/CenteredMenu/VBoxContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="VerticalLayout/CenteredMenu/VBoxContainer/Instructions" to="." method="_on_Instructions_pressed"]
 [connection signal="pressed" from="VerticalLayout/CenteredMenu/VBoxContainer/Options" to="." method="_on_Options_pressed"]
 [connection signal="pressed" from="VerticalLayout/CenteredMenu/VBoxContainer/About" to="." method="_on_About_pressed"]
 [connection signal="pressed" from="VerticalLayout/CenteredMenu/VBoxContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
+[connection signal="finished" from="AudioStreamPlayer" to="AudioStreamPlayer" method="_on_AudioStreamPlayer_finished"]

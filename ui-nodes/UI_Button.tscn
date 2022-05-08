@@ -5,11 +5,12 @@
 [ext_resource path="res://assets/sprites/menu_select_blank-128.png" type="Texture" id=3]
 
 [node name="UI_Button" type="Button"]
-margin_right = 1432.0
-margin_bottom = 137.0
+margin_right = 1560.0
+margin_bottom = 142.0
 rect_min_size = Vector2( 200, 70 )
 focus_neighbour_bottom = NodePath("../ExitButton")
 focus_next = NodePath("../ExitButton")
+focus_mode = 0
 custom_colors/font_color_disabled = Color( 0, 0.376471, 0, 1 )
 custom_colors/font_color_focus = Color( 0, 0.34902, 0, 1 )
 custom_colors/font_color = Color( 0, 0.34902, 0, 1 )
@@ -19,6 +20,7 @@ custom_constants/hseparation = 16
 custom_fonts/font = ExtResource( 2 )
 shortcut_in_tooltip = false
 action_mode = 0
+enabled_focus_mode = 0
 text = "Something - ᎪᎱᏍᏗ"
 icon = ExtResource( 3 )
 flat = true

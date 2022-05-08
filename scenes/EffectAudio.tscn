@@ -1,0 +1,13 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://addons/smart_audio_stream/SmartAudioStream.gd" type="Script" id=1]
+[ext_resource path="res://assets/audio-effects/box_moved.mp3" type="AudioStream" id=2]
+[ext_resource path="res://assets/audio-effects/cash_out.mp3" type="AudioStream" id=3]
+[ext_resource path="res://assets/audio-effects/ding-ding-ding.mp3" type="AudioStream" id=4]
+[ext_resource path="res://assets/audio-effects/ding.mp3" type="AudioStream" id=5]
+
+[node name="SmartAudioStream" type="AudioStreamPlayer"]
+bus = "Effects"
+script = ExtResource( 1 )
+initial_streams = 8
+samples = [ ExtResource( 2 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 3 ) ]

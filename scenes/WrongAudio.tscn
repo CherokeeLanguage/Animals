@@ -1,0 +1,14 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/smart_audio_stream/SmartAudioStream.gd" type="Script" id=1]
+[ext_resource path="res://assets/audio-effects/alarm.mp3" type="AudioStream" id=2]
+[ext_resource path="res://assets/audio-effects/bark.mp3" type="AudioStream" id=3]
+[ext_resource path="res://assets/audio-effects/whip_pop.mp3" type="AudioStream" id=4]
+[ext_resource path="res://assets/audio-effects/buzzer2.mp3" type="AudioStream" id=5]
+[ext_resource path="res://assets/audio-effects/dialogerror.mp3" type="AudioStream" id=6]
+
+[node name="SmartAudioStream" type="AudioStreamPlayer"]
+bus = "Effects"
+script = ExtResource( 1 )
+initial_streams = 8
+samples = [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 4 ) ]

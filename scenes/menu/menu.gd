@@ -11,8 +11,8 @@ onready var buttons: Dictionary = {
 	4: $VerticalLayout/CenteredMenu/VBoxContainer/ExitButton
 }
 
-onready var blank_icon = load("res://assets/sprites/menu_select_blank-128.png")
-onready var selected_icon = load("res://assets/sprites/menu_select-128.png")
+onready var blank_icon = load("res://assets/sprites/menu_select_blank-96.png")
+onready var selected_icon = load("res://assets/sprites/menu_select-96.png")
 
 func _ready() -> void:
 	set_active_button()
@@ -22,22 +22,23 @@ func set_active_button() -> void:
 		btn.icon = blank_icon
 	buttons[button_ix].icon = selected_icon
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		return
-	if event.is_action_pressed("ui_accept"):
+func _process(delta: float) -> void:
+	var prev_button_ix: int = button_ix
+	if Input.is_action_just_pressed("ui_accept"):
 		buttons[button_ix].emit_signal("pressed")
 		return
-	if event.is_action_pressed("ui_down"):
+	if Input.is_action_just_pressed("ui_down"):
 		button_ix = (button_ix+1) % max_buttons
-	if event.is_action_pressed("ui_up"):
+	if Input.is_action_just_pressed("ui_up"):
 		button_ix = (button_ix-1+max_buttons) % max_buttons
-	if event.is_action_pressed("pause"):
+	if Input.is_action_just_pressed("pause"):
 		if button_ix == max_buttons - 1:
 			buttons[button_ix].emit_signal("pressed")
 			return
 		button_ix = max_buttons - 1
-	set_active_button()
+	if prev_button_ix != button_ix:
+		EffectAudio.play_audio(0)
+		set_active_button()
 
 func _on_PlayButton_pressed() -> void:
 	var params = {show_progress_bar = false}
