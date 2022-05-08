@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/tla.mp3-ad112cfd68ae3245ed62649884ae1cf9.mp3str"
+
+[deps]
+
+source_file="res://assets/audio-effects/tla.mp3"
+dest_files=[ "res://.import/tla.mp3-ad112cfd68ae3245ed62649884ae1cf9.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

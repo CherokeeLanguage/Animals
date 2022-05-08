@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/box_moved.mp3-cae480bc549a8f6b50f7eb1c799b6c1d.mp3str"
+
+[deps]
+
+source_file="res://assets/audio-effects/box_moved.mp3"
+dest_files=[ "res://.import/box_moved.mp3-cae480bc549a8f6b50f7eb1c799b6c1d.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

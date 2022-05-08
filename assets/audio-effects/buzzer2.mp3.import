@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/buzzer2.mp3-c5b6a600f390e95a4c9ebbec210db13a.mp3str"
+
+[deps]
+
+source_file="res://assets/audio-effects/buzzer2.mp3"
+dest_files=[ "res://.import/buzzer2.mp3-c5b6a600f390e95a4c9ebbec210db13a.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

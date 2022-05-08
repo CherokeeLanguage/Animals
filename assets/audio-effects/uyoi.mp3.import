@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/uyoi.mp3-8351130e5b30355a53ed88d8fb58f589.mp3str"
+
+[deps]
+
+source_file="res://assets/audio-effects/uyoi.mp3"
+dest_files=[ "res://.import/uyoi.mp3-8351130e5b30355a53ed88d8fb58f589.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/howa.mp3-9cba6360f6e5919c33ef9f1464cf5e36.mp3str"
+
+[deps]
+
+source_file="res://assets/audio-effects/howa.mp3"
+dest_files=[ "res://.import/howa.mp3-9cba6360f6e5919c33ef9f1464cf5e36.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

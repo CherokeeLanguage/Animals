@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/whip_pop.mp3-666ade353cb468c3f65ae4160306bdec.mp3str"
+
+[deps]
+
+source_file="res://assets/audio-effects/whip_pop.mp3"
+dest_files=[ "res://.import/whip_pop.mp3-666ade353cb468c3f65ae4160306bdec.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

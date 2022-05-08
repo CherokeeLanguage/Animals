@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/vv.mp3-911b891c3fea27a70476ddfe7eb9b8f7.mp3str"
+
+[deps]
+
+source_file="res://assets/audio-effects/vv.mp3"
+dest_files=[ "res://.import/vv.mp3-911b891c3fea27a70476ddfe7eb9b8f7.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

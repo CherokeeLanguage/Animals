@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/osda.mp3-79789f20c771d27a9c507d78a3d2675a.mp3str"
+
+[deps]
+
+source_file="res://assets/audio-effects/osda.mp3"
+dest_files=[ "res://.import/osda.mp3-79789f20c771d27a9c507d78a3d2675a.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

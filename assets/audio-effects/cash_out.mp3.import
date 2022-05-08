@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/cash_out.mp3-f3a9e3bbf3264be771b068ad36904033.mp3str"
+
+[deps]
+
+source_file="res://assets/audio-effects/cash_out.mp3"
+dest_files=[ "res://.import/cash_out.mp3-f3a9e3bbf3264be771b068ad36904033.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
