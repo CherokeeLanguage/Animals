@@ -31,6 +31,13 @@ Commons.Wikimedia.Org
 
 All pictures are cc-zero or public domain.
 
+Powered by Godot: https://godotengine.org/
+
+- Addons -
+Smart Audio Stream: https://github.com/nonunknown/smart-audio-stream
+
+- Source Code -
 https://github.com/CherokeeLanguage/Animals
 
-http://www.CherokeeLessons.com/
+- More Info -
+https://CherokeeLessons.com/
