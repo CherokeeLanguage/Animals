@@ -37,7 +37,7 @@ func _process(delta: float) -> void:
 			return
 		button_ix = max_buttons - 1
 	if prev_button_ix != button_ix:
-		EffectAudio.play_audio(0)
+		EffectAudio.play_audio(EffectAudio.FX.MENU_ITEM)
 		set_active_button()
 
 func _on_PlayButton_pressed() -> void:

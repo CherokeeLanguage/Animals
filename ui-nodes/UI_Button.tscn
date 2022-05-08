@@ -11,6 +11,7 @@ rect_min_size = Vector2( 200, 70 )
 focus_neighbour_bottom = NodePath("../ExitButton")
 focus_next = NodePath("../ExitButton")
 focus_mode = 0
+size_flags_horizontal = 4
 custom_colors/font_color_disabled = Color( 0, 0.376471, 0, 1 )
 custom_colors/font_color_focus = Color( 0, 0.34902, 0, 1 )
 custom_colors/font_color = Color( 0, 0.34902, 0, 1 )
