@@ -1,0 +1,16 @@
+alarm.mp3
+bark.mp3
+box_moved.mp3
+buzzer2.mp3
+cash_out.mp3
+dialogerror.mp3
+ding-ding-ding.mp3
+ding.mp3
+howa.mp3
+menu-click.mp3
+osda.mp3
+startup.mp3
+tla.mp3
+uyoi.mp3
+vv.mp3
+whip_pop.mp3
