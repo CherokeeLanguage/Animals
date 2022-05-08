@@ -11,5 +11,5 @@ dest_files=[ "res://.import/musix-wild-perspective.mp3-a02feaaf687ea7d9cddc23804
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0
