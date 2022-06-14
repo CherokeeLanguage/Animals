@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/bark.wav-695ea91baa7698d5056f09e8f1f6f637.sample"
+
+[deps]
+
+source_file="res://assets/audio-effects/bark.wav"
+dest_files=[ "res://.import/bark.wav-695ea91baa7698d5056f09e8f1f6f637.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

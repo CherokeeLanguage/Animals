@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/tla.wav-2e2196203e6e07766b57d9cf41d45741.sample"
+
+[deps]
+
+source_file="res://assets/audio-effects/tla.wav"
+dest_files=[ "res://.import/tla.wav-2e2196203e6e07766b57d9cf41d45741.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

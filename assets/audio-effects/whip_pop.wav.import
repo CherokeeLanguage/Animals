@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/whip_pop.wav-589aa5530c97ae46a13a02230cbd005d.sample"
+
+[deps]
+
+source_file="res://assets/audio-effects/whip_pop.wav"
+dest_files=[ "res://.import/whip_pop.wav-589aa5530c97ae46a13a02230cbd005d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
