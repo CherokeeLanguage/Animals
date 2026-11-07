@@ -1,0 +1,11 @@
+# validation record — Animals#5 (YAML)
+cycle: 1
+date: 2026-11-07
+reviewer: implementor-self-check + fresh-context verify dispatch
+rounds:
+- instruments:
+  - {sc: SC-2, instrument: "grep EffectAudio.tscn/menu.tscn/SmartAudioStream.gd", outcome: pass, evidence: "4 .wav refs confirmed; export(Array, AudioStream) var samples; menu.tscn fx streams box_moved.mp3"}
+  - {sc: SC-3, instrument: "grep project.godot", outcome: pass, evidence: "output_latency=10 line 64; wav import block; import_etc=true line 199"}
+  - {sc: SC-4, instrument: "git show --stat of unit commit", outcome: pass, evidence: "commit 4b1118b contains exactly the 5 scope-table files"}
+  - {sc: SC-1, instrument: "menu runtime run observing $fx", outcome: unexecuted, reason: "no Godot binary in environment; behavioral harness is opencode-scoped, not a Godot runtime — instrument unavailable"}
+issue: 5

@@ -1,0 +1,9 @@
+# validation record — Animals#6 (YAML)
+cycle: 1
+date: 2026-11-07
+rounds:
+- instruments:
+  - {sc: SC-1, instrument: "grep header + 5-stem sample vs assets/challenges/audio/", outcome: pass, evidence: "generator header present (1 hit); juweji/kamama/uweji/sogwili/yona audio files exist"}
+  - {sc: SC-2, instrument: "git status --porcelain after commit", outcome: pass, evidence: "no untracked files under assets/challenges/"}
+  - {sc: SC-3, instrument: "executed regeneration in temp copy", outcome: unexecuted, reason: "toolchain lacks pydub (and transitively ffmpeg); ModuleNotFoundError captured from a temp-copy run — in-place run deferred to avoid rmtree on committed assets"}
+issue: 6

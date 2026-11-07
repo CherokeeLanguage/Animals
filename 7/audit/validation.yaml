@@ -1,0 +1,9 @@
+# validation record — Animals#7 (YAML)
+cycle: 1
+date: 2026-11-07
+rounds:
+- instruments:
+  - {sc: SC-1, instrument: "grep gradle-wrapper.properties + build.gradle", outcome: pass, evidence: "gradle-7.4-bin.zip; idea plugin block + Rider comment"}
+  - {sc: SC-2, instrument: "git status --porcelain after commit", outcome: pass, evidence: "only ?? .issues/ and ?? .mono/ remain (sanctioned exclusions)"}
+  - {sc: SC-3, instrument: "git show --stat of unit commit", outcome: pass, evidence: "commit 6708b21 contains exactly the 9 scope-table surfaces; export_presets.cfg untouched"}
+issue: 7
