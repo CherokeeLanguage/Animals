@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/08-nl-suli.mp3-68fcb400fc8244c322be4c3d4a32bb1b.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/08-nl-suli.mp3"
+dest_files=[ "res://.import/08-nl-suli.mp3-68fcb400fc8244c322be4c3d4a32bb1b.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

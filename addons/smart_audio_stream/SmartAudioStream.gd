@@ -5,7 +5,7 @@ class_name SmartAudioStream
 
 
 export(int) var initial_streams = 2
-export(Array, AudioStreamMP3) var samples
+export(Array, AudioStream) var samples
 var _audios:Array = []
 
 func _ready():
@@ -13,6 +13,8 @@ func _ready():
 		_create_stream(false)
 	for audio in _audios:
 		add_child(audio)
+	#for sample in samples:
+	#	sample.set_loop(false)
 
 func play_audio(sample_idx:int):
 	for i in range(_audios.size()):

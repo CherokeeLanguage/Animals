@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-de-suli.mp3-4cd4e3a8cea31838965e32344b88d422.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-de-suli.mp3"
+dest_files=[ "res://.import/05-de-suli.mp3-4cd4e3a8cea31838965e32344b88d422.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

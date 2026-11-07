@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/01-ru-woyi.mp3-db3d1cb8fd7c609c68ca137b5be69686.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/01-ru-woyi.mp3"
+dest_files=[ "res://.import/01-ru-woyi.mp3-db3d1cb8fd7c609c68ca137b5be69686.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/04-chr-saloli.mp3-d44e7fe95da647b2bba6d9a98563879e.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/04-chr-saloli.mp3"
+dest_files=[ "res://.import/04-chr-saloli.mp3-d44e7fe95da647b2bba6d9a98563879e.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

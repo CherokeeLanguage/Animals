@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/11-fr-ujetsdi.mp3-d03384cd7789a0b6b4a17f1270cbb089.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/11-fr-ujetsdi.mp3"
+dest_files=[ "res://.import/11-fr-ujetsdi.mp3-d03384cd7789a0b6b4a17f1270cbb089.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

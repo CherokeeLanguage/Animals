@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/02-fr-chula.mp3-62930241ab52830aed851c4da1c665bc.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/02-fr-chula.mp3"
+dest_files=[ "res://.import/02-fr-chula.mp3-62930241ab52830aed851c4da1c665bc.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

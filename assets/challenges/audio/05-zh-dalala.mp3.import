@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-dalala.mp3-5d2136a168bbefd464b9aa50e52e9111.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-dalala.mp3"
+dest_files=[ "res://.import/05-zh-dalala.mp3-5d2136a168bbefd464b9aa50e52e9111.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

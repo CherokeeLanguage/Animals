@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/07-fr-jisdu.mp3-31e37f395985d1c831ef071af8881226.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/07-fr-jisdu.mp3"
+dest_files=[ "res://.import/07-fr-jisdu.mp3-31e37f395985d1c831ef071af8881226.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/04-chr-dalala.mp3-558c08c72df950e3a81f954710a90a87.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/04-chr-dalala.mp3"
+dest_files=[ "res://.import/04-chr-dalala.mp3-558c08c72df950e3a81f954710a90a87.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

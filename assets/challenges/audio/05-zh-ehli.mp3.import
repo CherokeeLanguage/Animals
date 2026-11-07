@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-ehli.mp3-8779231cedb5b2bb1b274eb153d4b592.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-ehli.mp3"
+dest_files=[ "res://.import/05-zh-ehli.mp3-8779231cedb5b2bb1b274eb153d4b592.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

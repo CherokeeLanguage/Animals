@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-de-hlvdaji.mp3-0be0b48e84d16009afa96d12f3e94194.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-de-hlvdaji.mp3"
+dest_files=[ "res://.import/05-de-hlvdaji.mp3-0be0b48e84d16009afa96d12f3e94194.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

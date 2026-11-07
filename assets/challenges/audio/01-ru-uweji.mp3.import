@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/01-ru-uweji.mp3-2c91d4a05bb57d8ce8637ae8267148b8.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/01-ru-uweji.mp3"
+dest_files=[ "res://.import/01-ru-uweji.mp3-2c91d4a05bb57d8ce8637ae8267148b8.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

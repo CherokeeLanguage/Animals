@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/07-fr-dlameha.mp3-f0677e9433750c4b9ef2145974e35ade.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/07-fr-dlameha.mp3"
+dest_files=[ "res://.import/07-fr-dlameha.mp3-f0677e9433750c4b9ef2145974e35ade.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

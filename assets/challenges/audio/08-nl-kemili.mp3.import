@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/08-nl-kemili.mp3-0384a3b302adf2827549af6e0f49a5f0.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/08-nl-kemili.mp3"
+dest_files=[ "res://.import/08-nl-kemili.mp3-0384a3b302adf2827549af6e0f49a5f0.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

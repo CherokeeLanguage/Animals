@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-chr-dosa.mp3-ca3b3c57d74192735198ebae64c2da7d.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-chr-dosa.mp3"
+dest_files=[ "res://.import/05-chr-dosa.mp3-ca3b3c57d74192735198ebae64c2da7d.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

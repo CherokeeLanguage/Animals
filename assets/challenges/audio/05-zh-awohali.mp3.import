@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-awohali.mp3-21d9c308dac0d0b41852c109b109a796.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-awohali.mp3"
+dest_files=[ "res://.import/05-zh-awohali.mp3-21d9c308dac0d0b41852c109b109a796.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

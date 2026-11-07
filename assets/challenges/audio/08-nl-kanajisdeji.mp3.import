@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/08-nl-kanajisdeji.mp3-2fa3e5f4ed40fc7797ab58ae0875d759.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/08-nl-kanajisdeji.mp3"
+dest_files=[ "res://.import/08-nl-kanajisdeji.mp3-2fa3e5f4ed40fc7797ab58ae0875d759.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

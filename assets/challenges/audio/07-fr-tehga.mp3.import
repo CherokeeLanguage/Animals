@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/07-fr-tehga.mp3-d355ab71ad0fe3f5eeacd4f4ff76fa57.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/07-fr-tehga.mp3"
+dest_files=[ "res://.import/07-fr-tehga.mp3-d355ab71ad0fe3f5eeacd4f4ff76fa57.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

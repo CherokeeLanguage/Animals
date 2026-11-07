@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/12-de-kvhli.mp3-58eead5a48c683eff225f5e38b3079c6.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/12-de-kvhli.mp3"
+dest_files=[ "res://.import/12-de-kvhli.mp3-58eead5a48c683eff225f5e38b3079c6.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

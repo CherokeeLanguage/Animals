@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/20-fr-anijilvsgi.mp3-42d672c63ecd690ffb3be0cfbe1d2cff.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/20-fr-anijilvsgi.mp3"
+dest_files=[ "res://.import/20-fr-anijilvsgi.mp3-42d672c63ecd690ffb3be0cfbe1d2cff.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

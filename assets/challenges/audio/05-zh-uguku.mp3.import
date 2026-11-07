@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-uguku.mp3-e7141dc1304f82177cee1b1481d167c9.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-uguku.mp3"
+dest_files=[ "res://.import/05-zh-uguku.mp3-e7141dc1304f82177cee1b1481d167c9.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

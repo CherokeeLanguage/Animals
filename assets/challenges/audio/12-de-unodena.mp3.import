@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/12-de-unodena.mp3-edd2404a1420b2353868e6219fa9873b.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/12-de-unodena.mp3"
+dest_files=[ "res://.import/12-de-unodena.mp3-edd2404a1420b2353868e6219fa9873b.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/04-nl-doya.mp3-c5640ba41dc7d96314ce46e15ff6a62d.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/04-nl-doya.mp3"
+dest_files=[ "res://.import/04-nl-doya.mp3-c5640ba41dc7d96314ce46e15ff6a62d.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

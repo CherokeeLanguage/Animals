@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/20-fr-unaksojaneda.mp3-df0cf6c00b67ca0dcd3c3abcf03e7266.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/20-fr-unaksojaneda.mp3"
+dest_files=[ "res://.import/20-fr-unaksojaneda.mp3-df0cf6c00b67ca0dcd3c3abcf03e7266.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

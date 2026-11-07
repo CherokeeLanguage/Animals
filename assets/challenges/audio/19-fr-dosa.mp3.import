@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/19-fr-dosa.mp3-f316e675e19338f9f3a9d097fe59b555.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/19-fr-dosa.mp3"
+dest_files=[ "res://.import/19-fr-dosa.mp3-f316e675e19338f9f3a9d097fe59b555.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

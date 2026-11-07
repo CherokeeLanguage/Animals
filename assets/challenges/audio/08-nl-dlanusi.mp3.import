@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/08-nl-dlanusi.mp3-7adf84d703c3d171c89f6a0cc7a5b679.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/08-nl-dlanusi.mp3"
+dest_files=[ "res://.import/08-nl-dlanusi.mp3-7adf84d703c3d171c89f6a0cc7a5b679.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

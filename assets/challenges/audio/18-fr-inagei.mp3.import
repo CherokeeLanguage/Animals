@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/18-fr-inagei.mp3-58c63c70324df20aebd21062cd54af6c.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/18-fr-inagei.mp3"
+dest_files=[ "res://.import/18-fr-inagei.mp3-58c63c70324df20aebd21062cd54af6c.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/18-fr-wahya.mp3-d8fba87d20049852805d5a0233421b3d.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/18-fr-wahya.mp3"
+dest_files=[ "res://.import/18-fr-wahya.mp3-d8fba87d20049852805d5a0233421b3d.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/02-fr-ehli.mp3-737b0d11cdd45c1250e8e6a3521c6172.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/02-fr-ehli.mp3"
+dest_files=[ "res://.import/02-fr-ehli.mp3-737b0d11cdd45c1250e8e6a3521c6172.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

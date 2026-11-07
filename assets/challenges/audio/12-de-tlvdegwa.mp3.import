@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/12-de-tlvdegwa.mp3-40143af317fc7ac4cf0834e5c61193b5.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/12-de-tlvdegwa.mp3"
+dest_files=[ "res://.import/12-de-tlvdegwa.mp3-40143af317fc7ac4cf0834e5c61193b5.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -16,6 +16,8 @@ onready var selected_icon = load("res://assets/sprites/menu_select-96.png")
 
 func _ready() -> void:
 	set_active_button()
+	$fx.play()
+	# EffectAudio.play_audio(EffectAudio.FX.MENU_ITEM)
 	
 func set_active_button() -> void:
 	for btn in buttons.values():
@@ -37,7 +39,8 @@ func _process(delta: float) -> void:
 			return
 		button_ix = max_buttons - 1
 	if prev_button_ix != button_ix:
-		EffectAudio.play_audio(EffectAudio.FX.MENU_ITEM)
+		$fx.stop()
+		$fx.play()  # EffectAudio.play_audio(EffectAudio.FX.MENU_ITEM)
 		set_active_button()
 
 func _on_PlayButton_pressed() -> void:

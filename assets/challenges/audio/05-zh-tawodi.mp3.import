@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-tawodi.mp3-5a86a2b6714ba9220a4bf5c4deedbbe9.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-tawodi.mp3"
+dest_files=[ "res://.import/05-zh-tawodi.mp3-5a86a2b6714ba9220a4bf5c4deedbbe9.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

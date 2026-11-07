@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-juweji.mp3-916541186a6b872279e7bdbcad2f38f5.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-juweji.mp3"
+dest_files=[ "res://.import/05-zh-juweji.mp3-916541186a6b872279e7bdbcad2f38f5.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

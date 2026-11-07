@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/11-fr-kemili.mp3-4cc3328a41a982612a48c594fa43de44.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/11-fr-kemili.mp3"
+dest_files=[ "res://.import/11-fr-kemili.mp3-4cc3328a41a982612a48c594fa43de44.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

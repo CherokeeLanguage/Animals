@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/20-fr-ahwi.mp3-ef24f74facb5b16651422e6ea6fdc675.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/20-fr-ahwi.mp3"
+dest_files=[ "res://.import/20-fr-ahwi.mp3-ef24f74facb5b16651422e6ea6fdc675.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

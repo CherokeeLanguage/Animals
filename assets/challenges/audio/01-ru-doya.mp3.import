@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/01-ru-doya.mp3-d620a1eecf04948781bcf54682819203.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/01-ru-doya.mp3"
+dest_files=[ "res://.import/01-ru-doya.mp3-d620a1eecf04948781bcf54682819203.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

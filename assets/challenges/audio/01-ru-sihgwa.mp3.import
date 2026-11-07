@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/01-ru-sihgwa.mp3-63d00bf0de7d146ec98248f65179eea2.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/01-ru-sihgwa.mp3"
+dest_files=[ "res://.import/01-ru-sihgwa.mp3-63d00bf0de7d146ec98248f65179eea2.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

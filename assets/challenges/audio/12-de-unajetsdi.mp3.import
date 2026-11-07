@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/12-de-unajetsdi.mp3-1bce524dfd81f1ec25c20e97860b114a.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/12-de-unajetsdi.mp3"
+dest_files=[ "res://.import/12-de-unajetsdi.mp3-1bce524dfd81f1ec25c20e97860b114a.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

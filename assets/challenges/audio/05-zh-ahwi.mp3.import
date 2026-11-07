@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-ahwi.mp3-ab8bd0178173acc434e28e4fdbd46247.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-ahwi.mp3"
+dest_files=[ "res://.import/05-zh-ahwi.mp3-ab8bd0178173acc434e28e4fdbd46247.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

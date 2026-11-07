@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/11-fr-elogwa.mp3-08953cd760c4c17c0d5f8e463e137bf6.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/11-fr-elogwa.mp3"
+dest_files=[ "res://.import/11-fr-elogwa.mp3-08953cd760c4c17c0d5f8e463e137bf6.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

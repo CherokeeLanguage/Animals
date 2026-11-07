@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-de-daksi.mp3-13a420f9134e0a14745e1909b8c4ebb3.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-de-daksi.mp3"
+dest_files=[ "res://.import/05-de-daksi.mp3-13a420f9134e0a14745e1909b8c4ebb3.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

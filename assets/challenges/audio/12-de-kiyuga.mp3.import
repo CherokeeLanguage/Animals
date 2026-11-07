@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/12-de-kiyuga.mp3-e71a63a16c094825f6b196a601974d2a.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/12-de-kiyuga.mp3"
+dest_files=[ "res://.import/12-de-kiyuga.mp3-e71a63a16c094825f6b196a601974d2a.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

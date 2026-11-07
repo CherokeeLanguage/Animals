@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/12-de-wesa.mp3-bed44cd8c4228c51e94288d4dde098ed.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/12-de-wesa.mp3"
+dest_files=[ "res://.import/12-de-wesa.mp3-bed44cd8c4228c51e94288d4dde098ed.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

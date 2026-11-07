@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/04-nl-kamama.mp3-e603d2dd1080bb2c1786e267423bb405.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/04-nl-kamama.mp3"
+dest_files=[ "res://.import/04-nl-kamama.mp3-e603d2dd1080bb2c1786e267423bb405.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

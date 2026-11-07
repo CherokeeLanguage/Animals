@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/08-nl-dosvdali.mp3-97d2a693117b46bc012b01a6d3b9cb22.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/08-nl-dosvdali.mp3"
+dest_files=[ "res://.import/08-nl-dosvdali.mp3-97d2a693117b46bc012b01a6d3b9cb22.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

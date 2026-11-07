@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/01-ru-inada.mp3-cd7bed2d4736bcf8570109df69b08ef9.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/01-ru-inada.mp3"
+dest_files=[ "res://.import/01-ru-inada.mp3-cd7bed2d4736bcf8570109df69b08ef9.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

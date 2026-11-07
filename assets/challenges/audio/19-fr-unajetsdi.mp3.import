@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/19-fr-unajetsdi.mp3-4a19c5db5e40d3481a9151036ba08108.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/19-fr-unajetsdi.mp3"
+dest_files=[ "res://.import/19-fr-unajetsdi.mp3-4a19c5db5e40d3481a9151036ba08108.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
