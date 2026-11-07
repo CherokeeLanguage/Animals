@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-de-jitaga.mp3-f3b9c231305896dd4ae2cdce66a11d12.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-de-jitaga.mp3"
+dest_files=[ "res://.import/05-de-jitaga.mp3-f3b9c231305896dd4ae2cdce66a11d12.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

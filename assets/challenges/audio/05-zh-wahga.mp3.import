@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-wahga.mp3-faf8c2dd56353183786668a0b9abc641.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-wahga.mp3"
+dest_files=[ "res://.import/05-zh-wahga.mp3-faf8c2dd56353183786668a0b9abc641.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

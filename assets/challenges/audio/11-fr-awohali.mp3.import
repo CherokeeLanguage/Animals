@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/11-fr-awohali.mp3-593f30c1ab3c72c94e530f835b2e124c.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/11-fr-awohali.mp3"
+dest_files=[ "res://.import/11-fr-awohali.mp3-593f30c1ab3c72c94e530f835b2e124c.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

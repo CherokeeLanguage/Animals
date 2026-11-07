@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-wadaduga.mp3-7b94451d56ded404b8e405d1dc508a4e.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-wadaduga.mp3"
+dest_files=[ "res://.import/05-zh-wadaduga.mp3-7b94451d56ded404b8e405d1dc508a4e.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -11,8 +11,9 @@ import glob
 import os
 import re
 import sys
-from shutil import rmtree
 import unicodedata as ud
+from shutil import rmtree
+
 from PIL import Image
 from PIL import ImageOps
 from pydub import AudioSegment
@@ -43,7 +44,7 @@ def get_png_lookup(base_dir: str) -> dict[str, list[str]]:
 
 def get_pronounce_lookup(base_dir: str) -> dict[str, tuple[str, str]]:
     filename: str = "animals-game-mco.txt"
-    lookup: dict[str, type[str, str]] = {}
+    lookup: dict[str, tuple[str, str]] = {}
     with open(os.path.join(base_dir, filename), "r") as f:
         line: str
         ix: int = 0

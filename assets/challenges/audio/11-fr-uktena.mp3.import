@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/11-fr-uktena.mp3-a5be63c37ccc504e53f2b6e2a436e33a.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/11-fr-uktena.mp3"
+dest_files=[ "res://.import/11-fr-uktena.mp3-a5be63c37ccc504e53f2b6e2a436e33a.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

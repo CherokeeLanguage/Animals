@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/12-de-tinegwa.mp3-96a4a1dd7c3ebd4acc38b37d68468711.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/12-de-tinegwa.mp3"
+dest_files=[ "res://.import/12-de-tinegwa.mp3-96a4a1dd7c3ebd4acc38b37d68468711.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

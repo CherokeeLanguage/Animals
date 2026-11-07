@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-chr-tvhga.mp3-e054bc8be4a60ee62c58146d75ef0c46.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-chr-tvhga.mp3"
+dest_files=[ "res://.import/05-chr-tvhga.mp3-e054bc8be4a60ee62c58146d75ef0c46.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

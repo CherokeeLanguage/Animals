@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/19-fr-saloli.mp3-1de7ffede16f4ca07da36c2d09b03c2d.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/19-fr-saloli.mp3"
+dest_files=[ "res://.import/19-fr-saloli.mp3-1de7ffede16f4ca07da36c2d09b03c2d.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/20-fr-julisdanali.mp3-6be856cfd86e9d77051dd38b006eb37a.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/20-fr-julisdanali.mp3"
+dest_files=[ "res://.import/20-fr-julisdanali.mp3-6be856cfd86e9d77051dd38b006eb37a.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

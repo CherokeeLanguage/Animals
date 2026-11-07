@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/12-de-dosvdali.mp3-11dd54bb105ddd82dd025d5d04b0c140.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/12-de-dosvdali.mp3"
+dest_files=[ "res://.import/12-de-dosvdali.mp3-11dd54bb105ddd82dd025d5d04b0c140.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-yona.mp3-b137c8d79b625f4f038f2f37a2cd036b.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-yona.mp3"
+dest_files=[ "res://.import/05-zh-yona.mp3-b137c8d79b625f4f038f2f37a2cd036b.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

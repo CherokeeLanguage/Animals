@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/27-de-dosa.mp3-b8ffaf82b7998085f571aa050070322c.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/27-de-dosa.mp3"
+dest_files=[ "res://.import/27-de-dosa.mp3-b8ffaf82b7998085f571aa050070322c.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

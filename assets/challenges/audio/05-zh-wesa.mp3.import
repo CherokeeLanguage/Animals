@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-wesa.mp3-09889f4394b9455288e5927db102e28d.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-wesa.mp3"
+dest_files=[ "res://.import/05-zh-wesa.mp3-09889f4394b9455288e5927db102e28d.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

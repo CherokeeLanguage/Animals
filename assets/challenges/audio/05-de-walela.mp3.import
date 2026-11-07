@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-de-walela.mp3-01e001d452f534795f771c970819fdcb.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-de-walela.mp3"
+dest_files=[ "res://.import/05-de-walela.mp3-01e001d452f534795f771c970819fdcb.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/18-fr-unijiya.mp3-a8b9e04336725486567726ea0bf21a4a.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/18-fr-unijiya.mp3"
+dest_files=[ "res://.import/18-fr-unijiya.mp3-a8b9e04336725486567726ea0bf21a4a.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

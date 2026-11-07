@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/20-fr-dewa.mp3-480e00616fabbe1d470d6aaf6de6a5ce.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/20-fr-dewa.mp3"
+dest_files=[ "res://.import/20-fr-dewa.mp3-480e00616fabbe1d470d6aaf6de6a5ce.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

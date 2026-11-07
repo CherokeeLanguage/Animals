@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/12-de-dosa.mp3-1eedbc574fdbb8441f6964f2e441b450.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/12-de-dosa.mp3"
+dest_files=[ "res://.import/12-de-dosa.mp3-1eedbc574fdbb8441f6964f2e441b450.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-woyi.mp3-22b0357535d7ad2be33d93d67638d3c1.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-woyi.mp3"
+dest_files=[ "res://.import/05-zh-woyi.mp3-22b0357535d7ad2be33d93d67638d3c1.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

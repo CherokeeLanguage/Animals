@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/27-de-nvda.mp3-8e2243735f252b619bae377e4f35eccc.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/27-de-nvda.mp3"
+dest_files=[ "res://.import/27-de-nvda.mp3-8e2243735f252b619bae377e4f35eccc.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/12-de-kawonu.mp3-b63d9dcac45b3cf4b1e1248a1a8774a0.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/12-de-kawonu.mp3"
+dest_files=[ "res://.import/12-de-kawonu.mp3-b63d9dcac45b3cf4b1e1248a1a8774a0.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

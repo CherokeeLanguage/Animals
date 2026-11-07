@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/11-fr-uksojaneda.mp3-16da03a9397763b1f5d22794080c0bb0.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/11-fr-uksojaneda.mp3"
+dest_files=[ "res://.import/11-fr-uksojaneda.mp3-16da03a9397763b1f5d22794080c0bb0.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

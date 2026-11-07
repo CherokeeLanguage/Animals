@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-sogwili_digalenvhida.mp3-c30b0ea50895605d57229d4e728ee6fa.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-sogwili_digalenvhida.mp3"
+dest_files=[ "res://.import/05-zh-sogwili_digalenvhida.mp3-c30b0ea50895605d57229d4e728ee6fa.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

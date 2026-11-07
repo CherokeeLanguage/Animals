@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-wadulisi.mp3-89cfab9142c38672d2b37ff2709aada6.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-wadulisi.mp3"
+dest_files=[ "res://.import/05-zh-wadulisi.mp3-89cfab9142c38672d2b37ff2709aada6.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/04-chr-juweji.mp3-229429fb75ebd62c49635796a152aee5.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/04-chr-juweji.mp3"
+dest_files=[ "res://.import/04-chr-juweji.mp3-229429fb75ebd62c49635796a152aee5.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

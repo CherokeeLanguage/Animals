@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/27-de-gvhe.mp3-25579dfe7913fcb6d0cbe1930efecd7f.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/27-de-gvhe.mp3"
+dest_files=[ "res://.import/27-de-gvhe.mp3-25579dfe7913fcb6d0cbe1930efecd7f.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

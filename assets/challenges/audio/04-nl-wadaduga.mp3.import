@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/04-nl-wadaduga.mp3-16689b6e45909a6a35ac478277cba6a8.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/04-nl-wadaduga.mp3"
+dest_files=[ "res://.import/04-nl-wadaduga.mp3-16689b6e45909a6a35ac478277cba6a8.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

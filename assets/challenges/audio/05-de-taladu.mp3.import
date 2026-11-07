@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-de-taladu.mp3-2509c39f163609bd2514d1f329194ddc.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-de-taladu.mp3"
+dest_files=[ "res://.import/05-de-taladu.mp3-2509c39f163609bd2514d1f329194ddc.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

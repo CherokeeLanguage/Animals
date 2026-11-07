@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/04-nl-gihli.mp3-e484e271d8d46bfb11066cfe25416cd6.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/04-nl-gihli.mp3"
+dest_files=[ "res://.import/04-nl-gihli.mp3-e484e271d8d46bfb11066cfe25416cd6.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-julasgi.mp3-9fe3699c0c3a34b7171e446ba24a4380.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-julasgi.mp3"
+dest_files=[ "res://.import/05-zh-julasgi.mp3-9fe3699c0c3a34b7171e446ba24a4380.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

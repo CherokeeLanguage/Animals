@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-de-ujiya.mp3-d602fcd056e571b8515fa489f8333cf7.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-de-ujiya.mp3"
+dest_files=[ "res://.import/05-de-ujiya.mp3-d602fcd056e571b8515fa489f8333cf7.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

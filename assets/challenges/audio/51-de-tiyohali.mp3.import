@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/51-de-tiyohali.mp3-c3de970c4bcbbb0ba6c42f5808371ade.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/51-de-tiyohali.mp3"
+dest_files=[ "res://.import/51-de-tiyohali.mp3-c3de970c4bcbbb0ba6c42f5808371ade.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

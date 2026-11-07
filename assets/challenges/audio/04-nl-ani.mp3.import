@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/04-nl-ani.mp3-a0f97276a229c25c6254db01a701133a.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/04-nl-ani.mp3"
+dest_files=[ "res://.import/04-nl-ani.mp3-a0f97276a229c25c6254db01a701133a.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

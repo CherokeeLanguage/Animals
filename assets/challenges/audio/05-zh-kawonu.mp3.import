@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-kawonu.mp3-cddb814af00b5085cf9def7072123f7c.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-kawonu.mp3"
+dest_files=[ "res://.import/05-zh-kawonu.mp3-cddb814af00b5085cf9def7072123f7c.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

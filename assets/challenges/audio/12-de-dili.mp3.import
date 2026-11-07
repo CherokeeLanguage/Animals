@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/12-de-dili.mp3-d52a3baf9ef6500ac898a3b50bcc5a4d.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/12-de-dili.mp3"
+dest_files=[ "res://.import/12-de-dili.mp3-d52a3baf9ef6500ac898a3b50bcc5a4d.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

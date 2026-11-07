@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-de-wadaduga.mp3-366d46f1b706f9d6ced8141f272ae7b8.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-de-wadaduga.mp3"
+dest_files=[ "res://.import/05-de-wadaduga.mp3-366d46f1b706f9d6ced8141f272ae7b8.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

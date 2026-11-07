@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/02-fr-tawodi.mp3-ce652130332042549b69e68e7a4958ce.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/02-fr-tawodi.mp3"
+dest_files=[ "res://.import/02-fr-tawodi.mp3-ce652130332042549b69e68e7a4958ce.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

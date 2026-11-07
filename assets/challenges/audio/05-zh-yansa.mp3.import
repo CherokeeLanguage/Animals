@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/05-zh-yansa.mp3-8864b859ac328d027577ea59a6aec831.mp3str"
+
+[deps]
+
+source_file="res://assets/challenges/audio/05-zh-yansa.mp3"
+dest_files=[ "res://.import/05-zh-yansa.mp3-8864b859ac328d027577ea59a6aec831.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
