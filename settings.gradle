@@ -1,0 +1,4 @@
+// To simplify usage of JetBrains Rider
+
+rootProject.name="Animals"
+
