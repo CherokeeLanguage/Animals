@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://fonts/script-128-b.tres" type="DynamicFont" id=1]
 [ext_resource path="res://scenes/menu/play-button.gd" type="Script" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://scenes/menu/options.gd" type="Script" id=12]
 [ext_resource path="res://scenes/menu/about.gd" type="Script" id=13]
 [ext_resource path="res://scenes/menu/MenuMusic.gd" type="Script" id=14]
+[ext_resource path="res://assets/audio-effects/box_moved.mp3" type="AudioStream" id=15]
 
 [node name="Menu" type="Control"]
 anchor_right = 1.0
@@ -82,8 +83,9 @@ text = "New Game - ᎢᏤ ᏗᏁᎶᏗᎢ"
 script = ExtResource( 2 )
 
 [node name="Instructions" parent="VerticalLayout/CenteredMenu/VBoxContainer" instance=ExtResource( 9 )]
+margin_left = 103.0
 margin_top = 158.0
-margin_right = 1247.0
+margin_right = 1143.0
 margin_bottom = 300.0
 focus_neighbour_bottom = NodePath("")
 focus_next = NodePath("")
@@ -91,8 +93,9 @@ text = "Instructions - ᏗᏕᏲᏗ"
 script = ExtResource( 11 )
 
 [node name="Options" parent="VerticalLayout/CenteredMenu/VBoxContainer" instance=ExtResource( 9 )]
+margin_left = 121.0
 margin_top = 316.0
-margin_right = 1247.0
+margin_right = 1125.0
 margin_bottom = 458.0
 focus_neighbour_bottom = NodePath("")
 focus_next = NodePath("")
@@ -100,8 +103,9 @@ text = "Options - ᎠᏑᏰᏍᏗᎢ"
 script = ExtResource( 12 )
 
 [node name="About" parent="VerticalLayout/CenteredMenu/VBoxContainer" instance=ExtResource( 9 )]
+margin_left = 277.0
 margin_top = 474.0
-margin_right = 1247.0
+margin_right = 969.0
 margin_bottom = 616.0
 focus_neighbour_bottom = NodePath("")
 focus_next = NodePath("")
@@ -109,8 +113,9 @@ text = "About - ᎢᎸᏢ"
 script = ExtResource( 13 )
 
 [node name="ExitButton" parent="VerticalLayout/CenteredMenu/VBoxContainer" instance=ExtResource( 9 )]
+margin_left = 186.0
 margin_top = 632.0
-margin_right = 1247.0
+margin_right = 1061.0
 margin_bottom = 774.0
 focus_neighbour_bottom = NodePath("")
 focus_next = NodePath("")
@@ -154,6 +159,9 @@ stream = ExtResource( 5 )
 autoplay = true
 bus = "Music"
 script = ExtResource( 14 )
+
+[node name="fx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 15 )
 
 [connection signal="pressed" from="VerticalLayout/CenteredMenu/VBoxContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="VerticalLayout/CenteredMenu/VBoxContainer/Instructions" to="." method="_on_Instructions_pressed"]

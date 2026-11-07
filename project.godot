@@ -59,6 +59,10 @@ config/icon="res://assets/sprites/icon512.png"
 config/quit_on_go_back=false
 config/version="6.0.0"
 
+[audio]
+
+output_latency=10
+
 [autoload]
 
 Game="*res://autoload/game.gd"
@@ -94,6 +98,16 @@ theme/custom="res://themes/main_theme.tres"
 mp3={
 "loop": false,
 "loop_offset": 0
+}
+wav={
+"compress/mode": 0,
+"edit/loop": false,
+"edit/normalize": false,
+"edit/trim": false,
+"force/8_bit": false,
+"force/max_rate": false,
+"force/max_rate_hz": 44100,
+"force/mono": false
 }
 
 [input]
@@ -182,5 +196,5 @@ name_num_separator=2
 quality/driver/driver_name="GLES2"
 quality/driver/fallback_to_gles2=true
 2d/options/use_nvidia_rect_flicker_workaround=true
-vram_compression/import_etc2=false
+vram_compression/import_etc=true
 vram_compression/import_pvrtc=true
