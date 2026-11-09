@@ -7,7 +7,7 @@ Paired spec: **CherokeeLessons.com#22** — the itch.io page for Cherokee Langua
 
 ## Problem
 
-The Animals repo's releases have deployed through app stores (Google Play, Amazon). The migration makes itch.io the deploy target for the repo's releases: the paired cherokeelessons.com spec establishes the itch page and deploys the currently-published artifacts from that repo's copies; this repo's own release pipeline must follow suit, using the standard itch.io deployment the BoundPronouns repo established.
+The Animals repo's releases have deployed through app stores (Google Play, Amazon). The migration makes itch.io the deploy target for the repo's releases: the paired cherokeelessons.com spec establishes the itch page and deploys the currently-published artifacts; this repo's own release pipeline must follow suit, using the standard itch.io deployment the BoundPronouns repo established.
 
 The deploy source for this migration is the existing APK/JAR — the currently-published legacy-build artifacts — not the incomplete Godot port (developer direction, 2026-11-09): the repo's conversion must bind its deploy tooling to the existing artifacts and must not wait on, or source from, the unfinished port.
 
@@ -15,12 +15,14 @@ The deploy source for this migration is the existing APK/JAR — the currently-p
 
 The Animals repo (`CherokeeLanguage/Animals`): repo-local itch deployment tooling per the BoundPronouns pattern — including the artifact/channel mapping for the existing APK/JAR — and the push-target binding.
 
-Deploy-source facts (verified 2026-11-09): this repo's tree and GitHub releases hold no runnable artifact — releases 5.09/5.12 carry zero assets, and the in-tree jars are tooling only (the gradle wrapper jar and font-tooling jars under `Artwork.Source/`) plus one git-ignored legacy build leftover, `core/build/libs/core-5.12.jar` (a libGDX core-module jar, not a runnable app). The existing APK/JAR exist as the site repo's copies named in the paired spec's channel table (`Animals-5.12.jar`, `Animals-5.12-release.apk` under `content/apps/animals/`). The repo's legacy libGDX build is reference material for the Godot port — no gradle module or CI builds it (the repo's own AGENTS.md states this; the root gradle files are IDE workspace stubs), and the Godot export presets define no output paths yet (`export_presets.cfg`, all presets `export_path=""`, verified 2026-11-09). The in-progress Godot port is not a valid deploy source (developer direction, 2026-11-09): no push under this spec sources from it.
+Deploy-source facts (verified 2026-11-09): this repo's tree and GitHub releases hold no runnable artifact — releases 5.09/5.12 carry zero assets, and the in-tree jars are tooling only (the gradle wrapper jar and font-tooling jars under `Artwork.Source/`) plus one git-ignored legacy build leftover, `core/build/libs/core-5.12.jar` (a libGDX core-module jar, not a runnable app). The site repo does not hold the artifacts either: `CherokeeLanguage/CherokeeLessons.com`'s `content/apps/animals/` directory holds only `fix-image-links.sh` and `index.md`, its tree carries no Animals jar/apk (its only jars are other apps': `static/downloads/CLL1-1.72.jar`, `static/downloads/Syllabary-3.24.jar`), and it has no releases — the filenames its `index.md` download links carry (`Animals-5.12.jar`, `Animals-5.12-release.apk`) have no in-repo files behind them, and the live site's state is unverifiable from this environment (`cherokeelessons.com` does not resolve here). The existing APK/JAR's location is therefore unestablished from available evidence; the developer asserts they exist (deploy-source direction, 2026-11-09). The artifacts' obtainable copies are an operator input — `itch.conf` values established at exercise time.
+
+The repo's legacy libGDX build is reference material for the Godot port — no gradle module or CI builds it (the repo's own AGENTS.md states this; the root gradle files are IDE workspace stubs), and the Godot export presets define no output paths yet (`export_presets.cfg`, all presets `export_path=""`, verified 2026-11-09). The in-progress Godot port is not a valid deploy source (developer direction, 2026-11-09): no push under this spec sources from it.
 
 ## Requirements
 
 - **R-1 — Deployment tooling.** Repo-local `itch-push.sh` plus `itch.conf.example` mirroring the BoundPronouns pattern (`butler` resolution PATH→vendored `.tools/butler/`, `REPLACE_ME` config guard, per-channel push structure; no secrets in the repo — butler credentials live in butler's own store), with `itch.conf` gitignored.
-- **R-2 — Artifact/channel mapping bound to the existing APK/JAR.** The script's artifact/channel section is written for the existing APK/JAR deploy source: channels `win-linux-mac` and `android` on the paired itch project, matching the paired spec's channel table. Artifact source paths are operator config (`itch.conf` REPLACE_ME placeholders), not repo content — this repo holds no artifact copies (deploy-source facts above).
+- **R-2 — Artifact/channel mapping bound to the existing APK/JAR.** The script's artifact/channel section is written for the existing APK/JAR deploy source: channels `win-linux-mac` and `android` on the paired itch project, matching the paired spec's channel table. Artifact source paths are operator config (`itch.conf` REPLACE_ME placeholders), not repo content — no artifact copies exist in any located source (deploy-source facts above).
 - **R-3 — Push target binding.** The push target binds to the paired itch project `cherokee-language/cherokee-language-animals`.
 - **R-4 — No version claims.** Pushes carry no `--userversion`; butler's auto-numbering stands (metadata is not trusted — no version label is verified or asserted).
 
@@ -35,7 +37,7 @@ Deploy-source facts (verified 2026-11-09): this repo's tree and GitHub releases 
 
 ## Approach
 
-Mirror the BoundPronouns repo's `itch-push.sh`/`itch.conf(.example)` pattern, adapted to this repo's state: the script carries the pattern's guard structure, the target binding, and the artifact/channel section for the existing APK/JAR; the artifact paths the operator fills into `itch.conf` point at local copies of the existing APK/JAR (the site repo's copies are the located reference set).
+Mirror the BoundPronouns repo's `itch-push.sh`/`itch.conf(.example)` pattern, adapted to this repo's state: the script carries the pattern's guard structure, the target binding, and the artifact/channel section for the existing APK/JAR; the artifact paths the operator fills into `itch.conf` point at obtainable copies of the existing APK/JAR (their location is unestablished from this environment — deploy-source facts above).
 
 No production push is performed in this work: the initial deployment of the existing APK/JAR is the paired CherokeeLessons.com#22 work (its R-4 butler pushes). Butler's channel pushes are idempotent and re-pushable — this repo's tooling can re-push the same artifacts to the same channels without conflict when exercised.
 
@@ -49,4 +51,4 @@ Alternatives weighed: deferring the artifact/channel section to Godot-ready rele
 
 ## Impact
 
-Repo-local tooling files only; no runtime behavior change; the paired itch page gains no new state from this work. The repo's release pipeline gains complete deploy tooling bound to the itch target and the existing artifacts' channels, ready to exercise against the existing APK/JAR.
+Repo-local tooling files only; no runtime behavior change; the paired itch page gains no new state from this work. The repo's release pipeline gains complete deploy tooling bound to the itch target and the existing artifacts' channels, ready to exercise against the existing APK/JAR once their obtainable copies are supplied as operator config.

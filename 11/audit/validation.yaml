@@ -1,0 +1,18 @@
+# validation record — Animals#11 (YAML)
+cycle: 1
+date: 2026-11-09
+reviewer: fresh-context validation dispatches (general subagents)
+rounds:
+- round: 1
+  verdict: FAIL
+  findings:
+  - {class: fabricated-claims, detail: "Scope's 'the only in-tree jar is the git-ignored legacy build leftover core/build/libs/core-5.12.jar' misstated fact — four git-tracked tooling jars also exist in-tree (gradle wrapper, font tooling under Artwork.Source/)", disposition: "remediated — restated precisely: in-tree jars are tooling plus one git-ignored legacy build leftover; no runnable app artifact"}
+  - {class: ambiguous-criterion, detail: "R-3/SC-4 required the URL 'in the README' but the repo tracks two case-variant root READMEs (README.md, readme.md); the spec resolved neither target", disposition: "remediated — criterion removed together with the landing-URL clause (round-1 finding 3's remediation); no README target remains"}
+  - {class: invented-requirement, detail: "R-3's landing-page-URL tracking (ITCH_URL in itch.conf.example + README URL) traced to none of the spec's stated sources; the BoundPronouns precedent (verified) defines only ITCH_USER/ITCH_GAME and carries no itch URL in conf or README", disposition: "remediated — landing-URL clause and its SC removed per the extraction rule; R-3 narrowed to push-target binding"}
+  remediation: in-place revision of spec.md + remote body
+- round: 2
+  verdict: FAIL
+  findings:
+  - {class: fabricated-claims, family: cross-reference-sufficiency, detail: "Deploy-source facts asserted 'the existing APK/JAR exist as the site repo's copies named in the paired spec's channel table (Animals-5.12.jar, Animals-5.12-release.apk under content/apps/animals/)' marked verified — false: the CherokeeLessons.com contents API 404s both paths, the directory holds only fix-image-links.sh and index.md, the tree's only jars are other apps' (static/downloads/CLL1-1.72.jar, Syllabary-3.24.jar), the repo has no releases, and cherokeelessons.com does not resolve from this environment (curl http=000)", disposition: "remediated — deploy-source facts restated firsthand-verified: no located source holds the artifacts; location unestablished from available evidence; developer asserts existence (2026-11-09 direction); obtainable copies are operator config (itch.conf); Problem/Approach/Impact location claims corrected"}
+  remediation: in-place revision of spec.md + remote body; round 3 dispatched
+issue: 11
