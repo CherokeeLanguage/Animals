@@ -19,4 +19,8 @@ rounds:
   verdict: PASS
   findings: []
   notes: fresh-context reviewer re-verified every factual claim independently (release assets, tree jars, site-repo contents/tree/releases, index.md links, DNS failure, paired-spec citations, BoundPronouns pattern elements); traceability, criteria classes, analysis families, repo-boundary containment, and remote-body format all judged clean
+- round: 4
+  verdict: PASS
+  findings: []
+  notes: fresh-context reviewer verified the corrected deploy-source facts firsthand (site checkout's content/apps/animals/ file set + sizes, nested content/apps/.gitignore ignore state, public/ build output serving both artifacts, index.md links, this repo's dist/ staging byte-identical via cmp and gitignored via .gitignore:52, itch project 404, DNS failure, paired-spec citations, BoundPronouns pattern, tag 5.12 toolchain facts); traceability, criteria classes, analysis families, repo-boundary containment, and remote-body format all judged clean
 issue: 11
