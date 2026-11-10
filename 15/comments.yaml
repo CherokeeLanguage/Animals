@@ -1,1 +1,12 @@
-comments: []
+comments:
+- type: internal
+  body: 'Execution record (2026-11-09): fix commit 2afef8e on hotfix/5.12 (bounded:
+    ScreenInstructions.java, +2/-3 — setFillParent(true) + fontSize 44). Rebuild staged
+    at dist/Animals-5.12.jar (59,642,525 B; profile 3,560 = 2,274+28+1,258). Re-push:
+    win-linux-mac butler build #2345855 (from #2345542), upload #20409605; android
+    idempotent no-op re-push receiving #2345856 — both auto-numbered, no version claims.
+    Live page: Animals-5.12.jar 56 MB + unchanged apk 52 MB. Acceptance captures:
+    /tmp/opencode/diag/FIX-A720-instructions.png (1280x720) + FIX-B1920-instructions.png
+    (1920x1043); fixation verified under the operator TV-mode prefs state. #22 sibling
+    record carries the redeployment note.'
+  timestamp: '2026-11-10T04:40:17+00:00'
