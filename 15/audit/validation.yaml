@@ -37,3 +37,12 @@ plan:
   findings: []
   outcome: "clean PASS — build-push split coherent and complete; coverage exact; REDs verified; capture acceptance gates the re-push"
 issue: 15
+implementation:
+- round: 1
+  artifact: hotfix/5.12 commit 2afef8e (+ redeployed dist jar + itch push + sibling record)
+  verdict: PASS
+  reviewer: fresh-context dispatch (ses_e3c3ff127ffeR74wxxtZARF4eV)
+  findings: []
+  ground: "SC-1 both post-fix captures inspected firsthand (zero edge-cuts, footer inside, TV-mode binding state); SC-2 profile exact; SC-3 page lists same filename/consistent size; SC-4 bounded diff (+2/-3, one file); SC-5 sibling note references #15 + 2afef8e; butler receipts verified live via butler status"
+  outcome: "clean PASS — 5/5 SCs, zero findings"
+issue: 15
