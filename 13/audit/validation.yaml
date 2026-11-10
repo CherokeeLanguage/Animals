@@ -18,3 +18,9 @@ issue: 13
   findings:
   - {class: remote-body-sizing-doctrine, detail: "remote body carried stale figures contradicting the (clean) local spec: Problem ¶1 '27 natives, 2 data files' and SC-1 profile '457/421/1,226' — the earlier in-place body edit missed the remote's actual phrasing", disposition: "remote body corrected in place (2,274/28/28-non-class phrasing; 457/421/1,258 + classes + natives); local spec verified byte-exact accurate by the round-2 reviewer — no local change"}
   remediation: remote-body-only; round 3 dispatched
+- round: 3
+  verdict: FAIL
+  reviewer: fresh-context dispatch (ses_e3d0e99e4ffeVaGjOO4fVDcgSX)
+  findings:
+  - {class: fabricated-claims, detail: "Problem's android/assets inventory included '+ 2 source JPGs' — the JPGs are tracked sources (Assets/challenges/pictures/), zero JPGs in android/assets or the jar; contradicted the spec's own Scope section", disposition: "Problem parenthetical corrected (JPGs attributed to tracked sources only, as Scope already states); remote body unaffected (never carried the claim); everything else verified byte-exact"}
+  remediation: in-place spec revision; round 4 dispatched
