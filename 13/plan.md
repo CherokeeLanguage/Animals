@@ -35,16 +35,30 @@ Build environment facts (verified this session): system JDKs are 21/25 — too n
 - GREEN: the row reads restored, pointing at #13's record.
 - Instrument: read `/home/muksihs/git/CherokeeLessons.com/.issues/22/spec.md` post-edit (store synced).
 
+### Item 5 — SC-5 + PR: durable build tooling (R-6, added 2026-11-09)
+- Deliverable: JDK 8 vendored at `.tools/jdk/` (untracked); `.gitignore` gains `/.tools/jdk/` on a trunk-targeting branch — commit `a407c70` on `feature/13-build-tooling`; the PR carries this spec's one tracked change and closes #13.
+- RED: `git check-ignore .tools/jdk/` fails on trunk (no rule on master) — verified 2026-11-09.
+- GREEN: the rule lands; the vendored runtime resolves.
+- Instrument: executed `.tools/jdk/bin/java -version` (8.0.512); `git check-ignore .tools/jdk/` on the branch's checkout.
+
 ## Ordering
 
-1 → 2 → 3 → 4. Each item's evidence gates the next (no push before runtime acceptance; no record revision before page verification). No item depends on a later item.
+1 → 2 → 3 → 4 → 5. Each item's evidence gates the next (no push before runtime acceptance; no record revision before page verification; the tooling PR last, closing the issue). No item depends on a later item.
+
+## Coverage map
+
+- SC-1 ← item 1 · SC-2 ← item 2 · SC-3+SC-4 ← item 3 · R-5 ← item 4 · SC-5+R-6 ← item 5 (plus the PR boundary)
+
+## PR stage
+
+The PR is `feature/13-build-tooling` → trunk, carrying the spec's one tracked change (`.gitignore` +/.tools/jdk/) as one squashed commit; the operational deliverables (rebuild, acceptance play-through, re-push, page verification, sibling record) ride the PR body as executed evidence. It opens after the verify pass; merge stays human-only.
 
 ## Out of scope (carried from spec)
 
 No Animals tracked-tree change; no master/Godot work; no viewport/zoom item (pending the developer's retest verdict — files separately if confirmed); no plist pinning; no CherokeeLessons.com repo file changes.
 
-## PR stage note
+## PR stage
 
-The spec's Impact states the Animals tracked tree changes not at all under this work; if execution confirms an empty Animals delta, the PR boundary resolves to that fact and is reported — the review surface is then the hotfix branch's pushed commit, the verification record, the live page state, and the sibling record. A PR vehicle exists only if execution produces a tracked-tree delta.
+The PR is `feature/13-build-tooling` → trunk, carrying the spec's one tracked change (`.gitignore` +/.tools/jdk/) as one squashed commit; the operational deliverables (rebuild, acceptance play-through, re-push, page verification, sibling record) ride the PR body as executed evidence. It opens after the verify pass; merge stays human-only.
 
 🤖 Co-authored with AI: OpenCode (huggingface/zai-org/GLM-5.3-Flash)
