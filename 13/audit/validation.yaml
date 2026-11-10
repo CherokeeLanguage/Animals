@@ -1,0 +1,20 @@
+# validation record — Animals#13 (YAML)
+rounds:
+- round: 1
+  verdict: FAIL
+  reviewer: fresh-context dispatch (ses_e3d2197f2ffeHMZBUQQxd2kRJz)
+  findings:
+  - {class: fabricated-claims, detail: "profile figure 1,226 data files wrong — instrument recount: 3,560 entries − 2,274 classes − 28 natives = 1,258", disposition: fixed in spec + remote body}
+  - {class: fabricated-claims, detail: "27 natives wrong — actual 28 (13 dll, 10 so, 4 dylib, 1 jnilib)", disposition: fixed in spec + remote body}
+  - {class: fabricated-claims, detail: "'2 data files — both arial' misstated the published jar — actual 28 non-class entries (arial pair + engine metadata: glsl, rl, gwt.xml, sfd.ser, pom/properties); the engine-only/no-game-content diagnosis stands", disposition: fixed in spec + remote body}
+  - {class: fabricated-claims, detail: "'459 tracked PNGs' — actual 457 PNGs + 2 JPGs", disposition: fixed in spec}
+  - {class: fabricated-claims + internal-contradiction, detail: "R-3's 'android not re-pushed' contradicted itch-push.sh's unconditional both-channel push (verified lines 36-43, 68-83); unsatisfiable as written under the no-tracked-tree-change constraint", disposition: "R-3 rewritten — the tool runs as built; android push is an idempotent content-identical re-push (no-op patch); SC-3 adds the unchanged android listing check"}
+  - {class: fabricated-claims, detail: "path 'text/challenge-*.txt' wrong — actual android/assets/text/", disposition: fixed in spec}
+  remediation: in-place revision of spec.md + remote body; round 2 dispatched
+issue: 13
+- round: 2
+  verdict: FAIL
+  reviewer: fresh-context dispatch (ses_e3d1615e2ffehWZ3Pbi0oQsiyg)
+  findings:
+  - {class: remote-body-sizing-doctrine, detail: "remote body carried stale figures contradicting the (clean) local spec: Problem ¶1 '27 natives, 2 data files' and SC-1 profile '457/421/1,226' — the earlier in-place body edit missed the remote's actual phrasing", disposition: "remote body corrected in place (2,274/28/28-non-class phrasing; 457/421/1,258 + classes + natives); local spec verified byte-exact accurate by the round-2 reviewer — no local change"}
+  remediation: remote-body-only; round 3 dispatched
