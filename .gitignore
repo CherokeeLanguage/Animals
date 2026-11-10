@@ -60,6 +60,10 @@ nb-configuration.xml
 gradle-app.setting
 build/
 
+## Vendored build tooling for the 5.12 hotfix line (Gradle 6.5 is
+## incompatible with system JDKs) — local-only, per the BoundPronouns .tools/jdk pattern
+/.tools/jdk/
+
 ## OS Specific
 .DS_Store
 /rejected-challenges/
