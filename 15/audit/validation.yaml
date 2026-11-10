@@ -19,3 +19,21 @@ plan:
   findings:
   - {class: feasibility, detail: "the plan claimed everything executes in the hotfix-display worktree — but itch-push.sh/itch.conf/butler are master-side (e8d16a6 not an ancestor of hotfix/5.12) and the vendored JDK lives in the main checkout as untracked local state", disposition: "surface split restated — build in the worktree with JAVA_HOME pointing at the main checkout's vendored JDK, jar staged at the main checkout's dist/, re-push from the main checkout's tooling"}
   remediation: "plan surfaces corrected; round 2 dispatched"
+- round: 3
+  verdict: PASS
+  reviewer: fresh-context dispatch (ses_e3c4a06d9ffegeYv7H7bRYtf6r)
+  findings: []
+  outcome: "clean PASS — spec (rounds 1-3) closed before plan; the remote body settled as a faithful section mirror (round-2 reviewer's delegated judgment: satisfies the sizing doctrine) with the closing blockquote restored"
+plan:
+- round: 1
+  verdict: FAIL
+  reviewer: fresh-context dispatch (ses_e3c481176ffeYgeRf3doH4rkGa)
+  findings:
+  - {class: feasibility, detail: "the plan's worktree-exclusivity claim misstated tool surfaces — itch-push.sh/itch.conf/butler are master-side (e8d16a6 not an ancestor of hotfix/5.12) and .tools/jdk is main-checkout untracked local state", disposition: "surface split restated: build in the worktree (JAVA_HOME -> main checkout's vendored JDK), jar staged at the main checkout's dist/, re-push from the main checkout's tooling"}
+  remediation: "plan surfaces corrected; round 2 dispatched"
+- round: 2
+  verdict: PASS
+  reviewer: fresh-context dispatch (ses_e3c4521caffeP4lrWbyWeq6zuU)
+  findings: []
+  outcome: "clean PASS — build-push split coherent and complete; coverage exact; REDs verified; capture acceptance gates the re-push"
+issue: 15
