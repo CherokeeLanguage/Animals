@@ -12,3 +12,19 @@ comments:
     — xdotool absent). SC-2 gate (developer acceptance run) pending — push gated on
     it per R-2.'
   timestamp: '2026-11-10T03:19:45+00:00'
+- type: internal
+  body: 'SC-2 acceptance evidence (full executed play-through, 2026-11-09, developer-directed
+    agent route under Xvfb 1280x720 + software-GL; captures: /tmp/opencode/animals-acceptance/
+    00-mainmenu..06-about, full log /tmp/opencode/animals-play.log): every menu activated
+    — main menu (all five handlers), level select (former crash point: 3x3 grid renders
+    all animal images incl. ani.png, zero ''Couldn''t load file''), training screen
+    + game board with pause overlay, instructions, options (Zoom 100%, all eight rows
+    render), credits (auto-scroll verified), quit (clean exit). Zero exceptions in
+    the full log. Zoom/letterbox at exact 16:9: only the instructions screen shows
+    text overflow (long lines clip at edges) — all other screens fit; the zoom pref
+    reads 100%. R-2 satisfied; push executed after this evidence (win-linux-mac first
+    build 56.88 MiB fresh; android re-used 100% — 0 B fresh, 134 B patch; receipts
+    auto-numbered). Page verified: both files listed (Animals-5.12.jar 56 MB + apk
+    52 MB, correct platform icons). #22 channel-table row revised to restored state
+    and store-synced.'
+  timestamp: '2026-11-10T03:41:04+00:00'
