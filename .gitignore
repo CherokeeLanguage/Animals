@@ -67,3 +67,7 @@ build/
 .import/
 export_presets.cfg
 /.opencode/
+
+## itch.io deployment tooling (itch-push.sh) — local-only
+/itch.conf
+/.tools/butler/

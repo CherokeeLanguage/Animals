@@ -1,0 +1,22 @@
+# itch.io publish target for Cherokee Language Animals — used by itch-push.sh.
+# Copy this file to itch.conf and fill in the REPLACE_ME paths; itch.conf is
+# gitignored (local-only — do NOT commit it). Do NOT put any passwords or API
+# keys here — butler keeps credentials in its own store (`butler login`).
+#
+# The push target below is the paired itch project
+# (https://cherokee-language.itch.io/cherokee-language-animals).
+#
+# Artifact paths are operator config: point them at the existing published
+# APK/JAR deploy source (the staged dist/ copies), not at any build output —
+# this repo builds nothing.
+
+ITCH_USER=cherokee-language
+ITCH_GAME=cherokee-language-animals
+
+# Path to the desktop jar (pushed to the win-linux-mac channel),
+# e.g. the staged dist/ copy.
+ITCH_JAR=REPLACE_ME
+
+# Path to the release APK (pushed to the android channel),
+# e.g. the staged dist/ copy.
+ITCH_APK=REPLACE_ME
