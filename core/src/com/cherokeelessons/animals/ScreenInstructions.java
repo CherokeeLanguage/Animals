@@ -27,7 +27,7 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 		return true;
 	}
 
-	private static final int fontSize = 64;
+	private static final int fontSize = 44;
 
 	final private Table instructions = new Table();
 
@@ -114,8 +114,7 @@ public class ScreenInstructions extends GameScreen implements DpadInterface {
 		gameStage.clear();
 		gameStage.addActor(instructions);
 		init();
-		instructions.setWidth(fullZoneBox.width);
-		instructions.setHeight(fullZoneBox.height);
+		instructions.setFillParent(true);
 	}
 
 	@Override
