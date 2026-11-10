@@ -1,0 +1,21 @@
+# validation record — Animals#15 (YAML)
+rounds:
+- round: 1
+  verdict: FAIL
+  reviewer: fresh-context dispatch (ses_e3c4d9fb4ffekPmVnaVOm5GcCL)
+  findings:
+  - {class: remote-body-format, detail: "remote summary omitted the mandatory Impact section and its Requirements/SC numbering diverged from the store-authoritative spec", disposition: "remote body replaced with a per-section faithful rendering of the local spec (universal minimum + spec extension, matching numbering)"}
+  remediation: "remote-body-only; round 2 dispatched"
+- round: 2
+  verdict: FAIL
+  reviewer: fresh-context dispatch (ses_e3c4bc32dffeLSYaPm2i9phDGI)
+  findings:
+  - {class: remote-body-format, detail: "the section-swap remediation dropped the mandated closing artifacts blockquote + AI-facing pointer from the remote body; the reviewer's judgment: the per-section faithful mirror satisfies the sizing doctrine (authority stays in the store; fuller-than-summary maximizes self-sufficiency)", disposition: "blockquote + pointer restored; everything else verified firsthand and held"}
+  remediation: "blockquote restored; round 3 dispatched"
+plan:
+- round: 1
+  verdict: FAIL
+  reviewer: fresh-context dispatch (ses_e3c481176ffeYgeRf3doH4rkGa)
+  findings:
+  - {class: feasibility, detail: "the plan claimed everything executes in the hotfix-display worktree — but itch-push.sh/itch.conf/butler are master-side (e8d16a6 not an ancestor of hotfix/5.12) and the vendored JDK lives in the main checkout as untracked local state", disposition: "surface split restated — build in the worktree with JAVA_HOME pointing at the main checkout's vendored JDK, jar staged at the main checkout's dist/, re-push from the main checkout's tooling"}
+  remediation: "plan surfaces corrected; round 2 dispatched"
