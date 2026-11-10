@@ -1,6 +1,6 @@
 # Plan — Animals#13: restore the win-linux-mac desktop channel (hotfix/5.12 rebuild + itch re-push)
 
-Spec: `.issues/13/spec.md` — validated PASS round 5 (`.issues/13/audit/validation.yaml`).
+Spec: `.issues/13/spec.md` (validation loop: `.issues/13/audit/validation.yaml`).
 Authorization: developer 2026-11-09, "approved for PR" — carries the item through plan → implement → verify → the PR boundary; merge stays human-only.
 
 ## Approach statement

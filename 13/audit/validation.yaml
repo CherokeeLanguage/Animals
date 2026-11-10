@@ -56,3 +56,11 @@ spec+plan revision:
   - {class: stale-instrument-framing, detail: "item 2 still framed the agent play-through as a deviation from the developer-run instrument", disposition: "rewritten — the play-through IS the named instrument (developer-directed route); executed evidence stated"}
   remediation: complete one-pass sweep; count-trigger structural re-evaluation judged and recorded (artifacts stand — findings are stale-text residuals of the single legitimate R-6 design change, no recurring class, no recomposition indication); round 7 dispatched
 issue: 13
+- round: 7
+  verdict: FAIL
+  reviewer: fresh-context dispatch (ses_e3c7430c5ffec3fHKeGSyb7ZI8)
+  findings:
+  - {class: internal-contradiction, detail: "spec Approach still said 'the developer's acceptance run gates the push' (pre-revision framing in the one unswept section)", disposition: "rewritten to the executed agent play-through (R-2); #22-loop and tooling-PR references added; hotfix-line tree wording corrected"}
+  - {class: local-vs-remote, detail: "remote R-2 still carried 'on the developer's desktop' — the round-6 remote edit had fixed SC-2 but not R-2; remote R-3 'tracked tree' clause stale; remote Approach phrasing stale", disposition: "remote reconciled wholesale}
+  - {class: self-containment, detail: "plan header claimed 'validated PASS round 5' — stale measured history", disposition: "header de-measured: validation loop pointer only (single-sourcing)"}
+  remediation: proactive grep-based sweep for every superseded phrase across all three artifacts (developer's acceptance|developer's desktop|59,642,548|1,226|27 natives|2 data files|459 |not re-pushed|which is why|changes not at all|round 5|developer-run) — all cleared; round 8 dispatched
