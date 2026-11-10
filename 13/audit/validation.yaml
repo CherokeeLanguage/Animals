@@ -60,4 +60,11 @@ spec+plan revision:
   - {class: local-vs-remote, detail: "remote R-2 still carried ''on the developer''s desktop'' — the round-6 remote edit had fixed SC-2 but not R-2; remote R-3 ''tracked tree'' clause stale; remote Approach phrasing stale", disposition: "remote reconciled wholesale"}
   - {class: self-containment, detail: "plan header claimed ''validated PASS round 5'' — stale measured history", disposition: "header de-measured: validation loop pointer only (single-sourcing)"}
   remediation: "proactive grep-based sweep for every superseded phrase across all three artifacts (developer''s acceptance / developer''s desktop / 59,642,548 / 1,226 / 27 natives / 2 data files / 459 / not re-pushed / which is why / changes not at all / round 5 / developer-run) — all cleared; round 8 dispatched"
+- round: 8
+  verdict: FAIL
+  reviewer: fresh-context dispatch (ses_e3c69d6baffepKB3mpm7T0q1MO)
+  findings:
+  - {class: remote-body-format, detail: "plan-shaped sections absent from the remote body though the mandate binds once a plan exists (Items RED/GREEN, Dependencies, Traceability, Documentation Sources, Enforcement Gate, Cost Frame, Edge Cases, Not Included)", disposition: "added, mirroring the local plan only; every figure/claim verified consistent by the round-8 reviewer"}
+  remediation: "remote-body summary added; round 9 dispatched"
+
 issue: 13
