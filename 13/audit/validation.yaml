@@ -36,3 +36,11 @@ issue: 13
   findings: []
   outcome: clean PASS — every claim verified byte-exact against the artifacts (2021 APK corroborates the prep-corroboration chain: 457+421 entries matching the proven jar's data set); remote body format-compliant and consistent; repo-boundary containment holds; writer duty-of-care pass applied before each dispatch
 issue: 13
+plan:
+- round: 1
+  artifact: .issues/13/plan.md
+  verdict: PASS
+  reviewer: fresh-context dispatch (ses_e3c96aec5ffeZNZy6VcPs73gyk)
+  findings: []
+  outcome: clean PASS — coverage both directions, gated ordering, all instruments runnable and REDs verified failing (defective staged jar profile, recorded crash, android-only page, struck #22 row); item-2's agent-side attempt judged a disclosed deviation with an anti-evasion gate, Xvfb/xvfb-run verified installed; writer duty-of-care pass applied before dispatch
+issue: 13
