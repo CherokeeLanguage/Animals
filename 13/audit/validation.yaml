@@ -44,3 +44,15 @@ plan:
   findings: []
   outcome: clean PASS — coverage both directions, gated ordering, all instruments runnable and REDs verified failing (defective staged jar profile, recorded crash, android-only page, struck #22 row); item-2's agent-side attempt judged a disclosed deviation with an anti-evasion gate, Xvfb/xvfb-run verified installed; writer duty-of-care pass applied before dispatch
 issue: 13
+spec+plan revision:
+- round: 6
+  verdict: FAIL
+  reviewer: fresh-context dispatch (ses_e3c7b7fa7ffeSTnq8inhuNGrVK)
+  findings:
+  - {class: fabricated-claims, detail: "stale byte figure 59,642,548 — clean-room artifact is 59,642,607 (md5 5771fd53, both copies)", disposition: fixed}
+  - {class: internal-contradiction, detail: "R-2 'on the developer's desktop' residual contradicted the revised SC-2 agent-route instrument (mirrored remotely)", disposition: "R-2 rewritten to the delegated route (spec + remote)"}
+  - {class: internal-inconsistency, detail: "plan Approach 'changes not at all (spec Impact)' + out-of-scope 'no tracked-tree change' residuals contradicted the revised Impact and item 5", disposition: fixed}
+  - {class: self-containment, detail: "duplicated '## PR stage' section", disposition: removed}
+  - {class: stale-instrument-framing, detail: "item 2 still framed the agent play-through as a deviation from the developer-run instrument", disposition: "rewritten — the play-through IS the named instrument (developer-directed route); executed evidence stated"}
+  remediation: complete one-pass sweep; count-trigger structural re-evaluation judged and recorded (artifacts stand — findings are stale-text residuals of the single legitimate R-6 design change, no recurring class, no recomposition indication); round 7 dispatched
+issue: 13
