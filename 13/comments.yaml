@@ -1,1 +1,14 @@
-comments: []
+comments:
+- type: internal
+  body: 'Execution evidence 2026-11-09 (plan items 1-2): clean-room rebuild at /tmp/opencode/animals-13-release
+    from hotfix/5.12 (36720a1) via the full procedure (preps/plists/changelog + JDK8
+    + gradlew core:build desktop:dist) — SC-1 instrument verified byte-exact: 3,560
+    entries = 2,274 classes + 28 natives + 1,258 data; 457 challenge images incl.
+    ani.png; 421 audio takes; all spot files. Jar staged at dist/Animals-5.12.jar
+    (defective 2021 copy superseded; bytes preserved in site repo + butler history).
+    Agent-side runtime evidence (xvfb + software-GL, per plan item 2''s disclosed
+    deviation): launch reached main menu with all five touch handlers, 79 challenges
+    loaded, zero exceptions; level select unexercised agent-side (no input driver
+    — xdotool absent). SC-2 gate (developer acceptance run) pending — push gated on
+    it per R-2.'
+  timestamp: '2026-11-10T03:19:45+00:00'
