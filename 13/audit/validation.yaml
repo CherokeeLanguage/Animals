@@ -4,63 +4,60 @@ rounds:
   verdict: FAIL
   reviewer: fresh-context dispatch (ses_e3d2197f2ffeHMZBUQQxd2kRJz)
   findings:
-  - {class: fabricated-claims, detail: "profile figure 1,226 data files wrong — instrument recount: 3,560 entries − 2,274 classes − 28 natives = 1,258", disposition: fixed in spec + remote body}
-  - {class: fabricated-claims, detail: "27 natives wrong — actual 28 (13 dll, 10 so, 4 dylib, 1 jnilib)", disposition: fixed in spec + remote body}
-  - {class: fabricated-claims, detail: "'2 data files — both arial' misstated the published jar — actual 28 non-class entries (arial pair + engine metadata: glsl, rl, gwt.xml, sfd.ser, pom/properties); the engine-only/no-game-content diagnosis stands", disposition: fixed in spec + remote body}
-  - {class: fabricated-claims, detail: "'459 tracked PNGs' — actual 457 PNGs + 2 JPGs", disposition: fixed in spec}
-  - {class: fabricated-claims + internal-contradiction, detail: "R-3's 'android not re-pushed' contradicted itch-push.sh's unconditional both-channel push (verified lines 36-43, 68-83); unsatisfiable as written under the no-tracked-tree-change constraint", disposition: "R-3 rewritten — the tool runs as built; android push is an idempotent content-identical re-push (no-op patch); SC-3 adds the unchanged android listing check"}
-  - {class: fabricated-claims, detail: "path 'text/challenge-*.txt' wrong — actual android/assets/text/", disposition: fixed in spec}
-  remediation: in-place revision of spec.md + remote body; round 2 dispatched
-issue: 13
+  - {class: fabricated-claims, detail: "profile figure 1,226 data files wrong — instrument recount: 3,560 entries minus 2,274 classes minus 28 natives = 1,258", disposition: "fixed in spec + remote body"}
+  - {class: fabricated-claims, detail: "27 natives wrong — actual 28 (13 dll, 10 so, 4 dylib, 1 jnilib)", disposition: "fixed in spec + remote body"}
+  - {class: fabricated-claims, detail: "''2 data files — both arial'' misstated the published jar — actual 28 non-class entries (arial pair + engine metadata: glsl, rl, gwt.xml, sfd.ser, pom/properties); the engine-only/no-game-content diagnosis stands", disposition: "fixed in spec + remote body"}
+  - {class: fabricated-claims, detail: "''459 tracked PNGs'' — actual 457 PNGs + 2 JPGs", disposition: "fixed in spec"}
+  - {class: "fabricated-claims + internal-contradiction", detail: "R-3''s ''android not re-pushed'' contradicted itch-push.sh''s unconditional both-channel push (verified lines 36-43, 68-83); unsatisfiable as written under the no-tracked-tree-change constraint", disposition: "R-3 rewritten — the tool runs as built; android push is an idempotent content-identical re-push (no-op patch); SC-3 adds the unchanged android listing check"}
+  - {class: fabricated-claims, detail: "path ''text/challenge-*.txt'' wrong — actual android/assets/text/", disposition: "fixed in spec"}
+  remediation: "in-place revision of spec.md + remote body; round 2 dispatched"
 - round: 2
   verdict: FAIL
   reviewer: fresh-context dispatch (ses_e3d1615e2ffehWZ3Pbi0oQsiyg)
   findings:
-  - {class: remote-body-sizing-doctrine, detail: "remote body carried stale figures contradicting the (clean) local spec: Problem ¶1 '27 natives, 2 data files' and SC-1 profile '457/421/1,226' — the earlier in-place body edit missed the remote's actual phrasing", disposition: "remote body corrected in place (2,274/28/28-non-class phrasing; 457/421/1,258 + classes + natives); local spec verified byte-exact accurate by the round-2 reviewer — no local change"}
-  remediation: remote-body-only; round 3 dispatched
+  - {class: remote-body-sizing-doctrine, detail: "remote body carried stale figures contradicting the (clean) local spec — Problem paragraph 1 ''27 natives, 2 data files'' and SC-1 profile ''457/421/1,226''; the earlier in-place body edit missed the remote''s actual phrasing", disposition: "remote body corrected in place (2,274/28/28-non-class phrasing; 457/421/1,258 + classes + natives); local spec verified byte-exact accurate by the round-2 reviewer — no local change"}
+  remediation: "remote-body-only; round 3 dispatched"
 - round: 3
   verdict: FAIL
   reviewer: fresh-context dispatch (ses_e3d0e99e4ffeVaGjOO4fVDcgSX)
   findings:
-  - {class: fabricated-claims, detail: "Problem's android/assets inventory included '+ 2 source JPGs' — the JPGs are tracked sources (Assets/challenges/pictures/), zero JPGs in android/assets or the jar; contradicted the spec's own Scope section", disposition: "Problem parenthetical corrected (JPGs attributed to tracked sources only, as Scope already states); remote body unaffected (never carried the claim); everything else verified byte-exact"}
-  remediation: in-place spec revision; round 4 dispatched
+  - {class: fabricated-claims, detail: "Problem''s android/assets inventory included ''+ 2 source JPGs'' — the JPGs are tracked sources (Assets/challenges/pictures/), zero JPGs in android/assets or the jar; contradicted the spec''s own Scope section", disposition: "Problem parenthetical corrected (JPGs attributed to tracked sources only, as Scope already states); remote body unaffected (never carried the claim); everything else verified byte-exact"}
+  remediation: "in-place spec revision; round 4 dispatched"
 - round: 4
   verdict: FAIL
   reviewer: fresh-context dispatch (ses_e3d002830ffeCPMcFfJhxoDsC4)
   findings:
-  - {class: fabricated-causal-claim + internal-contradiction, detail: "'a fresh clone has neither, which is why the published jar lacked it' wired the packaging defect to the wrong cause — the 2021 machine had run the preps (2021 APK carries full runtime content: 1,230 asset entries matching the proven jar's data set); the jar's defect is the dist task's structural exclusion (Problem section)", disposition: "causal clause corrected — fresh-clone fact motivates R-1's prep chain; the published jar's defect attributed to the structural exclusion; every other figure byte-exact per reviewer"}
-  remediation: in-place spec revision; round 5 dispatched
+  - {class: "fabricated-causal-claim + internal-contradiction", detail: "''a fresh clone has neither, which is why the published jar lacked it'' wired the packaging defect to the wrong cause — the 2021 machine had run the preps (2021 APK carries full runtime content: 1,230 asset entries matching the proven jar''s data set); the jar''s defect is the dist task''s structural exclusion (Problem section)", disposition: "causal clause corrected — fresh-clone fact motivates R-1''s prep chain; the published jar''s defect attributed to the structural exclusion; every other figure byte-exact per reviewer"}
+  remediation: "in-place spec revision; round 5 dispatched"
 - round: 5
   verdict: PASS
   reviewer: fresh-context dispatch (ses_e3ceb8b65ffeYxrkPoriyN6RiV)
   findings: []
-  outcome: clean PASS — every claim verified byte-exact against the artifacts (2021 APK corroborates the prep-corroboration chain: 457+421 entries matching the proven jar's data set); remote body format-compliant and consistent; repo-boundary containment holds; writer duty-of-care pass applied before each dispatch
-issue: 13
+  outcome: "clean PASS — every claim verified byte-exact against the artifacts (2021 APK corroborates the prep-corroboration chain: 457 plus 421 entries matching the proven jar''s data set); remote body format-compliant and consistent; repo-boundary containment holds; writer duty-of-care pass applied before each dispatch"
 plan:
 - round: 1
-  artifact: .issues/13/plan.md
+  artifact: ".issues/13/plan.md"
   verdict: PASS
   reviewer: fresh-context dispatch (ses_e3c96aec5ffeZNZy6VcPs73gyk)
   findings: []
-  outcome: clean PASS — coverage both directions, gated ordering, all instruments runnable and REDs verified failing (defective staged jar profile, recorded crash, android-only page, struck #22 row); item-2's agent-side attempt judged a disclosed deviation with an anti-evasion gate, Xvfb/xvfb-run verified installed; writer duty-of-care pass applied before dispatch
-issue: 13
+  outcome: "clean PASS — coverage both directions, gated ordering, all instruments runnable and REDs verified failing (defective staged jar profile, recorded crash, android-only page, struck no.22 row); item-2''s agent-side attempt judged a disclosed deviation with an anti-evasion gate, Xvfb/xvfb-run verified installed; writer duty-of-care pass applied before dispatch"
 spec+plan revision:
 - round: 6
   verdict: FAIL
   reviewer: fresh-context dispatch (ses_e3c7b7fa7ffeSTnq8inhuNGrVK)
   findings:
-  - {class: fabricated-claims, detail: "stale byte figure 59,642,548 — clean-room artifact is 59,642,607 (md5 5771fd53, both copies)", disposition: fixed}
-  - {class: internal-contradiction, detail: "R-2 'on the developer's desktop' residual contradicted the revised SC-2 agent-route instrument (mirrored remotely)", disposition: "R-2 rewritten to the delegated route (spec + remote)"}
-  - {class: internal-inconsistency, detail: "plan Approach 'changes not at all (spec Impact)' + out-of-scope 'no tracked-tree change' residuals contradicted the revised Impact and item 5", disposition: fixed}
-  - {class: self-containment, detail: "duplicated '## PR stage' section", disposition: removed}
+  - {class: fabricated-claims, detail: "stale byte figure 59,642,548 — clean-room artifact is 59,642,607 (md5 5771fd53, both copies)", disposition: "fixed"}
+  - {class: internal-contradiction, detail: "R-2 ''on the developer''s desktop'' residual contradicted the revised SC-2 agent-route instrument (mirrored remotely)", disposition: "R-2 rewritten to the delegated route (spec only — the remote half was applied incompletely, caught in round 7)"}
+  - {class: internal-inconsistency, detail: "plan Approach ''changes not at all (spec Impact)'' + out-of-scope ''no tracked-tree change'' residuals contradicted the revised Impact and item 5", disposition: "fixed"}
+  - {class: self-containment, detail: "duplicated ''## PR stage'' section", disposition: "removed"}
   - {class: stale-instrument-framing, detail: "item 2 still framed the agent play-through as a deviation from the developer-run instrument", disposition: "rewritten — the play-through IS the named instrument (developer-directed route); executed evidence stated"}
-  remediation: complete one-pass sweep; count-trigger structural re-evaluation judged and recorded (artifacts stand — findings are stale-text residuals of the single legitimate R-6 design change, no recurring class, no recomposition indication); round 7 dispatched
-issue: 13
+  remediation: "complete one-pass sweep; count-trigger structural re-evaluation judged and recorded (artifacts stand — findings are stale-text residuals of the single legitimate R-6 design change, no recurring class, no recomposition indication); round 7 dispatched"
 - round: 7
   verdict: FAIL
   reviewer: fresh-context dispatch (ses_e3c7430c5ffec3fHKeGSyb7ZI8)
   findings:
-  - {class: internal-contradiction, detail: "spec Approach still said 'the developer's acceptance run gates the push' (pre-revision framing in the one unswept section)", disposition: "rewritten to the executed agent play-through (R-2); #22-loop and tooling-PR references added; hotfix-line tree wording corrected"}
-  - {class: local-vs-remote, detail: "remote R-2 still carried 'on the developer's desktop' — the round-6 remote edit had fixed SC-2 but not R-2; remote R-3 'tracked tree' clause stale; remote Approach phrasing stale", disposition: "remote reconciled wholesale}
-  - {class: self-containment, detail: "plan header claimed 'validated PASS round 5' — stale measured history", disposition: "header de-measured: validation loop pointer only (single-sourcing)"}
-  remediation: proactive grep-based sweep for every superseded phrase across all three artifacts (developer's acceptance|developer's desktop|59,642,548|1,226|27 natives|2 data files|459 |not re-pushed|which is why|changes not at all|round 5|developer-run) — all cleared; round 8 dispatched
+  - {class: internal-contradiction, detail: "spec Approach still said ''the developer''s acceptance run gates the push'' (pre-revision framing in the one unswept section)", disposition: "rewritten to the executed agent play-through (R-2); the no.22-loop and tooling-PR references added; hotfix-line tree wording corrected"}
+  - {class: local-vs-remote, detail: "remote R-2 still carried ''on the developer''s desktop'' — the round-6 remote edit had fixed SC-2 but not R-2; remote R-3 ''tracked tree'' clause stale; remote Approach phrasing stale", disposition: "remote reconciled wholesale"}
+  - {class: self-containment, detail: "plan header claimed ''validated PASS round 5'' — stale measured history", disposition: "header de-measured: validation loop pointer only (single-sourcing)"}
+  remediation: "proactive grep-based sweep for every superseded phrase across all three artifacts (developer''s acceptance / developer''s desktop / 59,642,548 / 1,226 / 27 natives / 2 data files / 459 / not re-pushed / which is why / changes not at all / round 5 / developer-run) — all cleared; round 8 dispatched"
+issue: 13
