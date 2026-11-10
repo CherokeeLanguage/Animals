@@ -24,3 +24,9 @@ issue: 13
   findings:
   - {class: fabricated-claims, detail: "Problem's android/assets inventory included '+ 2 source JPGs' — the JPGs are tracked sources (Assets/challenges/pictures/), zero JPGs in android/assets or the jar; contradicted the spec's own Scope section", disposition: "Problem parenthetical corrected (JPGs attributed to tracked sources only, as Scope already states); remote body unaffected (never carried the claim); everything else verified byte-exact"}
   remediation: in-place spec revision; round 4 dispatched
+- round: 4
+  verdict: FAIL
+  reviewer: fresh-context dispatch (ses_e3d002830ffeCPMcFfJhxoDsC4)
+  findings:
+  - {class: fabricated-causal-claim + internal-contradiction, detail: "'a fresh clone has neither, which is why the published jar lacked it' wired the packaging defect to the wrong cause — the 2021 machine had run the preps (2021 APK carries full runtime content: 1,230 asset entries matching the proven jar's data set); the jar's defect is the dist task's structural exclusion (Problem section)", disposition: "causal clause corrected — fresh-clone fact motivates R-1's prep chain; the published jar's defect attributed to the structural exclusion; every other figure byte-exact per reviewer"}
+  remediation: in-place spec revision; round 5 dispatched
